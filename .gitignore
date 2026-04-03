@@ -1,0 +1,40 @@
+# 大型数据文件（不提交到Git）
+考古报告PDF/
+提取结果/
+标注输出/
+
+# 临时文件
+_tmp_split/
+*.log
+*.txt
+__pycache__/
+*.pyc
+
+# IDE / 工作区
+.workbuddy/
+.DS_Store
+*.swp
+
+# 模板文件
+知识库网站/
+
+# 根目录的中间脚本（已收录到 scripts/ 子目录）
+/batch_run.py
+/batch_retry.py
+/batch_retry3.py
+/batch_round4.py
+/batch_round5.py
+/batch_local_extract.py
+/batch_paddleocr.py
+/batch_process.sh
+
+# 根目录的原始数据文件（已在 docs/ 和 data/ 子目录中保留副本）
+/中国现代考古学重要遗址——发掘报告电子档获取清单.md
+/中国现代考古学重要遗址发掘时间线与报告出版情况.md
+/考古报告PDF下载指南.md
+/考古报告元数据清单.md
+
+# 其他临时文件
+.batch_queue.json
+.retry_queue.json
+.final_batch.sh
