@@ -38,3 +38,6 @@ __pycache__/
 .batch_queue.json
 .retry_queue.json
 .final_batch.sh
+
+# 构建输出
+_site/
