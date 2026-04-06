@@ -1,0 +1,2235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>南宋官窑 — 中国考古学专刊·丁种 — 实体标注知识库</title>
+<meta name="description" content="基于70份考古学专刊·丁种发掘报告的实体标注与结构化知识库">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏺</text></svg>">
+<style>
+:root {
+  --bg: #0f1117;
+  --card: #1a1d27;
+  --border: #2a2d3a;
+  --text: #e4e4e7;
+  --muted: #8b8fa3;
+  --accent: #f59e0b;
+  --accent2: #ec4899;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* Navigation */
+.topnav {
+  background: rgba(15, 17, 23, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.nav-links a.active { color: var(--accent); background: rgba(245,158,11,0.08); }
+
+/* Layout */
+.container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+.hero {
+  text-align: center;
+  padding: 48px 20px 32px;
+}
+.hero h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.hero .subtitle { color: var(--muted); font-size: 1.05rem; }
+
+/* Stats */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin: 28px 0 36px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 28px;
+  text-align: center;
+  min-width: 150px;
+  flex: 1;
+  max-width: 200px;
+}
+.stat-card .num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.stat-card .label { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
+
+/* Grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+}
+.card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  background: var(--card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.82rem;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+thead th:hover { color: var(--text); }
+tbody td { padding: 10px 14px; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+tbody tr { transition: background 0.15s; }
+tbody tr:hover { background: rgba(245, 158, 11, 0.04); }
+
+/* Tags */
+.era-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.ebar {
+  display: inline-block;
+  height: 6px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Report detail page */
+.report-header {
+  margin-bottom: 28px;
+}
+.report-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.report-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.report-meta span {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+.report-body h2 { font-size: 1.3rem; margin: 32px 0 16px; color: var(--accent); }
+.report-body h3 { font-size: 1.1rem; margin: 24px 0 12px; }
+.report-body p { margin-bottom: 12px; }
+.report-body ul, .report-body ol { margin: 12px 0 12px 24px; }
+.report-body li { margin-bottom: 4px; }
+.report-body table { margin: 16px 0; }
+.report-body table th { background: var(--card); }
+.report-body table td, .report-body table th {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+}
+.report-body pre {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.report-body code {
+  background: rgba(245,158,11,0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* Image placeholder */
+.img-placeholder {
+  display: inline-block;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+/* Entity chips */
+.entity-section { margin: 20px 0; }
+.entity-section h4 { color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; }
+.echip {
+  display: inline-block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  margin: 2px 3px;
+}
+
+/* Report card (for list page) */
+.report-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.report-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.report-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.report-card .rc-meta { color: var(--muted); font-size: 0.84rem; }
+.report-card .rc-entities { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-top: 6px; }
+
+/* Search & filter */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+.search-input {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 260px;
+  outline: none;
+}
+.search-input:focus { border-color: var(--accent); }
+.filter-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(245,158,11,0.08);
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  margin-top: 60px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.footer-inner { text-align: center; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.footer-links { margin-top: 8px; }
+.footer-links a { color: var(--accent); text-decoration: none; }
+.footer-links a:hover { text-decoration: underline; }
+
+/* About page */
+.about-section { margin: 28px 0; }
+.about-section h2 { font-size: 1.3rem; margin-bottom: 12px; color: var(--accent); }
+.about-section p { margin-bottom: 12px; color: var(--muted); }
+.about-section ul { margin: 8px 0 8px 20px; color: var(--muted); }
+
+/* Download page */
+.dl-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.dl-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.dl-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; }
+.dl-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #000;
+  padding: 8px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.dl-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.dl-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.dl-btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Map page */
+.map-container {
+  text-align: center;
+  margin: 24px 0;
+}
+.map-container img {
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .stats-row { gap: 10px; }
+  .stat-card { min-width: 120px; padding: 14px 16px; }
+  .stat-card .num { font-size: 1.5rem; }
+  .nav-links a { padding: 6px 10px; font-size: 0.82rem; }
+  .search-input { width: 100%; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+}
+@media (max-width: 480px) {
+  .nav-links { gap: 0; }
+  .nav-links a { padding: 6px 8px; font-size: 0.78rem; }
+  .container { padding: 16px; }
+}
+
+
+.toc-float {
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.8rem;
+  max-width: 220px;
+  z-index: 50;
+}
+.toc-float h4 { color: var(--muted); margin-bottom: 8px; }
+.toc-float a { color: var(--muted); text-decoration: none; display: block; padding: 2px 0; }
+.toc-float a:hover { color: var(--accent); }
+@media (max-width: 1024px) { .toc-float { display: none; } }
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<nav class="topnav">
+<div class="nav-inner">
+  <a href="../index.html" class="logo">🏺 考古知识库</a>
+  <div class="nav-links">
+<a href="../index.html">总览</a>
+<a href="../reports.html" class="active">报告列表</a>
+<a href="../map.html">遗址地图</a>
+<a href="../download.html">数据下载</a>
+<a href="../about.html">关于</a>
+  </div>
+</div>
+</nav>
+<div class="container" style="display:flex;gap:24px">
+<div style="flex:1;min-width:0">
+<div class="report-header">
+  <a href="../reports.html" style="color:var(--muted);font-size:0.88rem;text-decoration:none">← 返回报告列表</a>
+  <h1 style="margin-top:8px">南宋官窑</h1>
+  <div class="report-meta">
+    <span class="era-tag" style="background:#14b8a622;color:#14b8a6">宋元明清</span>
+    <span>156 页</span>
+    <span>9.7 MB</span>
+    <span>243 个实体</span>
+    <span>密度 1.6</span>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:24px">
+  <h3>🏷️ 实体标注</h3>
+  <div class="entity-section"><h4>遗迹编号 (61)</h4><div><span class="echip">AN</span><span class="echip">IV</span><span class="echip">K878</span><span class="echip">F1</span><span class="echip">F2</span><span class="echip">Y2</span><span class="echip">F3</span><span class="echip">F4</span><span class="echip">G1</span><span class="echip">T7</span><span class="echip">T8</span><span class="echip">T9</span><span class="echip">T10</span><span class="echip">T19</span><span class="echip">T17</span><span class="echip">T18</span><span class="echip">T2</span><span class="echip">T5</span><span class="echip">T11</span><span class="echip">T16</span><span class="echip">T20</span><span class="echip">T23</span><span class="echip">T13</span><span class="echip">T15</span><span class="echip">T3</span><span class="echip">T12</span><span class="echip">F5</span><span class="echip">M4</span><span class="echip">M1</span><span class="echip">M3</span><span class="echip">T1</span><span class="echip">T21</span><span class="echip">C1</span><span class="echip">T22</span><span class="echip">G2</span><span class="echip">Y1</span><span class="echip">T14</span><span class="echip">T143</span><span class="echip">T1437</span><span class="echip">T142</span><span class="echip">Y23</span><span class="echip">T162</span><span class="echip">T4</span><span class="echip">II</span><span class="echip">AD</span><span class="echip">VI</span><span class="echip">IX</span><span class="echip">XI</span><span class="echip">T141</span><span class="echip">XV</span><span class="echip" style="color:var(--muted)">+11 更多</span></div></div>
+<div class="entity-section"><h4>测量数据 (60)</h4><div><span class="echip">45</span><span class="echip">65</span><span class="echip">60</span><span class="echip">7.6</span><span class="echip">2</span><span class="echip">8</span><span class="echip">4</span><span class="echip">35</span><span class="echip">0.85</span><span class="echip">200</span><span class="echip">6</span><span class="echip">130</span><span class="echip">115</span><span class="echip">30</span><span class="echip">55</span><span class="echip">18</span><span class="echip">10.45</span><span class="echip">3.55</span><span class="echip">3.45</span><span class="echip">5.05</span><span class="echip">0.28</span><span class="echip">6.5</span><span class="echip">0.44</span><span class="echip">9</span><span class="echip">15</span><span class="echip">37.5</span><span class="echip">1.8</span><span class="echip">7.2</span><span class="echip">10</span><span class="echip">34</span><span class="echip">40</span><span class="echip">13</span><span class="echip">3</span><span class="echip">5</span><span class="echip">7</span><span class="echip">1</span><span class="echip">0.25</span><span class="echip">4.5</span><span class="echip">4.1</span><span class="echip">0.8</span><span class="echip">0.4</span><span class="echip">0.7</span><span class="echip">82</span><span class="echip">2.8</span><span class="echip">0.5</span><span class="echip">3.8</span><span class="echip">70.8</span><span class="echip">2.4</span><span class="echip">54</span><span class="echip">218</span><span class="echip" style="color:var(--muted)">+10 更多</span></div></div>
+<div class="entity-section"><h4>探方编号 (53)</h4><div><span class="echip">T7</span><span class="echip">T8</span><span class="echip">T9</span><span class="echip">T10</span><span class="echip">T19</span><span class="echip">T17</span><span class="echip">T18</span><span class="echip">T2</span><span class="echip">T5</span><span class="echip">T11</span><span class="echip">T16</span><span class="echip">T20</span><span class="echip">T23</span><span class="echip">T13</span><span class="echip">T15</span><span class="echip">T3</span><span class="echip">T12</span><span class="echip">T1</span><span class="echip">T21</span><span class="echip">T22</span><span class="echip">T14</span><span class="echip">T52A</span><span class="echip">T122A</span><span class="echip">T42B</span><span class="echip">T143</span><span class="echip">T51B</span><span class="echip">T1437</span><span class="echip">T14D</span><span class="echip">T18D</span><span class="echip">T5G</span><span class="echip">T22B</span><span class="echip">T2B</span><span class="echip">T5A</span><span class="echip">T142</span><span class="echip">T162</span><span class="echip">T14I</span><span class="echip">T4</span><span class="echip">T141</span><span class="echip">T182</span><span class="echip">T149</span><span class="echip">T6A</span><span class="echip">T22H</span><span class="echip">T32A</span><span class="echip">T12A48</span><span class="echip">T181</span><span class="echip">T22A</span><span class="echip">T32</span><span class="echip">T3B</span><span class="echip">T14205</span><span class="echip">T21B</span><span class="echip" style="color:var(--muted)">+3 更多</span></div></div>
+<div class="entity-section"><h4>器物编号 (38)</h4><div><span class="echip">G1:2</span><span class="echip">F3:1</span><span class="echip">T1437:257</span><span class="echip">G1:7</span><span class="echip">Y23:9</span><span class="echip">Y2:9</span><span class="echip">G1:11</span><span class="echip">T18:80</span><span class="echip">T5:127</span><span class="echip">T142:168</span><span class="echip">T18:16</span><span class="echip">T141:11</span><span class="echip">T142:118</span><span class="echip">T142:119</span><span class="echip">G1:4</span><span class="echip">T13:8</span><span class="echip">T142:46</span><span class="echip">T182:85</span><span class="echip">G1:3</span><span class="echip">T142:104</span><span class="echip">T149:97</span><span class="echip">G1:8</span><span class="echip">T12:1</span><span class="echip">T13:5</span><span class="echip">T142:196</span><span class="echip">T181:8</span><span class="echip">T32:12</span><span class="echip">T143:192</span><span class="echip">Y2:17</span><span class="echip">Y2:16</span><span class="echip">T142:225</span><span class="echip">G1:13</span><span class="echip">T102:6</span><span class="echip">T12:27</span><span class="echip">T12:28</span><span class="echip">G1:12</span><span class="echip">T141:230</span><span class="echip">T142:214</span></div></div>
+<div class="entity-section"><h4>陶器 (7)</h4><div><span class="echip">尊</span><span class="echip">壶</span><span class="echip">觚</span><span class="echip">盘</span><span class="echip">罐</span><span class="echip">钵</span><span class="echip">盆</span></div></div>
+<div class="entity-section"><h4>纹饰 (6)</h4><div><span class="echip">云雷纹</span><span class="echip">重环纹</span><span class="echip">龙纹</span><span class="echip">凤鸟纹</span><span class="echip">弦纹</span><span class="echip">回纹</span></div></div>
+<div class="entity-section"><h4>铜器 (3)</h4><div><span class="echip">尊</span><span class="echip">觚</span><span class="echip">盘</span></div></div>
+<div class="entity-section"><h4>地层 (3)</h4><div><span class="echip">第1层</span><span class="echip">第2层</span><span class="echip">第3层</span></div></div>
+<div class="entity-section"><h4>制作工艺 (3)</h4><div><span class="echip">模制</span><span class="echip">轮制</span><span class="echip">手制</span></div></div>
+<div class="entity-section"><h4>土样特征 (2)</h4><div><span class="echip">疏松</span><span class="echip">致密</span></div></div>
+<div class="entity-section"><h4>年代 (2)</h4><div><span class="echip">公元1138年</span><span class="echip">公元1279年</span></div></div>
+<div class="entity-section"><h4>发掘信息 (2)</h4><div><span class="echip">中国社会科学院考古研究所</span><span class="echip">中华书局</span></div></div>
+<div class="entity-section"><h4>建筑结构 (1)</h4><div><span class="echip">砖墙</span></div></div>
+<div class="entity-section"><h4>遗存类型 (1)</h4><div><span class="echip">瓷片</span></div></div>
+<div class="entity-section"><h4>保存状况 (1)</h4><div><span class="echip">复原</span></div></div>
+
+</div>
+
+<div class="card">
+  <h3>📖 报告全文</h3>
+  <div class="report-body" id="reportBody">
+    <h1 id="_1">南宋宫窑</h1>
+<p>中国社会科学院考古研究所</p>
+<p>浙江省文物考古研究所</p>
+<p>杭州市园林文物局</p>
+<h1 id="_2">中国田野考古报告集</h1>
+<h1 id="_3">考古学专刊</h1>
+<h1 id="_4">丁种第四十六号</h1>
+<h1 id="_5">南宋官窑</h1>
+<p>中国社会科学院考古研究所</p>
+<p>浙江省文物考古研究所编</p>
+<p>杭州市园林文物局</p>
+<p>中国大百科全书出版社</p>
+<h1 id="southern-song-governmental-porcelain-workshop">SOUTHERN SONG GOVERNMENTAL PORCELAIN WORKSHOP</h1>
+<p>(WITH AN ENGLISH ABSTRACT)</p>
+<p>Institute of Archaeology Chinese Academy of Social Sciences</p>
+<p>Zhejiang Provincial Institute of Cultural Relics and Archaeology and Hangzhou Municipal Administration of Parks and Cultural Relics</p>
+<p>The Encyclopedia of China Publishing House</p>
+<p>Beijing. China 1996</p>
+<h1 id="_6">内容简介</h1>
+<p>浙江省杭州市南郊乌龟山麓的南宋官窑遗址是专为南宋宫廷用瓷而生产的瓷窑场。1984年1986年进行了全面勘测和发掘，揭露1400平方米，发现窑炉一座，大型作坊一处，出土瓷片一万余件，工具、窑具数千件。</p>
+<p>出土的瓷片经过复原，共有二十三类七种型式的瓷器，有日用器，也有陈设器和祭器，包括了宫廷生活所用的全部器皿。报告通过对主要器物的类型学研究，提出南宋官窑瓷器可分为前后二期；根据出土的南宋晚期的典型器物推定出窑场建于南宋初年（绍兴八年，公元1138年）定都临安前后，停烧于南宋灭亡时（公元1279年）。</p>
+<p>南宋官窑的发掘，揭示了宋代官窑制瓷手工业作坊的规模、结构及产品特征，展现出南宋官窑吸取的南北方制瓷工艺的先进技术，是中国瓷窑考古的一项重要成果，为丰富中国陶瓷史、手工业发展史提供了重要资料。</p>
+<h1 id="cip">图书在版编目（CIP）数据</h1>
+<p>南宋官窑/中国社会科学院考古研究所著.一北京：中国大百科全书出版社，1996.11</p>
+<p>ISBN 75000-5274-X</p>
+<p>I.南…Ⅱ.中…Ⅲ.官窑一发掘报告中国一南宋 IV.K878.05</p>
+<p>中国版本图书馆CIP数据核字（96）第21115号</p>
+<h1 id="_7">目录</h1>
+<h1 id="1">壹 官窑遗址的发现与发掘 (1)</h1>
+<p>一、地理概况· (1) <br />
+二、历史概况 (1)<br />
+三、调查与发掘概况· (2)</p>
+<h1 id="4">贰 地层堆积情况 (4)</h1>
+<p>、作坊区地层… (4)<br />
+、窑炉地层· (6)</p>
+<h1 id="8">参 官窑遗迹… (8)</h1>
+<p>一、作坊遗迹· (8)</p>
+<p>（一）房基· (8)<br />
+（二）练泥池 (12)<br />
+（二） 镀铲坑 (13)<br />
+（四）釉料缸 (13)<br />
+（1）素烧坏堆 (13)<br />
+（六）素烧炉 (14)<br />
+（七）堆料坑 (14)<br />
+（八）排水沟 ………………………………………… (14)<br />
+（九）挡土墙 ………………………………………… (14)<br />
+（一）道路 (15)</p>
+<h1 id="15">二、窑炉遗迹 (15)</h1>
+<h1 id="19">肆 遗物 (19)</h1>
+<p>、生活用具 (19)</p>
+<p>（一）官窑瓷器 (19)<br />
+（二）其他窑系瓷器 (48)</p>
+<p>二、制瓷工具及窑具 (51)</p>
+<p>（一）制瓷工具 (51)<br />
+（二）窑具 (55)</p>
+<h1 id="64">伍 结语 ………………………………………… (64)</h1>
+<h1 id="67">附表 (67)</h1>
+<ul>
+<li>南宋官窑出土瓷片中器形统计表 ………………………………………… (67)<br />
+二 南宋官窑出土瓷片胎釉色泽统计表 ………………………………………… (69)<br />
+三 南宋官窑出土瓷器装烧工艺及装烧支垫具数量统计表 ………………………………………… (73)</li>
+</ul>
+<p>四 南宋官窑瓷片测试标本外貌观察统计表 ………………………………………… (75)</p>
+<p>五 南宋官窑瓷片测试标本胎釉的化学成分统计表 ………………………………………… (78)</p>
+<p>后记 (80)</p>
+<p>英文提要 (81)</p>
+<h1 id="_8">插图目录</h1>
+<p>南宋官窑遗址位置图 ………………………………………… (1)<br />
+二 官窑遗址地形及遗迹，探方分布图 ………………………………………… (2)<br />
+三 官窑遗址发掘坑位及遗迹分布图 ………………………………………… (3)</p>
+<p>四 官窑遗址作坊区地层剖面图 ………………………………………… (4)</p>
+<p>F1、F2（元明时期建筑）平面图 (5)<br />
+六 F1 第 3 号柱础平、剖面图 ………………………………………… (6)<br />
+七 Y2 南侧地层剖面图 ………………………………………… (7)<br />
+八 F3 平、剖面图 ………………………………………… (9)</p>
+<p>九 F4 平面图 ………………………………………… (10)</p>
+<p>（二）F5平、剖面图 ………………………………………… (11)<br />
+…C1平、剖面图 (12)<br />
+F3内辗铲坑平、剖面图 (13)<br />
+素烧炉残迹平、剖面图 (14)<br />
+-4 堆料坑平、剖面图 (15)<br />
+15 G1 平、剖面图 ………………………………………… (16)<br />
+六 Y2平、剖面图 (16)</p>
+<p>七 南宋官窑瓷碗 (20)<br />
+一八 南宋官窑瓷盘 (21)<br />
+一九 南宋官窑瓷三足盘 (22)<br />
+南宋官窑瓷碟 (23)<br />
+1 南宋官窑瓷盏、盒 (24)<br />
+：南宋官窑瓷洗 (25)<br />
+二 南宋官窑瓷杯 (26)<br />
+四 南宋官窑瓷钵 (27)<br />
+[五] 南宋官窑瓷盆、坛、花盆 ………………………………………… (29)<br />
+二六 南宋官窑瓷炉 (30)<br />
+二七 南宋官窑瓷炉 (31)<br />
+八 南宋官窑瓷觚、唾具、尊、灯盏 ………………………………………… (33)<br />
+九 南宋官窑瓷瓶 (34)<br />
+（）南宋官窑瓷瓶 (35)<br />
+南宋官窑烧瓶、壶 (36)<br />
+二 南宋官窑瓷壶 (38)<br />
+三 南宋官窑瓷罐 (39)<br />
+三四 南宋官窑瓷器器盖 (40)</p>
+<p>五 南宋官窑瓷器器盖 (42)<br />
+三六 南宋官窑瓷器器盖、器座 (43)<br />
+三七 南宋官窑瓷器纹饰残片 (45)<br />
+三八 南宋官窑瓷器纹饰残片 (46)<br />
+·九 南宋官窑瓷器纹饰残片 (47) <br />
+四）其他窑系瓷器 (49)<br />
+四一 其他窑系瓷器 (50)<br />
+四二. 南宋官窑工具 ………………………………………… (52)<br />
+四三 南宋官窑工具及窑具 (53)<br />
+四四 南宋官窑I型范T5②A：47纹饰及铭文拓本 ………………………………………… (54)<br />
+四五 南宋官窑窑具 (56)<br />
+四六 南宋官窑支烧具 (57)<br />
+四七 南宋官窑支烧具 (59)<br />
+四八 南宋官窑垫烧具 (60)<br />
+四九 南宋官窑垫烧具 (62)</p>
+<h1 id="_9">图版目录</h1>
+<p>彩一 南宋官窑窑炉（Y2）遗迹（由南向北摄）<br />
+彩二 南宋官窑瓷器残片<br />
+彩三 南宋官窑瓷瓶<br />
+彩四 南宋官窑瓷器残片</p>
+<p>乌龟山南宋官窑遗址（由南向北摄）</p>
+<p>F3全景及局部<br />
+F4全景与练泥池</p>
+<p>四 F5全景及局部</p>
+<p>丘 南宋官窑遗迹<br />
+六 南宋官窑遗迹<br />
+南宋官窑Y2局部残存情况及厚钵铺垫的路面</p>
+<p>八 南宋官窑Y2保存现状及复原模型<br />
+九 南宋官窑瓷碗</p>
+<p>南宋官窑瓷盘<br />
+南宋官窑瓷盘<br />
+一 南宋官窑瓷三足盘<br />
+一三 南宋官窑瓷碟、盏<br />
+一四 南宋官窑瓷洗<br />
+一五 南宋官窑瓷洗<br />
+六 南宋官窑瓷盒、灯盏<br />
+-七 南宋官窑瓷器残片<br />
+八 南宋官窑瓷杯、盏<br />
+-九 南宋官窑瓷器残片</p>
+<p>二（） 南宋官窑瓷炉<br />
+一二 南宋官窑瓷炉<br />
+南宋官窑瓷瓶、觚<br />
+二 南宋官窑瓷瓶口部、底部<br />
+二四 南宋官窑瓷瓶口部<br />
+二十五 南宋官窑瓷瓶<br />
+二六 南宋官窑瓷壶<br />
+二七 南宋官窑瓷器残片<br />
+二八 南宋官窑瓷罐口沿、底部<br />
+二九 南宋官窑瓷器器盖</p>
+<p>（）南宋官窑瓷器器盖与器座<br />
+一 南宋官窑瓷器器盖<br />
+南宋官窑瓷器器盖<br />
+三 南宋官窑瓷器器盖<br />
+[四] 南宋官窑瓷器器座<br />
+五 南宋官窑瓷器纹饰残片<br />
+六 南宋官窑瓷器纹饰残片<br />
+七 南宋官窑瓷器纹饰残片<br />
+三八 其他窑系瓷器与仿烧器<br />
+九 其他窑系瓷器</p>
+<p>$\text{四}$ 其他密系瓷器</p>
+<p>[1] 南宋官窑研钵、作<br />
+四 南宋官窑研磨器、模具<br />
+四 南宋官窑范、模<br />
+四四 南宋官窑工具<br />
+四五 南宋官窑窑具<br />
+四六 南宋官窑匣钵及盖 <br />
+四七 南宋官窑支烧具<br />
+四八 南宋官窑支烧具<br />
+四九 南宋官窑支烧具<br />
+五 南宋官窑支烧具<br />
+H- 南宋官窑支烧具、垫烧具<br />
+五 南宋官窑支烧具、垫烧具<br />
+五 南宋官窑垫烧具<br />
+五四 南宋官窑垫烧具<br />
+ii 南宋宫窑垫烧具<br />
+f.六 南宋官窑垫烧具</p>
+<h1 id="_10">壹 官窑遗址的发现与发掘</h1>
+<h1 id="_11">一、地理概况</h1>
+<p>乌龟山南宋瓷窑遗址位于浙江省杭州市江干区闸口乌龟山西麓，东为钱塘江北岸平地，距钱塘江约500米，离浙赣铁路约百余米；西为八卦田，并与海拔高度仅68米的桃花山接壤；北倚将台山；东北距南宋皇城2公里（图一：图版一）。</p>
+<p>乌龟山是一座东西长300米，南北宽200米，海拔高度76米的小山丘（图二）。山上有紫金土、瓷石等制瓷原料，瓷业生产的自然条件良好。但自元代以后，由于杭州城不断地向西北发展转移，这一带逐渐荒凉，成为杭城居民的埋葬区，在窑场范围内已发现、清理出明清至现代的竖穴上坑墓500余座。解放初在山坡上还曾挖掘宽约1米的战壕一条，将一座窑炉（Y2）截断成三段。10多年前在西南面山脚下，建造电力仓库时，又破坏和压住了部分作坊遗迹，由于上述种种原因，使窑址遭到严重的破坏。</p>
+<h1 id="_12">二、历史概况</h1>
+<p>乌龟山密址在文献记载中被认为是南宋官窑，最早见于《咸淳临安志》，该书卷十“内诸</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一 南宋官窑遗址位置图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二 官窑遗址地形及遗迹、探方分布图</p>
+<p>司”条载：“青器窑在雄武营山上圜坛左右”。在一些宋人笔记中也多有记载，其中记载最详备的为元陶宗仪著《南村辍耕录》（中华书局，1959年2月）上转载的宋叶寅撰的《坦斋笔衡》，内云：“……中兴渡江，有邵成章提举后苑，号邵局，袭故京遗制，置窑丁修内司，造宵器，名内窑，澄泥为范，极其精致，油色莹彻，为世所珍。后郊坛下别立新窑，比旧窑大不侔矣。”明清以后有关南宋官窑的记载更多，如明代曹昭的《格古要论》，田艺蘅的《留青口札》，王圻的《稗史类编》，谷应泰的《博物要览》，清代朱琰的《陶说》，以及有关方志中都有记载。所载内容不外考证窑址地点、官窑瓷器的特征等，尤其以转录宋代文献内容居多。至于官窑窑址究竟在何处，却无实地考察资料。</p>
+<p>乌龟山窑址的发现及确认其为南宋郊坛下官窑，始于本世纪20年代；嗣后，中外陶瓷学者纷纷前往窑址调查或采集标本，并先后编写了有关著作，但由于未进行科学发掘，对南宋官窑窑场是一处还是几处？窑场的范围、结构、作坊布局、生产设备与产品种类等仍不清楚。1956年，浙江省文管会曾在窑址的南部进行首次局部发掘，清理龙窑窑炉一座，编号Y1，并发掘了窑旁的部分瓷片堆积。但发掘报告未发表，仅在《三十年来浙江文物考古》①一文中提及。</p>
+<h1 id="_13">三、调查与发掘概况</h1>
+<p>鉴于乌龟山南宋官窑窑址自发现以来曾遭到多次不同程度的破坏，为了全面揭示这座历史名窑，弄清它的历史并对窑场遗迹进行妥善保护，使历史名城杭州增添重要的文物古迹，1984年，由中国社会科学院考古研究所、浙江省文物考古研究所、杭州市园林文物局联合组成的南宋临安城考古队，决定对乌龟山窑址进行全面、系统的考古发掘。根据是年春季杭州</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图三 宿窑遗址发掘坑位及遗迹分布图</p>
+<p>市文物部门在普查中已发现尚有窑炉遗迹，考古队在进行全面调查和钻探中，不仅在近代战壕的剖面处发现有窑场的第二座窑炉遗迹，还在乌龟山的山岙平地上进行的试掘中，发现了探沟T1第3层有南宋时期的建筑遗迹，为全面地进行发掘提供了依据。</p>
+<p>1985年10月初，临安城考古队对窑址进行正式发掘，发掘至1986年1月底结束。1988年冬，为配合南宋官窑博物馆的建设工程，又对作坊遗迹进行了补充发掘。先后参加发掘者有中国社会科学院考古研究所李德金、关甲、蒋忠义、俞永炳、包强，浙江省文物考古研究所朱伯谦、陈元甫、朱琼华、胡继根，杭州市园林文物局姚桂芳、吴晓力、陈珲、梁宝华、杜正贤等同志。</p>
+<p>为搞清窑址的全貌，根据已暴露窑炉（Y2）的断面，在与窑炉走向垂直相交的方向及与Y1之间的山坡上，开挖探沟二条，编号T6、T7，以便全面了解窑炉结构及两座窑炉周围的其他迹象。为了解窑炉两侧的废品堆积情况，又分别在Y1附近开挖探沟四条（T8、T9、T10、T19），在Y2西侧山坡上开挖探沟二条（T17、T18）。在山岙平地可发掘范围内，开挖正南北方向的探方十个（T2--T5、T11--T16）。1988年冬的补充发掘中，在西南角又开挖探方四个（T20--T23），对可能保存下来的遗迹进行了全面的发掘。共计开挖探沟、探方二十二个，发掘面积近1400平方米。共发现窑炉一座、作坊遗址一处。作坊遗址中包括房基三座，练泥池一个，辘铲坑二个，釉料缸二个，堆料坑一个，素烧炉一座，以及素烧坯堆、排水沟、道路等遗迹（图三）。出土瓷片三万余片，窑具数千件。这些遗迹、遗物经过整理和复原，展示了南宋官窑的真实面貌。</p>
+<h1 id="_14">贰 地层堆积情况</h1>
+<h1 id="_15">一、作坊区地层</h1>
+<p>南宋官窑的作坊遗迹分布在乌龟山与桃花山之间的山峦中，该处有1000余平方米的平地。本次发掘先后在该处开挖探方十四个（其中1985年试掘的T1包括在这次发掘的探方T2之内），共揭露面积约1000平方米。作坊遗迹主要暴露在85LWT2 T5、T11—T13、T15、T20 T23之内。从各探方的发掘情况看，地层堆积基本相同，自地表至作坊层共有三个地层，其中第1层又分为A、B两小层。现以T3、T5、T12东壁为例介绍如下（图四）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四 宜釜遗址作坊区地层剖面图（T3、T5、T12东壁）</p>
+<p>第1层：分A、B两小层。</p>
+<p>A层：现代耕土。土质松软，土色灰黑，厚845厘米。内含青灰色碎砖瓦、青花瓷片、白瓷片等近、现代遗物，尚有不少南宋官窑瓷片、窑具和越窑、龙泉窑的瓷片。</p>
+<p>B层：土质松散，含大量残砖碎瓦，七色偏灰，杂有黄、褐、深灰等色的土块。局部被A层扰乱。距地表深8—45厘米，厚0-65厘米。层面发现大量近现代竖穴土坑墓和骨灰罐，堆积中出土较多南宋官窑瓷片和各种窑具残片、窑砖，同出的尚有宋元时期的越窑、龙泉窑、景德镇窑系的瓷片及明清时期的青花瓷片。根据出土遗物，该层形成于明清时期。</p>
+<p>第2层：元明时期建筑层。遍布于整个发掘区。由于建筑填土土色不同，发掘时曾分为A、B层，因时代相同，不再分别叙述。距地表深20-70、厚20-60厘米。层面除被大量近、现代墓打破外，发现一组比较完整的建筑基址。地基堆积中有大量小石块、窑砖、烧土块和南宋官窑的瓷片、系烧坯、窑具及其他窑系的瓷片。从堆积物观察，该层为有意加筑的地基填土，填土来源于东侧山坡上的南宋官窑窑炉的废品堆积区。由于取土地段不同，形成地层上色不同，南部地层土色偏红褐、北部地层土色偏黄灰，实系同时加筑的建筑填土。</p>
+<p>发现的建筑遗迹主要分布于T2—T5、T12、T13、T15之内，系一组以天井、过道相连的前后两进式的建筑遗址，包括三开间的房基二处、连接前后房基的过道、过道两侧的天井、房基两侧的排水沟。整个建筑面积达300平方米（图五）。</p>
+<p>两处房基均为坐东北朝西南，方向216度，处在同一条中轴线上，前后相距10米，由北向南依次编号为85LWF1、F2。由于距地表较浅，除柱础坑全部保存外，地面及地表的柱础石已破坏无存，仅局部地表残留一薄层夹杂大量小石块的黄土，可能系当时经加工的室内地面层。从柱础坑的分布情况可知，F1和F2均为三开间房，大小相同，通面阔10.4、进深</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+周五 F1、F2（元明时期建筑）平面图（1 10.柱础坑）</p>
+<p>7.6米，其中明间面阔1米，两侧暗间各面阔3.2米。</p>
+<p>柱础坑为方或长方形，口大底小。坑口长1.5、宽1.2米，坑底长1、宽0.8米，残深0.4—1.1米不等，大部分坑打破第3层深入生土。坑内分层铺垫大石块、黄褐沙土与碎石，结构紧实（图六），可见当时柱础的承重量很大。再以第1B层内出土的大块砖瓦片和龙头鹅吻等建筑构件推测，F1、F2应系一组规模较大、建筑讲究的木构瓦顶建筑。</p>
+<p>在F1和F2之间有互相连接的过道，过道正对两房明间，长8、宽5.4米，部分路面残存有铺垫的紫金上，道侧残留有砌筑的石块、青砖及散水。散水由长方形及斧形青砖垒砌，青砖砖面磨光，制作精致，推测当时过道路面为砖铺地面。</p>
+<p>过道两侧各有天井，长8、宽3.5-4米，低于房基0.35米。天井地面为灰色硬土，西天井</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图六 F1第3号柱础平、剖面图</p>
+<p>西边残留有碎砖和石块砌筑的墙基，应是该建筑的围墙墙基。</p>
+<p>F1与F2的东西两侧，接近山坡部分，皆发现有与房基并行走向的排水沟，其中东侧排水沟系在山岩上开凿而成，宽0.6-0.8、深0.2米左右。西侧排水沟的西壁用石块垒砌，沟深挖至生上层，宽0.7-0.85米，深0.8米。排水沟内的填土为建筑废弃后的砖瓦碎片。</p>
+<p>在房基的填上中，出土有明代青花瓷片，故推测该建筑的年代可能在明代。该处距明代杭州市区较远、地方偏僻，房屋结构和规模表明它非一般民居，有可能是一处寺庙、庵堂类的宗教性建筑。</p>
+<p>第3层：南宋官窑作坊层。遍布于整个发掘区，距地表深80—200厘米，含沙性黄褐色锈斑上，并杂有较多紫金土块。在此层层面上发现三处建筑遗址，分别编号为F3、F4、F5，房基内外还发现练泥池、辘轳坑、釉料缸、素烧炉、素烧坯堆、堆料坑、道路、排水沟等遗迹，大量的南宋官窑瓷片、素烧坯及各类支垫烧窑具、匣钵片等遗物。此外在F4以东室外地面上发现加铺有一层厚5—10厘米的细沙，沙面平整，推测为晒坯场。为保存珍贵的作坊遗迹，发掘至第3层即停，未继续下挖。仅对部分建筑遗迹作了必要的解剖，对F4以东的室外地面进行了清理，了解第3层内包含物情况。解剖和清理的结果表明，第3层内包含有南宋官窑的瓷片、素烧坯、窑砖碎块、窑具等遗物。这些遗物压在作坊遗迹之下，表明作坊遗迹是在窑炉烧造一段时间后建造的，不是乌龟山南宋官窑初期的作坊遗迹。</p>
+<h1 id="_16">二、窑炉地层</h1>
+<p>在乌龟山西麓的缓坡上，共有龙窑窑炉二座，编号为Y1、Y2，相距60余米。本次发掘了Y2及其周围。在Y2发掘前，为搞清窑址中窑炉的数量、规模、方位、范围及地层情况，首</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图七 Y2南侧地层剖面图</p>
+<p>先在近代战壕中发现的Y2窑墙的南端，开挖平行的东西向探沟2条，间距11.6米，编号为T6、T7。清理完Y2后，为寻找窑侧通道及其他遗迹，在Y2火膛及窑尾的西侧，开挖东西向、南北向探沟2条，编号为T17、T18。以上共计发掘面积350平方米。各探沟和窑炉上部的地层情况基本相同，自地表以下可分三层。第1层为近现代代表土层，根据土质土色的不同，又分别编为A及B层。第2层为元明层。第3层为南宋层，现以Y2南壁地层为例，将各层情况分述如下（图七）。</p>
+<p>第1层：厚85—130厘米，可分两小层。</p>
+<p>$\Lambda$ 层：厚60—115厘米，是筑战壕时翻挖出的桔红色粘土层，内含较多的红烧土、窑砖碎块、窑具、南宋官窑瓷片等窑炉中的遗物，并有龙泉窑、越窑、景德镇窑系的瓷片及近现代瓷片。</p>
+<p>B层：厚13—30厘米，土色灰黑，上质疏松，含植物有机质较多，是山坡原有的地表层。在此层共发现清代小墓18座，绝大部分无随葬品，其中有夫妻合葬双穴墓4座，编号M1—M4。M1、M2中出土清“顺治通宝”铜钱及有“养老”铭银牌一块（已残）；M3、M4出土“太平圣宝”铜钱2枚，置于棺底下的绿釉小陶罐内，应为太平天国时期的墓葬。</p>
+<p>第2层：厚30—60厘米。黄褐色沙质土，内含南宋官窑瓷片、窑具、石块及元明时期龙泉窑、景德镇窑的瓷片。在此层发现元代墓葬3座，其中M5是长方形竖穴土坑墓，在墓底腰部出土小粗瓷盖罐1件，罐内有“大定通宝”铜钱一枚及稻谷若干；M6亦为长方形竖穴土坑墓，打破第3层及生土层。在墓底腰部出土灰黄绿色带盖粗瓷小罐1件，内有铜钱10枚，除宋代的“祥符”、“景祐”、“皇宋”、“熙宁”、“元丰”等年号钱外，有金代“正隆元宝”铜钱1枚，也有稻谷若干。</p>
+<p>第3层：为窑炉遗迹层，厚20—55厘米，距地表深110—200厘米。上色红褐，土质松，含大量红烧土、窑砖碎块、匣钵、支垫具及南宋官窑瓷片等遗物，未发现非官窑遗物。在探沟中发现有极少量的北宋和南宋时期越窑、龙泉窑、定窑、景德镇窑等窑口生产的青、白、影青釉的碎瓷片，器形多为碗、盘等生活饮食用具。其中一摞烧坏、粘连在一起的青釉碗，与越窑产品相似，碗内刻划篦纹和花草纹。</p>
+<h1 id="_17">参 官窑遗迹</h1>
+<h1 id="_18">一、作坊遗迹</h1>
+<p>有房基、炼泥池、辗铲坑、釉料缸、素烧炉、素烧坯堆、堆料坑、排水沟、砖墙、挡土墙和道路等，现分述如下。</p>
+<h1 id="_19">（一）房基</h1>
+<p>共发现3处，由北向南依次编号F3、F4、F5。</p>
+<p>F3 位于 T1-T3 之内，系一座朝东南坐西北的三开间平房，方向 137 度。面向 Y2，相距约 18 米。房基平面呈长方形，通面阔 10.45 米，其中明间稍大，面阔 3.55 米，两侧暗间各宽 3.45 米，进深皆 5.05 米，总面积达 53 平方米（图八；图版二，1）。室内地面由红烧土、紫金土、黄褐色沙土铺垫而成，地表平整。房基地面略高于室外地面。柱石全部保存，其形状有两类，一类系经过加工的小方石，比较规整，边长 32 厘米左右；另一类是较平整的自然石块，形状不规整，大小与前述柱石相似。柱石均直接置于夯实的地面，柱石分布房基四周，在南北两侧的边墙处有前、后 2 块，室内的分间墙两端各有 1 块，共有柱石 8 块。北侧边墙尚保存一段残墙基，残高 0.28 米，系用小石块、匣钵、青砖在地面上垒砌而成（图版二，2）。其余三面墙基皆被破坏，仅有零星小石块、匣钵片等残迹。室内分间处亦被破坏，不见隔墙痕迹。在叠压于房基上的第 2 层底，堆积有较多布纹瓦片。根据已发现的建筑遗迹、遗物，推测 F3 是四周立柱、以瓦盖顶的工棚式建筑。屋前，残留一段挡山土的墙基，屋后有排水沟 G1（图版二，3）。</p>
+<p>在F3室内，发现一处辗鲈坑遗迹；在紧挨F3南墙外的地面上，发现一座大型练泥池。由此推断F3是一座制坯成型的工房。</p>
+<p>F4 位于 F3 的南面，在探方 T5 之内，与 F3 分布于同一条直线上，朝东南坐西北。由于被大量的近代墓及 F2 的柱础坑、第 2 层的扰乱坑打破，房基遭到严重的破坏。仅在南侧残留一部分柱础石，整座房基的结构和布局不甚清楚。柱础石的形状、大小与 F3 相同，推测建筑规模和结构亦与 F3 相似，唯进深可能略大于 F3，约 6.5 米，也应是一座三开间的工棚式建筑（图九；图版三，1）。</p>
+<p>在F4前檐部位，有一条与其走向一致的小浅沟，深仅20厘米左右，靠房一侧的沟壁局部用石块垒砌，应是为排除房檐滴水而建的散水沟。沟的东面有大片平整铺沙地面，推测可能是晒坯场。平地以东，接近窑炉下山脚处，有一条在山岩中开凿面成的排水沟G2。在F4房后，有由F3屋后延伸过来的排水沟G1。</p>
+<p>在F4地面上发现大量已上釉或未上釉的素烧坏片，F4内还发现有辗铲坑1处、釉料缸2只、素烧坏堆1处，推测F4为修坯、上釉的工房。</p>
+<p>F5 位于 F4 的东南方, 分布于 T12、T13、T20、T21 等探方内, 亦朝东南坐西北, 面向窑</p>
+<p>图八 F3平、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1--8.柱础石 9. 镶铲坑 10.排水沟 11.匣钵</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图九 F4平面图</p>
+<p>炉，方向125度。该房建筑讲究，四周墙基用砖垒砌。通面阔9.35、进深8.55米，总面积达80平方米（图一；图版四，1）。房内地面漫砖，砖的规格分别有长28、宽8、厚3厘米和长29、宽12、厚3厘米的长方砖及边长29、厚3厘米的方砖3种。由于扰乱、破坏严重，墙基多处被打断，地面漫砖亦大部分无存。墙基保存最高处在东南角，有7层砖，最低处仅存1层砖，地面铺砖亦仅在东南侧一小部分保存。房内分间结构不明，从面阔情况推测可能系三开间房屋。房基高出房外地面约35厘米，后檐下有小浅沟与F4前檐下小浅沟相连，应是散水沟。房基北侧与F4屋前地面连接处，有砖铺的散水(图版四，2)，呈闋底状明浅沟，与F4屋侧散水沟相通。房基南侧局部也残存有砖铺散水。房内遗迹已全遭破坏。根据残存建筑遗迹判断，应是砖墙瓦顶的建筑，较F3、F4的建筑考究，可能是官窑匠师居住或储存产品的场所。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_20">（二）练泥池</h1>
+<p>位于T3中部偏南，F3南墙外2.5米处，西距排水沟3米，编号为C1。</p>
+<p>C1 为大型浅圆坑，池壁斜收，呈口大底小状。池口直经3.93、底经3.8、深0.32—0.44米（图一；图成三，2）。池口部和池壁用匣钵底片及石块垒砌，池底则铺石块和青灰色残砖。池壁及底部的局部已遭破坏。池内堆积根据土色土质可分上下两层，上层为夹杂大量瓦片、紫金土块的黄色粘土，下层为粗而杂的紫金上渣，含有少量南宋官窑瓷片、窑具、耐火砖块等。池底局部处发现有少量沉积的黄白色粘土，土质细腻纯净，经上海硅酸盐研究所化</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一一 C1平、剖面图</p>
+<p>验为坏泥①。上述池内堆积应是该池废弃后遗留，池底坏料则应是该池原有沉淀物的残迹，故定为练泥池。</p>
+<h1 id="_21">（三）辗轭坑</h1>
+<p>辗鲈是用于拉坯成形、修坯、刮釉等的一种工具，其下部是一根可插入土中很深的木轴，木轴的顶端装于嵌入轮盘中心的轴顶碗内，使轮盘能快速的旋转。轮盘上放坏泥或瓷坯，转动轮盘，就可拉坯成型或进行修坯、刮釉等工序。因轮盘、木轴已腐烂无存，只遗留下装轮盘基座的坑洞和木轴孔。辗鲈坑发现2处。</p>
+<p>一处在F3南室的前部，坑口开于室内活动面，坑底深入至生土，坑口直径58，深41厘米（图二）。坑壁用黄粘土、紫金土、碎砖石堆砌夯实，坚实牢固，厚21厘米。坑底平整，中心有一直径9厘米圆坑，内填黄色沙土，仅清理掉17厘米，因要保存遗迹，未清到底及进行解剖。从平面观察，辖铲基坑呈3个同心圆形，中心小坑系埋木轴坑（图版五、3）。F3的辖铲坑范围大，屋外有练泥池，应是作制坯成型用。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一二 F3内辅铲坑平、剖面图1.紫金上夹石块 2.木轴坑</p>
+<p>另一处辗轭坑位于F4南间的中部，其上部</p>
+<p>被一晚期墓葬打破，仅留一个装木轴的圆孔，口直径35厘米，残深仅5厘米。孔壁用红色粘上筑成，厚10厘米。不远处有釉料缸及素烧坯堆等遗迹，推测F4的辗鲈用于修坯和刮釉。</p>
+<h1 id="_22">（四）釉料缸</h1>
+<p>釉料缸2只，并列置于F4南间的前部，西北与辗鲈坑相距仅1米，两缸间距45厘米。缸的下腹及底部皆埋于地面以下，加以固定。缸的上部被破坏残缺，缸为陶质。按由北至南的位置编号为缸1、缸2（图版五，2）。1号缸有两层缸壁，缸壁之间缝隙中，填塞有黄白色的纯净泥料。两缸相套原因，推测为外缸破裂后，在其内套放另一只缸，从残部直径看，内缸直径80、外缸直径96、残深40厘米。内底尚存大量黄白色纯净的细泥料。2号缸直径亦为80厘米。缸内亦存有同样泥料。经化验，残存泥料是青瓷釉料，故确定为盛釉的釉料缸②。</p>
+<h1 id="_23">（五）素烧坏堆</h1>
+<p>素烧坯堆的分布范围较多，在练泥池南、素烧炉前、F4内外均有发现。以F4内的一处最为集中，范围也较大。该堆积位于釉料缸北面2.5米处，其北3米处即为素烧炉遗迹。该堆积范围略呈长方形，长约1.2、宽0.9米（图版六，1）。堆积为经过低温烘烤的坏体碎片，部</p>
+<p>分已上釉，部分未上釉，烘烤温度亦高低不一，因而碎片呈现土红、黄灰、黄白等不同色泽，质地较松软。可辨认的器形有椭圆形器、圈足器等，有些刻有莲瓣、龙等纹饰。堆积底部略低于地面。</p>
+<h1 id="_24">（六）素烧炉</h1>
+<p>位于F3与F4之间的室外空地上，其东北约2米为练泥池，南面近3米处即是F4索烧坏堆。上部均遭破坏，仅见低于F3、F4地面的火膛。平面略呈马蹄形，方向与F3、F4一致。通长80、火膛宽67、口宽28、残深16厘米（图一；图版六，3）。烧结的火膛壁厚3厘米。火膛内堆积有红烧土、碎红砖、少量素烧坏碎片，火膛底有黑灰。火膛周围1.5米直径范围内，有厚达5-10厘米的烧土层，分布形状与火膛一致，略呈马蹄形，推测可能为炉基范围。在炉膛前方，发现大量散布于地面的素烧坏堆积，故推定该遗迹为低温烘烤坏件的素烧炉。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二 紊烧炉残迹平、剖面图</p>
+<h1 id="_25">（七）堆料坑</h1>
+<p>位于T21内，F5西南方2米处，编号为K1。坑口已遭破坏，坑打破第3层。平面呈长方形，长1.62、宽1.02、残深0.2米左右（图一四；图版五.1）。四壁规整，底平。东南两面残留有青灰砖或石片贴壁侧砌的迹象，西北两面则用青灰砖平垒成壁，砖块大部分被扰移位。坑内堆积为较纯净的小块状紫金土，系原先坑内的堆积残留，推测该坑为堆放原料的堆料坑。</p>
+<h1 id="_26">（八）排水沟</h1>
+<p>位于整个工场区的两侧山脚边，T3、T5、T15、T22、T23与T4、T11、T20等探方内，编号为G1、G2。</p>
+<p>G1自F3的房后向西南方延伸，与F3、F4走向一致，系整个工场区的西面排水沟。该沟为敞口明沟，沟口开于第3层表面，沟深入土，北端部分被第2层F1、F2晚期水沟交叉叠压，南端又为第2层的石砌墙基填压。揭露部分全长近50米，沟口宽0.7-0.8、底宽0.6米左右，北端深0.5、南端深0.8米左右，呈口宽底窄、北高南低状，由东北向西南排泄山水（图一五；图版六，2）。F3、F4房后的北段水沟，东、西壁的局部垒有石块；南段水沟靠近山坡的西侧残留一段保护性石坎，以避免山上土石滚入水沟。沟内堆积包含物中以南宋官窑瓷片、窑具为主。<br />
+G2在工场东侧山脚边，自东北流向西南，结构及宽度、深度与G1相同。流经F5前面的部分叠压在通往窑炉的道路上（图二）。</p>
+<h1 id="_27">（九）挡上墙</h1>
+<p>挡土墙位于F3前方2.3米处及排水沟南段西侧一段，皆残存墙基。F3前檐的挡土墙为南14</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一四 堆料坑平、剖面图</p>
+<p>北向，残长7米，宽0.4米，残存高度0.15米。全部用石块垒砌，其东南面挨紧高于墙基地面的窑炉下岩石坡地，此墙当为挡山坡下流的土、石、水之用。</p>
+<h1 id="-">（-）道路</h1>
+<p>整座工场中明显的道路遗迹发现于F5东南前方近2米处的T20探方内，局部被G2叠压（图三）。路面用残破的匝钵片排列铺垫，靠近山坡一段路面有改用砖块铺垫的迹象。路基用紫金土夹黄色砂石上作成，夯筑坚实。路面中心呈弧突状，并由下向上坡方向斜高，走向正对山坡上Y2窑头火膛前。惜仅保存长、宽均在1.5米左右的匝钵、砖铺路面（图版七，3）。从位置和走向判断，为由工场通往窑炉的道路。</p>
+<p>综观发掘区内暴露的工场遗迹，已全面地反映了瓷坯在入窑装烧前，从练泥、成型、修坯、上釉、晾干到素烧等一套完整的工艺流程，它们与窑炉遗迹和出土遗物一起，构成了闻名中外的南宋官窑的生产全景。</p>
+<h1 id="_28">二、窑炉遗迹</h1>
+<p>在乌龟山缓坡的西侧，发现了一座长条斜坡式龙窑，是继1956年发掘第一座窑炉（Y1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一五 G1平，剖面图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>后的又一重要发现。该窑编号为85LWY2，虽因破坏，仅剩窑炉残墙及窑基等遗迹（彩版一；图版七，1)，但亦可了解窑炉的基本面貌，现将窑炉结构、用材、砌筑方法等介绍如下。</p>
+<p>Y2 窑炉建于乌龟山西坡，自西南向东北、自下而上延伸，方向 235 度。斜坡长度为 37.5 米，宽 1.34—1.8 米，高差 7.2 米（图一六；图版八，1）。窑炉前段比较平缓，斜度 11.5 度；后段较陡，斜度 13.5 度。砌建方法为利用山坡原有地形，稍加平整，再根据窑炉所需面积及深度挖槽，然后用砖顺向错缝叠砌建两侧窑墙及火膛、出烟室、窑门等。最后平整窑室地面并铺垫一层厚达 5—10 厘米的石英砂。建窑用材主要是土坯砖块，有素面长方形和楔形 2 种，制砖时夹粗砂，质地较坚硬，制作规整厚实。长方形砖的规格有 3 种：长 28、宽 14、厚 10 厘米，长 33、宽 12.5、厚 10 厘米，长 33、宽 13、厚 10 厘米。楔形砖的规格有两种：长 19、宽 14.5、厚 10 厘米，长 20、宽 14.5、厚 10 厘米。楔形砖发现于窑头火膛及窑顶坍塌部位。</p>
+<p>Y2窑炉结构，分别由火膛、窑室、出烟室3部分组成，叙述如下。</p>
+<p>火膛位于窑炉的南端，山坡最低处。平面呈半圆形，火膛后部有隔墙，墙宽1.34米，南北半径约0.45米。墙用长方形单砖东西向横排错缝叠砌，两侧弧墙仅存西部，东侧弧墙已残。后墙残存高度0.40米，墙厚0.13米。火膛顶部及炉栅、火门、通风口、出灰道等结构均遭破坏无存。火膛前有1平方米左右的平整地面，应是窑前工作室。</p>
+<p>窑室 在窑炉的中段，占窑炉的绝大部分体积，呈斜坡状。由窑墙、窑门、窑顶、投柴孔、窑底等结构组成。</p>
+<p>窑墙，由长方形砖及楔形砖砌建，残存高度为13—65厘米，厚13厘米。墙壁大部分用夹砂长方形耐火砖单层顺南北向平铺错缝叠砌，窑头起弧处及窑顶起券处以楔形砖垒砌，砖缝间用黄粘土粘接固定。砖墙基础紧贴生上砌筑。</p>
+<p>窑门，皆开置于西侧窑墙，且多集中于窑室的前、中段。现存窑门3处，窑门宽度自窑头往后依顺序为：1号门宽50厘米，2号门宽63厘米，3号门宽49厘米，4号门被晚期墓葬打破，宽度不明。门道均遭破坏，推测为外高内低的斜坡门道。各门坎处均有残破匣钵或窑具铺垫。其中4号门南侧窑墙与其他门侧窑墙砌筑方法不同，是以长方形单砖东西横向平铺垒砌，与窑室垒砌的砖墙平面呈90度直角，形成曲尺形门道（图版七，1）。</p>
+<p>窑顶，已坍塌无存。投柴孔情况不明，从窑内倒塌堆积的楔形砖及保存最高的窑壁自60厘米处开始往上向内弧收的迹象观察，窑顶应是拱券式顶，其高度估计在1.70米左右。</p>
+<p>窑底，为斜坡。煅烧较硬，前段有红烧土及较厚的烧结层，中段和尾部铺有薄层石英砂粒。从局部剖面观察，底部红烧土层厚度在10厘米以上，烧结面呈深蓝绿色的釉质光泽，足以反映窑内燃烧温度之高。</p>
+<p>窑室底部有铺底匣钵，已大部破坏无存，仅发现零星完整匣钵5只。其中窑尾西侧的1只，尚放置在原位，距西窑壁10厘米，是窑内的“火路”或“火弄”的宽度，以利火焰流通。窑内发现的匣钵最大直径42厘米，最小直径仅10厘米左右，一般为20厘米，高度8—10厘米。皆为圆形，仅有直口平底和凹底2种。但在作坊及堆积中发现的匣钵形制多样，反映出南宋官窑内烧制器物的造型丰富。由于匣钵发现数量少，其排列、放置位置等情况不明。</p>
+<p>出烟室位于窑炉的尾部，山坡的高处。出烟室呈东西宽、南北窄的圆角长方形。南侧有烟火柱8个，由长25、宽10、厚14厘米的砖坯顺南北向直放平铺叠砌，残存一砖高，各砖柱间距10厘米左右，形成孔道为出烟孔，烟火柱上的挡火墙已倒塌无存。烟火柱北侧为出烟室，东西长1.8-2米，南北宽0.55米，残高0.3米（图版七，2）。室壁均为桔红色烧土，外</p>
+<p>表有烟熏的灰或黑色灰痕。</p>
+<p>综上所述，Y2的窑炉用材讲究，窑砖质地厚实细坚，建筑规整（图版八，2）。与宋代常见民用龙窑比较，在窑室的长度、坡度、火膛的面积等方面均有适当的变化，对控制窑内的火焰、还原气氛等是有利的，因而能烧造出精美莹润的珍贵瓷器。</p>
+<h1 id="_29">肆 遗物</h1>
+<p>南宋官窑遗址内共出土3万余件瓷器碎片及大量窑具、工具等遗物，经过整理，对这批遗物的形制、胎釉特征、纹饰及烧造工艺等有了较全面的认识，报导如下。</p>
+<h1 id="_30">一、生活用具</h1>
+<h1 id="_31">（一）官窑瓷器</h1>
+<p>在出土瓷片中，完整及复原器形有23种，这些器物的造型特征，除出土量最多的碗、盘、瓶、罐、壶、盆等日常器皿外，有一批在宋代一般民窑中少见或不见的仿古器形，如鼎式、鬲式、樽式、簋式或带乳钉的香炉和煎炉、觚、琮式瓶及其他形制特殊的瓶、壶类，各式的器座等（附表一）。</p>
+<p>在胎釉特征方面，主要有厚胎薄釉（彩版：1）与薄胎厚釉（彩版：2）两类产品①，有由于胎土中含铁量高及在烧造中由于釉层的流离或工艺上的措施而形成的“紫口铁足”现象。釉色以粉青和米黄两色为正烧品的主要色泽，这类釉色的瓷器有滋润光泽的玉质感，但大部分出土的瓷片釉色以灰青、黄褐、土黄色居多（附表二）。</p>
+<p>装饰除仿占器外，以造型、釉色取胜，纹饰简单，题材少。装饰方法有堆贴、刻印、镂雕、模印等。</p>
+<p>制作工艺以轮制为主，兼有手制、模制、坯胎分段镶接或分片粘接等手法。</p>
+<p>装烧有支烧、垫烧两种主要方法，一般支烧器以薄釉居多，垫烧器以厚釉居多，此外还采用刮釉垫烧法以及套烧、合烧等方法。使用的装烧具品种之多，是其他民间瓷窑中少见的（附表三）。</p>
+<p>由于此窑屡经破坏，出土瓷器完整者很少，能复原的器形亦不多，有的器形系参照传世品复原，计有碗、盘、三足盘、碟、盏、洗、盒、杯、钵、盆、花盆、唾具、炉、尊、觚、坛、灯盏、瓶、壶、罐、器盖、器座、弹丸等23种器物（数量见附表一），每种器物又有多种型式，分别选取标本介绍如下。</p>
+<h1 id="1_1">1. 器形概述</h1>
+<p>（1）碗 可分三型。</p>
+<p>I型 撇口，斜腹，圈足，内平底。可分三式</p>
+<p>1式仅有腹底残片，圈足较高，足壁外撇。支烧。T12②A：37，内、外底径均较大。厚胎薄釉，胎色深灰。釉色灰青，釉面有细碎裂纹，外底满釉。外壁刻划凸莲瓣纹。足径6、残高3.5厘米（图一七，1）。</p>
+<p>2式亦为腹底残片，足较1式矮小，足壁稍外撇。垫烧。T12②A：39，斜弧腹，圈足</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图一一七 南宋官窑瓷碗<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 型1式T122A:37<br />
+2. I型2式T12②A:39 <br />
+3.1型3式 $\mathbf{T2}\mathbf{Q}\mathbf{B}:26$ <br />
+4.1型1式T17③：83<br />
+5.[型2式T17：27<br />
+6.Ⅰ型3式T14②：93<br />
+7.1型T14②：95</p>
+<p>低矮。薄胎厚釉，胎色浅灰。釉色灰青，足底无釉。足径4.6、残高2.5厘米（图一七，2）。</p>
+<p>3式莲瓣纹碗、圈足矮小。“铁足”垫烧。T2②B：26，已残，可复原。撇口，尖唇，斜腹，圈足矮小。薄胎厚釉，胎薄处仅1毫米；胎色深灰，质细硬。釉色粉青，外观为三次上釉。釉面有跳釉，足部流釉尤厚，足底刮釉露胎，呈“铁色”外壁刻划重叠凸筋莲瓣纹。口径14、足径4、高4.5厘米（图一七，3；图版九，1）。</p>
+<p>I型 口微敛，弧腹，圈足矮小。可分三式。</p>
+<p>1式为腹底残片，矮圈足稍外撇，内底心微凹。支烧。T17③：83，斜弧腹。生烧。深灰色胎，质细硬。米黄色釉。足径6、残高3.2厘米（图一七，4）。<br />
+2式敛口，足壁垂直。支烧。T17②：27，尖唇，直沿。灰色薄胎，胎厚1.5毫米，质细坚硬。黄褐色釉，釉面有裂纹，光泽强，底足满釉。口径12.3、足径4、高4.4厘米（图一七，5；图版九，2）。<br />
+3式敞口，圆弧腹，足壁斜收。铁足垫烧。T14②：93，尖圆唇，直沿，足底呈尖状。胎色浅灰夹深灰，质细硬。青绿色釉，釉面有裂纹，光泽强，足底无釉，呈紫灰色“铁足”。口径11.6、足径3.6、高5.2厘米（图一七，6；图版九，3）。<br />
+Ⅱ型 撇口，斜弧腹，小矮圈足。垫烧。T14②：95，尖唇。浅灰色胎，质细较硬。黄褐色釉，无光泽。腹壁外刻莲瓣纹，因釉层厚已模糊不清，器表手感凹凸不平。口径11.8、足径3、高4.8厘米（图一七，7；图版九，4）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图一八 南宋官窑瓷盘<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1-6. 5厘米<br />
+7. 10厘米</p>
+<ol>
+<li>1型1式T14③：140</li>
+</ol>
+<p>2.1型2式T14②：38</p>
+<p>3.1型3式T1③：16</p>
+<p>4.Ⅰ型T14①·11</p>
+<p>5.Ⅰ型2式T5②A·55</p>
+<p>6.N型F5：1</p>
+<p>7.1型1式T14②·92</p>
+<p>（2）盘 可分四型。造型、大小皆不同，用途也不同，既有饮食用的菜盘、调料盘，也有陈设用的果盘等。</p>
+<p>I型 敞口或直口，圆唇，弧腹，大圈足，足壁外撇。可分三式。</p>
+<p>1式直口，高圈足，足底圆钝。支烧。T14③：140，尖圆唇，直沿。深灰色胎，质细硬。米黄色釉，釉面光泽强，釉层厚1毫米，有细碎裂纹。轮制贴足，旋削规整，底部留有5个支钉痕。口径17.6、足径10.8、高4厘米（图一八，1；图版一○，1）。<br />
+2式敞口，矮圈足，内底平。支烧。T14②：38，圆唇。厚胎薄釉。深灰色胎，质细硬。米黄色釉，略有光泽，釉层内气泡多。底部外表有5个支钉痕。口径13、足径9、高2.7厘米（图一八，2；图版一○，2）。<br />
+3式直口，矮圈足，足壁直、底尖。紫口铁足，垫烧。T1③：16，尖圆唇，薄胎厚釉。深灰色胎，质细硬，胎薄不到0.1厘米。粉青色釉，釉厚于胎，内壁釉尤厚，二次以上施釉，</p>
+<p>“紫口铁足”。口径13、足径9、高2.8厘米（图一八，3；图版一 $\bigcirc$ ，3）。</p>
+<p>Ⅱ型 花口，折沿，斜弧腹，大矮圈足。垫烧。可分二式。</p>
+<p>1式敞口，T14：92，尖圆唇，足径大。黄灰色胎，质细硬。黄褐色釉，釉层较厚，有碎裂纹，釉面光泽较强，制作规整。口径24、足径14、高2.6厘米（图一八，7；图版一一，1）。<br />
+2式平面呈椭圆形。T5②A：55，厚釉使圈足似卧足状。深灰色薄胎。米黄色厚釉。因欠烧，釉层有疏松剥落现象。口径 $14 \times 16$ 、足径 $9.6 \times 12$ 、高1.8厘米（图一八，5；图版一…，2）。</p>
+<p>Ⅱ型花口，撇沿，折腹，小圈足。垫烧。T14①：11，尖唇，薄胎厚釉。深灰色胎，质细硬。灰青色釉呈乳浊状，不透明，釉面有棕色大裂纹及跳釉。口径16、足径5.6、残高2.7厘米（图八，4；图版---，3）。</p>
+<p>Ⅳ型敞口，折腹，大矮圈足。F5：1，尖唇，直沿。浅灰色胎，素烧未施釉。口径15、足径12、高2厘米（图一八，6）。</p>
+<p>（3）三足盘 可分二型。</p>
+<p>I型敞口，圆唇，直沿，浅腹，大平底。轮模合制。可分三式。</p>
+<p>1式浅直腹，内壁直折，足断面呈半圆形。支烧。T14②：118，深灰色胎，质细硬。灰背色薄釉，釉面有裂纹，无光泽，盘底残留支钉痕。口径12.5、底径11.2、盘高2、通高3.5厘米（图一九，1；图版一·1）。<br />
+2式斜腹，内底圜，外底平，足断面呈椭圆形。垫烧。G1：4，灰色胎，质较细硬，黄褐色薄釉，釉面有大裂纹，有光泽。口径19、底径14、高5厘米(图一九，4；图版一二，3)。<br />
+3式弧腹，大平底，足断面呈半圆形。垫烧。T17③：88，深灰色胎，质细较硬。米黄色釉，生烧。口径18、底径15.5、通高5厘米（图一九，5；图版一二，4）。</p>
+<p>I型直口，浅腹，阁底。轮制。T17③：87，尖唇，足残，参照残足片复原。桔红色胎，质较细软，器形规整。釉已脱落，生烧。口径11.8、盘高2.7厘米（图一九、2）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>3</p>
+<p>10厘米<br />
+图一九 南宋官窑瓷三足盘<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.1型1式T1432：118<br />
+2.1型T17.3：87 <br />
+3.1型T14②：119<br />
+4.1型2式G1：4<br />
+5.1型3式T17③：88</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图二 南宋官窑瓷碟<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 1型T1③:8 2. 1型1式T12A:16 3. 1型2式T1①B:13 <br />
+4.Ⅰ型T5A：56 5.N型T2①B：31</p>
+<p>Ⅰ型 平折沿，浅腹，蹄足断面呈圆形。轮模合制，支烧。T14②：119，折沿，浅直腹，大平底，下腹贴兽蹄形足。深灰色胎。灰青色薄釉，有裂纹。口径13.5、底径11、盘高1.4、通高2.6厘米（图一九，3；图版二，2）。</p>
+<p>（4）碟 可分四型，皆支烧。</p>
+<p>I型花口，折沿，浅腹，平底。T1③：8，尖唇，浅斜腹呈花瓣形。深灰色薄胎，质细。灰青色薄釉，有碎裂纹。口径9.5、底径6.5、高1.8厘米（图二○，1；图版一三，1）。</p>
+<p>I型 撇口，斜腹，平底。可分二式。</p>
+<p>1式 尖唇，斜沿。T12②A：16，薄胎厚釉。灰色胎，灰青泛黄色釉。口径6.8、底径4.3、高1.5厘米（图二○，2；图版一三，2）。</p>
+<p>2式 花口，圆唇，斜沿，弧腹，平底。T1①B：13，内壁有棱，应为花瓣状腹。灰褐色薄胎，质细。粉青色厚釉，近底部釉层磨损。口径8.8、底径6.2、高1.6厘米(图二○,3)。</p>
+<p>Ⅱ型敛口，弧腹，平底。T5②A：56，尖唇。深灰色薄胎，质细硬。粉青色厚釉，器内外满釉。口径11.2、底径9、高2厘米（图二○，4；图版一三，3）。</p>
+<p>N型敞口，弧腹，矮圈足。T2①B：31，尖唇，足壁内收呈尖底状。深灰色薄胎，胎壁最薄处仅0.5毫米。粉青色厚釉，釉层厚与胎厚相同，釉面有裂纹，底足部因釉厚似呈凹足状。口径8.7、足径5.2、高1.6厘米（图二○，5；图版一三，5）。</p>
+<p>（5）盏 可分三型。</p>
+<p>I型 花口，双环耳，矮圈足。垫烧。可分二式。</p>
+<p>1式 尖唇，直腹，近底处斜收。T5②A：57，深灰色薄胎。粉青色厚釉，足底无釉，釉面有砂眼，烧结差。腹中部有凸弦纹一周，腹内侧花口下有竖弧棱，呈花瓣状。口径6.5、足径4.2、高2.5厘米（图二一，1；图版一三，4）。<br />
+2式 残片。敛口，鼓腹。T5②A：88，尖唇，圆鼓腹，底残。肩部有环耳，另一侧腹残。生烧。深灰色薄胎，灰白色厚釉。口径3、残高3厘米（图二一，2）。<br />
+I型敞口，直腹，平底。支烧。T12②A：17，圆唇，斜直腹。灰色厚胎。灰青色薄釉。口径7、底径5、高2厘米（图二一，3；图版一三，6）。<br />
+Ⅱ型侈口，圆鼓腹，平底。垫烧。T2②B：22，圆唇，卷沿，束颈，生烧。红灰色厚胎，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图一 南宋官窑瓷盏、盒<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3厘米<br />
+8. 5厘米</p>
+<ol>
+<li>I型I式T5②A:57 2. I型2式T5③A:88 3. I型盖T12②A:17 4. I型盖T2②B:22</li>
+</ol>
+<p>5.1型1式盒T1③：4 6.1型2式盒T14②：103 7.1型3式盒T18②：85 8.1型盒T16①B：17</p>
+<p>底部胎厚达1.1厘米。上黄色薄釉，釉层大部分脱落。口径4.8、腹径5.4、底径2、高3.5厘米（图二一，4；图版一八，3）。</p>
+<p>（6）洗 可分三型。</p>
+<p>I型敞口，浅斜腹，近底处折腹，大矮圈足。可分为三式。</p>
+<p>1式圆唇，斜弧腹，内大平底，外大矮圈足，足壁外撇。支烧。T14②：46，浅灰色厚胎，底胎尤厚，质较硬，有气孔。青灰色薄釉，釉面有大裂纹。口径17、足径11.4、高5.4厘米（图二二，1；图版一四，1）。<br />
+2式 圆唇，直腹稍斜，下腹折收，大圈足，足壁外撇。铁足，垫烧。T14②：89，深紫灰色薄胎，厚0.1-0.25厘米，质较细松，有气孔。灰青色厚釉，釉面光润，有大裂纹及少丛棕眼，釉层内有气泡，口沿下内外皆有一圈刮釉，刮痕呈灰白色，宽窄不一，足底无釉露胎，呈“铁足”色。口径14、足径10、高3.8厘米（图二二，2；图版一四，2）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图 南宋官窑瓷洗<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.1型1式T142：46<br />
+2.1型2式T112：89 <br />
+3.1型3式T11采：！ <br />
+4.Ⅰ型1式T143:159 <br />
+5.1型2式T5U:A：2<br />
+6.1型T14：106</p>
+<p>3式 尖唇，直腹下内折，矮圈足，足壁斜收。垫烧。T11采：1，深灰色薄胎，粉青色厚釉，足底刮釉。口径13.8、足径10、高3.4厘米（图二二，3；图版一四，3）。</p>
+<p>Ⅱ型卷沿，直腹，大圈足。可分为二式。</p>
+<p>1式直斜腹，大圈足，足壁直。垫烧。T14③：159，圆唇，内底平，矮足，足壁方正。深灰夹浅灰色胎，质较细硬。灰青色厚釉，釉面有大裂纹，光泽差，足底无釉，釉厚0.1-0.25厘米。器形制作规整匀称。口径44、足径37.4、高10.4厘米（图二二，4；图版一五，1）。<br />
+2式深腹下折收，矮圈足，足壁斜收。垫烧。T5①A：2，深直腹，近底处折收。深灰色胎，粉青色厚釉，足底无釉。口径16、足径12.5、高5.2厘米(图二二，5；图版一五，2)。</p>
+<p>Ⅱ型敞口、深直腹，平底。支烧。T14②：106，圆唇，直沿，深直腹，平底。浅灰色厚胎，质较细硬，制作规整。米黄色薄釉，光泽差。口径16.8、底径14、高5厘米（图二二，6；图版一五，3）。另有形制相同、尺寸较小的多件Ⅱ型洗，尺寸分别为口径13.6-15.2、底径12--13、高4-4.5厘米。</p>
+<p>（7）盒 可分二型，皆垫烧。</p>
+<p>I型 直口外折，直折腹，圈足。可分为三式。</p>
+<p>1式 子母口，直腹下斜收，小圈足。T1③：4，挖足极浅。生烧。浅灰色胎。米黄色釉，釉面有较深裂纹及跳釉。口径9、足径3.2、高3.2厘米（图二一，5；图版一六，1）。<br />
+2式 子母口，方唇，直腹下斜收，矮圆足。T14②：103，因釉厚近似凹足。浅灰色薄胎，质较细硬。灰青色薄釉，有裂纹，光泽差，口及足底无釉，应是带盖垫烧。口径9.5、足径4.4、高3.4厘米（图二一，6；图版一六，2）。<br />
+3式 子母口，方唇，弧腹下收，凹底。T18②：85，上腹微弧折腹，下腹斜弧收，外底</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二三 南宋官窑瓷杯</p>
+<p>1.1型T14①：161</p>
+<p>2.1型T15③：114</p>
+<ol>
+<li>
+<p>i型T17③:3</p>
+</li>
+<li>
+<p>I型T12②A: 20</p>
+</li>
+<li>
+<p>型T14:15</p>
+</li>
+</ol>
+<p>6.Ⅰ型T2采：92</p>
+<p>7.N型T14③：97</p>
+<ol>
+<li>$\pmb{\nu}$ 型T14②：104</li>
+</ol>
+<p>内凹。深灰色胎，质细硬。灰青色釉，釉面有细碎裂纹。口径7.2、腹径8.3、底径4、高3.2厘米（图二一，7；图版一六，3）。</p>
+<p>Ⅱ型 子母口，尖唇，直弧腹，凹底。T16①B：17，内底平，外底凹。深灰色厚胎，质细硬，底部露胎处呈铁色。粉青色厚釉，有大裂纹，子口及底部无釉。口径13、足径12.6、高3.2厘米（图二一，8；图版一六，5）。</p>
+<p>（8）杯 可分五型。</p>
+<p>I型为腹足残片，直腹下弧收，内圜底，喇叭形高圈足。T14③：161，黄灰色厚胎，质细较松，气孔多。灰青色薄釉，釉面有裂纹，光泽强，外底有宽0.8厘米的涩圈一周。制作</p>
+<p>工整。足径6.4、足高2、残通高6.5厘米（图二三，1；图版一七，5）。另二件外形与此件相似，亦残。T5③：114，为直筒形腹，在底腹相接处有圆脊一周。灰色厚胎，浅黄色薄釉。支烧。足径7、足高1.8、残高4.4厘米（图二三，2；图版一七，6）。T17③：3，器形小，上部残，圈足外撇。灰青色薄釉。支烧。足径4、足高1、残高2.5厘米（图二三，3；图版一七，4）。</p>
+<p>Ⅰ型 口内敛，深直腹，近底处斜收，圈足外撇。垫烧。T12②A：20，尖唇，斜沿。灰色薄胎，质较细硬。灰青色厚釉，釉面有细裂纹，足底无釉。口径14.2、足径8.4、高11.5厘米（图二三，4；图版一八，1）。</p>
+<p>Ⅱ型撇口，直腹，矮圆足，环形把。T14①：15，圆唇，卷沿，下腹稍鼓，内底平，足壁稍外撇。腹部有环形把手痕，参照T2采：92复原。欠烧。灰色厚胎，质软。米黄色釉。支烧。口径8、足径5、高5厘米（图二三，5；图版一八，4）。T2采：92，尖唇，腹部有圆形环把，把顶有指鉴。深灰色胎。灰青色釉，有裂纹，光泽较强。把径2、残高3.4厘米（图二三，6）。</p>
+<p>V型敞口，撇沿、弧腹，圈足。T14③：97，尖唇，斜弧腹，矮圈足。灰色薄胎，胎最厚处仅1.5毫米，质较细硬，欠烧。米黄色釉，釉面粗糙。制作规整。腹上部及口沿下有凹弦纹。口径9、足径3.8、高4.4厘米（图二三，7；图版一八，5）。</p>
+<p>V型敞口，撇沿，深直腹，平底稍内凹。T14②：104，尖唇。深灰色薄胎，质细硬。青绿色釉，釉面有裂纹，光泽较强，外底满釉。支烧，支烧痕在内底，表明此类杯又可作小口瓶（如梅瓶）瓶盖。口径7、底径4.2、高3.6厘米（图二三，8；图版一八，2）。</p>
+<h1 id="9">（9）钵 可分三型。</h1>
+<p>I型 皆腹足残片，为斜腹，平底稍内凹。垫烧。T5②A：67，灰色厚胎，胎体厚重，素烧未上釉。腹外壁刻划凸起莲瓣纹。底径7.5、残高4.2厘米（图二四，1；图版一九，7）。T14</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图二四 南宋官窑瓷钵<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型T52A:67 <br />
+2. I型T1③:6 <br />
+3.1型G1：8<br />
+4. 型T2①B:11</p>
+<p>33:165. 浅灰色厚胎, 质粗硬。青灰色厚釉, 釉层内有气泡, 釉面呈细碎裂纹, 内腹及外底无釉, 外腹流釉至底。外腹壁刻划双线凸莲瓣纹, 外底阴线刻划行书 “己亥山 (岁) ……春 ……” 等字 (“己亥” 在南宋年间共有两个纪年, 一为宋孝宗淳熙六年即公元 1179 年, 另一为宋理宗嘉熙三年即公元 1239 年)。底径 6.8、残高 4.1 厘米 (图版一九, 5)。</p>
+<p>I型口部皆残，鼓腹，圈足。垫烧。T1③：6，弧鼓腹，内平底，矮圈足。因流釉厚，圈足外观似凹足。深灰色厚胎，胎厚0.5-0.8厘米。黄褐色厚釉，厚0.15厘米。釉层透明，有细碎裂纹，气泡密集，足底无釉呈“铁色”，足径7.6、残高5厘米（图二四，2；图版一九，2）。G1：8，形制、胎质基本同T1③：6，青绿色厚釉。釉厚达0.2-0.4厘米。底部粘接碗形垫托。底径9.2、最大腹径12.5、钵残高4.4、带垫具残通高6.4厘米（图二四，3；图版一九，3）。</p>
+<p>Ⅲ型 为口腹部残片。人口，直鼓腹。T2①B：11，尖唇，平凹沿，直鼓腹，底残。黄灰色厚胎，质松，有大气孔及裂隙。灰青色厚釉，内腹施满釉，外腹施半釉，釉面有细裂纹，光泽差。腹壁留有明显的轮旋痕。口径23、残高13厘米（图二四，4；图版一九，6）。</p>
+<p>（10）盆皆口沿残片，根据口沿形制可分三型。</p>
+<p>I型 折沿，深弧腹。可分三式。</p>
+<p>1式方唇，弧腹。T14②：110，口径较小，平折沿，弧腹。紫灰色胎，质较细硬。欠烧。米黄色釉，釉面较粗，有跳釉，气泡多。口径15、残高5.6厘米（图二五，1）。</p>
+<p>2式尖唇，圆弧腹。G1：6，平折沿，沿面稍弧。深灰色薄胎，薄处仅0.1厘米，质细硬。粉青色厚釉，釉厚0.1厘米，光泽差，釉面有裂纹。外腹刻划重叠莲瓣纹。口径19、残高5厘米（图二五，2）。</p>
+<p>3式圆唇，口径大。G1：5，斜折沿。灰黑色胎。浅黄色厚釉，釉面光泽差，有裂纹及跳釉。口径28.6、残高1.6厘米（图二五，4）。T5②A：84，形制基本同上。深灰色胎。粉青色厚釉。外腹刻划凸起双线宽莲瓣纹。口径28、残高4.8厘米（图二五，3）。</p>
+<p>Ⅱ型 人口，折凹沿，弧腹。T5②A：85，尖唇。深灰色胎。粉青色釉，釉面有裂纹。口径34、残高6厘米（图二五，5）。</p>
+<p>Ⅲ型 多角形盆。T5②A：5，尖唇。斜折沿较宽。深灰色薄胎，最薄处0.1厘米。灰青色厚釉，釉面有裂纹。残高2.8厘米（图二五，7）。</p>
+<p>（11）花盆 底部残片，底心有孔。T14(1)：32，弧腹，圈足，足壁外撇，底心有圆孔，孔径2.5厘米。深灰色厚胎，质细硬，胎厚0.6厘米。灰青色厚釉，厚度0.1-0.8厘米不等。釉面串烟部分釉色呈暗灰色，釉层中气泡密集，有大冰裂纹。外壁近底处堆贴粗绳纹一周。足径16.2、残高6.4厘米（图二五，8；图版一九，4）。</p>
+<p>（12）坛皆为残片，口沿与现代泡菜坛相似。T1③：26，重口，外为锯齿状唇直口，内颈部折成弧沿，鼓腹，下腹内收，底部残缺。黄色厚胎，最厚处0.8厘米，质粗硬。灰青色薄釉，釉面有裂纹。轮模制，外腹印双线凸起重叠宽莲瓣纹，瓣面呈椭圆形。口径16、腹径19.5、残高7厘米（图二五，6：图版一九，1）。</p>
+<p>（13）炉 根据形制、纹饰及用途等，可分为七型。</p>
+<p>1型鼎式炉。侈口，圆唇，鼓腹，阁底。环耳，柱足。可分二式。</p>
+<p>1式卷沿，束颈。T14②：116，圆底已残，环耳亦缺，线图系据传世品及残片复原。黄灰色厚胎，质较粗松，气孔多。米黄色薄釉，光泽强，釉面有细裂纹，釉层内气泡多。器体</p>
+<p>图二五 南宋官窑瓷盆、坛、花盆<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型I式T14(2):110 <br />
+2.1型2式盆 $\mathbf{G}1:6$ <br />
+3. I型3式盆T5②A:84 <br />
+4.1型3式盆 $\mathbf{G}1:5$ <br />
+5. I 型盆 T52A: 85<br />
+6. 块 T1③: 26 <br />
+7.Ⅰ型盆T5②A：5<br />
+8. 花盆T14①：32</p>
+<p>轮制，足为模制后粘接。垫烧。肩腹部划弦纹二道，弦纹上对称贴兽首形附饰，足部有短扉棱。口径10.8、最大腹径11.4、残高4.7、复原通高9厘米（图二六，1）。</p>
+<p>2式平沿。T1②：1，灰色薄胎，质较松。米黄色厚釉，釉面无光泽，跳釉多，制作规整，三足底垫烧。肩腹部划阴弦纹两道。肩、足贴饰短扉棱。口径14.4、腹径15.6、残高8、复原通高11.8厘米（图二六，2；图版二○，1）。</p>
+<p>Ⅰ型 南式炉。弧腹，实足根。可分二式。</p>
+<p>图二八 南宋官窑瓷炉<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 1型I式T142：116 2. I型2式T12：1 3. II型I式T143：162<br />
+4.1型2式T1@：25 5.1型2式T3@B：4</p>
+<p>1式 尖唇，宽折沿，束颈，鼓肩，袋形档。T14③：162，深灰色夹浅灰色厚胎，质较粗松，气孔多。米黄夹灰青色釉，欠烧，釉面有裂纹，光泽差。器身轮制后手制加工，实足根模制后粘接。足底无釉，粘有小垫块，为足底垫烧。腹至足部侧面贴有竖扉棱。口径13.8、腹径15.4、通高11.6厘米（图二六，3；图版二（），2）。<br />
+2式皆腹足残片，为平档。T3②B：4，束颈，鼓肩，弧腹，平档。灰色厚胎，胎厚0.5厘米。质较硬，欠烧。上黄色薄釉，气泡多，光泽差。足底无釉垫烧。肩至足部贴饰竖扉棱。腹外径16、残高9.3厘米（图二六，5；图版一七，8）。T1③：25，底部残片。平档，底有足根脱落痕。黄灰色厚胎，胎厚0.3—0.8厘米，胎质较细硬。黄褐色厚釉，釉厚0.15厘米，釉而有细裂纹，光泽强，有玉质感。外底心残存“内”字戳记，戳印深压胎内，呈酱褐色，未施釉。支烧，底残留支钉痕。足根残痕断面呈瓜子形。残高1.2厘米（图二六，4）。<br />
+型 榫式炉。直口，方唇，深直腹，平底，蹄足。T2②B：29，为腹足残片，参照T14①：33腹部残片（图版二①，3）及传世器形复原。深灰色厚胎，有气孔，质较松。黄绿色釉，气泡密集，釉面光泽，有碎裂纹。底有支钉痕，为支烧。蹄足底无釉。下腹贴二道细凸弦纹，上腹残片上亦有凸弦纹，应是二三道为一组的纹饰。复原口径12.7、底径12、残高4.5、复原通高11厘米（图二七，1；图版一①，4）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+]</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图二七 南宋官窑瓷炉<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅰ型T2②B:29 2.N型1式T4②B:3 3.N型2式T2采：3 4.M型T5②A:50<br />
+5.Ⅳ型2式T1③：10 6.V型T15采：7 7.v型T5②A:49</p>
+<p>$N$ 型 篮式炉。直鼓腹，圈足外撇，龙首形双耳。可分二式。</p>
+<p>1式斜撇沿，束颈。T4②B：3，内底稍弧不平，颈腹部参照残片T12②A：30及G1：3（图版一七，1、2）复原出龙首形双环耳。浅灰色胎，质细较硬。黄褐色薄釉，光泽差，釉面有碎裂纹。支烧，外底有5个支钉痕。口径14、足径8.5、高9.5厘米（图二七，2；图版二一，2）。T12②A：30，为口颈及龙首形耳残片，口沿面较平，颈部有二道凸弦纹（图版一七，1）。<br />
+2式敛口，凹沿，束颈，鼓腹，龙形双环耳，大圈足外撇。T1③：10，参照T14③：166残片（图版二一，3）形制复原，圈足内壁起棱呈阶状。灰色胎，质细较松，底胎薄处仅0.1厘米。粉青色厚釉，厚处0.15厘米。外观为二次上釉，釉面有棕色大裂纹，有气泡及跳釉。</p>
+<p>垫烧。腹上部刻划弦纹二道。口径17、足径13.5、高10.5厘米（图二七，5；图版二一，4）。T2采：3，足部残片，圈足呈座状，足壁下部向外折。浅灰色薄胎，质细。灰青色薄釉，有细裂纹。垫烧。足径11、残高3厘米（图二七，3）。</p>
+<p>V型鼓钉炉，皆口腹残片。圆唇，弧沿略外卷，束颈，溜肩，扁鼓腹。T15采：7，深灰色厚胎，质细硬。深灰青色薄釉，釉面光泽强。肩部贴饰乳钉一周，各乳钉间相距2.6厘米左右。口径12.5、最大腹径14.5、残高8厘米（图二七，6；图版二一，1）。</p>
+<p>VI型 镂孔蒸炉，口肩部残片。敛口，尖唇，平沿，短颈，折肩。T5②A：50，深灰色胎，粉青色厚釉。颈肩部残留有镂孔。口径10、残高3.6厘米（图二七，4；图版一七，3）。</p>
+<p>VI型 方形炉。T5②A：49，残存一角，底部转角处有圆饼形矮足。深灰色厚胎，厚0.5—1厘米，质细硬。灰黄色厚釉，欠烧，内外满釉，足底无釉。手制粘接，堆贴剔雕纹饰。垫烧。残高7.5厘米（图二七，7；图版一七，7）。</p>
+<p>（14）尊口颈部残片。圆唇，弧沿，大撇口，口颈外部贴有扉脊。T12②A：34，深灰色胎，质细硬。米黄色厚釉，欠烧。口径28厘米（图二八，5）。</p>
+<p>（15）可分二型。</p>
+<p>1型为口、腹、底足残片，经复原为敞口，圆唇，斜沿，细长颈，直腹，喇叭形圈足。T5(2)A：61，残存把及底部，参照T1①：14口部残片（图二八，2）及T5②A：130腹部残片复原，足壁下折，腹及把侧贴饰四条扉棱，棱侧呈锯齿状。深灰色胎，质细硬。青绿色薄釉，釉面光泽强。轮制，分段粘接，垫烧。复原口径16、足径10、复原高32厘米（图二八，1；图版：二，3）。</p>
+<p>Ⅰ型底足残片，长把，圈足，无扉棱。T5(2)A：62，浅灰色胎，质较硬。米黄色薄釉，釉面有细裂纹。垫烧。足径6.5、残高10厘米（图二八，3）。</p>
+<p>（16）唾具 口部残片，呈浅盘形。T1③：19，尖唇，浅腹，腹部以下皆残缺。深灰色厚胎，厚0.3—0.7厘米，质较细硬。米黄色薄釉。欠烧。口径18、颈径6.4、残高3.2厘米（图二八，4）。</p>
+<p>（17）灯盏 可分二型。</p>
+<p>1型 为碟形。敞口，圆唇，折沿，斜弧腹，圈足。足壁外撇。T14③：141，浅红色厚胎，质软，生烧。土黄色薄釉。垫烧。内底划弦纹一道。口径9.4、足径3.7、高2.4厘米（图二八，6；图版一六，4）。</p>
+<p>I型为高圈足盏形，残片。弧腹，竹节形长把，喇叭形高圈足，足壁外撇，足底平整。T1③：7，深灰色胎，质细硬。粉青色厚釉，外观施釉三次，内壁薄釉，釉面光滑有玉质感。底足刮釉齐整，胎呈铁色。服饰莲瓣纹，把饰凸弦纹，足部刻划重叠覆莲瓣纹。把径4、把长3.2、足径8.5、足高3、残通高8厘米（图二八，7）。</p>
+<p>（18）瓶 可分五型。</p>
+<p>1型 玉壶春瓶，可分三式。</p>
+<p>1式 小口，翻沿，长颈，圆腹，圈足较高。T1②：3，口沿稍残，尖圆唇，溜肩。灰色厚胎，质较细，生烧。浅黄白色薄釉，釉层易剥落。支烧，底残留有5个支钉痕。复原口径6、腹径13.5、足径8.2、残高20.9、复原通高23.5厘米（图二九，1；图版二二，2）。T14③：160，口颈部残片。圆唇，斜弧肩。灰色胎，质较细软。米黄色釉。口径6、残高15厘米（图二九，4；图版二三，2）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二八 南宋官窑瓷觚、唾具、尊、灯盏</p>
+<p>1.1型T52A:61</p>
+<p>2.1型解T1①：114</p>
+<p>3.1型解T5@A:62</p>
+<ol>
+<li>
+<p>唾具T1③：19</p>
+</li>
+<li>
+<p>尊 T122A:34</p>
+</li>
+</ol>
+<p>6.1型灯盏T14③141</p>
+<p>7.[型灯盏T1③：7</p>
+<p>2式圆唇，斜折沿，长颈，椭圆形鼓腹，圈足较1式矮，足壁外撇。T14①：27，浅灰色胎。青褐色薄釉，釉面有碎裂纹，内腹及内底有明显轮旋痕。支烧，外底有5个支钉痕。足径7、残高8.2厘米（图二九，2；图版二三，5）。T2②B：23，灰色胎，质较松，气孔多。青绿色薄釉，光泽强，有裂纹。口径7.1、残高5.4厘米（图二九，5；图版二四，1）。<br />
+3式腹足部残片，扁鼓腹，矮圈足，足壁较直。T15采：5，深灰色薄胎。粉青色厚釉，足底无釉。垫烧。外腹刻划花纹。底径6.8、残高7.5厘米（图二九，3；图版二三，6）。</p>
+<p>除上述三式外，1型瓶的口颈部残片数量极多，形制稍有差异。T16②：25，尖唇，翻沿略卷，颈细长。T12②A：32，圆唇，斜沿，颈粗矮（图版二三，3、1）。</p>
+<p>I型八棱扁腹瓶。小口，圆唇，长颈，扁圆腹，圈足。T12②A：27，口、颈部残，参照传世品复原。浅灰色胎，质较细硬。米黄色釉，釉面有细裂纹，足底无釉。内壁有轮旋痕，圈足为粘贴而成。颌至肩部有三道凸弦纹。复原口径6.5、腹径12.5、足径8、残高8.8、复原通高21.8厘米（图二九，6；图版二二，1）。T2①A：50，为圈足残片，形制相似。灰青釉，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图二九 南宋官窑瓷瓶<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型I式T1② 3 <br />
+2.1型2式T14①：27<br />
+3.1型3式T15采：5<br />
+4.1型1式T14③：160<br />
+5.1型2式T2②B：23<br />
+6. I型T12②A:27</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图三 楚宋官窑瓷瓶<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅰ型G1：2 2.残片T14②：112 3.N型T2②B：87</p>
+<p>釉面光泽，有碎裂纹（图版二三，7）。</p>
+<p>Ⅱ型 长颈瓶。长筒形口颈残片。G1:2，仅有口颈部，圆唇，卷沿，颈细长呈长筒形。灰色胎，质较细松，气孔多。薄釉色不匀，呈米黄和粉青色，釉面有细裂纹。口径4.4、残高18.2厘米（图三○，1；图版二三，4）。</p>
+<p>Ⅳ型 琼式瓶。为口腹残片。圆口，尖唇，直沿，方体，折肩，直腹。T2②B：87，深灰色胎。粉青色厚釉，釉面有细裂纹，内腹施薄釉。内口径5、外口径6.5、腹长及宽皆8.5厘米（图三○，3；图版二四，5）。</p>
+<p>V型 花口瓶。花瓣形口，圆唇，斜沿外撇，束颈，溜肩，圆腹，圈足。T5②A：63，肩部堆贴对称的铺首衔环。黑灰色厚胎，质细。外壁粉青色厚釉，有大裂纹；内壁灰青色釉，釉面有细碎裂纹。制作方法特殊，系先将口沿、腹片、圈足等分别轮制或模制，然后粘接成型，修坯上釉，垫烧而成。口径10、足径8.5、高26厘米（图三一，1；彩版三；图版二五，1）。T5②A：64，口沿稍残缺，形制相似（图三一，2；图版二五，2）。</p>
+<p>除上述各型式外，尚有多种形制及相当数量的口沿、腹片、足片等，如T14②：135、136为盘口瓶的口沿（图版二四，2、9），T14②：112（图三○，2；图版二四，4）、121（图版二四，3）与T3②B：18（图版二四，7）、T14①：26（图版二四，8）、T2②B：27（图版二四，6）为纸捶瓶、净水瓶等口沿。腹片、足片由于破碎太甚，不再详述。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图三一 南宋官窑瓷瓶、壶<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.V型瓶T5②A:63 2.V型瓶T5②A:64 3.1型壶T12②A:28 <br />
+4.1型T5②A：66 5.I型壶T1③：5</p>
+<p>（19）壶 可分二型。</p>
+<p>1型贯耳壶。为口、足部残片，参照传世品复原。T12②A：28，口部残，参照T14②：248、124等口、底残片复原。直口微敞，圆唇，高颈，弧肩，椭圆腹，高圜足，通体横断面呈腰圆形，颈肩两侧各贴竖圆管形耳，圈足两侧与耳垂直处分别镂有长方形孔，孔径0.82厘米，作穿带提携用。灰色厚胎。灰青色薄釉，有裂纹，足底无釉，垫烧。颈肩处贴饰粗弦纹三道，外底釉下用褐釉楷书“外二”两字。复原口径7-9、腹径11-14、足径7-10、残高17、复原通高22厘米（图三一，3；图版二六，2）。T5②A：66，圆口粗颈残片。口径9.4、残高9.6厘米（图三一，4；图版二七，1）。T14②：124，圆形圈足残片，足壁亦有长方形穿带孔，足径11厘米（图版二七，6）。T14①：197，椭圆形圈足残片，无孔。足径 $10.5 \times 12$ 厘米，残高6厘米（图三二，2）。</p>
+<p>I型 盘口执壶，可复原。T1③：5，盘形口，圆唇，凹沿，直颈，溜肩，椭圆形鼓腹，矮圆足。口腹间有把手，颈两侧贴环形耳。深灰色胎。灰青色薄釉，有裂纹。口径6、最大腹径9.6 10、足径6.5 7、高14厘米（图三一·5；图版二六，1）。</p>
+<p>除上述二型外，尚发现其他形制的口、腹、底残片，因整体形制不清，难以复原。如T13)：22，为方口壶片（图三二，3；图版二七，4）。T2②A：54（图版二七，3）、T14②：248（图三二，4；图版二七，2）为模制花式壶腹部残片。F3：1为足边呈竹节状的圈足残片（图三二，1；图版二七，5）等。这些瓷片的形制反映出整件器物的造型奇特、制作精巧，应是专为宫廷烧制的特殊器物。此外也发现较粗糙的器形，如T14②：258为长流壶的壶嘴残片，紫灰色素胎，手制。残长11、嘴径1—2.8厘米（图三二，5）。可能为窑工用器。</p>
+<p>（20）罐 皆残片，可分四型。</p>
+<p>I型卷沿，束颈，广肩。T14②：114，深灰中夹浅灰色厚胎，气孔多，欠烧。灰青色薄釉，釉面光泽，有裂纹。唇口无釉，可能与盖合烧。口径16、残高4厘米（图三三，1；图版二八，4）。</p>
+<p>I型 盘口，尖唇，短颈，广肩。T14①：28。浅灰色胎，质细硬。灰青色薄釉，有光泽。内腹有流釉及少量裂纹、跳釉。口径10.6、残高4.6厘米（图三三，2；图版二八，1）。</p>
+<p>Ⅱ型敛口，卷沿，圆肩，弧腹。T2②B：93，灰色胎，质疏松，气孔多。灰青泛黄色釉，釉层薄，有裂纹。欠烧。口径17.8、残高5厘米（图三三，3；图版二八，5）。</p>
+<p>Ⅳ型 小口，可分二式。</p>
+<p>1式 尖唇，斜沿，束颈，广圆肩。T14①：113，深灰色薄胎，质细硬。灰青色厚釉，有裂纹。口径4.6、残高3.8厘米（图三二，4；图版二八，3）。<br />
+2式圆唇，凹沿，束颈，圆肩。T14①：29，深灰色薄胎，质细坚硬。米黄色釉，内壁荡釉不匀，颈下一周无釉。口径4、残高3.8厘米（图三三，5；图版二八，2）。</p>
+<p>除上述罐口沿残片可分四型外，罐类器底部残片亦有不同形制，因无法复原，难与口部残片共同分型式，仅举几件介绍。T14②：196，直腹，平底稍内凹，内底不平，有轮旋痕。胎壁厚薄不匀，欠烧。底径11、残高3.6厘米（图三三，7；图版二八，7）。T14③：137，形制同上。底径9、残高4厘米（图三三，6）。T2②A：41，斜腹，凹足，足底尖，内底不平。青灰色薄胎，胎壁厚薄不匀。底径6.4、残高5厘米（图三三，8）。T3②A：1，斜直腹，凹足。灰色厚胎。米黄色厚釉，内底流釉尤厚。垫烧。底径11.4、残高14厘米（图三三，9；图版二八，6）。T14③：130，形制同T3②A：1，厚胎薄釉。足径9、残高9厘米（图三三，10）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图三二 南宋官窑瓷壶<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 底部 F3:1 2. 底部 T14①:197 3. 口部 T1③:22<br />
+4.肩部T14②：248 5.壶嘴T14②：258</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图三三 南宋官窑瓷罐<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型T14②：114 2. I型T14①：28 3. I型T2②B：93 4. I型I式T14①：113<br />
+5. R 型 2 式 T14①: 29 6. 底部 T14③: 137 7. 底部 T14②: 196<br />
+8. 底部 $\mathrm{T2(2)A:41}$ 9. 底部 $\mathrm{T3(2)A:1}$ 10. 底部 $\mathrm{T14(3):130}$</p>
+<p>（21）器盖分别为碗盖、罐盖、钵盖、壶盖、熏炉盖等，可分为四型。</p>
+<p>I型 弧顶，可分三式。</p>
+<p>1式斜折沿，弧顶，小钮或蒂形钮。T14③：148，顶心有勺形小钮，沿与顶面相接处，刻有一圈小圆窝作装饰，窝间距1厘米。深灰色薄胎，质细硬。米黄色厚釉，气泡多，内外满釉。支烧，盖顶内有5个支钉痕，支钉直径2毫米。勺形钮为手制贴饰。口径10.2、盖径14.4、通高5厘米（图三四，2；图版二九，1）。Y2：1，形制与T14③：148相似，盖顶心为荷叶蒂形钮，已残。顶面刻划有阴线荷叶筋脉纹。浅灰色薄胎，质细。黄绿色薄釉，沿唇部无釉。盖顶粘有器口沿，系窑内烧坏废品。与器身合烧。口径11.5、盖径15.2、残通高4.5厘米（图三四，1；图版三①，1）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图三四 南宋官窑瓷器器盖（1型）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.1式Y2：1 2.1式T14③：148 3.2式T17①：41 4.2式G1：15.3式T5③：105 6.3式T17③：81 7.3式T2①B：7</p>
+<p>2式 平折沿，圆钮或蛙形钮。T17①：41，顶心有蹲式蛙形钮，稍残。铁褐色胎，质细。灰青色釉，釉层晶润。盖顶刻划阴线荷叶筋脉纹。支烧。口径9.4、盖径12、残通高3.6厘米（图三四，3；图版二九，2）。G1：1，子母口，尖唇，盖顶面较平，顶心有圆钮。深灰色薄胎，质细硬。粉青色厚釉，有大裂纹。轮制垫烧，钮系手制后粘接。口径5、盖径7.2、通高2.4厘米（图三四，4；图版三一，4）。</p>
+<p>3式 荷叶形，蒂形钮。T17③：81，子母口，尖唇，宽弧沿上翘，盖形似覆置的荷叶，弧顶，蒂形钮。紫褐色胎，质较细硬。欠烧。乳白色釉层易脱落，盖面刻划阳线荷叶筋脉纹。轮制。器形规整。口径9、盖径13、通高4.6厘米（图三四，6；图版二九，3）。T2①B：7，顶钮已残，复原。圆唇，卷沿，沿边上卷，弧顶。盖面刻划阳纹荷叶筋脉，整件盖形如大荷叶，盖钮应是荷叶的茎蒂。灰色胎，质细较松，欠烧。土黄色釉，釉面开裂较甚，有大量跳釉、气</p>
+<p>泡，卷沿边内有一圈刮釉，宽约2厘米。应是轮制垫烧。口径13、盖径18.5、残高5.5、复原通高8厘米（图三四，7；图版三二，1）、T5.3：105，子母口，子口呈圆筒形，沿上翘，沿面刻划叶筋。高弧顶，钮稍残。灰色胎，灰青泛黄色薄釉。手制、盖径3、通高2厘米（图三四，5；图版三一，3）。</p>
+<p>Ⅱ型 平顶，可分三式。</p>
+<p>1式 盖面平整，T14②：99，子母口，方唇，直宽沿。灰色厚胎，内部露胎处呈红褐色。灰青色薄釉，有气泡及细碎裂纹，光泽较强。内壁无釉，有轮旋痕，轮制。沿内面粘接有另一器口残片，应是与器身合烧。口径10、盖径11.8、高1厘米（图三五，1；图版一三，1）。</p>
+<p>2式 盖面饰莲蓬纹。T16.2：20，子母口，圆唇，直宽沿，沿边呈花瓣形，盖面平宽，呈扁平莲蓬形，面上贴有乳钉，钉径0.6-0.8厘米，象征莲心。灰色胎，灰青色薄釉，有裂纹。轮制支烧。口径7.5、盖径9.2、高0.8厘米（图三五，2；图版三三，2）。</p>
+<p>3式 盖面饰条纹。T2②B：67，子母口，方唇，短直沿，盖顶面有捏塑粘贴的螺旋形凸起条纹。盖边高凸，自外向内旋，内心低下。深灰色薄胎，质细硬，有气孔。青褐色釉，顶面有跳釉、细裂纹，沿部有流釉，盖内无釉。轮制，盖与器身合烧。口径9、盖径9.6、高1.3厘米（图三五，3；图版三一，3）。</p>
+<p>Ⅲ型凹顶。尖唇，宽平沿。G1：9，黄灰色厚胎，夹细砂，质较粗。顶内沾有小块灰青釉，在平沿一侧钻有两个小孔，孔径0.2厘米，两孔相距1.5厘米。该两孔应是系绳用。轮制素烧，亦为与器身合烧。盖面内外划有记号。底径5.5、盖外径8、内径6、高1.2厘米（图三五，4；图版三一，1）。</p>
+<p>$\mathbb{N}$ 型 有孔顶，可分为二式。</p>
+<p>1式覆罩形，顶面饰莲子纹，兽形钮中空。T3②A：2，圆唇，直沿，直壁上折成顶面。顶面贴乳钉象征莲芯，盖中心有蹲兽形钮，已残，仅存爪和短尾。钮腹中空，为一大圆孔。浅灰色厚胎，质较细。米黄色厚釉，厚0.1-0.5厘米，釉面有裂纹。盖底一周无釉，盖内顶部有支钉痕，轮制支烧。盖径15、顶径14.4、残高4.8厘米（图三六，1；彩版四，2；图版三·，2）。</p>
+<p>2式覆盘形，顶面镂空，饰八卦及花卉，等帽形钮。T2①B：6，方唇，直沿，弧平顶。盖面镂有两圈纹饰，内圈为两组对称缠枝花草纹，外圈为八卦纹。顶心贴笠帽形钮。浅灰色胎，质较细。灰青色薄釉，光泽差。盖底一周内外无釉，可能与器身合烧。轮制。盖径18.5、顶径15.5、钮径2、高4.4厘米（图三六，2；彩版五，2；图版三二，2）。</p>
+<p>（22）器座 可分五型，用途不同。</p>
+<p>I型覆钵形。T5②A：137，仿古器形，顶面平整，斜腹外撇，近底外折成直边底，足底平整。生烧。土黄色厚胎，质软。轮制垫烧。外壁贴饰模印凸雕的夔龙纹。顶径14、底径19、高7厘米（图三六，3；图版三四，1）。</p>
+<p>I型 椭圆圆形。T4②B：7，尖唇，斜沿，斜直腹，腹壁中部增厚，足壁外撇，足底平。生烧。上黄色厚胎，质软。釉层已脱落。轮制垫烧。外壁以四条竖长扁条将器座分隔成四组，扁长条上刻纹，作竹杆状，每两组壁上饰有相向的一对凸雕夔龙纹。口径14.4—19、底径18.6—22、高10厘米（图三六，4；彩版五，1；图版三四，2）。</p>
+<p>Ⅱ型圆图形。T5②A：33，平沿外撇，腹壁呈台阶状向内折收，阶面平滑，级差为1.5厘米。浅灰色胎，质细硬。素烧，未上釉。口径16、底径11、高3.8厘米（图三六，5；图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图三五 南宋官窑瓷器器盖<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ型I式T142：99 <br />
+2.1型2式T16@：20<br />
+3.1型3式T2@B：67<br />
+4.1型G1：9</p>
+<p>版三（2）</p>
+<p>N型 八角扁圈形。T3②B:14, 座壁由8个长方梯形块连接而成。外沿尖薄, 内稍上折为斜面。中厚1.1厘米。生烧。黄灰色胎, 质软, 土黄色釉。模制。外径13、内径9-9.5、高1.4厘米（图三六，6）。</p>
+<p>V型覆盘形。T2②A：36，顶面平整，顶边弧折，直壁，座底稍外撇，底沿尖。浅灰色胎，质硬，釉层脱落。轮制。顶径9.5、底径11、高2厘米（图三六，7；图版三○，3）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图二六 南宋官窑瓷器器盖、器座<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. A型|式盖T3:2A：2<br />
+2.Ⅳ型2式T2UB：6<br />
+3.1型座T5@A：137<br />
+4.Ⅰ型座T42B：7<br />
+5. 型座 T52A:33<br />
+6.R型座T3.5B：14<br />
+7.V型T2A:36</p>
+<p>器座除上述形制外，在T52A层内尚出上一批粗大厚重的瓷片（T5②A：138），胎釉皆厚。但因残损过甚，无法复原。据残片观察，是仿古器形（图版二七，7），似为一件带柱的大型器座。</p>
+<p>（23）弹丸 1件，实心球形。T18②：87，灰白色胎。米黄色薄釉，有碎裂纹，欠烧，釉层易剥落，手制。直径4.8厘米。另3件为G1：14、T2③B：84、T14②：191，制作粗糙，未上釉，素胎生烧。大小不一，直径分别为2.4、3.2、3.8厘米。</p>
+<h1 id="2">2. 文饰综述</h1>
+<p>南宋官窑瓷器上的纹饰除上述器形上的各种题材和技法外，在众多的瓷片中还可见到以下纹饰。</p>
+<p>（1）龙纹主要饰于盘底，以刻划、模印技法表现，有两种。T5②A：136、T4②B：6，皆为盘底圈足。内底模印一条盘龙，以粗犷的线条刻划表现龙的张吻吐舌、龇牙舞爪的威猛（图三七，1、3；图版三五，1）、T2①B：8、T17②：51亦为盘底圈足，盘内底用纤细的线条刻划龙的形象，线条柔和，表现的龙身显得婀娜多姿，龙首形象和善可爱（图三七，2、5；图版三五，2、3）。以上几件相同题材的纹饰，由于运用不同的技法表现，形成传神动人的不同效果，反映出官窑工匠的高超技艺。<br />
+（2）风鸟纹 T42B:5:1、2. 残片，其上用纤细线条描绘风鸟的羽毛纹（图三七，4；图版三五，7、8）<br />
+（3）蕉叶纹也有两种技法表现。T52A：48，将粗放线条刻制成的蕉叶状装饰，堆贴于器腹，组成重叠的蕉叶纹。此件因施釉及火候掌握不当而损坏，釉面有严重跳釉（图三八，1；图版三六，6）。T143：257，器盖残片，顶部刻印蕉叶纹，施釉极厚，影响纹饰的显现，仅能呈现出叶瓣轮廓（图三八，2：图版一七，2）。<br />
+（1）莲瓣纹是南宋官窑瓷器上出现最多的题材，但表现方法及技法有多种，有刻、划、模印、堆贴等，有长、圆、宽、窄、单线、双线、单瓣、重叠、仰置、覆置等多种形式。除上述器形中所见外，尚有以下几种。T2采：53：1、2，盆腹底残片。外腹刻划重叠莲瓣纹，瓣面起脊（图三九，6；图版：五，1）。G1：7，盘底残片，外腹有一周椭圆形莲瓣，瓣面亦起脊。刻划线条流利规整（图三九，1；图版一六，7）。T14①：193，腹片，外堆贴重叠莲瓣纹（图三九，5）。T18①：8，钵口沿残片，外腹刻印双线仰莲瓣纹（图三九，3；图版三七，3）。T14①：237，罐肩、腹片，外壁刻印凸起宽莲瓣纹（图三九，2），T5②：123，腹片，外印双线莲瓣纹（图三九，4）。<br />
+（5）牡丹纹 装饰于盆、盘内壁，以刻划技法表现。T2采：53，盆腹底残片，以流畅圆润的线条刻划花瓣枝叶，瓣内划有髭纹。花叶显得生气盎然（图三九，6；图版三五，5、6）。T14.19：195，腹片上印有牡丹枝叶纹，因釉厚看不清（图三九，7；图版三六，4）。<br />
+（6）竹叶纹 发现于一件素烧坏上，以刻划技法表现。F3：3，圆饼形外模，已残。正面刻划清晰的一丛竹叶，刻线流畅有力，使叶瓣挺拔有神（图三八，5；图版三六，1）。<br />
+（7）鸭纹 发现多种鸭首，皆为立体捏塑后模制，T14②：168，为鸭首，下唇残缺，张嘴作鸣叫状。鸭首内空，应是器物装饰于把后的附件。内外皆施青釉，褐釉点睛。此件为釉色最佳者，形象亦比例恰当，生动逼真，是件捏塑精品（图三八，8；彩版四，1）。<br />
+（8）其他纹饰 大部分是仿古器物上的纹饰，以刻划模印技法为主，也有用堆贴捏塑技法的。T5(2)A：143，器座残片，腹壁阴刻“玉”字，可能是八卦中的一个符号（图三八，6；</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+?</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图七 南宋官窑瓷器纹饰残片</p>
+<ol>
+<li>
+<p>龙纹T52A：136</p>
+</li>
+<li>
+<p>龙纹T2、B：8</p>
+</li>
+</ol>
+<p>3.龙纹T42B：6</p>
+<ol>
+<li>
+<p>风鸟纹 T42B:5:1</p>
+</li>
+<li>
+<p>龙纹T172：51</p>
+</li>
+</ol>
+<p>图版三六，5)。T51B：141，壶口沿残片，印有云雷纹（图版三七，6）。T14①：243，壶底足残片、足壁印同纹（图版三七，5）。T2②B：24，盘口沿，沿唇捏制成菱花形（图三八，3；图版三七，7）。T1③：23，堆塑压印弦纹（图三八，7；图版三七，4）。T12②A：48，盆口沿残片，腹部用圆点、芝麻点等堆贴成四瓣小花（图三八，4；图版三七，1）。T18①：12，是一件残垫饼，其上有阴线刻印的万年青花果叶纹（图四三，10；图版三六，3）。T18②：162，垫饼残片，纹饰与T18①：12相同（图版三六，2）。T1①：19，一件五支钉垫饼，饼心阳刻一株小花（图版四九，3）。</p>
+<p>南宋官窑青瓷主要以釉色、碎裂纹及造型取胜，器物造型古朴端庄，釉色滋润似玉，因</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span>  </p>
+<h1 id="_32"></h1>
+<p>图三八 南宋官窑瓷器纹饰残片<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1-6.8. 3厘米<br />
+7. 5厘米</p>
+<p>7</p>
+<ol>
+<li>
+<p>熊叶纹 T52A:48</p>
+</li>
+<li>
+<p>有叶 $T1437:257$</p>
+</li>
+<li>
+<p>姜花形 T2②B: 24</p>
+</li>
+<li>
+<p>四瓣花 $\mathrm{T12}②\mathrm{A}: 48$</p>
+</li>
+</ol>
+<p>5.竹叶纹F3：3</p>
+<ol>
+<li>“上”T52A:145</li>
+</ol>
+<p>7.弦纹T13：23</p>
+<ol>
+<li>鸭首T14②：168</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图三九 南宋官窑瓷器纹饰残片<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 连瓣纹 G1:7 2. 莲瓣纹 T14D:237 3. 连瓣纹 T18D:8 4. 连瓣纹 T5G:123 <br />
+5. 连瓣纹 T14、D：193 6. 牡丹纹与莲瓣纹 T2 采：53 内外壁 7. 牡丹纹 T14(D)：195</p>
+<p>而纹饰题材并不丰富。综合全部瓷片上反映出的题材，有以下各类。</p>
+<p>（1）植物类：有莲花、莲蓬、莲子、莲瓣、荷叶、葵瓣、菱花、牡丹花叶、蕉叶、竹叶、竹节、蔓草等纹饰。<br />
+（2）动物类：有夔、龙、凤、兽面、蹄足、象鼻等仿古动物纹饰，有鸭、蛙、鱼等现实动物形象的纹饰。<br />
+（3）其他类：有凸弦纹、凹弦纹、弧弦纹，有仿古的八卦纹、云雷纹、回形纹、重环纹、乳钉、锯齿纹，还有连弧纹、螺旋纹、绳纹等。</p>
+<p>各种花纹的装饰技法，分别采用刻划、模印、堆贴、捏塑、镂空、透雕、浮雕等手法。刻</p>
+<p>划皆采用“半刀泥”的技术，多使用于碗、盘等日用器皿上；模印技法使用较普遍；堆塑技法多使用于瓶、壶、炉、觚等仿古器形上；雕镂技法多施于器盖、器座、炉等器形上。装饰技法的丰富多样与瓷器装烧技术的改进、装烧窑具的多种形式等，都反映出南宋官窑瓷器在生产技术上得到的重视及瓷器质量优越的原因。</p>
+<h1 id="_33">（二）其他窑系瓷器</h1>
+<p>在乌龟山窑址的地层及遗迹中，出土了一批与上述官窑瓷器特征不同的瓷器及残片，这批瓷片的数量约3000余片。釉色有青、白、影青、黑、酱褐等色，能辨认的器形有碗、盘、盒、罐、壶等。大部分为胎釉粗糙的日用器皿，小部分为胎釉精细的器皿。其窑口有越窑、龙泉窑、景德镇窑、定窑等窑系，时代有北宋、南宋、元代的。现将时代在南宋以前的可复原的器物特征介绍如下。</p>
+<p>碗6件。越窑系2件，仿越窑系1件，龙泉窑系3件。T3②A：13，越窑系。花口、尖圆唇、斜弧腹，矮圆足。足壁外撇、足底尖。深灰色薄胎，质细较松，有气孔。黄褐色薄釉，光泽差。轮制垫烧，足内残留有垫具渣。内壁刻划牡丹花叶，底心刻划一圈弦纹。口径18.5、足径5.7、高6.5厘米（图四①，1）。T2②A：104胎釉纹饰与T3②A：13相似，浅腹，圈足壁较厚。满釉，外底粘有垫圈痕。内壁印牡丹花叶，其上有篦纹。外壁有莲瓣纹，瓣叶上划篦纹。口径15.6、足径5.2、高4厘米（图版三八、2、3）。T17③：80为叠烧仿越窑系碗瓷片，黄绿色薄釉，釉面有细碎裂纹。划篦纹（图四一，5；图版三八，1）。T2②B：65为龙泉窑系。圆唇、斜弧腹、圈足、足底圆弧。深灰色厚胎，底胎厚达1.2厘米，质细硬。青绿色薄釉，釉面有光泽、有气泡及细裂纹。轮制垫烧，底足旋削二次，先旋内圈，后旋外圈。内壁刻划荷花叶纹，花瓣及花叶上均划有篦纹；内底划一圈阴弦纹、圈心刻划花草叶纹。口径21、足径7.4、高9厘米（图四①，2）。T2②B：58，龙泉窑系。尖圆唇、斜弧腹，下腹内收，圈足较矮。足底圆弧、稍外撇。浅灰色胎，质细较硬。底足无釉处氧化呈红灰色。胎内气孔多。青绿泛黄色釉，釉面有跳釉及碎裂纹。轮制垫绕，旋削规整。内壁刻划折枝荷叶莲花纹。口径18.5、足径6、高7.8厘米（图四①，3）。T3②：12，龙泉窑系。尖圆唇、斜弧腹，圈足较浅。深灰色薄胎，质细较硬，有气孔。酱黑色薄釉，外腹下部及底足未施釉，釉面光泽较差。轮制垫烧。口径11、足径4、高5.3厘米（图四①，5；图版三九，4）。</p>
+<p>盘1件。越窑系。T14②：242，花口，尖唇，斜沿，斜弧腹，圈足，足底呈尖状。浅灰色胎，有少量气孔，质细较硬。黄绿色薄釉，釉面有光泽，有细裂纹。轮制垫烧，外底有垫圈痕。内壁口沿下划有一圈阴弦纹，其下刻划牡丹花叶纹，花瓣及花叶面上划有篦纹。口径17.3、足径5.7、高4厘米（图四①，4；图版四①，1）。</p>
+<p>盒2件。越窑系。盒、盖各1件。T14②：240，为盒。子口，尖圆唇，斜弧腹，圈足，足壁外撇。黄灰色胎，质细较硬，有少量气孔。黄绿色薄釉，光泽差。轮制垫烧。外壁中部刻划一圈阴弦纹，其下刻划重叠仰莲瓣，瓣内划有篦纹。口径6、足径4、高3.8厘米（图四一，1；图版三九，3）。T2②B：62，为盒盖。平顶，弧壁下折，平直沿，整体似倒置的小碟。浅黄灰色夹黑黄色细砂胎，质较细硬。灰青色薄釉，釉面有光泽。轮制。盖沿内一圈无釉，显系与盖合烧。盖顶面刻划折枝梅花，盖壁刻划菊花瓣34个，刻线清晰。顶径3.8、沿径5.2、高1.6厘米（图四一，3；图版三九，1）。</p>
+<p>罐2件。越窑系。T14②：241，圆唇卷沿，短颈，广肩，圆鼓腹，底残。浅灰色胎，质</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图四：其他窑系瓷器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 越密碗 T3.2A: 13<br />
+2. 龙泉窑碗 T2.2B:65 <br />
+3. 龙泉窑碗 T22B:58 <br />
+4. 越密盘 $\mathrm{T}1 + \mathrm{Q}^{2}: 242$ <br />
+5. 龙泉窑碗T3②：12</p>
+<p>较细硬，有气孔。黄绿色釉，釉面有光泽，多跳釉、疵点。轮制。外壁颈肩部刻覆置菊花瓣，上腹部刻划牡丹花叶，瓣内划笺纹：下腹刻划重叠仰莲瓣，瓣内划笺纹。口径24、腹径30.4、残高20厘米（图四一、2；图版四、2），T2B：63，小口已残，短颈，平肩，圆鼓腹，圈足，足壁稍外撇，浅灰色胎，质较细硬，有气孔。灰青色薄釉，有光泽及少量裂纹。内腹有流釉，足底无釉、轮制垫烧，制作规整。肩部刻划弦纹，贴对称的蛙形环耳。残口径3、足径1.8、腹径8.2、残高5.2厘米（图四一、4；图版三九，2）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4 <br />
+5</p>
+<p>1.3.5. 3厘米</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<h1 id="_34">二、制瓷工具及窑具</h1>
+<h1 id="_35">（一）制瓷工具</h1>
+<p>从作坊遗址中发现有数十件制釉、盛釉、拉坯成型、修坏等制瓷过程中使用的各种工具或工具上的零件，均以瓷土制作。其中有的器形推测为工具，但具体名称、用途尚不清楚。现将各类工具特征分述如下。</p>
+<p>（1）研钵 研磨釉料用。斜腹，假圈足。T5②A：68，口部残，腹斜敞，圆饼形实足。灰色厚胎，质粗疏厚重。未施釉。内壁及内底刻划深而密的交叉斜线。外壁刻划“不可丢失”四字，外底刻划“欠□五分……”等草体字，有的两字重叠，为多次刻划，致使文字含义不清。应是工匠任意刻写。轮制垫烧。底径10、残高8厘米(图四二，1、2；图版四-，1、2)。</p>
+<p>（2）杵皆为残段，研磨釉料用，可分二型。</p>
+<p>I型 柱形，T2②B：81，上细下粗，上端已残，杵头为圆形，外表粗糙不平，断面呈不规则七边形。深灰色胎，质坚硬。无釉。手制。直径2.2-2.6、残高10厘米（图四二，8；图版四一，1）。</p>
+<p>1型 筒形。T14②：192，上段残缺。外表呈八边形，中空。杵头粗，呈圆形，底心略凹。灰色厚胎，厚达0.5-1厘米，质细硬。灰青色薄釉，施釉不匀，釉面有碎裂纹。内壁无釉，有轮旋痕，为轮制。杵径3.2、筒径1.8-2、残高4.2厘米(图四二,9；图版四-1)。</p>
+<p>（3）研磨器 可能为修坯用具，分二型。</p>
+<p>1型 盘形。T2②B：30，尖唇，斜沿，直腹，平底。外形似浅盘，盘内竖一线轴形圆柱。柱顶面平整，顶径4.1厘米，顶面下稍内收。柱径3厘米，略高出盘口，柱周一圈凹槽。浅灰色厚胎，质坚硬，含细砂，胎厚0.70.8厘米，底部烧裂。柱壁及盘内壁皆施釉，柱顶面有刮釉痕迹，尚留有少量残釉。口沿处未上釉，呈黄灰色。灰绿色釉面有细裂纹，有跳釉、流釉。轮制垫烧。盘口径8.1、底径7.7、盘高2.4、通高3厘米（图四二，4；图版四二，1）。</p>
+<p>I型云头形。T5②A：43，底面呈长方形，顶面呈凹凸云头形，系用手指压印制成。两侧及底面平整光滑。紫红色胎，未上釉，手制。底面长8.2、宽4、最高处6.5厘米（图四二，5：图版四二，2）。</p>
+<p>（4）釉料罐 斜腹，凹足。T14②：201，上腹残，下腹斜收，凹足。浅灰色厚胎，质硬，烧制变形，外腹粗糙不平，底胎呈弧形。灰青色薄釉面有大裂纹。内底存积有厚1-1.2厘米的土黄色釉料。轮制垫烧。底径12、残高11厘米（图四三，8）。T14②：202，残存底部圈足，内底亦有存储的釉料。足径8.4、残高4厘米。</p>
+<p>（5）长方形穿孔器 T14②：169，长方体，实心，外形不规整，上下两面各有浅槽二道。两长侧各有圆形柱头两个，两柱头间有一方口圆窝，其中一侧的柱头在烧制时脱落，釉粘于旁，柱头处有一小坑，说明柱头是后接的。两短侧正中各有一圆孔，孔径0.4厘米，圆孔两端相通。灰色胎，质细坚硬。通体满釉，粉青色厚釉，脱釉甚多。模制。长7.2、宽4.8、连柱宽6.5、高3.3厘米（图四二，7；图版四四，1）。</p>
+<p>（6）范模 形制各异，分五型。</p>
+<p>I型花纹范。T5②A：47，束腰弧形长方体，顶端稍残。土红色厚胎，生烧无釉，外壁</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四二 南宋官窑工具</p>
+<ol>
+<li>
+<p>研体 T52A:68</p>
+</li>
+<li>
+<p>研体T5②A：68外底文字</p>
+</li>
+<li>
+<p>V型范模T3②B：3</p>
+</li>
+<li>
+<p>型研磨器 T2(2)B:30</p>
+</li>
+<li>
+<p>I型研磨器T5②A:43</p>
+</li>
+<li>
+<p>N型范模T5②A:45</p>
+</li>
+<li>
+<p>长方形穿孔器T14②：169</p>
+</li>
+</ol>
+<p>8.1型杆T2@B:81</p>
+<ol>
+<li>型杆 T14②: 192</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四三 南宋官窑工具及窑具</p>
+<ol>
+<li>
+<p>荡椭T12:2A:51</p>
+</li>
+<li>
+<p>荡箱 T12.2A:51上的文字</p>
+</li>
+<li>
+<p>荡箍T16B:26</p>
+</li>
+</ol>
+<p>4.1型范模T5:2A：44</p>
+<p>5.插器T141C：251</p>
+<ol>
+<li>轴顶碗T5:106</li>
+</ol>
+<p>7.轴顶碗T5：106腹部文字</p>
+<ol>
+<li>
+<p>粘料罐T142:201</p>
+</li>
+<li>
+<p>镗孔器 T2 采：68</p>
+</li>
+</ol>
+<p>10.残垫饼T18①：12</p>
+<p>粗糙，内刻纹饰。纹饰上下分成三段，中间以两道弦纹相隔。上下二段刻夔纹及凤纹，中段刻篆体“璧玉明月照”五字。花纹、字体刻写生动端正，在出土器物中未见。宽12、残长14厘米（图四四；图版四三，1）。</p>
+<p>型象棋范模，2件。T16：19：1，圆形象棋范，范为平底盘形。土黄色素胎，未上釉，内刻印反体阳文“马”字。直径3.8、高1厘米（图版四三，2右）。T16：19：2，圆饼形模。土黄色素胎，上刻印阴文“卒”字。直径3、高0.6厘米（图版四二，2左）。</p>
+<p>型圆窝外范。T5A：44，圆饼形，已残。饼面设有大小不一的圆窝，直径3-4厘米。紫红色粗砂胎、手制。直径19、厚4厘米（图四三，4；图版四一，3）。</p>
+<p>$\mathbb{N}$ 型圆形内模，T5②A：45.外形呈慢首状。灰色夹砂粗胎，无釉。应是圆形器的内模，手制。底径6、高3.6厘米（图四二，6）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四四 南宋官窑I型范T5②A：47纹饰及铭文拓本</p>
+<p>V型 圆饼形模，T3(2)B：3，圆饼形实心器，上下平面略小于器身。平面上各有凹槽一圈，槽内刻有两道凸弦纹。土黄色生坏，质细软，轮制。平面直径分别为7.8、7、模径9.2、高2.6厘米（图四二，3；图版四二，3）。</p>
+<p>（7）轴顶碗 为辗鲈车轴顶尖上的零件。T5.3:106，似倒置的简杯。平顶，直腹，凹底，底边平整，内壁弧，内顶圆尖。灰色厚胎，质硬。外壁无釉，内部施灰青色薄釉。外壁刻划有行书“高师古”三字，可能是工匠姓名。顶径6.2、底径7、高4.4厘米（图四三，6、7；图版四四，2）。<br />
+（8）荡箍 为辗鲈车轴下端的零件。共发现3件。T16①B：26，已残，圆环形。敛口，平沿，沿面稍凹。外壁直，内壁斜凹，底边切刮痕明显，边沿呈参差不齐的锯齿状。浅灰色胎，质细硬。灰青色薄釉，施于平沿，壁内外有少量流釉，外壁及底不施釉，釉色青黄不匀，还原差。轮制。口径13、高2.3厘米（图四三，3）。T12②A：51，形制基本同上，沿面斜平，内壁斜弧。在沿顶面刻划四字，似为“××公用”之意。口径12、高2.8厘米（图四三，1、2；图版四四，5）。</p>
+<p>轴顶碗与荡箍系用于成型、修坯工序的辗车的中轴上的零件，轴顶碗套于轴顶尖上，荡箍套于轴的下端，以加速和加强轮盘的稳定旋转。</p>
+<p>（9）镂孔器 系用窑具中的垫托加工而成，可能作漏斗用。T2采：68，平沿，斜腹，平底。腹部有5个小孔，底心1个小孔，孔径1.1厘米。口部两侧粘贴对称的半圆形小耳，耳上有手指压印纹。青灰色夹细砂厚胎，质较硬，腹底制作粗糙。轮制镂孔，垫烧。口径8.4、连耳径10.2、底径5.4、高2.8厘米（图四三，9；图版四四，3）。<br />
+（10）插器 用窑具中的垫饼加工而成，推测为插物用具。T14①：251，圆饼形，饼面不平</p>
+<p>整，饼底中心稍凸，饼面上有8个洞，洞的上下两端宽、中间窄，断面呈“工”字形。灰色夹砂粗胎，底面皆无釉。手制。洞径为大1.2-1.6、小0.6-0.8厘米不等，饼径13.2、高2.8厘米（图四三，5：图版四四，1）。</p>
+<h1 id="_36">（二）窑具</h1>
+<p>乌龟山瓷窑址中发现的窑具有匣钵、支烧具、垫烧具、火眼等，质地为瓷土或夹砂耐火土。其中支烧、垫烧具的品种、形制繁多，器上还发现刻印文字、纹饰等，分述如下。</p>
+<p>（1）匣钵 出土量多，可分四型。部分匣钵沿部发现有套合或叠烧痕迹，有的匣钵外底粘有垫柱，有的内底粘有瓷片，有的钵内有流釉等痕迹，为了解匣钵的使用方法提供了依据。</p>
+<p>I型 钵形，据仰置、覆置的不同分为二式</p>
+<p>1式 仰置，Y2：17，方唇，平沿，斜腹，大平底。深灰色夹粗砂胎，胎质粗硬厚重，轮制。内底平可仰置坏件烧造，口径34.5、底径42、高13厘米（图四五，1；图版四五，1）。F2.2B：94，形制相同，外腹有明显轮旋痕，口径较小。</p>
+<p>2式覆置，Y2：16，顶部呈弧状下凹，腹壁直稍内斜，圆足，底平，胎质同上。此式匝体为扣置叠烧，顶径25.5、26.5、足径23.5、壁厚1.5-2.5、高9.6厘米（图四五，2；图版四五，2）。</p>
+<p>Ⅰ型罐形、T142：225、椭圆形口，圆唇，平沿，直腹下收，平底，内底微阔，腹壁有明显轮旋痕、深灰色夹粗砂胎，外表粗糙无釉，质粗硬，轮制。可能用于装烧高长器物，其上再覆盖一匣钵、口径11-16.5、底径8.5、高14.2厘米（图四五，8；图版四五，3）。T142：223，形制相同，器体较大，口径22、底径15.6、高22.4厘米。</p>
+<p>Ⅲ型 碗形。T2.1B: 48, 尖唇, 平沿稍斜, 弧腹, 近底处内收为假圈足。内弧底, 底心稍凸, 黑灰色夹砂粗胎, 质硬, 轮制。口径 18、底径 9、高 10 厘米 (图四五, 3: 图版四六, 1)。</p>
+<p>型盆形，据大小不同，可分二式.</p>
+<p>1式形制较小，G1：13，尖唇，凹沿，斜弧腹下内收，假固足。足壁外撇，内圜底。灰褐色夹砂粗胎，质硬，轮制。口径16.4、底径7、高7.2厘米（图四五，4；图版四六，2）。<br />
+2式 形制大、T5.3：135，圆唇，平沿，斜腹较深下内收，假圈足。足壁外撇，内圜底。内壁有流釉痕、深灰色夹砂胎，外表粗糙，质粗硬。轮制。沿部外卷有一道弦纹。口径22、底径10.4、高10.6厘米（图四五，9；图版四六，3）。<br />
+（2）匣钵盖 形似倒扣的盆，顶小底大。T2JB：49，平顶，斜腹，足外撇，足底圆边。褐灰色胎，瓷土质细硬，因氧化外表呈红褐色。轮制，腹壁有轮旋痕。顶径9、底径21、高8厘米（图四五，5；图版四六，4）。<br />
+（3）支烧具 形制多样，可分为四型。</p>
+<p>1型 支饼，器体较扁，按有数量不等的支钉。根据形状不同可分为三式。</p>
+<p>1式扁圆饼形。Y23:9. 面微隆, 其上用瓷土另按圆锥形支钉3个。黄灰色瓷土胎, 胎厚质细。饼底大于饼面、支钉呈三角排列, 钉尖已残断。形制规整。饼面中心阳刻楷书“小”字。直径3.2、饼高1、残通高1.4厘米(图四六, 8)。T5②A:17, 形制与Y2③:9基本相同。灰色瓷胎, 质细硬, 面薄, 钉底有手指印痕, 高低不平, 面中心有圆圈纹。直</p>
+<p>图四 南宋官窑窑具<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.1型1式圆体Y2：15 2.1型2式圆体Y2：16 3.Ⅲ型圆体T2E3：48 4.Ⅱ型1式圆体G1：13<br />
+，则林盖T21B：49 6.火眼T：42：255 7.火眼Y2：18<br />
+8.Ⅱ型圆体114.2：225 9.Ⅱ型2式圆体T5.3：135</p>
+<p>图四六 南宋官窑支烧具<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10.1式T5.A：17、T1：19、T2:A：78、G：17、T2.B：70、T2.B：69、T5.A：16<br />
+Y2:9、T15.1B:4、T2.1B:4 112式G1：11 12.3式T52A:21</p>
+<p>径2.6、饼高0.4、残通高1厘米（图四六，1；图版四七，3）。T5②A：16，为5支钉圆饼形，而小底大，瓷土质。5个支钉后按接，呈红褐色或浅灰色。饼面中心印阳文楷书“玄”字。模手合制。直径7.6-8、饼高0.9、残通高1.8厘米（图四六，7）。类似支饼上尚有印“天”、“地”、“玄”、“黄”、“花”、“元”等楷书文字的（图四六，3；图版四八，58；图版四九，1、4、5），有的是反体字（图版四九，4）。T1①：19，亦为5支钉支饼。深灰色夹粗砂胎，质粗。支钉为紫灰色瓷上胎，按接于饼面。饼面中心印一株小花，模手合制。直径77.8、饼高1.1、残高2厘米（图四六，2；图版四九，3）。类似的支饼上尚有印阳文楷书“木”、“椀”、“二”、“四百”、“十三”等字及“井”等记号的（图四六，4；图版四八，1--4；图版四九，6-9）。T2①B：44，带托支饼。上为5钉支饼，下粘垫柱，柱呈线轴状。类似的带柱支饼，柱形高矮不--，垫柱胎质粗糙者多。此件垫柱为灰褐色瓷土，质细硬。支饼直径5.2、饼高1.8、带柱通高6.2厘米（图四六，10；图版四九，2）。T15①B：4.7钉支饼，饼面平整，边沿弧收，底径小于面径，圆饼周边6支钉，仅剩残迹。中心有圆孔，孔内嵌有支钉1个。灰色夹砂胎。轮手合制。饼面划有“×”符号。直径12.8、底径6.8、厚1.8厘米（图四六，9；图版四七，6）。T2②B：69、70，皆为9支钉支饼，但支钉排列形式不同：T2②B：69为中心一枚，周边8枚；T2②B：70为内圈3枚，外圈6枚。胎质为：69为瓷土质，70为灰色粗砂胎，支钉则全部用瓷土制作后按接饼面上。模手合制。直径9.6-10.6、饼高0.7-1.4：残通高1.6-2.4厘米（图四六，6、5：图版四七，1、2）。</p>
+<p>2式 方形。G1:11，饼面四角各按1圆锥形支钉，钉尖已残。灰色瓷土胎，质细，表面氧化呈红褐色。饼底有手指印痕，手制。饼面宽2.8、长3.1、饼底长与宽皆3.9、饼高0.9、残通高1.65厘米（图四六，11；图版四七，4）。</p>
+<p>3式 三叉形。T5②A：21，三角形体，弧边，每角尖制成扁方支钉，欠烧。土红色厚胎，部分沾有绿釉，模制。边长4.5、残高2.1厘米（图四六，12；图版四七，5）。</p>
+<p>型支圈。根据形制的不同可分二式。</p>
+<p>1式直壁较浅。T17②：68，壁薄，圈顶切削成等距离的5个连弧形，弧尖起支钉作用，圈底平整。红灰色瓷土胎，质较细，轮制。顶径5.2、底径5.3、通高1.7厘米（图四七.2；图版五①，2）。</p>
+<p>2式弧壁较深。T17②：71，黑灰色夹细砂瓷土胎。顶径6、底径7、高5.4厘米（图四七，3；图版五①，1）。</p>
+<p>Ⅱ型 支托。为顶大底小的支具，按其外形的不同，可分三式。</p>
+<p>1式 盘形。T18:80，直口方唇，直折腹，小平底稍内凹。盘沿切削成5枚四棱扁锥形支钉。紫灰色瓷土胎，轮制。直径6.4、底径3.2、通高2.3厘米（图四七，4；图版五①，4）。T5:127，形制相似，直弧折腹，斜凹底。直径7.6、底径3.8、高2.2厘米（图四七，5：图版五①，3）。<br />
+2式 碗形。T15②B：2，敞口，圆唇，平沿。外壁为折沿，斜腹，平底；内壁为折沿，弧腹，圜底。沿面上贴圆锥形支钉6枚，已残，仅留钉底痕。托胎为灰色夹细砂土，支钉为红褐色瓷土，轮制。直径15.5、底径8.6、残通高4.8厘米（图四七，6；图版五①，5）。<br />
+3式饼形。T15②B：3，尖唇，平沿、弧腹、凹足。饼面中心略凹，面上有9个支钉痕，外圈6枚，内圈3枚。灰色夹砂胎，轮制，支钉后粘贴。托径13.8、底径6.2、高3厘米（图四七、7；图版五一、1）。T16③：21与T15②B：3相似，底平，唯托心有孔，孔径2.4、</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图四七 南宋官窑支烧具<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ型T12：A：2 2.Ⅰ型1式T17.2：68 3.Ⅱ型2式T17.2：71 4.Ⅰ型1式T18.3：80<br />
+5.型1式T5-3：127 6.型2式T15-2B：2 7.型3式T15-2B：3 8.型3式T16-9：21</p>
+<p>托径13.2、底径6.8、高2.2厘米（图四七，8；图版五…，2）。</p>
+<p>Ⅳ型 支环、T12.2A：29，环壁直，底平。环圈上粘贴4枚支钉，支钉为瓷土，环为黄白色夹砂胎，生烧，轮制。直径18、通高4厘米（图四七，1；图版五二，1）。</p>
+<p>（4）垫烧具 按形状可分为七型。</p>
+<p>1型垫饼、椭圆形，大小、形制稍异，可分三式。</p>
+<p>1式饼面平整，底有矮足。T16.2：24，边沿斜弧，足底旋削不平。红褐色瓷上胎，质细硬。平面刻划“大宋国浙”四字，字体草陋。面上残留垫烧小圈足器的印痕。直径5.5、底径3.2、高1厘米（图四八，1；图版五三，6）。<br />
+2. 式 饼面及饼底皆不平。T5②A: 26，面稍弧，底不平整，边稍斜。灰色夹细砂胎。饼面有八角形器足垫烧痕。直径11.8、高1.2厘米（图四八，2；图版五三，1）。T1②: 253，</p>
+<p>图四、南宋官窑势挠具<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.1型1式1，2：24 3.1型2式T52A：26 3.1型2式T142：214 4.1型3式T2：B：95<br />
+5.1型式T3：A：6.1型3式T5：129 7.1型：式Y2：24 8.1型1式T17：198<br />
+11型式T1：2. 10.8型1式G1：12 11.8型2式T5DB：8</p>
+<p>饼面弧形凸起，浅灰色胎，直径9、厚0.3厘米（图版五三，2）。T14②：214，为手制，生烧。乳白色胎，直径4、高0.5厘米（图四八，3）。</p>
+<p>3式 面底部稍内弧或凹成小窝。T5③：129，面部光滑稍内弧，边沿弧收，底稍凹。红灰色瓷上胎，质硬，轮制。直径9.5、底径6、高1.4厘米（图四八，6；图版五三，5）。T2B：95，尖唇，平沿，面心有直径2厘米小窝，斜弧壁，平底。灰色瓷土胎。直径5.7、底径3、高1厘米（图四八，4；图版五三，3）。T3②A：6，边厚中心薄，平面内斜，底斜凹。灰色瓷土胎，饼面沾有瓷器圈足痕两个，可能是二次使用。直径7、底径4、高1.2厘米（图四八，5；图版五三，4）。</p>
+<p>型 垫碟。可分二式。</p>
+<p>1式尖唇，直腹，平底或内凹，Y2：24，红褐色瓷土胎。直径4、底径3.6、高1.5厘米（图四八、7；图版五四、2）。T17：98，形制与Y2：24相同，弧唇，平沿。灰色夹砂胎。口径4.8、底径4.8、高1.8厘米（图四八、8；图版五五，4）。<br />
+2式尖唇，直斜腹，凹足。T17.0：20，尖唇，直沿，浅直腹斜折收，凹足。深灰色瓷</p>
+<p>十胎，质细硬，轮制．14径8、底径3.2、高2.5厘米（图四八，9；图版五四，1）。</p>
+<p>Ⅱ型 热盘，T162：23，圆唇，平沿，假圈足稍内凹。灰色瓷土胎，质细硬。直径6.9、足径4.4、高1.9厘米（图版五一、3）。T3②B：15，尖唇，平沿，盘心有孔。灰色夹砂胎，质较粗，直径14、高4厘米（图版五一、4）。</p>
+<p>IV型 垫碗.可分二式</p>
+<p>1式平沿，弧腹，平底、G1：12，方唇，平沿，沿面稍弧，弧腹内收，平底。灰色瓷上胎，胎壁厚，轮制。口径4.1、底径6.4、高3.6厘米（图四八，10；图版五一，6）。<br />
+2式平沿，斜腹，凹底。T51B：8，方唇，宽平沿，弧腹斜收，平底稍内凹。灰色夹砂粗胎，沿面残留烧足器痕迹。口径14、底径6、高4.6厘米（图四八，11；图版五二，2）。</p>
+<p>V型垫托面大，底足小，高矮不一，可分四式。</p>
+<p>1式T形带孔。T14.2：213，圆唇，平沿，沿面大，托身小，直腹中空，圈足形平底。灰色瓷土薄胎，孔径2、2.6、上径6.3、底径4、高2.7厘米（图四九，1；图版五六，3），T5A：25，圆唇，平沿，直腹外撇，余同上。灰色粗砂厚胎。孔径4、上径14.5、底径9.6、高7厘米（图四九，2）T11：230，方唇，平沿，弧肩，直腹，余同上，平面上有垫烧圈足痕。浅灰色厚胎，孔径3.2、11径10.3、底径6.8、高2.7厘米（图版五六，2）。T14：222，为V型1式垫托与A型2式垫碗叠合的垫具。垫托上径6.8、垫碗上径8.4、底径4.6、高2.7、通高3.7厘米（图四九，3：图版五六，1）。<br />
+2式T形无孔、T52A：28，尖唇，斜沿，直腹，平底。托面内凹无孔。灰色夹砂粗胎，径12.8、底径7.8、高5.5厘米（图四九，4；图版五六，4）。<br />
+3式盆形，T[1:3：231，方唇，斜平沿，斜腹内收，平底，中空。红色瓷七胎，质较细。上径13、孔径1.2--8.8、底径5.8、高7厘米（图四九，5）。<br />
+4式 盘形带孔、T22B:96，圆唇，弧沿，斜腹，平底。托面斜平，中心孔径1.54厘米，上大下小。灰色夹砂粗胎，上径17.5，底径9、高4厘米（图四九，7；图版五六，5）。T52A:30，圆唇，平沿，折腹，平底。托面平整，中心孔大。灰色夹砂粗胎，孔径6-6.4、上径...8、底径8.8、高3厘米（图四九，6；图版五一，3）。</p>
+<p>例 换图 换图形可分为二式。</p>
+<ol>
+<li>式 1 扁平形。T52A:35，不规整圆形，系用小泥条盘成。白色瓷土胎，质细，手制。直径3.8厘米（图版五四，5）。T14I:212，扁宽圈壁。浅黄色瓷上胎，素烧，较规整。直径6.8、圈内径3.8、厚1.2厘米（图四九，8：图版五四，4）。T17②：55，敛口，圈壁中部外有凸棱内凹，生烧。外径9、内径4.6-6、高3厘米（图四九，9：图版五四，3）。<br />
+2式高筒形。T14.2：215，圆壁斜直，顶底皆平整，外呈梯形。浅灰色夹细砂瓷胎，轮制上径3.4、底径4、高1.6厘米（图四九，10；图版五四，7）。T5③：132，梯形，沿底平整，圈壁薄，器高似管状、灰色瓷土胎，轮制。上径3.2、底径3.8、高4.8厘米（图版五四，8），T2(2)B：83，线轴形，平沿，束腹，底平，中空。浅灰色，夹细砂瓷胎，轮制。上下直径6.4、腹径1.8、高7.2厘米（图四九，11；图版五四，6）。</li>
+</ol>
+<p>型 垫柱 按大小不同可分二式。</p>
+<p>1式形制小，垫于支垫具、带足器下。T14③：220，圆柱形。灰色夹砂粗胎，手捏制。直径4、高4.4厘米（图版五五，1）。T2②A：99，梯形。灰色夹砂粗胎，手制。高3厘米（图版五五，2）。T2①B：46，线轴形。灰色夹砂粗胎，手制。上径3.6、下径4.5、高3.4厘</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四九 南宋官窑垫烧具</p>
+<ol>
+<li>
+<p>V 型 I 式 T142 : 213</p>
+</li>
+<li>
+<p>V型I式T5.2A：25</p>
+</li>
+</ol>
+<p>3.V型1式T14：222</p>
+<ol>
+<li>
+<p>V型2式T5②A:28</p>
+</li>
+<li>
+<p>$\mathbf{V}$ 型3式T143：23</p>
+</li>
+<li>
+<p>V 型 4 式 T5(2)A:30</p>
+</li>
+<li>
+<p>V 型 4 式 T2(2)B:96</p>
+</li>
+<li>
+<p>W型1式 T14①：242</p>
+</li>
+</ol>
+<p>9.1型1式T172：55</p>
+<ol>
+<li>
+<p>W型2式T142：215</p>
+</li>
+<li>
+<p>W型2式T2②B：83</p>
+</li>
+</ol>
+<p>12.W型2式T5③：134</p>
+<p>t3. W型2式T142·218</p>
+<p>米（图版五丘，3）</p>
+<p>2式较高、粗，可垫大型器物。T5③：134，似倒置的笔筒形，平顶，直腹，圈足。黄白色瓷土素胎，质较细软，轮制生烧。顶径8.5、底径8、胎厚1.8、高14.2厘米（图四九，12；图版五五，5）。T14②：218，似倒扣的钵臼。平面、直腹，内弧腹，足底平。深灰色夹砂粗胎，器形厚重，轮制。顶径8.8、足径9.6、高5.8厘米（图四九，13；图版五五，6）。</p>
+<p>T2②B：98，线轴形。灰色夹砂粗胎。高7厘米（图版五五，7）。</p>
+<p>（5）火眼又称“火照”、“试片”，为掌握窑室内火候用，利用残破坯片钻孔而成。T14：255，瓷杆中部残段，八角形，中空，腹壁中部钻有一对称的小孔，孔径0.6厘米。浅灰色瓷胎，青灰色薄釉，釉面光泽强，有裂纹。直径2.8—3.3、残高3.7厘米（图四五，6）。Y2：18，器腹残片，扁平长方形，中钻一孔，孔径0.9厘米。黑灰色胎，黄绿色釉，光泽强有裂纹。长4.6、宽4、厚0.3厘米（图四五，7）。</p>
+<h1 id="_37">伍结语</h1>
+<p>乌龟山南宋官窑是专门生产宫廷用瓷的御窑。制瓷工艺先进，品种丰富，仅本次发掘就获得23类70多种形式的瓷器（附表一、二）。其中有碗、盘、盏、碟、杯、壶等饮食器皿和罐、钵、坛等盛贮器，也有唾盂、熏炉、灯盏、盆、盒、水盂、笔洗等日用瓷，还有大量仿照古代铜、玉器形式的瓶、炉、花盆等陈设瓷和祭器，以及鸟食罐、象棋（模与范）、弹丸等等，品种齐全，以满足宫廷各种用瓷的需要。在各类瓷器中，碗、盘、碟、杯的数量较多，所以有人认为“官窑青瓷釉层开片，容易沾染污物，不适宜作饮食器皿”的推测是与实际不符的。</p>
+<p>乌龟山官窑的起迄年代，众说纷纭，没有定论。在此次发掘中，我们非常注意窑址兴建和废弃年代的资料。在室内整理时，注意各种遗物上与年代有关的材料。如从T14③中出土一件莲瓣钵，外底刻有“已亥岁”年款。同时运用类型学，对瓷器进行分类排比，理顺了早晚发展序列，为窑址断代提供了确切的资料。</p>
+<p>在本报告的瓷器部分和器物图中，将碗、盘、杯、洗、炉、瓶等器物分成几型儿式，在各式中都存在着器形演变关系。例如1型碗，1式为斜弧腹，底较大，高圈足外撇，厚胎薄釉，支烧；2式，底比1式小，圈足矮而外撇，薄胎厚釉，用垫饼垫烧；3式敞口、斜腹、小底，圈足矮小而直，薄胎厚釉。又如盘，1型1、2、3式的演变是：盘身由大变小，由深变浅；圈足由高变矮，由外撇变直，足底由圆到尖；胎由厚到薄，釉由薄变厚。如1式为厚胎薄釉支烧，2、3式为薄胎厚釉垫烧。再如1型洗，1、2、3式的演变情况与1型盘完全相同。其中1、2式洗为厚胎薄釉支烧，3式洗为薄胎厚釉垫烧。</p>
+<p>此外如I型（鼎式）炉、Ⅳ型（盏式）炉、I型（玉壶春式）瓶等也都存在早晚器形的演变关系。</p>
+<p>总括器形的发展变化是，器形由大到小，由端庄大方演变成轻巧秀丽，艺术造诣不断提高；圈足由高而外撇向圈足矮小、足壁垂直和足底纤细发展。</p>
+<p>上述器物的演变规律，还得到胎釉厚薄和装烧方法等制瓷工艺的验证。即胎由厚转薄，釉由薄变厚，装坏的窑具由以支具为主变为垫具。</p>
+<p>值得我们注意的是：在碗、盘、洗I型的大量标本中，1式的都属于胎较厚的薄釉制品，圈足高而外撇，用支钉具支烧，不见多次上釉的厚釉垫烧标本；相反，在3式中，器物造型优雅，圈足细巧，胎骨细薄。有的胎厚不到1毫米，厚釉垫烧；处于1、3式之间的2式，情况大不相同，在器形与工艺上都存在承前启后的过渡现象。釉层厚薄不一，有一次上釉、二次上釉和三次、四次上釉的，出现厚胎薄釉垫烧、厚胎厚釉支烧、薄胎薄釉垫烧和薄胎厚釉垫烧等错综复杂的现象（附表三）。由此也证明类型的排比是符合产品发展规律的，是可靠的；同时说明乌龟山宫窑先后生产厚胎薄釉和薄胎厚釉两类产品，制瓷历史久长。</p>
+<p>其中厚胎薄釉瓷，从胎釉配方到器形都与汝官窑和北宋官窑相似，而与浙江的传统青瓷有很大差别。经过化学分析，胎中硅含量为 $65\%$ 左右，氧化铝的含量在 $23\%$ 以上，最高的达 $28.6\%$ ，氧化铁在 $2\%$ 以上，最高的达 $4.4\%$ （附表四、五），采用瓷石和紫金土的二元配方</p>
+<p>法做坏。胎料中加紫金上是为了提高铝和铁的含量。铝含量的增高可提高胎的抗变形能力，能做轻巧优美的薄胎瓷；铁含量的提高，使胎呈深灰、灰、浅灰或土黄等色，以模仿汝官窑的香灰色胎。青釉用竹木枝叶煅烧石灰石制成的釉灰配制釉料，釉内 $\mathrm{KzO}$ 、NaO的含量增高，称“碱灰釉”①，与浙江传统用草木灰配制釉料的“灰釉”不同。釉层滋润有玉石感，并用疏密不一的纹片作装饰。碗、盘、洗等小件器物，都是通体施釉，用支钉支烧，这些都与汝官窑相似。同时I型1式盘、I型1式洗、三足盘、Ⅱ型（樽式）炉、觚、I型1式瓶、Ⅱ型2式器盖等的器形与汝官窑和传世北宋官窑瓷器相同。由此证明南宋官窑是“袭故京遗制”，即承袭了北宋官窑的制瓷工艺。</p>
+<p>在这里还值得一提的是，在探方、探沟的最下层，即紧贴生土层面上，出土少量北宋晚期越窑刻花碗的残片，灰胎，施青黄色釉，釉层透明有浮光，内壁刻划篦纹和花草纹。其中有几只仿越窑系碗的口沿被釉粘住的，显然是烧坏后被丢弃的。这类瓷器的发现，给我们一个启示，即乌龟山在建立官窑前可能有生产越窑系青瓷的民窑，在建立官窑时，没收和摧毁了民窑。因此乌龟山官窑建立的时间应在南宋初年，即绍兴八年建都临安后。</p>
+<p>宋叶寅在《坦斋笔衡》中说：“本朝以定州白磁器有芒，不堪用，遂命汝州造青窑器，故河北、唐、邓、耀州悉有之，汝窑为魁。江南则处州龙泉县，窑质颇甃厚”。③ 在北宋中晚期，中原青瓷生产蓬勃发展，制瓷工艺迅速提高，大大超过江南龙泉等窑。所以宋室南迁时，官窑技工随之南来是很自然的事。同时绍兴二十一年（1151年）高宗赵构亲幸清河郡王张俊府弟，张俊进奉宝器、书画等一批珍品，内有汝窑青瓷16件；淳熙六年（1179年）赵构游聚景园，园内布置大青汝窑瓶等。历史记载说明高宗等王室成员是很喜爱汝瓷的。他们喜爱汝窑青瓷，不仅表明汝瓷造型釉色优美、具有很高的使用和观赏价值，而且还寄托着高宗等南宋统治者的怀旧心理。所以南宋官窑吸收汝官窑的传统，生产与汝瓷相类似的瓷器是可以理解的。</p>
+<p>乌龟山官窑的结束时间，无疑是南宋被元灭亡之时。I型碗、Ⅱ型3式碗、Ⅲ型碗、I型3式盘、Ⅳ型盘、Ⅴ型盘、I型3式洗、Ⅳ型2式洗、Ⅲ型碟，Ⅳ型盆等都是南宋晚期的典型器物，还可以为官窑断代提供依据的是，1956年春发掘Y1时，在窑内发现部分元代瓷器；这次在Y1堆积层中所布的三条探沟中（T8—T10）也有零星的发现。这类粗瓷仅见碗一种、胎质粗厚，施黄褐色薄釉，内壁刻划花。有的内底划莲花荷叶，外壁刻狭长的莲瓣，刻花粗放。多数碗的内底有一圈无釉的涩圈，是几只碗叠烧成的粗瓷。部分碗的胎釉之间有一层奶黄色的中间层。这类碗的制作工艺、造型和刻划花的风格与南宋官窑明显不同，而与元代龙泉窑的刻花碗相似，是元代的产品。说明乌龟山窑在元灭宋时，官窑消失了，但制瓷窑场在元代还在继续使用，生产刻划花粗瓷。由此证明乌龟山官窑建于南宋初年，结束于宋末，是南宋王朝建立起来的，由官府直接控制的制瓷窑场。</p>
+<p>乌龟山南宋官窑吸取了全国先进的青瓷生产工艺。前期厚胎薄釉青瓷的胎釉配方、造型、釉层开片和用支钉具支烧等工艺都是承袭北宋官窑的。同时拉坯成型用的辗鲈、装坏用的凹底匣钵和龙窑则是选用南方传统的制瓷设备。</p>
+<p>作坊内发现的各种遗迹，是研究官窑生产工艺的珍贵资料。</p>
+<p>F3南开间有一个辗鲈遗迹，是拉坯成型用的工具，说明这里是成型工房。练泥池紧靠南开间，坏泥经过踩练后，就送到成型工房拉坯成型。先后工序紧密配合，布局合理。</p>
+<p>在F4的内外有修坯用的辗鲈1个、釉料缸2只、素烧炉残迹1处，周围散布着大量素烧坏。素烧坯经过低温烘烧，有的无釉，有的已上1次或2次釉。这些遗迹紧密相连，展现了官窑后期薄胎厚釉青瓷进行修胎、多次素烧、多次上釉的工艺流程，是一组极为难得的、研究价值很高的珍贵遗迹。在严重生烧的薄胎厚釉瓷的断面，釉层明显地分成3层或4层，说明厚釉瓷是经过3或4次素烧、上釉的复杂的工艺过程，釉层丰厚，滋润如玉，把我国的青瓷生产推进到前所未有的高度。</p>
+<p>经过素烧上釉的坏件最后装在龙窑内烧成。龙窑两座，都建在乌龟山的西坡，一南一北，地势干燥，又与作坊紧密相连，有路可通。龙窑窑身挖槽砌筑在山坡中，窑墙外是山上，可以减少热量的散发。窑壁用砖砌，建材比较讲究。其中Y2在偏北处，窑体长，堆积层中的早期产品，多数为厚胎薄釉青瓷，是南宋官窑前期使用的窑。Y1在偏南处，窑长仅23.5米。龙窑窑身短，有利于控制窑内的烧成温度和气氛，可烧高档精细的青瓷。所以Y1应该是为了烧薄胎厚釉青瓷而建造的，使用年代在南宋后期。同时在窑内和窑旁废品堆积层中出土部分元代粗瓷，说明在元代还使用了一段时间。</p>
+<p>乌龟山官窑遗迹全面揭示后，引起了有关方面的重视。为了弘扬中华民族的优秀文化，进行爱国主义教育，激发民族自尊心，决定建立南宋官窑博物馆。经过积极的筹备建设，在作坊遗迹和龙窑处建成了保护性建筑，使这些罕见的遗迹得到保护，并成为向广大观众宣传南宋官窑的实物资料。</p>
+<p>附表一 南宋官窑出土瓷片中器形统计表  </p>
+<table><tr><td rowspan="2" colspan="2">数器名单位与层次</td><td rowspan="2">碗</td><td rowspan="2">三足盘</td><td rowspan="2">碟</td><td rowspan="2">盆</td><td rowspan="2">洗</td><td rowspan="2">盒</td><td rowspan="2">杯</td><td rowspan="2" colspan="2">坛钵</td><td rowspan="2">盆</td><td rowspan="2">唾具</td><td rowspan="2">花盆</td><td rowspan="2">炉</td><td rowspan="2">尊</td><td rowspan="2" colspan="2">甑瓶壶</td><td rowspan="2">罐</td><td rowspan="2">灯</td><td rowspan="2">器盖</td><td rowspan="2">器座</td><td rowspan="2">弹丸</td><td rowspan="2">瓷片</td><td rowspan="2">合计瓷片数</td><td></td><td></td></tr><tr><td></td><td></td></tr><tr><td rowspan="3">T1</td><td>1</td><td>76</td><td>2 44</td><td>1</td><td></td><td></td><td></td><td>7</td><td>1</td><td></td><td>1</td><td></td><td></td><td>17</td><td>1</td><td>3</td><td>18</td><td>1</td><td>5</td><td></td><td>8</td><td>3</td><td></td><td>301</td><td>199</td><td></td></tr><tr><td>2</td><td>31</td><td>30</td><td></td><td></td><td></td><td></td><td>4</td><td></td><td></td><td>3</td><td></td><td></td><td>11</td><td></td><td></td><td>21</td><td>5</td><td>4</td><td>1</td><td>3</td><td></td><td></td><td>408</td><td>521</td><td></td></tr><tr><td>3</td><td>138</td><td>132</td><td>7</td><td></td><td>7</td><td>1</td><td>20</td><td>5</td><td>1</td><td>24</td><td>1</td><td></td><td>81</td><td></td><td>9</td><td>112</td><td>22</td><td>26</td><td></td><td>23</td><td>4</td><td></td><td>1107</td><td>1720</td><td></td></tr><tr><td rowspan="2">T2</td><td>1</td><td>189</td><td>1 292</td><td>2</td><td></td><td></td><td>27</td><td>39</td><td>5</td><td>1</td><td>5</td><td></td><td></td><td>133</td><td></td><td>4</td><td>242</td><td>39</td><td>76</td><td></td><td>55</td><td></td><td></td><td>1455</td><td>2565</td><td></td></tr><tr><td>2</td><td>356</td><td>153</td><td></td><td>1</td><td>1</td><td>4</td><td>26</td><td>2</td><td></td><td>6</td><td></td><td></td><td>205</td><td></td><td>3</td><td>349</td><td>80</td><td>117</td><td></td><td>61</td><td>1</td><td>1</td><td>2349</td><td>4017</td><td></td></tr><tr><td rowspan="3">T3</td><td>1</td><td>10</td><td>8</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td>4</td><td></td><td>1</td><td>26</td><td>6</td><td>6</td><td></td><td>3</td><td></td><td></td><td>87</td><td>154</td><td></td></tr><tr><td>2</td><td>17</td><td>9</td><td>1</td><td></td><td></td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td>8</td><td></td><td>3</td><td>22</td><td>1</td><td>7</td><td></td><td>6</td><td></td><td></td><td>93</td><td>173</td><td></td></tr><tr><td>3</td><td>2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td>9</td><td>14</td><td></td></tr><tr><td rowspan="2">T4</td><td>1</td><td>29</td><td>33</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td>7</td><td></td><td>2</td><td>17</td><td>3</td><td>7</td><td></td><td>1</td><td>1</td><td></td><td>32</td><td>136</td><td></td></tr><tr><td>2</td><td>146</td><td>2 67</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td>3</td><td></td><td></td><td>33</td><td></td><td>4</td><td>101</td><td>13</td><td>24</td><td></td><td>11</td><td>3</td><td></td><td>91</td><td>502</td><td></td></tr><tr><td rowspan="3">T5</td><td>1</td><td>40</td><td>28</td><td></td><td></td><td></td><td></td><td>3</td><td></td><td></td><td>5</td><td></td><td></td><td>13</td><td></td><td>20</td><td>15</td><td>5</td><td>5</td><td></td><td>3</td><td>5</td><td></td><td>51</td><td>196</td><td></td></tr><tr><td>2</td><td>272</td><td>122</td><td>1</td><td>2</td><td>3</td><td>4</td><td>8</td><td></td><td>3</td><td>23</td><td></td><td>1</td><td>80</td><td></td><td>5</td><td>149</td><td>137</td><td>35</td><td></td><td>17</td><td>43</td><td></td><td>361</td><td>1266</td><td></td></tr><tr><td>3</td><td>76</td><td>72</td><td></td><td></td><td>1</td><td></td><td>7</td><td>1</td><td>1</td><td>2</td><td></td><td></td><td>10</td><td></td><td>6</td><td>32</td><td></td><td>47</td><td></td><td>5</td><td></td><td></td><td>140</td><td>400</td><td></td></tr><tr><td rowspan="2">T8</td><td>2</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td></tr><tr><td>1</td><td>56</td><td></td><td>18</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td>13</td><td></td><td></td><td>3</td><td></td><td></td><td>10</td><td>1</td><td>1</td><td></td><td>2</td><td></td><td></td><td>122</td><td>227</td><td></td></tr><tr><td rowspan="2">T10</td><td>2</td><td>144</td><td>1</td><td>31</td><td>2</td><td></td><td></td><td>4</td><td></td><td></td><td>20</td><td></td><td></td><td>8</td><td></td><td>2</td><td>49</td><td>10</td><td>13</td><td></td><td>12</td><td></td><td></td><td>358</td><td>654</td><td></td></tr><tr><td>3</td><td>10</td><td></td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td>9</td><td></td><td></td><td>5</td><td></td><td></td><td>10</td><td>1</td><td>2</td><td></td><td></td><td></td><td></td><td>38</td><td>109</td><td></td></tr><tr><td>T11</td><td>1</td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td>4</td><td></td></tr><tr><td rowspan="2">T12</td><td>1</td><td>31</td><td></td><td>6</td><td></td><td></td><td></td><td>2</td><td></td><td></td><td>3</td><td></td><td></td><td>8</td><td></td><td></td><td>7</td><td>1</td><td>1</td><td></td><td>2</td><td></td><td></td><td>53</td><td>114</td><td></td></tr><tr><td>2</td><td>456</td><td></td><td>166</td><td>2</td><td>1</td><td></td><td>17</td><td>65</td><td>2</td><td></td><td>7</td><td></td><td></td><td>103</td><td>1</td><td>12</td><td>266</td><td>36</td><td>55</td><td></td><td>17</td><td></td><td>1133</td><td>2339</td><td></td></tr><tr><td rowspan="3">T14</td><td>1</td><td>518</td><td>10 564</td><td>1</td><td></td><td>1</td><td>14</td><td>46</td><td>8</td><td></td><td>22</td><td></td><td>2</td><td>218</td><td></td><td>39</td><td>569</td><td>117</td><td>129</td><td></td><td>38</td><td></td><td></td><td>3029</td><td>5325</td><td></td></tr><tr><td>2</td><td>414</td><td>17 135</td><td>1</td><td></td><td>3</td><td>14</td><td>21</td><td>2</td><td>2</td><td>4</td><td></td><td></td><td>202</td><td></td><td>27</td><td>367</td><td>80</td><td>98</td><td></td><td>35</td><td></td><td>1</td><td>3510</td><td>5236</td><td></td></tr><tr><td>3</td><td>51</td><td>7 14</td><td></td><td></td><td>1</td><td>9</td><td>21</td><td>2</td><td>3</td><td></td><td></td><td></td><td>73</td><td></td><td>1</td><td>49</td><td>20</td><td>23</td><td>1</td><td>12</td><td></td><td></td><td>349</td><td>663</td><td></td></tr><tr><td rowspan="2">T15</td><td>1</td><td>10</td><td></td><td>10</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>4</td><td></td><td>4</td><td>8</td><td>3</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td>41</td><td></td></tr><tr><td>2</td><td>51</td><td></td><td>25</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td>4</td><td></td><td></td><td>7</td><td></td><td>6</td><td>25</td><td>5</td><td>8</td><td></td><td>4</td><td>1</td><td></td><td></td><td>137</td><td></td></tr><tr><td rowspan="3">T16</td><td>1</td><td>96</td><td></td><td>236</td><td></td><td></td><td>2</td><td>11</td><td>20</td><td>3</td><td></td><td>8</td><td></td><td></td><td>81</td><td></td><td>6</td><td>149</td><td>38</td><td>46</td><td></td><td>21</td><td></td><td></td><td>1181</td><td>1898</td></tr><tr><td>2</td><td>52</td><td></td><td>73</td><td></td><td></td><td></td><td>5</td><td>7</td><td>2</td><td></td><td></td><td></td><td></td><td>35</td><td></td><td>6</td><td>50</td><td>8</td><td>10</td><td></td><td>15</td><td></td><td></td><td>480</td><td>743</td></tr><tr><td>3</td><td>3</td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td>12</td><td>21</td><td></td></tr><tr><td rowspan="3">T17</td><td>1</td><td>207</td><td></td><td>214</td><td>1</td><td>1</td><td>10</td><td>1</td><td></td><td>9</td><td></td><td></td><td></td><td>18</td><td></td><td></td><td>189</td><td></td><td></td><td>25</td><td></td><td>11</td><td></td><td></td><td>697</td><td></td></tr><tr><td>2</td><td>426</td><td></td><td>294</td><td></td><td>1</td><td></td><td>3</td><td>4</td><td></td><td>11</td><td></td><td></td><td></td><td>33</td><td></td><td></td><td>147</td><td>1</td><td>19</td><td></td><td>38</td><td></td><td></td><td>977</td><td></td></tr><tr><td>3</td><td>220</td><td>2 128</td><td></td><td></td><td>1</td><td>2</td><td></td><td></td><td>7</td><td>6</td><td></td><td></td><td>7</td><td></td><td></td><td>73</td><td></td><td>17</td><td></td><td>12</td><td></td><td></td><td></td><td>475</td><td></td></tr><tr><td rowspan="3">T18</td><td>1</td><td>130</td><td></td><td>65</td><td></td><td></td><td>1</td><td>8</td><td></td><td></td><td>1</td><td></td><td></td><td></td><td>13</td><td></td><td></td><td>51</td><td>1</td><td></td><td></td><td>2</td><td></td><td></td><td>272</td><td></td></tr><tr><td>2</td><td>568</td><td></td><td>238</td><td></td><td></td><td></td><td>32</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td>19</td><td></td><td></td><td>162</td><td></td><td>1</td><td></td><td>25</td><td>2</td><td>1</td><td></td><td>1049</td></tr><tr><td>3</td><td>109</td><td></td><td>69</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td><td></td><td></td><td>16</td><td></td><td>2</td><td></td><td>5</td><td></td><td></td><td>204</td><td></td></tr><tr><td rowspan="4">T19</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td></tr><tr><td>1</td><td>52</td><td></td><td>26</td><td></td><td></td><td></td><td></td><td></td><td>2</td><td></td><td></td><td></td><td>2</td><td></td><td></td><td>5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>87</td><td></td></tr><tr><td>2</td><td>59</td><td></td><td>9</td><td></td><td></td><td></td><td>5</td><td></td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td>5</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td>81</td><td></td></tr><tr><td>3</td><td>190</td><td></td><td>12</td><td></td><td></td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td>6</td><td></td><td></td><td>19</td><td>1</td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td>263</td><td></td></tr></table>
+
+<p>续附表一  </p>
+<table><tr><td rowspan="2">数 器号
+计量单位
+与层次</td><td rowspan="2">碗</td><td rowspan="2">足盆</td><td rowspan="2">碟盆</td><td rowspan="2">盆杯</td><td rowspan="2">坛钵</td><td rowspan="2">盆</td><td rowspan="2">唾花盆</td><td rowspan="2">炉</td><td rowspan="2">尊舰</td><td rowspan="2">瓶</td><td rowspan="2">壶</td><td rowspan="2" colspan="2">罐灯</td><td rowspan="2">器盖座</td><td rowspan="2">弹丸</td><td rowspan="2">瓷片</td><td rowspan="2">合计瓷片数</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>F3</td><td>15</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>11</td><td>40</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>F1</td><td>16</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td><td>30</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>F5</td><td>24</td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>40</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>G1</td><td>10</td><td>9</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td>41</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>C1</td><td>5</td><td>15</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>68</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>合计</td><td>5332</td><td>13</td><td>1022</td><td>22</td><td>6</td><td>36</td><td>177</td><td>316</td><td>3343</td><td>179</td><td>1</td><td>3</td><td>1468</td><td>2</td><td>165</td><td>3367</td><td>650</td><td>822</td><td>2</td><td>453</td><td>64</td><td>16840</td><td>34050</td></tr><tr><td>主要器形百分比</td><td>31%</td><td>23%</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td colspan="4">占器形总数的98%</td><td></td><td></td></tr></table>
+
+<p>附表：南宋官窑出土瓷片胎釉色泽统计表  </p>
+<table><tr><td rowspan="2">单位</td><td rowspan="2">层次</td><td rowspan="2">数 量 胎色</td><td colspan="4">釉</td><td colspan="4">薄釉</td><td rowspan="2">生烧</td><td rowspan="2">合计</td></tr><tr><td>粉青</td><td>灰青</td><td>米黄</td><td>小计</td><td>粉青</td><td>灰青</td><td>米黄</td><td>小计</td></tr><tr><td rowspan="9">T1</td><td rowspan="4">1</td><td>深灰</td><td>7</td><td>63</td><td>8</td><td>75</td><td></td><td>73</td><td>26</td><td>99</td><td rowspan="4">119</td><td rowspan="4">495</td></tr><tr><td>灰</td><td></td><td>8</td><td>7</td><td>15</td><td></td><td>18</td><td>9</td><td>27</td></tr><tr><td>黄灰</td><td>4</td><td>10</td><td>8</td><td>52</td><td>2</td><td>69</td><td>34</td><td>105</td></tr><tr><td>深灰</td><td>4</td><td>75</td><td>17</td><td>96</td><td></td><td>49</td><td>2</td><td>51</td></tr><tr><td rowspan="3">2</td><td>灰</td><td>15</td><td colspan="2">13</td><td>28</td><td></td><td>67</td><td>54</td><td>121</td><td rowspan="2">221</td><td rowspan="2">522</td></tr><tr><td>黄灰</td><td></td><td></td><td></td><td></td><td></td><td>5</td><td></td><td>5</td></tr><tr><td>深灰</td><td>32</td><td>159</td><td>18</td><td>209</td><td>10</td><td>108</td><td>58</td><td>176</td><td rowspan="3">588</td><td rowspan="3">1716</td></tr><tr><td rowspan="2">3</td><td>灰</td><td colspan="3">2</td><td>2</td><td>2</td><td>53</td><td>3</td><td>58</td></tr><tr><td>黄灰</td><td>11</td><td>128</td><td>51</td><td>193</td><td>3</td><td>253</td><td>234</td><td>190</td></tr><tr><td rowspan="6">T2</td><td rowspan="3">1</td><td>深灰</td><td>87</td><td>261</td><td>21</td><td>369</td><td>33</td><td>323</td><td>94</td><td>450</td><td rowspan="3">486</td><td rowspan="3">2269</td></tr><tr><td>灰</td><td></td><td>20</td><td>7</td><td>27</td><td>10</td><td>31</td><td>2</td><td>43</td></tr><tr><td>黄灰</td><td></td><td>155</td><td>65</td><td>220</td><td>25</td><td>335</td><td>344</td><td>704</td></tr><tr><td rowspan="3">2</td><td>深灰</td><td>117</td><td>196</td><td>37</td><td>350</td><td></td><td>408</td><td>126</td><td>534</td><td rowspan="3">2054</td><td rowspan="3">4260</td></tr><tr><td>灰</td><td>34</td><td>31</td><td>14</td><td>79</td><td></td><td>71</td><td>45</td><td>116</td></tr><tr><td>黄灰</td><td>56</td><td>133</td><td>49</td><td>238</td><td>4</td><td>373</td><td>512</td><td>889</td></tr><tr><td rowspan="6">T3</td><td rowspan="4">1</td><td>深灰</td><td>2</td><td>7</td><td>4</td><td>13</td><td></td><td>17</td><td>12</td><td>29</td><td rowspan="2">30</td><td rowspan="2">158</td></tr><tr><td>灰</td><td>2</td><td>1</td><td></td><td>3</td><td></td><td>12</td><td>7</td><td>19</td></tr><tr><td>黄灰</td><td></td><td>3</td><td>9</td><td>12</td><td></td><td>30</td><td>22</td><td>52</td><td></td><td></td></tr><tr><td>深灰</td><td>4</td><td>14</td><td>2</td><td>20</td><td></td><td>6</td><td>5</td><td>11</td><td rowspan="3">47</td><td rowspan="3">175</td></tr><tr><td rowspan="2">2</td><td>灰</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>黄灰</td><td>4</td><td>15</td><td>4</td><td>23</td><td></td><td>37</td><td>37</td><td>74</td></tr><tr><td rowspan="6">T1</td><td rowspan="3">1</td><td>深灰</td><td>21</td><td>2</td><td>2</td><td>25</td><td></td><td>8</td><td>5</td><td>13</td><td rowspan="3"></td><td rowspan="3">137</td></tr><tr><td>灰</td><td>6</td><td>1</td><td></td><td>7</td><td></td><td>35</td><td>10</td><td>45</td></tr><tr><td>黄浅灰</td><td></td><td></td><td>2</td><td>2</td><td></td><td></td><td>45</td><td>45</td></tr><tr><td rowspan="3">2</td><td>深灰</td><td>36</td><td>8</td><td>3</td><td>47</td><td>3</td><td>31</td><td>16</td><td>50</td><td rowspan="3"></td><td rowspan="3">493</td></tr><tr><td>灰</td><td>17</td><td>23</td><td>3</td><td>43</td><td>3</td><td>152</td><td>37</td><td>192</td></tr><tr><td>黄浅灰</td><td></td><td></td><td>21</td><td>21</td><td></td><td></td><td>140</td><td>140</td></tr><tr><td rowspan="9">T5</td><td rowspan="3">1</td><td>深灰</td><td>103</td><td>13</td><td>6</td><td>122</td><td>3</td><td>17</td><td>6</td><td>26</td><td rowspan="3"></td><td rowspan="3">665</td></tr><tr><td>灰</td><td>1</td><td>101</td><td>3</td><td>108</td><td>13</td><td>172</td><td>9</td><td>194</td></tr><tr><td>黄灰</td><td></td><td>10</td><td>68</td><td>78</td><td></td><td>12</td><td>125</td><td>137</td></tr><tr><td rowspan="3">2</td><td>深灰</td><td>185</td><td>10</td><td>15</td><td>210</td><td>34</td><td></td><td></td><td>34</td><td rowspan="3"></td><td rowspan="3">738</td></tr><tr><td>灰</td><td></td><td>110</td><td></td><td>110</td><td></td><td>190</td><td>10</td><td>200</td></tr><tr><td>黄浅灰</td><td></td><td>12</td><td>48</td><td>60</td><td></td><td>8</td><td>116</td><td>124</td></tr><tr><td rowspan="3">3</td><td>深灰</td><td>109</td><td></td><td></td><td>109</td><td></td><td>14</td><td>8</td><td>22</td><td rowspan="3"></td><td rowspan="3">379</td></tr><tr><td>灰</td><td></td><td></td><td></td><td></td><td></td><td>85</td><td>10</td><td>95</td></tr><tr><td>黄浅灰</td><td></td><td></td><td>3</td><td>3</td><td></td><td></td><td>150</td><td>150</td></tr></table>
+
+<p>续附表二  </p>
+<table><tr><td rowspan="2">单位</td><td rowspan="2">层次</td><td rowspan="2">数 色 胎色</td><td colspan="4">厚 轴</td><td colspan="4">薄 轴</td><td rowspan="2">生烧</td><td rowspan="2">合计</td></tr><tr><td>粉青</td><td>灰青</td><td>米黄</td><td>小计</td><td>粉青</td><td>灰青</td><td>米黄</td><td>小计</td></tr><tr><td rowspan="9">T10</td><td rowspan="3">①</td><td>深灰</td><td>90</td><td>10</td><td>2</td><td>102</td><td></td><td></td><td></td><td></td><td rowspan="3"></td><td rowspan="3">227</td></tr><tr><td>灰</td><td>22</td><td>54</td><td>7</td><td>83</td><td></td><td>11</td><td>4</td><td>15</td></tr><tr><td>黄浅灰</td><td></td><td></td><td>20</td><td>20</td><td></td><td></td><td>7</td><td>7</td></tr><tr><td rowspan="3">②</td><td>深灰</td><td>298</td><td>24</td><td>8</td><td>330</td><td></td><td>27</td><td></td><td>270</td><td rowspan="3"></td><td rowspan="3">661</td></tr><tr><td>灰</td><td>40</td><td>6.0</td><td>11</td><td>114</td><td>6</td><td>98</td><td>8</td><td>112</td></tr><tr><td>黄浅灰</td><td></td><td></td><td>48</td><td>48</td><td></td><td></td><td>30</td><td>30</td></tr><tr><td rowspan="3">③</td><td>深灰</td><td>53</td><td>3</td><td>15</td><td>71</td><td></td><td></td><td></td><td></td><td rowspan="3"></td><td rowspan="3">109</td></tr><tr><td>灰</td><td>10</td><td>7</td><td>6</td><td>23</td><td></td><td>5</td><td></td><td>5</td></tr><tr><td>黄浅灰</td><td></td><td></td><td>10</td><td>10</td><td></td><td></td><td></td><td></td></tr><tr><td rowspan="6">T12</td><td rowspan="3">①</td><td>深灰</td><td>11</td><td>4</td><td></td><td>15</td><td></td><td></td><td></td><td></td><td rowspan="3"></td><td rowspan="3">33</td></tr><tr><td>灰</td><td>2</td><td>16</td><td></td><td>18</td><td></td><td></td><td></td><td></td></tr><tr><td>黄浅灰</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td rowspan="3">②</td><td>深灰</td><td>240</td><td>30</td><td>17</td><td>287</td><td>140</td><td>18</td><td>30</td><td>188</td><td rowspan="3"></td><td rowspan="3">2313</td></tr><tr><td>灰</td><td>35</td><td>420</td><td>120</td><td>575</td><td>20</td><td>650</td><td>20</td><td>690</td></tr><tr><td>黄浅灰</td><td></td><td>23</td><td></td><td>23</td><td></td><td>50</td><td>500</td><td>550</td></tr><tr><td rowspan="9">T14</td><td rowspan="3">①</td><td>深灰</td><td>67</td><td>363</td><td>57</td><td>487</td><td>13</td><td>459</td><td>286</td><td>758</td><td rowspan="3">1747</td><td rowspan="3">5291</td></tr><tr><td>灰</td><td>7</td><td>14</td><td>14</td><td>35</td><td></td><td>44</td><td>176</td><td>220</td></tr><tr><td>黄灰</td><td>21</td><td>144</td><td>121</td><td>286</td><td>12</td><td>682</td><td>1064</td><td>1758</td></tr><tr><td rowspan="3">②</td><td>深灰</td><td>26</td><td>237</td><td>143</td><td>406</td><td>5</td><td>389</td><td>200</td><td>594</td><td rowspan="3">1559</td><td rowspan="3">4136</td></tr><tr><td>灰</td><td>19</td><td>6</td><td>9</td><td>34</td><td></td><td>5</td><td>6</td><td>11</td></tr><tr><td>黄灰</td><td>26</td><td>129</td><td>154</td><td>309</td><td>9</td><td>308</td><td>906</td><td>1223</td></tr><tr><td rowspan="3">③</td><td>深灰</td><td>7</td><td>91</td><td>7</td><td>105</td><td>6</td><td>61</td><td>8</td><td>75</td><td rowspan="3">196</td><td rowspan="3">769</td></tr><tr><td>灰</td><td>139</td><td>64</td><td>48</td><td>251</td><td>9</td><td>18</td><td>43</td><td>70</td></tr><tr><td>黄灰</td><td></td><td>6</td><td>4</td><td>10</td><td></td><td>6</td><td>56</td><td>62</td></tr><tr><td rowspan="6">T15</td><td rowspan="3">①</td><td>深灰</td><td></td><td>2</td><td>3</td><td>5</td><td></td><td>3</td><td></td><td>3</td><td rowspan="3"></td><td rowspan="3">51</td></tr><tr><td>灰</td><td></td><td>14</td><td></td><td>14</td><td></td><td>10</td><td>3</td><td>13</td></tr><tr><td>黄浅灰</td><td></td><td></td><td>2</td><td>2</td><td></td><td>1</td><td>13</td><td>14</td></tr><tr><td rowspan="3">②</td><td>深灰</td><td>25</td><td>4</td><td></td><td>29</td><td></td><td>5</td><td>6</td><td>11</td><td rowspan="3"></td><td rowspan="3">203</td></tr><tr><td>灰</td><td>5</td><td>12</td><td>2</td><td>19</td><td></td><td>80</td><td>2</td><td>82</td></tr><tr><td>黄浅灰</td><td></td><td></td><td>4</td><td>4</td><td></td><td>8</td><td>50</td><td>58</td></tr><tr><td rowspan="9">T16</td><td rowspan="3">①</td><td>深灰</td><td>60</td><td>205</td><td>22</td><td>287</td><td>4</td><td>286</td><td>25</td><td>315</td><td rowspan="3">348</td><td rowspan="3">1878</td></tr><tr><td>灰</td><td>19</td><td>8</td><td>6</td><td>33</td><td></td><td>9</td><td>5</td><td>14</td></tr><tr><td>黄灰</td><td>5</td><td>101</td><td>30</td><td>136</td><td>6</td><td>387</td><td>352</td><td>745</td></tr><tr><td rowspan="3">②</td><td>深灰</td><td>31</td><td>74</td><td>8</td><td>113</td><td>4</td><td>85</td><td>43</td><td>132</td><td rowspan="3">156</td><td rowspan="3">742</td></tr><tr><td>灰</td><td>13</td><td>7</td><td>8</td><td>28</td><td>3</td><td>2</td><td>5</td><td>10</td></tr><tr><td>黄灰</td><td></td><td>43</td><td>16</td><td>59</td><td>1</td><td>134</td><td>109</td><td>244</td></tr><tr><td rowspan="3">③</td><td>深灰</td><td></td><td>4</td><td>1</td><td>5</td><td></td><td>5</td><td>2</td><td>7</td><td rowspan="3">3</td><td rowspan="3">24</td></tr><tr><td>灰</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>黄灰</td><td></td><td></td><td>1</td><td>1</td><td></td><td>3</td><td>5</td><td>8</td></tr></table>
+
+<p>续附表二  </p>
+<table><tr><td rowspan="2">单位</td><td rowspan="2">层次</td><td rowspan="2">数量色胎色</td><td colspan="4">厚釉</td><td colspan="4">薄釉</td><td rowspan="2">生烧</td><td rowspan="2">合计</td></tr><tr><td>粉青</td><td>灰青</td><td>米黄</td><td>小计</td><td>粉青</td><td>灰青</td><td>米黄</td><td>小计</td></tr><tr><td rowspan="9">T17</td><td rowspan="3">①</td><td>深灰</td><td>14</td><td>3</td><td>8</td><td>25</td><td>56</td><td>7</td><td>1</td><td>64</td><td rowspan="3"></td><td rowspan="3">291</td></tr><tr><td>灰</td><td>9</td><td>27</td><td>17</td><td>53</td><td>17</td><td>74</td><td>2</td><td>93</td></tr><tr><td>黄灰</td><td></td><td>2</td><td>26</td><td>28</td><td></td><td>3</td><td>25</td><td>28</td></tr><tr><td rowspan="3">②</td><td>深灰</td><td>59</td><td>15</td><td>13</td><td>87</td><td>76</td><td>2</td><td>5</td><td>83</td><td rowspan="3"></td><td rowspan="3">514</td></tr><tr><td>灰</td><td>7</td><td>114</td><td>26</td><td>147</td><td>23</td><td>17</td><td>9</td><td>49</td></tr><tr><td>黄灰</td><td></td><td>7</td><td>40</td><td>47</td><td></td><td></td><td>101</td><td>101</td></tr><tr><td rowspan="3">③</td><td>深灰</td><td>20</td><td>5</td><td>3</td><td>28</td><td>52</td><td>5</td><td>2</td><td>59</td><td rowspan="3"></td><td rowspan="3">258</td></tr><tr><td>灰</td><td>3</td><td>40</td><td>5</td><td>48</td><td>15</td><td>55</td><td>3</td><td>73</td></tr><tr><td>黄灰</td><td></td><td>2</td><td>8</td><td>10</td><td></td><td>2</td><td>38</td><td>40</td></tr><tr><td rowspan="9">T18</td><td rowspan="3">①</td><td>深灰</td><td>24</td><td></td><td>3</td><td>27</td><td>56</td><td>5</td><td>2</td><td>63</td><td rowspan="3"></td><td rowspan="3">246</td></tr><tr><td>灰</td><td>3</td><td>4</td><td>6</td><td>13</td><td>18</td><td>64</td><td>4</td><td>86</td></tr><tr><td>黄灰</td><td></td><td></td><td>10</td><td>10</td><td></td><td>3</td><td>44</td><td>47</td></tr><tr><td rowspan="3">②</td><td>深灰</td><td>26</td><td></td><td>2</td><td>28</td><td>61</td><td>13</td><td>8</td><td>82</td><td rowspan="3"></td><td rowspan="3">446</td></tr><tr><td>灰</td><td>3</td><td></td><td>4</td><td>7</td><td>18</td><td>146</td><td>13</td><td>177</td></tr><tr><td>黄灰</td><td></td><td></td><td>7</td><td>7</td><td></td><td>7</td><td>138</td><td>145</td></tr><tr><td rowspan="3">③</td><td>深灰</td><td>4</td><td></td><td>1</td><td>5</td><td>19</td><td></td><td>2</td><td>21</td><td rowspan="3"></td><td rowspan="3">76</td></tr><tr><td>灰</td><td>1</td><td></td><td>4</td><td>5</td><td>6</td><td>2</td><td>3</td><td>11</td></tr><tr><td>黄灰</td><td></td><td></td><td>6</td><td>6</td><td></td><td></td><td>28</td><td>28</td></tr><tr><td rowspan="9">Y2</td><td rowspan="3">①</td><td>深灰</td><td>4</td><td>2</td><td></td><td>6</td><td>2</td><td>7</td><td>2</td><td>11</td><td rowspan="3"></td><td rowspan="3">47</td></tr><tr><td>灰</td><td></td><td>8</td><td>2</td><td>10</td><td></td><td>8</td><td>3</td><td>11</td></tr><tr><td>黄灰</td><td></td><td></td><td>4</td><td>4</td><td></td><td></td><td>5</td><td>5</td></tr><tr><td rowspan="3">②</td><td>深灰</td><td>1</td><td></td><td>1</td><td>2</td><td>6</td><td>1</td><td></td><td>7</td><td rowspan="3"></td><td rowspan="3">47</td></tr><tr><td>灰</td><td></td><td>4</td><td>4</td><td>8</td><td>2</td><td>11</td><td>1</td><td>14</td></tr><tr><td>黄灰</td><td></td><td></td><td>6</td><td>6</td><td></td><td></td><td>10</td><td>10</td></tr><tr><td rowspan="3">③</td><td>深灰</td><td>18</td><td>1</td><td></td><td>19</td><td>14</td><td></td><td>1</td><td>15</td><td rowspan="3"></td><td rowspan="3">92</td></tr><tr><td>灰</td><td>2</td><td>14</td><td>1</td><td>17</td><td>4</td><td>10</td><td>2</td><td>16</td></tr><tr><td>黄灰</td><td></td><td>2</td><td>2</td><td>4</td><td></td><td>1</td><td>20</td><td>21</td></tr><tr><td rowspan="3" colspan="2">F3</td><td>深灰</td><td>3</td><td>3</td><td>3</td><td>9</td><td></td><td>2</td><td></td><td>2</td><td rowspan="3">13</td><td rowspan="3">40</td></tr><tr><td>灰</td><td>1</td><td>3</td><td></td><td>4</td><td></td><td>7</td><td>1</td><td>8</td></tr><tr><td>黄灰</td><td></td><td></td><td></td><td></td><td></td><td>3</td><td>1</td><td>4</td></tr><tr><td rowspan="3" colspan="2">F4</td><td>深灰</td><td>4</td><td></td><td></td><td>4</td><td>5</td><td></td><td>9</td><td>14</td><td rowspan="3"></td><td rowspan="3">48</td></tr><tr><td>灰</td><td></td><td></td><td></td><td></td><td>10</td><td>1</td><td>11</td><td>22</td></tr><tr><td>黄灰</td><td></td><td></td><td></td><td></td><td></td><td>4</td><td>4</td><td>8</td></tr><tr><td rowspan="3" colspan="2">F5</td><td>深灰</td><td>7</td><td></td><td></td><td>7</td><td></td><td></td><td></td><td></td><td rowspan="3"></td><td rowspan="3">35</td></tr><tr><td>灰</td><td></td><td></td><td></td><td></td><td>11</td><td></td><td></td><td>11</td></tr><tr><td>黄灰</td><td></td><td></td><td></td><td></td><td></td><td></td><td>17</td><td>17</td></tr><tr><td rowspan="3" colspan="2">G1</td><td>深灰</td><td>1</td><td>7</td><td>3</td><td>11</td><td></td><td>5</td><td>3</td><td>8</td><td rowspan="3">26</td><td rowspan="3">80</td></tr><tr><td>灰</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>黄灰</td><td>1</td><td>4</td><td>5</td><td>10</td><td></td><td>19</td><td>6</td><td>25</td></tr></table>
+
+<p>续附表二  </p>
+<table><tr><td rowspan="2">单位</td><td rowspan="2">层次</td><td rowspan="2">数 份 耕色 龄色</td><td colspan="4">厚  稀</td><td colspan="5">薄  稀</td><td>生烧</td><td>合计</td></tr><tr><td>粉青</td><td>灰青</td><td>米黄</td><td>小计</td><td>粉青</td><td>灰青</td><td>米黄</td><td>小计</td><td></td><td></td><td></td></tr><tr><td rowspan="3" colspan="2">C1</td><td>深灰</td><td>1</td><td>6</td><td>2</td><td>12</td><td></td><td>6</td><td>1</td><td>10</td><td></td><td rowspan="3">28</td><td rowspan="3">68</td></tr><tr><td>灰</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>黄灰</td><td></td><td>2</td><td>2</td><td>4</td><td></td><td>7</td><td>7</td><td>11</td><td></td></tr><tr><td colspan="3">总计</td><td>2350</td><td>4071</td><td>1646</td><td>8067</td><td>854</td><td>7408</td><td>6812</td><td>15074</td><td>7591</td><td>30732</td><td></td></tr><tr><td rowspan="3" colspan="3">百分比</td><td colspan="4">35%</td><td colspan="4">65%</td><td colspan="3">100%</td></tr><tr><td>29%</td><td>51%</td><td>20%</td><td>100%</td><td>6%</td><td>49%</td><td>45%</td><td>100%</td><td colspan="3"></td></tr><tr><td colspan="4">26%</td><td colspan="4">49%</td><td>25%</td><td colspan="2">100%</td></tr></table>
+
+<p>注：瓷片总数与器形统计表总数相差3318片，因部分探方统计时未将生烧片数统计入内。</p>
+<p>附表三 南宋官窑出土瓷器装烧工艺及装烧支垫具数量统计表  </p>
+<table><tr><td rowspan="2" colspan="2">器形 数 烧 压 方 法 单位 及层次</td><td colspan="2">碗</td><td colspan="2">盘</td><td colspan="2">杯</td><td colspan="2">洗 棒</td><td colspan="2">瓶罐壶</td><td>盆</td><td colspan="2">炉</td><td>甑</td><td colspan="2">器盖</td><td colspan="2">支烧具</td><td colspan="2">垫烧具</td></tr><tr><td>支烧</td><td>垫烧</td><td>支烧</td><td>垫烧</td><td>支烧</td><td>垫烧</td><td>支烧</td><td>垫烧</td><td>支烧</td><td>垫烧</td><td>支烧</td><td>垫烧</td><td>支烧</td><td>垫烧</td><td>支烧</td><td>垫烧</td><td>瓷十质</td><td>夹砂质</td><td>瓷土质</td><td>夹砂质</td></tr><tr><td rowspan="3">T1</td><td>1</td><td>8</td><td>44</td><td>32</td><td>12</td><td>6</td><td>1</td><td></td><td></td><td>2</td><td>8</td><td></td><td></td><td></td><td></td><td></td><td></td><td rowspan="3">15</td><td rowspan="3">66</td><td rowspan="3">26</td><td>36</td></tr><tr><td>2</td><td>2</td><td>9</td><td>1</td><td>15</td><td></td><td></td><td></td><td></td><td>1</td><td>8</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>3</td><td>23</td><td>65</td><td>42</td><td>90</td><td></td><td></td><td></td><td></td><td>38</td><td>18</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td rowspan="2">T2</td><td>1</td><td>101</td><td>147</td><td>187</td><td>207</td><td>16</td><td></td><td></td><td></td><td>19</td><td>158</td><td></td><td></td><td></td><td></td><td></td><td></td><td>21</td><td>96</td><td>26</td><td>51</td></tr><tr><td>2</td><td>19</td><td>59</td><td>15</td><td>51</td><td>7</td><td></td><td></td><td></td><td>26</td><td>52</td><td></td><td></td><td></td><td></td><td></td><td></td><td>66</td><td>248</td><td>118</td><td>158</td></tr><tr><td rowspan="2">T3</td><td>1</td><td>2</td><td>6</td><td>1</td><td>5</td><td></td><td></td><td></td><td></td><td>6</td><td>8</td><td></td><td></td><td></td><td></td><td></td><td></td><td>6</td><td>22</td><td>15</td><td>5</td></tr><tr><td>2</td><td>6</td><td>3</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td>1</td><td>7</td><td></td><td></td><td></td><td></td><td></td><td></td><td>5</td><td>15</td><td>17</td><td>9</td></tr><tr><td rowspan="2">T1</td><td>1</td><td>4</td><td>4</td><td>7</td><td>7</td><td></td><td></td><td></td><td></td><td>7</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td>10</td><td>4</td><td>5</td></tr><tr><td>2</td><td>19</td><td>22</td><td>43</td><td>11</td><td></td><td></td><td></td><td></td><td>15</td><td>9</td><td></td><td></td><td></td><td></td><td></td><td></td><td>10</td><td>17</td><td>3</td><td>40</td></tr><tr><td rowspan="3">T5</td><td>1</td><td>28</td><td>38</td><td>36</td><td>23</td><td>1</td><td>2</td><td></td><td></td><td>14</td><td>8</td><td></td><td></td><td></td><td></td><td></td><td>5</td><td>19</td><td>58</td><td>17</td><td>62</td></tr><tr><td>2</td><td>73</td><td>17</td><td>37</td><td>15</td><td></td><td></td><td></td><td></td><td>7</td><td>22</td><td>4</td><td>18</td><td>3</td><td>4</td><td>25</td><td>46</td><td>22</td><td>163</td><td></td><td></td></tr><tr><td>3</td><td>18</td><td></td><td>6</td><td></td><td></td><td></td><td>1</td><td></td><td></td><td>3</td><td>1</td><td></td><td>1</td><td></td><td></td><td>10</td><td>16</td><td>9</td><td>12</td><td></td></tr><tr><td rowspan="3">T10</td><td>1</td><td>16</td><td>16</td><td>2</td><td>13</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td><td></td><td>8</td><td></td></tr><tr><td>2</td><td>53</td><td>6</td><td>17</td><td></td><td></td><td></td><td></td><td></td><td></td><td>17</td><td></td><td></td><td></td><td></td><td></td><td>2</td><td>58</td><td>27</td><td>16</td><td></td></tr><tr><td>3</td><td>5</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>5</td><td></td></tr><tr><td rowspan="2">T12</td><td>1</td><td>1</td><td>1</td><td></td><td>3</td><td></td><td>1</td><td></td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td>2</td><td>8</td><td>2</td><td>3</td><td></td></tr><tr><td>2</td><td>37</td><td>66</td><td>44</td><td>27</td><td>31</td><td>2</td><td></td><td></td><td>17</td><td>22</td><td></td><td></td><td></td><td></td><td>13</td><td>10</td><td>16</td><td>5</td><td>60</td><td></td></tr><tr><td rowspan="3">T14</td><td>1</td><td>227</td><td>197</td><td>3</td><td>52</td><td>19</td><td>2</td><td></td><td></td><td>148</td><td>58</td><td></td><td></td><td></td><td></td><td></td><td>16</td><td>41</td><td>19</td><td>34</td><td></td></tr><tr><td>2</td><td>131</td><td>112</td><td>185</td><td>31</td><td>2</td><td>4</td><td></td><td></td><td>43</td><td>72</td><td></td><td></td><td></td><td></td><td></td><td>16</td><td>36</td><td>10</td><td>86</td><td></td></tr><tr><td>3</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td><td>20</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td rowspan="2">T15</td><td>1</td><td>2</td><td>2</td><td>3</td><td>3</td><td></td><td></td><td></td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td>2</td><td>2</td><td>1</td><td>5</td><td></td></tr><tr><td>2</td><td>1</td><td>7</td><td>10</td><td>5</td><td></td><td></td><td></td><td></td><td>7</td><td>14</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td>4</td><td>11</td><td>16</td><td></td></tr><tr><td rowspan="4">T16</td><td>1</td><td>23</td><td>83</td><td>72</td><td>129</td><td>19</td><td></td><td></td><td></td><td>24</td><td>67</td><td></td><td></td><td></td><td></td><td></td><td>1</td><td>7</td><td>13</td><td>1</td><td></td></tr><tr><td>2</td><td>34</td><td>31</td><td>34</td><td>4</td><td></td><td></td><td></td><td></td><td>6</td><td>17</td><td></td><td></td><td></td><td></td><td></td><td>5</td><td>4</td><td>15</td><td></td><td></td></tr><tr><td>3</td><td>2</td><td>2</td><td>1</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td>2</td><td>1</td><td>1</td><td>7</td><td></td></tr><tr><td>4</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>42</td><td>78</td><td>14</td><td>50</td><td></td></tr><tr><td rowspan="3">T17</td><td>2</td><td>21</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>32</td><td>8</td><td>7</td><td>21</td><td></td></tr><tr><td>3</td><td>22</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>85</td><td>10</td><td>56</td><td>1</td><td></td></tr><tr><td>4</td><td>1</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>39</td><td>51</td><td>14</td><td></td><td></td></tr><tr><td rowspan="2">T18</td><td>2</td><td>22</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>101</td><td>163</td><td>19</td><td>83</td><td></td></tr><tr><td>3</td><td>18</td><td>18</td><td>12</td><td>8</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>15</td><td>44</td><td>1</td><td>18</td><td></td></tr><tr><td rowspan="2">Y2</td><td>2</td><td>8</td><td>25</td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td>10</td><td></td><td>14</td><td></td><td></td></tr><tr><td>3</td><td>60</td><td></td><td>26</td><td></td><td></td><td></td><td></td><td></td><td>19</td><td></td><td></td><td></td><td></td><td></td><td></td><td>28</td><td>27</td><td>11</td><td></td><td></td></tr><tr><td>F3</td><td></td><td>1</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td>3</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td><td></td><td></td></tr><tr><td>F1</td><td></td><td></td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td>1</td><td>1</td><td>1</td><td></td></tr></table>
+
+<p>续附表三  </p>
+<table><tr><td rowspan="2" colspan="2">器形数 烧法单位及层次</td><td colspan="2">碗</td><td colspan="2">盘</td><td colspan="2">杯</td><td colspan="2">洗</td><td colspan="2">钵</td><td colspan="2">瓶罐壶</td><td colspan="2">盆</td><td colspan="2">炉</td><td colspan="2">觚</td><td colspan="2">器盖</td><td colspan="2">支烧具</td><td colspan="2">垫烧具</td></tr><tr><td>支烧</td><td>垫烧</td><td>支烧</td><td>垫烧</td><td>支烧</td><td>垫烧</td><td>支烧</td><td>垫烧</td><td>支烧</td><td>垫烧</td><td>支烧</td><td>垫烧</td><td>支烧</td><td>垫烧</td><td>支烧</td><td>垫烧</td><td>支烧</td><td>垫烧</td><td>支烧</td><td>垫烧</td><td>瓷土质</td><td>夹砂质</td><td>瓷土质</td><td>夹砂质</td></tr><tr><td>F5</td><td></td><td>4</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>2</td><td>1</td><td>2</td></tr><tr><td>G1</td><td></td><td>2</td><td>2</td><td>3</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td>1</td><td>1</td><td>4</td><td></td><td></td><td>1</td><td></td><td></td><td>1</td><td></td><td></td><td>2</td><td>4</td><td>21</td><td>7</td></tr><tr><td>C1</td><td></td><td>2</td><td></td><td>4</td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>4</td><td>12</td><td>9</td></tr><tr><td colspan="2">合计</td><td>753</td><td>1156</td><td>784</td><td>804</td><td>106</td><td>13</td><td>1</td><td>1</td><td></td><td>1</td><td>390</td><td>628</td><td></td><td>5</td><td>1</td><td>19</td><td></td><td>5</td><td></td><td>22</td><td>604</td><td>1270</td><td>555</td><td>1075</td></tr><tr><td colspan="2">百分比</td><td colspan="5">支烧</td><td colspan="3">2034/43%</td><td colspan="9">垫烧</td><td colspan="2">2654/57%</td><td>支具</td><td>1874/53%</td><td>垫具</td><td>1630/47%</td><td></td></tr></table>
+
+<p>附表四 南宋官窑瓷片测试标本外貌观察统计表  </p>
+<table><tr><td rowspan="2">标本号及出土单位</td><td rowspan="2">器形</td><td colspan="2">胎</td><td colspan="2">釉</td><td rowspan="2">纹饰</td></tr><tr><td>厚度</td><td>胎色和胎质</td><td>釉层和厚度</td><td>釉色和釉层结构</td></tr><tr><td>0185LWT2 采</td><td>(盘?)腹片</td><td>0.3cm</td><td>浅灰色,致密细硬</td><td>厚釉0.1cm</td><td>灰青色,有小气泡,有较密裂纹</td><td></td></tr><tr><td>0285LWT17③</td><td>碗腹片</td><td>0.2-0.5cm</td><td>浅灰色,结构不紧,多气孔</td><td>厚釉0.08cm</td><td>米黄色,有小裂纹</td><td>内壁有细密的钝状刻划纹</td></tr><tr><td>0385LWT14②</td><td>(盘?)底片</td><td>0.3cm</td><td>浅灰色,细硬,有小气孔</td><td>厚釉0.07cm</td><td>米黄色,光泽稍强,有较密小裂纹</td><td></td></tr><tr><td>0485LWT14②</td><td>罐腹片</td><td>0.3 0.45cm</td><td>黄灰色,细硬,基本无气孔</td><td>薄釉0.04cm</td><td>米黄色,内壁不施釉,有小气泡</td><td></td></tr><tr><td>0585LWT14②</td><td>碗腹片</td><td>0.1-0.4cm</td><td>浅灰色,较细硬,有小气孔</td><td>薄釉0.05cm</td><td>米黄色,光泽强,有小裂纹</td><td></td></tr><tr><td>0685LWT14②</td><td>(盘?)底片</td><td>0.4cm</td><td>浅灰色,稍细硬致密</td><td>厚釉0.08cm</td><td>米黄色,小气泡,有细裂纹</td><td></td></tr><tr><td>0785LWT14②</td><td>碗腹片</td><td>0.3cm</td><td>灰色,较细硬,有小气孔</td><td>薄釉0.04cm</td><td>灰青色,光泽不强,小气孔密集</td><td></td></tr><tr><td>0885LWT16②</td><td>盘腹片</td><td>0.15 0.3cm</td><td>浅灰色,较细硬致密</td><td>薄釉0.03cm</td><td>亮灰青色,光泽强,有小裂纹</td><td></td></tr><tr><td>0985LWT16②</td><td>盘底片</td><td>0.25-0.3cm</td><td>深灰色,较细,有小气孔</td><td>薄釉0.02cm</td><td>灰青色,光泽强,有小气泡和裂纹</td><td></td></tr><tr><td>01085LWT14②</td><td>腹片</td><td>0.4-0.68cm</td><td>浅灰色,细硬致密</td><td>薄釉0.04cm</td><td>灰青色,外壁下半部分不施釉,有细裂纹</td><td></td></tr><tr><td>011 85LWT12②A</td><td>碗腹片</td><td>0.5cm</td><td>浅灰色,较致密,稍有气孔</td><td>薄釉0.04cm</td><td>灰青色,光泽不强,有鱼子状裂纹</td><td>器内有刻划花</td></tr><tr><td>01285LWT14②</td><td>碗口片</td><td>0.1-0.2cm</td><td>黄灰色,疏松,有小气孔</td><td>厚釉0.08cm</td><td>米黄色,欠烧</td><td></td></tr><tr><td>01385LWT14②</td><td>碗腹片</td><td>0.2 0.4cm</td><td>黄灰色,酥软,有小气孔</td><td>薄釉0.050.08cm</td><td>淡黄色,有气泡,欠烧</td><td></td></tr><tr><td>01485LWT16②</td><td>(盘?)底片</td><td>0.5cm</td><td>黄灰色,稍细,有小气孔</td><td>厚釉0.1cm</td><td>米黄色,光泽不强,有小裂纹</td><td></td></tr><tr><td>01585LWT16②</td><td>碗口片</td><td>0.07 2cm</td><td>深灰色,细硬,有小气孔</td><td>厚釉0.12cm</td><td>粉青色,光泽稍强,有大裂纹</td><td>外壁饰凸莲</td></tr><tr><td>01685LWT16②</td><td>碗口片</td><td>0.07-1cm</td><td>浅灰色,较细密</td><td>厚釉0.1-0.15cm</td><td>粉青色,光泽不强,有裂纹</td><td>外壁饰凸莲</td></tr><tr><td>01785LWT16②</td><td>(盘?)腹片</td><td>0.4cm</td><td>深灰色,结构不紧密,有小气孔</td><td>厚釉0.1cm</td><td>粉青色,光泽不强,有小裂纹</td><td></td></tr><tr><td>01885LWT14②</td><td>碗腹片</td><td>0.2cm</td><td>深灰色,酥软,有小气孔</td><td>厚釉0.1cm</td><td>灰青色,施釉均匀,光泽不强</td><td>外壁有凸莲</td></tr><tr><td>01985LWT14②</td><td>瓶颈片</td><td>0.2cm</td><td>深灰色,细硬,稍有气孔</td><td>厚釉0.09cm</td><td>粉青色,光泽强,施釉均匀,有小裂纹</td><td></td></tr></table>
+
+<p>注：1. 厚釉指多次上釉，薄釉指一次上釉。<br />
+2. 釉层厚度均指外壁。</p>
+<p>续附表四   </p>
+<table><tr><td rowspan="2">标本号及出土单位</td><td rowspan="2">器形</td><td colspan="2">胎</td><td colspan="2">釉</td><td rowspan="2">纹饰</td></tr><tr><td>厚度</td><td>胎色和胎质</td><td>釉层和厚度</td><td>釉色和釉层结构</td></tr><tr><td>020851.WT14②</td><td>长颈瓶肩片</td><td>0.3 0.6cm</td><td>深灰色,结构不甚紧密,有气孔</td><td>厚釉0.09cm</td><td>灰青色,施釉均匀,光泽不强,有小裂纹</td><td></td></tr><tr><td>02185LWT16②</td><td>(洗)腹片</td><td>0.3-0.5cm</td><td>深灰色,疏松,多气孔</td><td>厚釉0.1cm</td><td>粉青色,光泽不强,有小裂纹</td><td></td></tr><tr><td>02285L.WT17③</td><td>碗口片</td><td>0.2cm</td><td>灰色,细硬</td><td>未上釉</td><td>胎已烧结</td><td></td></tr><tr><td>02385LWT2②A</td><td>(罐?)腹片</td><td>0.5cm</td><td>红灰色,疏松</td><td>未上釉</td><td>红黄色,已剥脱,生烧</td><td>器外表有旋纹</td></tr><tr><td>02485LWT14②</td><td>罐底片</td><td>0.6cm</td><td>深灰色,较致密,稍有气孔</td><td>厚釉0.09cm</td><td>黄白色,外壁跳釉厉害,生烧</td><td></td></tr><tr><td>02585LWT16②</td><td>腹片</td><td>0.5cm</td><td>浅灰色,较细致密</td><td>薄釉0.03cm</td><td>黄白色,有小气泡,生烧</td><td></td></tr><tr><td>02685LWT11②</td><td>瓶颈片</td><td>0.4cm</td><td>淡黄色,疏松,素坯</td><td></td><td></td><td></td></tr><tr><td>02785LWT14②</td><td>盘底片</td><td>0.4cm</td><td>黄白色,酥软,素坯</td><td></td><td></td><td></td></tr><tr><td>02885LWT14②</td><td>(碗?)腹片</td><td>0.25cm</td><td>黄白色,疏松,素坯</td><td></td><td></td><td></td></tr><tr><td>02985L.WT14②</td><td>支饼</td><td>通高1.8cm</td><td>紫红色,饼夹砂,支钉瓷土</td><td></td><td></td><td></td></tr><tr><td>03085LWT3②</td><td>支饼</td><td>通残高1.7cm</td><td>浅紫红色,致密,全瓷土</td><td></td><td></td><td></td></tr><tr><td>03185LWT14②</td><td>垫饼</td><td>1cm</td><td>灰色,夹砂</td><td></td><td></td><td></td></tr><tr><td>03285L.WT14②</td><td>垫饼</td><td>1.2cm</td><td>表面浅紫红色,断面为灰色,瓷土</td><td></td><td></td><td></td></tr><tr><td>03385L.WT20①B</td><td>匣钵</td><td>1.5-3.8cm</td><td>灰黑色,夹粗砂</td><td></td><td></td><td></td></tr><tr><td>03485LWT2②B</td><td>钵形匣钵</td><td>0.8 2cm</td><td>浅灰色,夹细砂</td><td></td><td></td><td></td></tr><tr><td>03585LWT2①</td><td>钵形匣钵</td><td>0.7-1.5cm</td><td>灰黑色,夹细砂</td><td>内壁有极薄青釉</td><td>灰青色,有浅裂纹</td><td></td></tr><tr><td>03685LWT2②</td><td>匣钵片</td><td>2cm</td><td>红黄色,夹粗砂,生烧</td><td></td><td></td><td></td></tr><tr><td>037 85LW紫金土矿</td><td>紫金土块</td><td></td><td>深紫色</td><td></td><td></td><td></td></tr><tr><td>03885LWT5③</td><td>紫金土块</td><td></td><td>紫红色</td><td></td><td></td><td></td></tr><tr><td>039 85LWL金土矿</td><td>紫金土块</td><td></td><td>紫红色</td><td></td><td></td><td></td></tr></table>
+
+<p>续附表四   </p>
+<table><tr><td rowspan="2">标本号及出土单位</td><td rowspan="2">器形</td><td colspan="2">胎</td><td colspan="2">釉</td><td rowspan="2">纹饰</td></tr><tr><td>厚度</td><td>胎色和胎质</td><td>釉层和厚度</td><td>釉色和釉层结构</td></tr><tr><td>04085LWT3③</td><td>炼泥池泥料</td><td></td><td>黄白色</td><td></td><td></td><td></td></tr><tr><td>04185LWF4</td><td>陶缸内泥料</td><td></td><td>黄白色</td><td></td><td></td><td></td></tr><tr><td>04285LWT5②A</td><td>碗腹片</td><td>0.4-0.9cm</td><td>白色泛灰,细密坚硬</td><td>薄釉0.05cm</td><td>淡青色,光泽强,有裂纹</td><td>内壁双线“S”形刻划纹</td></tr><tr><td>04385LWT5②A</td><td>碗腹片</td><td>0.2 0.5cm</td><td>白色泛灰,细密坚硬</td><td>厚釉0.08cm</td><td>粉青色,釉面光润</td><td>外壁有凸莲</td></tr><tr><td>04485LWT5②A</td><td>碗底</td><td>0.5-1.4cm</td><td>灰白色,较坚硬,粗糙,淘洗不精</td><td>薄釉0.03cm</td><td>浅青色,光泽强</td><td>内壁刻划荷花、荷叶</td></tr><tr><td>04585LWT5②A</td><td>碗底</td><td>0.5 0.7cm</td><td>浅灰色,较细硬</td><td>厚釉0.09cm</td><td>灰色,光润</td><td>外壁刻重莲</td></tr><tr><td>04685LWT3①B</td><td>腹片</td><td>0.9cm</td><td>青灰色,较坚硬,有小气孔</td><td>厚釉0.1cm</td><td>灰青色,光泽强,有裂纹,纹线呈红色</td><td></td></tr><tr><td>04785LWT8②</td><td>碗底</td><td>0.3-0.9cm</td><td>淡灰色,坚硬但结构不紧,多气孔</td><td>薄釉0.03cm</td><td>釉色泛黄,光泽强,裂纹细,有脱釉和窑变现象,并有气泡,属玻璃状釉</td><td></td></tr><tr><td>04856LWY1</td><td>碗底</td><td>0.25-0.6cm</td><td>灰中泛紫色,质细,烧结</td><td></td><td>釉未烧结,全脱落</td><td>内壁刻划荷花、荷叶</td></tr><tr><td>04956LWY1</td><td>碗口片</td><td>0.3cm</td><td>灰白色,质细硬</td><td>厚釉0.08cm</td><td>灰青色,光泽强,裂纹较大</td><td>内壁有篦状划纹</td></tr><tr><td>05088LW</td><td>瓷石</td><td></td><td>白色</td><td></td><td></td><td></td></tr></table>
+
+<p>附表五 南宋官窑瓷片测试标本胎釉的化学成分统计表  </p>
+<table><tr><td colspan="2">Number</td><td>SiO2</td><td>Al2O3</td><td>CaO</td><td>MgO</td><td>K2O</td><td>Na2O</td><td>Fe2O3</td><td>TiO2</td><td>P2O5</td><td>MnO</td><td>BaO</td><td>烧失</td><td>I. L</td><td>Total</td></tr><tr><td rowspan="2">01</td><td>B</td><td>67.61</td><td>22.28</td><td>0.21</td><td>0.23</td><td>2.62</td><td>0.04</td><td>3.97</td><td>1.13</td><td>0.04</td><td>0.01</td><td></td><td>1.52</td><td></td><td>99.66</td></tr><tr><td>G</td><td>65.12</td><td>13.70</td><td>13.94</td><td>0.64</td><td>4.36</td><td>0.48</td><td>0.94</td><td>0.09</td><td>0.21</td><td>0.07</td><td></td><td></td><td></td><td>99.55</td></tr><tr><td rowspan="2">02</td><td>B</td><td>64.98</td><td>24.71</td><td>0.77</td><td>0.31</td><td>3.49</td><td>0.04</td><td>1.72</td><td>1.26</td><td>0.03</td><td>0.01</td><td></td><td>1.82</td><td></td><td>99.14</td></tr><tr><td>G</td><td>62.96</td><td>15.48</td><td>13.99</td><td>0.85</td><td>3.04</td><td>0.44</td><td>0.86</td><td>0.28</td><td>0.23</td><td>0.18</td><td></td><td></td><td></td><td>98.31</td></tr><tr><td rowspan="2">03</td><td>B</td><td>65.27</td><td>24.40</td><td>0.55</td><td>0.28</td><td>3.62</td><td>0.04</td><td>2.75</td><td>1.20</td><td>0.03</td><td>0.01</td><td></td><td>1.37</td><td></td><td>99.52</td></tr><tr><td>G</td><td>63.92</td><td>16.01</td><td>12.63</td><td>0.74</td><td>3.18</td><td>0.35</td><td>0.87</td><td>0.19</td><td>0.20</td><td>0.30</td><td></td><td></td><td></td><td>98.39</td></tr><tr><td rowspan="2">04</td><td>B</td><td>63.41</td><td>27.57</td><td>0.44</td><td>0.33</td><td>3.92</td><td>0.04</td><td>2.42</td><td>1.31</td><td>0.05</td><td>0.02</td><td></td><td>0.68</td><td></td><td>100.19</td></tr><tr><td>G</td><td>63.91</td><td>14.12</td><td>13.77</td><td>0.63</td><td>4.25</td><td>0.51</td><td>0.93</td><td>0.09</td><td>0.19</td><td>0.90</td><td></td><td></td><td></td><td>99.30</td></tr><tr><td rowspan="2">05</td><td>B</td><td>63.04</td><td>26.77</td><td>0.26</td><td>0.30</td><td>4.16</td><td>0.04</td><td>2.26</td><td>1.30</td><td>0.05</td><td>0.01</td><td></td><td>0.40</td><td></td><td>98.59</td></tr><tr><td>G</td><td>67.25</td><td>14.15</td><td>9.33</td><td>0.88</td><td>4.36</td><td>1.08</td><td>1.24</td><td>0.10</td><td>0.34</td><td>0.30</td><td></td><td></td><td></td><td>99.33</td></tr><tr><td rowspan="2">06</td><td>B</td><td>67.99</td><td>23.77</td><td>0.28</td><td>0.29</td><td>3.40</td><td>0.05</td><td>1.96</td><td>1.22</td><td>0.03</td><td>0.01</td><td></td><td>1.32</td><td></td><td>100.32</td></tr><tr><td>G</td><td>62.90</td><td>15.59</td><td>15.07</td><td>0.80</td><td>3.01</td><td>0.23</td><td>0.84</td><td>0.20</td><td>0.23</td><td>0.33</td><td></td><td></td><td></td><td>99.20</td></tr><tr><td rowspan="2">07</td><td>B</td><td>66.26</td><td>23.56</td><td>0.74</td><td>0.25</td><td>3.21</td><td>0.04</td><td>1.83</td><td>1.16</td><td>0.05</td><td>0.02</td><td></td><td>1.92</td><td></td><td>99.06</td></tr><tr><td>G</td><td>62.95</td><td>15.32</td><td>15.03</td><td>0.81</td><td>2.86</td><td>0.42</td><td>0.85</td><td>0.23</td><td>0.24</td><td>0.18</td><td></td><td></td><td></td><td>98.89</td></tr><tr><td rowspan="2">08</td><td>B</td><td>70.88</td><td>20.84</td><td>0.20</td><td>0.27</td><td>3.05</td><td>0.04</td><td>2.34</td><td>1.11</td><td>0.04</td><td>0.02</td><td></td><td>1.09</td><td></td><td>99.88</td></tr><tr><td>G</td><td>63.94</td><td>14.51</td><td>14.36</td><td>0.79</td><td>3.30</td><td>0.39</td><td>0.89</td><td>0.14</td><td>0.23</td><td>0.23</td><td></td><td></td><td></td><td>98.78</td></tr><tr><td rowspan="2">09</td><td>B</td><td>64.40</td><td>25.40</td><td>0.30</td><td>0.40</td><td>4.80</td><td>0.10</td><td>2.60</td><td>1.40</td><td>0.06</td><td>0.01</td><td></td><td></td><td></td><td>99.47</td></tr><tr><td>G</td><td>63.13</td><td>14.78</td><td>13.93</td><td>0.83</td><td>4.49</td><td>0.17</td><td>0.89</td><td>0.21</td><td>0.31</td><td>0.30</td><td>0.19</td><td></td><td>0.24</td><td>99.47</td></tr><tr><td>010</td><td>B</td><td>67.70</td><td>23.70</td><td>0.50</td><td>0.40</td><td>3.50</td><td>0.20</td><td>2.00</td><td>1.30</td><td>0.07</td><td>0.01</td><td></td><td></td><td></td><td>99.38</td></tr><tr><td>011</td><td>B</td><td>74.20</td><td>18.50</td><td>0.40</td><td>0.20</td><td>3.30</td><td>0.10</td><td>2.50</td><td>0.30</td><td>0.06</td><td>0.02</td><td></td><td></td><td></td><td>99.58</td></tr><tr><td rowspan="2">012</td><td>B</td><td>65.10</td><td>25.90</td><td>0.30</td><td>0.30</td><td>3.70</td><td>0.20</td><td>2.60</td><td>1.40</td><td>0.06</td><td>0.01</td><td></td><td></td><td></td><td>99.27</td></tr><tr><td>G</td><td>62.57</td><td>15.23</td><td>13.14</td><td>0.69</td><td>3.11</td><td>0.40</td><td>1.02</td><td>0.24</td><td>0.21</td><td>0.30</td><td>0.14</td><td></td><td></td><td>97.05</td></tr><tr><td rowspan="2">013</td><td>B</td><td>64.90</td><td>26.30</td><td>0.30</td><td>0.40</td><td>3.30</td><td>0.20</td><td>2.50</td><td>1.50</td><td>0.07</td><td>0.01</td><td></td><td></td><td></td><td>99.48</td></tr><tr><td>G</td><td>63.89</td><td>15.18</td><td>12.39</td><td>0.74</td><td>3.11</td><td>1.08</td><td>1.19</td><td>0.26</td><td>0.18</td><td>0.21</td><td>0.13</td><td></td><td></td><td>98.36</td></tr><tr><td rowspan="2">014</td><td>B</td><td>60.50</td><td>28.60</td><td>0.50</td><td>0.30</td><td>3.40</td><td>0.10</td><td>4.40</td><td>1.80</td><td>0.06</td><td>0.04</td><td></td><td></td><td></td><td>99.70</td></tr><tr><td>G</td><td>65.40</td><td>14.97</td><td>13.26</td><td>0.67</td><td>2.92</td><td>0.27</td><td>0.95</td><td>0.13</td><td>0.26</td><td>0.19</td><td>0.14</td><td></td><td>0.29</td><td>99.16</td></tr><tr><td rowspan="2">015</td><td>B</td><td>64.60</td><td>25.90</td><td>0.30</td><td>0.40</td><td>4.00</td><td>0.20</td><td>2.50</td><td>1.50</td><td>0.07</td><td>0.01</td><td></td><td></td><td></td><td>99.48</td></tr><tr><td>G</td><td>66.58</td><td>14.37</td><td>12.72</td><td>0.75</td><td>3.04</td><td>0.48</td><td>0.87</td><td>0.12</td><td>0.29</td><td>0.24</td><td>0.14</td><td></td><td></td><td>99.60</td></tr><tr><td rowspan="2">017</td><td>B</td><td>66.39</td><td>23.84</td><td>0.24</td><td>0.38</td><td>3.67</td><td>0.46</td><td>2.15</td><td>1.22</td><td>0.05</td><td>0.01</td><td></td><td></td><td>1.55</td><td>98.41</td></tr><tr><td>G</td><td>65.06</td><td>15.07</td><td>13.07</td><td>0.75</td><td>3.31</td><td>0.28</td><td>0.94</td><td>0.11</td><td>0.29</td><td>0.22</td><td>0.19</td><td></td><td></td><td>99.29</td></tr><tr><td rowspan="2">018</td><td>B</td><td>63.20</td><td>26.50</td><td>0.40</td><td>0.40</td><td>4.50</td><td>0.20</td><td>2.80</td><td>1.40</td><td>0.07</td><td>0.02</td><td></td><td></td><td></td><td>99.49</td></tr><tr><td>G</td><td>63.94</td><td>15.83</td><td>13.88</td><td>0.95</td><td>2.73</td><td>0.56</td><td>0.97</td><td>0.20</td><td>0.32</td><td>0.30</td><td>0.11</td><td></td><td></td><td>99.79</td></tr><tr><td rowspan="2">019</td><td>B</td><td>65.70</td><td>25.00</td><td>0.30</td><td>0.40</td><td>4.00</td><td>0.10</td><td>2.50</td><td>1.40</td><td>0.07</td><td>0.01</td><td></td><td></td><td></td><td>99.48</td></tr><tr><td>G</td><td>62.21</td><td>15.95</td><td>14.69</td><td>0.91</td><td>3.33</td><td>0.47</td><td>1.14</td><td>0.17</td><td>0.33</td><td>0.33</td><td>0.11</td><td></td><td></td><td>99.64</td></tr><tr><td rowspan="2">020</td><td>B</td><td>64.30</td><td>26.40</td><td>0.40</td><td>0.40</td><td>3.70</td><td>0.20</td><td>2.50</td><td>1.50</td><td>0.06</td><td>0.01</td><td></td><td></td><td></td><td>99.47</td></tr><tr><td>G</td><td>63.83</td><td>15.46</td><td>14.23</td><td>0.64</td><td>3.21</td><td>0.49</td><td>0.82</td><td>0.20</td><td>0.20</td><td>0.29</td><td>0.12</td><td></td><td></td><td>99.49</td></tr><tr><td rowspan="2">021</td><td>B</td><td>66.70</td><td>24.20</td><td>0.30</td><td>0.40</td><td>3.00</td><td>0.10</td><td>3.40</td><td>0.40</td><td>0.07</td><td>0.03</td><td></td><td></td><td></td><td>99.60</td></tr><tr><td>G</td><td>67.19</td><td>14.41</td><td>12.47</td><td>0.70</td><td>3.31</td><td>0.65</td><td>1.15</td><td>0.17</td><td>0.17</td><td>0.20</td><td>0.10</td><td></td><td></td><td>100.52</td></tr><tr><td>022</td><td>B</td><td>63.00</td><td>26.80</td><td>0.30</td><td>0.40</td><td>3.90</td><td>0.30</td><td>3.30</td><td>1.40</td><td>0.08</td><td>0.02</td><td></td><td></td><td></td><td>99.50</td></tr><tr><td>023</td><td>B</td><td>74.60</td><td>16.60</td><td>0.30</td><td>0.60</td><td>2.60</td><td>0.80</td><td>2.90</td><td>0.80</td><td>0.10</td><td>0.03</td><td></td><td></td><td></td><td>99.33</td></tr><tr><td rowspan="2">024</td><td>B</td><td>63.30</td><td>27.10</td><td>0.60</td><td>0.40</td><td>4.00</td><td>0.50</td><td>2.20</td><td>1.40</td><td>0.07</td><td>0.02</td><td></td><td></td><td></td><td>99.59</td></tr><tr><td>G</td><td>65.90</td><td>16.72</td><td>7.63</td><td>0.50</td><td>3.71</td><td>0.53</td><td>1.09</td><td>0.35</td><td>0.48</td><td>0.22</td><td>0.17</td><td></td><td></td><td>97.30</td></tr><tr><td>026</td><td>B</td><td>63.61</td><td>26.68</td><td>0.23</td><td>0.32</td><td>3.56</td><td>0.04</td><td>2.30</td><td>1.38</td><td>0.074</td><td>0.014</td><td></td><td></td><td>1.32</td><td>99.528</td></tr><tr><td>028</td><td>B</td><td>65.40</td><td>25.28</td><td>0.21</td><td>0.28</td><td>2.61</td><td>0.04</td><td>2.31</td><td>1.34</td><td>0.14</td><td>0.015</td><td></td><td></td><td>2.53</td><td>100.155</td></tr><tr><td>029</td><td>B</td><td>63.14</td><td>21.68</td><td>0.34</td><td>0.52</td><td>4.69</td><td>0.1</td><td>2.75</td><td>1.18</td><td>0.07</td><td>0.02</td><td></td><td></td><td>1.36</td><td>98.85</td></tr></table>
+
+<p>续附表五  </p>
+<table><tr><td colspan="2">Number</td><td>SiO2</td><td>Al2O3</td><td>CaO</td><td>MgO</td><td>K2O</td><td>Na2O</td><td>Fe2O3</td><td>TiO2</td><td>P2O5</td><td>MnO</td><td>BaO</td><td>烧失</td><td>I. L.</td><td>Total</td></tr><tr><td>030</td><td>B</td><td>63.10</td><td>28.01</td><td>0.34</td><td>0.46</td><td>4.03</td><td>0.1</td><td>2.31</td><td>1.29</td><td>0.09</td><td>0.02</td><td></td><td>0.29</td><td></td><td>100.04</td></tr><tr><td>031</td><td>B</td><td>62.85</td><td>23.24</td><td>0.19</td><td>0.72</td><td>3.18</td><td>0.1</td><td>9.30</td><td>0.93</td><td>0.08</td><td>0.016</td><td></td><td>0.1</td><td></td><td>100.706</td></tr><tr><td>032</td><td>B</td><td>67.08</td><td>24.80</td><td>0.23</td><td>0.33</td><td>3.94</td><td>0.04</td><td>2.09</td><td>1.23</td><td>0.03</td><td>0.016</td><td></td><td>0</td><td></td><td>99.786</td></tr><tr><td>033</td><td>B</td><td>72.09</td><td>18.30</td><td>0.17</td><td>0.57</td><td>2.43</td><td>0.1</td><td>5.25</td><td>0.78</td><td>0.09</td><td>0.02</td><td></td><td>0.67</td><td></td><td>100.47</td></tr><tr><td>034</td><td>B</td><td>72.86</td><td>16.91</td><td>0.21</td><td>0.48</td><td>2.11</td><td>0.1</td><td>5.10</td><td>0.78</td><td>0.07</td><td>0.05</td><td></td><td>1.12</td><td></td><td>99.79</td></tr><tr><td>035</td><td>B</td><td>71.08</td><td>18.23</td><td>0.34</td><td>0.51</td><td>2.36</td><td>0.1</td><td>5.38</td><td>0.82</td><td>0.08</td><td>0.02</td><td></td><td>1.02</td><td></td><td>99.94</td></tr><tr><td>036</td><td>B</td><td>68.93</td><td>19.21</td><td>0.23</td><td>0.59</td><td>1.90</td><td>0.1</td><td>5.78</td><td>0.88</td><td>0.18</td><td>0.05</td><td></td><td>2.20</td><td></td><td>100.05</td></tr><tr><td>037</td><td>紫金土</td><td>56.19</td><td>34.61</td><td>0.09</td><td>0.07</td><td>0.98</td><td>0.34</td><td>9.17</td><td>0.92</td><td>0.29</td><td>0.01</td><td></td><td>7.07</td><td></td><td>109.74</td></tr><tr><td>038</td><td>紫金土</td><td>58.85</td><td>22.40</td><td>0.27</td><td>0.49</td><td>3.16</td><td>0.22</td><td>7.04</td><td>0.76</td><td>0.23</td><td>0.03</td><td></td><td>6.58</td><td></td><td>100.03</td></tr><tr><td>039</td><td>紫金土</td><td>61.10</td><td>17.44</td><td>0.096</td><td>0.18</td><td>1.06</td><td>0.23</td><td>13.44</td><td>0.76</td><td>0.19</td><td>0.01</td><td></td><td>5.46</td><td></td><td>99.966</td></tr><tr><td>040</td><td>泥料</td><td>70.36</td><td>19.61</td><td>0.24</td><td>0.22</td><td>2.03</td><td>0.30</td><td>2.51</td><td>0.89</td><td>0.18</td><td>0.01</td><td></td><td>5.58</td><td></td><td>101.93</td></tr><tr><td>041</td><td>泥料</td><td>65.16</td><td>20.79</td><td>0.39</td><td>0.87</td><td>3.58</td><td>0.26</td><td>2.83</td><td>0.96</td><td>0.21</td><td>0.01</td><td></td><td>6.39</td><td></td><td>101.45</td></tr><tr><td>042</td><td>B</td><td>71.50</td><td>21.19</td><td>0.16</td><td>0.28</td><td>4.51</td><td>0.04</td><td>2.52</td><td>0.27</td><td>0.003</td><td>0.023</td><td></td><td></td><td></td><td>100.496</td></tr><tr><td></td><td>G</td><td>66.64</td><td>14.86</td><td>11.18</td><td>1.24</td><td>3.04</td><td>0.03</td><td>1.48</td><td>0.10</td><td>0.50</td><td>0.26</td><td></td><td>0</td><td></td><td>99.33</td></tr><tr><td>043</td><td>B</td><td>68.85</td><td>23.39</td><td>0.07</td><td>0.2</td><td>3.87</td><td>0.04</td><td>2.66</td><td>0.19</td><td>0.02</td><td>0.03</td><td></td><td>0.03</td><td></td><td>99.35</td></tr><tr><td></td><td>G</td><td>69.06</td><td>15.18</td><td>9.14</td><td>0.6</td><td>3.80</td><td>0.06</td><td>1.25</td><td>0.08</td><td>0.18</td><td>0.14</td><td></td><td></td><td></td><td>99.49</td></tr><tr><td>044</td><td>B</td><td>75.01</td><td>19.08</td><td>0.14</td><td>0.15</td><td>2.99</td><td>0.04</td><td>2.55</td><td>0.21</td><td>0.003</td><td>0.026</td><td></td><td>0</td><td></td><td>100.199</td></tr><tr><td></td><td>G</td><td>63.16</td><td>13.75</td><td>15.49</td><td>1.41</td><td>2.75</td><td></td><td>1.23</td><td>0.10</td><td>0.56</td><td>0.46</td><td></td><td></td><td></td><td>98.91</td></tr><tr><td>045</td><td>B</td><td>67.48</td><td>23.46</td><td>0.07</td><td>0.16</td><td>4.80</td><td>0.04</td><td>2.25</td><td>0.22</td><td>0.02</td><td>0.04</td><td></td><td>0.42</td><td></td><td>98.96</td></tr><tr><td></td><td>G</td><td>69.93</td><td>14.56</td><td>8.03</td><td>0.63</td><td>4.63</td><td>0.10</td><td>0.88</td><td>0.07</td><td>0.20</td><td>0.11</td><td></td><td></td><td></td><td>99.14</td></tr><tr><td>046</td><td>B</td><td>69.14</td><td>22.17</td><td>0.15</td><td>0.18</td><td>5.20</td><td>0.04</td><td>2.12</td><td>0.13</td><td>0.015</td><td>0.04</td><td></td><td>1.57</td><td></td><td>100.755</td></tr><tr><td></td><td>G</td><td>66.36</td><td>14.99</td><td>9.84</td><td>0.71</td><td>5.05</td><td>0.80</td><td>1.32</td><td>0.09</td><td>0.28</td><td>0.25</td><td></td><td></td><td></td><td>99.69</td></tr><tr><td>047</td><td>B</td><td>61.85</td><td>23.85</td><td>0.22</td><td>0.78</td><td>4.35</td><td>0.04</td><td>6.06</td><td>1.07</td><td>0.12</td><td>0.014</td><td></td><td>1.00</td><td></td><td>99.354</td></tr><tr><td></td><td>G</td><td>57.04</td><td>14.39</td><td>15.47</td><td>2.99</td><td>3.03</td><td>0.79</td><td>2.28</td><td>0.24</td><td>1.83</td><td>0.81</td><td></td><td></td><td></td><td>98.87</td></tr><tr><td>049</td><td>B</td><td>69.21</td><td>23.94</td><td>0.21</td><td>0.23</td><td>2.46</td><td>0.04</td><td>1.81</td><td>1.11</td><td>0.06</td><td>0.01</td><td></td><td></td><td></td><td>99.08</td></tr><tr><td></td><td>G</td><td>62.28</td><td>15.31</td><td>15.97</td><td>0.85</td><td>2.82</td><td>0.25</td><td>0.81</td><td>0.23</td><td>0.23</td><td>0.19</td><td></td><td></td><td></td><td>98.94</td></tr><tr><td>050</td><td>瓷石</td><td>78.97</td><td>13.30</td><td>0.04</td><td>0.14</td><td>4.00</td><td>0.17</td><td>0.65</td><td>0.07</td><td>0.09</td><td>0.02</td><td></td><td>2.21</td><td></td><td>99.66</td></tr></table>
+
+<p>注：012 还有 Sr、Rh、Zn、Cu<br />
+024还有Sr、Rb、Cu</p>
+<h1 id="_38">后记</h1>
+<p>南宋官窑的发掘、资料整理及《南宋官窑》报告的出版，均得到中国社会科学院考古研究所、浙江省文物局、浙江省文物考古研究所、杭州市园林文物局、杭州市文物考古所等有关单位领导的关怀及大力支持，南宋官窑博物馆成立后，也给予多方支持，谨此致谢！</p>
+<p>参加本报告编写的有：陈元甫（官窑遗址的发现与发掘、作坊地层、作坊遗迹）、姚桂芳（窑炉地层、窑炉遗迹）、李德金（遗物）、朱伯谦（结语），1993年由朱伯谦、李德金对报告进行统一修改和定稿。</p>
+<p>地形及坑位图由蒋忠义测绘，全部器物的修复、照相、遗迹清绘、器物绘图等技术工作由中国社会科学院考古研究所技术室负责，其中器物修复者王振江、白荣金、田春华、王浩天，照相者姜言忠，绘图者张广立、英文提要由莫润先翻译。瓷器胎釉、坏料的理化测试由中国科学院上海硅酸盐研究所郭演义承担。谨此一并致谢！</p>
+<h1 id="southern-song-governmental-porcelain-workshop_1">SOUTHERN SONG GOVERNMENTAL PORCELAIN WORKSHOP</h1>
+<p>(Abstract)</p>
+<p>The site of the Southern Song governmental procelain workshop, making products exclusively for the then imperial palaces, is located on Wugui-shan Hill in the southern suburbs of Hangzhou City, Zhejiang Province. After the trial digging of a kiln in 1956, an extensive survey and a thorough excavation of the whole site were carried out in $1984 - 86$ by the Lin'an City Archaeological Team co-organized by the Institute of Archaeology, Chinese Academy of Social Sciences, the Zhejiang Provincial Institute of Cultural Relics and Archaeology, and the Hangzhou Municipal Administration of Parks and Cultural Relics. Within the excavated area totalling 1,400 sq m, there were discovered a kiln and a large-sized shop with 3 house-foundations, 1 clay-refining pool, 2 axle pits, 2 vats for glaze, 1 storage pit for raw materials, 1 biscuit fire kiln, 2 drains, 1 road and piles of biscuits. Among the uncarthed artifacts are more than 30,000 porcelain shards and thousands of tools and kiln implements.</p>
+<p>The porcelain shards, as shown by restoration, belong to 23 classes comprising more than 70 types and subtypes. These include drinking and dining vessels—the bowl, plate, saucer, cup and pot; storing and containing vessels—the jar and large bowl; articles of daily use—the spittoon, incense burner, lamp bowl, basin, box, ewer and laver; decorative and ritual objects—the bottle, censer and flowerpot in imitation of archaic bronzes and jades; and entertaining articles or implements for making such objects—the bird food jar, model and mould of Chinese chessman, and pellet. Such a great variety covers all vessels necessary to the daily life of the emperor and his relatives.</p>
+<p>The workshop had an advanced technology, which was developed by absorbing excellent porcelain-making techniques from both north and south China. For example, body thickening and glaze layer thinning, archaic forms, glaze surface crackling and firing on the supporter, all prevalent in the earlier phase, were traditional arts coming down from governmental kilns such as the Ru Yao and Northern Song Guan Yao, while the axle, concave-based saggar, dragon kiln and biscuit fire kiln were southern traditional equipment having been used previously in celadon working. This equipment played an important role in the workshop's production of high-grade, finest celadon, including the shaping and retouching of products as well as the control of firing temperature and atmosphere.</p>
+<p>A typological study of the bowl, plate, cup, layer, censer and bottle shows their evolutionary sequences in size and height, which, together with the changes in body and glaze-</p>
+<p>layer thickness and kiln-loading method, reveal the developmental laws of vessel making at the workshop, i. e. the vessel shape transformed from the larger to the smaller and from the graver to the finer; the ring foot from the higher, flaring to the lower, vertical-sided and slender-based; the body from the thicker to the thinner; the glaze layer, on the contrary, from the thinner to the thicker; and the main kiln-loading method, from firing on a stand to that on a base. There have been discovered phenomena representing a transitional intermediary in the evolution of the vessel shape, body and glaze-layer, as well as the kiln-loading method, which leads to the conclusion that the porcelain products of the workshop can be divided into an earlier period and a later one.</p>
+<p>A few supporting bases were found to have the incised inscription “Da Song Guo Zhe” 大宋国浙, i. e. Zhe Province of the Great Song Empire, and some lotus design bowls, the date “Ji Hai Nian” 已亥年, i. e. jihai year. These provide reliable evidence for judging the affiliation and age of the workshop.</p>
+<p>There were discovered some porcelain shards of nongovernmental wares in the deposits of the site. Among them are bowl-rim fragments recalling the Yue ware of the late Northern Song period, found to be adhered one to another by glaze, which indicates that they were waste products left in situ after firing and that the predecessor of the workshop was a civilian one producing celadon of the Yue ware, which was ended with the founding of the governmental workshop.</p>
+<p>Coarse celadon bowls were yielded from both the kiln excavated in 1956 and layers revealed in seasons of extensive excavation. They resemble products of the Longquan Yao, Yuan period, in making technology as well as in the style of incised decorations and must be civilian celadon made in Yuan times. It implies that kilns of this workshop continued functioning as civilian kilns once in the Yuan period. A part of vessels from the site are characteristic of the late Southern Song period, such as the Type I, Type II Subtype 3 and Type III bowls; Type I Subtype 3, Type II and Type III plates; Type I Subtype 3 and Type II Subtype 3 lavers; Type IV saucer; and Type III basin. Judging from the composition of the porcelain unearthed, it can be concluded that the workshop was founded in the early Southern Song, about the eighth year of Shaoxing reign (1138 AD) when Lin'an was made capital of the Empire, and stopped producing as a governmental mill in 1279 AD when the Dynasty fell.</p>
+<p>The excavation of the site is an important event in the archaeology of ancient Chinese ceramics. It provides valuable material for investigating the size and structure of Song governmental procelain workshops and the distinctive features of their products, as well as for further researching into the history of ancient Chinese handicrafts.</p>
+<p>The present report is added with papers on the site written by its excavators, in which they put forward their views on the character, age, technology and other problems of the workshop. It will help the reader to go deeper in understanding and studying the whole data of the site.</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+南宋官窑窖炉（Y2）遗迹（由南向北摄）</p>
+<h1 id="i">彩版二（I）</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+南宋官窖窖炉（Y2）遗进（由北向南摄）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+V型T5②A:63</p>
+<p>南宋官窑瓷瓶</p>
+<p>彩版四（IV）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 鸭首饰 T142:168</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅳ型1式器盖T32A-2 <br />
+南宋官窑瓷器残片</p>
+<p>彩版五 (V')</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ型器座T42B：7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅳ型2式器盖T2①B:6 南宋官窑瓷器器盖与器座</p>
+<p>彩版六（VI）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>原胎薄物 T14①:261 2. 原胎薄物 T1③:30</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>3.薄胎厚轴 T1③:31 4.薄胎厚轴 T14①:282</p>
+<p>南宋官窖瓷器残片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 作坊遗址保护棚内部</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 客户（Y2）遗址保护廊内部<br />
+南宋官窑遗址保护建筑</p>
+<p>彩版八 (VIII')</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 南宋官窑博物馆外观</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 南宋官窑博物馆开馆典礼</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 南宋官窑博物馆召开国际学术讨论会</p>
+<p>南宋官窑博物馆</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+乌龟山南宋官窖窖场俯视（由南向北摄）</p>
+<p>乌龟山南宋官窑遗址（由南向北摄）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二（Ⅱ）<br />
+1.F3全景（由东向西摄）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.北侧厚体墙基（由西向东摄）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.西侧柱石及排水沟（由北向南摄）<br />
+F3全景及局部</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版三（Ⅲ）<br />
+1.F4全（由东向西摄）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.炼泥池C1（由西向东摄）<br />
+F4全景与绿泥池</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版四 (IV)<br />
+1.F5全景（由东向西摄）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.F5地面及散水</p>
+<p>F</p>
+<p>5全景及局部</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版五 (V)<br />
+1.堆料坑残迹（由西向东投）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.输料缸残迹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+南宋官窑遗迹<br />
+3.锚链坑的视</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版六 (VI)<br />
+1. 索烧坏堆积</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.排水沟G1全景</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.燃烧炉残迹</p>
+<p>南宋官窑遗迹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版七 (VII)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Y2西侧窑墙及窑门残迹 <br />
+2.Y2的窑尾</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.F5东南角及其外侧 而钵片铺垫的路面</p>
+<p>南宋官客Y2局部残存情况及匣钵铺垫的路面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版八 (VIII)<br />
+1.Y2遗迹保存现状</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Y2复原模型<br />
+南宋官窑Y2保存现状及复原模型</p>
+<p>图版九 (IX)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.1型3式 T2@B:26</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型2式 T17②:27</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.11型3式 T142-93</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.Ⅲ型 T14②:95<br />
+南宋官署资碗</p>
+<p>图版一O (X)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型2式 T142：38</p>
+<ol>
+<li>I型I式 T14③:140</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.1型3式 T18:16</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+南宋官客资盘</p>
+<p>图版一一 (XI)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ型I式T14②：92</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型2式 T52A:65</p>
+<p>南宋官署资盘<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅲ型 T141:11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一一 (XII)<br />
+1.1型1式 T142:118</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅲ型 T142:119</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.1型2式 G1:4<br />
+4.1型3式T171:88 <br />
+南宋官窑瓷三足盘</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一三 (XIII)<br />
+1. I型 T13:8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.11型1式T12②A:16</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅲ型 T5②A:56</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.1型1式T52A:57</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.N型 T2①B:31</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.Ⅱ型备 T12②A:17</p>
+<p>南宋官窖瓷碟，盖</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一四 (XIV)</p>
+<p>1.Ⅰ型I式</p>
+<p>T142:46</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型2式 T14②:89</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.1型3式T11采：<br />
+南宋官窑瓷洗</p>
+<p>1.Ⅱ型1式T143-159</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一五 (XV)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型2式 T5①A:2</p>
+<p>南宋官窑瓷洗<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅲ型 T14②:106</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一六 (XVI)<br />
+1. I型1式盒 T1③:4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型2式盒 T14②:103</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.1型3式盒 T182:85</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.灯盏 T14③:141</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.I型盒 T16①B:17 <br />
+南宋官窑瓷盒、灯盏</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一七 (XVII)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.2.Ⅱ型I式炉 T122A:30.G1:3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.V型炉 TS2A:50</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4-6.1型杯 T17③:3, T14③:161, T5③:114</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7. W型炉 T52A:49</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8.11型2式炉 T3②B:4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一八 (XVIII)<br />
+1.Ⅱ型杯 T12②A:20</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.V型杯 T142:104</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅲ型 T2B:22</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.Ⅲ型杯 T14①:15</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.N型杯 T149:97</p>
+<p>南宋官窖资杯，盏</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一九 (XIX)<br />
+1. 坛 T1@:26</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.3.11型 T1③:6.G1:8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.花盆 T14①:32</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.1型体 T14③:105</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.Ⅲ型体 T2①B:11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7.1型体 T6A:67<br />
+南宋官窖瓷器残片</p>
+<p>图版二O (XX) <br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.1型2式 T12:1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型1式 T14③:162</p>
+<p>南宋官窑瓷炉<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.10型T141：33<br />
+4.Ⅲ型 T22H:29</p>
+<p>图版二一 (XXI)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.V型 T15梁；7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. M型1X T42B:1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.4.N型2式<br />
+T14③：166年部。<br />
+T1③:10 <br />
+南宫嘉珍</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二二 (XXII)<br />
+1.Ⅱ型瓶 T12②A:27</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.1型 T5②A:61<br />
+2.1型1式瓶 T1②:3</p>
+<p>南宋官窑瓷瓶，肌</p>
+<p>图版二三 (XXIII)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.1型3式T12A:32 2.1型1式T14⑧:160 3.1型3式T16②:25 4.Ⅲ型G1:2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.1型2式 T14①:27</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.1型3式 T15果：5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7.11型 T2①A:50</p>
+<p>南宋官窖资瓶口部，底部</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二四 (XXIV)</p>
+<p>1.T2B:23 <br />
+2.T14②：135<br />
+3. T4②:121</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>4.T14②：112<br />
+5.T2②B:87 <br />
+6. T2②B:27 <br />
+7. T3②B:18 <br />
+8.T14①:26</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9. T14②:136 <br />
+南宋官窖瓷瓶口部</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二五 (XXV)<br />
+1.V型 T5②A:63</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.V型 T5②A:64</p>
+<p>南宋官窑瓷瓶</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二六 (XXVI)</p>
+<p>1.11型 T13:5<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型 T12-2A:28<br />
+南宋官窖瓷壶</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>资壶口部残片 T5②A:66<br />
+2.瓷套内部残片T14②：248<br />
+3.瓷囊腹部残片 T2②A:54 <br />
+4.瓷壶口部残片 T1③:22</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>5.瓷壶底足残片 F3:1 <br />
+6.瓷壶底足残片 T14②:124</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>7.大型器残片</p>
+<p>T52A:138</p>
+<p>南宋官窑瓷器残片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二八 (XXVIII)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1.Ⅱ型 T14（1）:28<br />
+2.Ⅳ型2式 T14(1):29<br />
+3.Ⅳ型1式 T14（1）113<br />
+4.1型 T142：114</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>5.Ⅲ型 T22B:93</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>7.底部 T142:196</p>
+<p>6.底部 T32A：1</p>
+<p>南宋官窑瓷罐口沿，底部</p>
+<p>图版二九 (XXIX) <br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型I式 T14③:148</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型2式 T17①:41</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. I型3式 T17③:81<br />
+南宋官窑瓷器器盖</p>
+<p>图版三O (XXX)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型1式器盖 Y2001</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅲ型器座 T5②A:33</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.V型器座 T2②A:36<br />
+南宋官窑瓷器器盖与器座</p>
+<p>图版三一 (XXXI)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅲ型G1:9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. $M$ 型1式T3②A:2<br />
+3.1型3式T5@:105 <br />
+4.1型2式G1：1</p>
+<p>南宋官窑瓷器器盖</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版三二 (XXXII)<br />
+1.1型3式T2①B:7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅳ型2式T2①B:6</p>
+<p>南木官客器器</p>
+<p>图版三三 (XXXIII)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ型1式T14：<br />
+2.11型2式T16②：20</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅱ型3式T2B:67</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+南宋官窑瓷器器盖</p>
+<p>图版三四 (XXXIV)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.1型 T52A：137</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型 T4@B:7</p>
+<p>南宋官窖瓷器器座</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版三五 (XXXV)<br />
+1.龙纹 T52A:136</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.3.龙纹 T2①B:8:1.2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+了</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.莲纹 T2采：53:1.2（外壁）5.6.牡丹纹 T2采：53:1.2（内壁）7.8.凤鸟纹 T4②B:5:1.2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版三六 (XXXVI)<br />
+1.竹叶纹 F3-3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.3.万年青花叶纹 T18②:162.T18①:12</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.牡丹纹 T14①:195</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 八井纹 T5②A:145</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.截叶纹 T52A:48</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7. 茎瓣纹 G1:7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版三七 (XXXVII)<br />
+1. 四圆花纹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+T12A48 <br />
+2. 蒲叶纹 T14④:257</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.连圆纹 T181:8 <br />
+4.弦纹 T1⑧.23</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+?</p>
+<p>5.回纹 T14①:243</p>
+<p>6.云雷纹 T5①B:141</p>
+<ol>
+<li>菱形 T2②B:24</li>
+</ol>
+<p>南宋官窑瓷器纹饰残片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版三八 (XXXVIII)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.仿越窑器残片 T17③:80:1.2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.越容碗 T2②A:104内壁</p>
+<p>其他窑系瓷器与仿烧器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.越窑碗 T22A：104外</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.越窑资盒盖 T2②B:62</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.越客资盒T142：240</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.越容安 T2B-63</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.龙泉窑瓷碗 T32:12</p>
+<p>其他客系瓷器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版四O (XL)</p>
+<p>1.越容系盘 T14②:242</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.越客系 T142-241</p>
+<p>其他客系资器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.研体 T5②A:68与I型杆 T2②B:81.Ⅱ型作 T143:192</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.研体 T5②A:68外壁及底部刻划文字</p>
+<p>南宋官窑研体，件</p>
+<p>图版四二 (XLII)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型研磨器 T2②B:30</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. II型研磨器 T5②A:43</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.V型范模 T3B:3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版四三 (XLIII)<br />
+1. I型范模 T5②A:47</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型范模 T16②:19:2.1 <br />
+3.Ⅲ型范模 T5②A:44 <br />
+南宋官窑范、模</p>
+<p>图版四四 (XLIV)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.长方形穿孔器 T14②:169</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.插器 T14①:251</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.轴顶 5T5⑧:106</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 荔鹏 T12②A:51</p>
+<p>南宋官窑工具<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 镀孔器 T2采：68</p>
+<p>图版四五 (XLV)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.1型1式 Y2:17</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型2式 Y2:16</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅱ型 T142:225<br />
+南宋官窑窑具</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版四六 (XLVI)<br />
+1.Ⅱ型质体 T2①B:48</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅳ型1式匣钟 G1:13</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.N型2式圆 T5@:136 <br />
+4. 原体盖 T2①B:49<br />
+南宋官窑匣体及盖</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版四七 (XLVII)<br />
+1.1型1式 T2B:69<br />
+2.1型1式 T2-2B:70</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.1型1式 TS②A:17</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.1型2式 G1:11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.1型3式 T52A:21</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.1型1式T15LB4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版四八 (XLVIII)<br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>1.T2B:101</p>
+<p>2.T16②:31</p>
+<p>3.T2②B:99</p>
+<p>4.T16（2）：30</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+了</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>5.T2B:102</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>T2B:85</p>
+<ol>
+<li>$\mathrm{T}_{2}①\mathrm{B}:103$</li>
+</ol>
+<p>8.T14205</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版四九 (XLIX)<br />
+1. $\mathrm{T}_{2} = \mathrm{A}:78$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.T21B：+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.T1-19</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>4.T22A:79</p>
+<p>5.T102:6</p>
+<p>6.T12:27</p>
+<p>T.G1.17</p>
+<p>8.T2B:100</p>
+<p>9.T12:28</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版五O（L）</p>
+<p>1.Ⅱ型2式 T17②:71</p>
+<p>2.Ⅱ型1式 T17②:68</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.Ⅲ型2式 T152B:2</p>
+<p>3.Ⅲ型1式 T5④:127</p>
+<p>4.Ⅲ型1式 T18-3:80</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+南宋官窑支烧具</p>
+<p>图版五一 (LI)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅲ型3式支烧具 T152B:3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅲ型3式支烧具 T16⑧:2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅲ型垫烧具 T16②:23<br />
+4.Ⅲ型垫烧具 T3②B:15</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.V型3式垫烧具 T14①:231<br />
+6.Ⅳ型1式热烧具 G1:12<br />
+南宋官窑支烧具、塑烧具</p>
+<p>图版五二 (LII)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅳ型支烧具 T12②A:29</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.W型2式垫烧具 T5B:8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.V型4式垫烧具 T5②A:30</p>
+<p>南宋官窑支烧具，垫烧具</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版五三 (LIII)<br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3-5.3式 T2②B:95.T3②A:6.T5③:129</p>
+<p>5</p>
+<p>1.2.2A T52A:26T142：263</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.1式，T16②:24</p>
+<p>南宋官窑垫烧具（皆为I型）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版五四 (LIV)</p>
+<p>1.1型2式 T17①:20</p>
+<p>2.Ⅱ型1式Y2:24</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3-5.V型1式T17②:55.T14①:242.T5②A:35</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6-8.V型2式T2B:83，T14②:215，T5③:132</p>
+<p>南宋官窑垫烧具</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版五五 (LV)<br />
+1-3.型1式T14③:220，T2②A:99，T2①B:46</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.Ⅱ型1式 T17①:98 5.Ⅲ型2式 T5③:134</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.7.型2式 T14②:218.T2②B:98</p>
+<p>南宋官窑垫烧具</p>
+<p>图版五六 (LVI)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1-3.1式T142:222，T141:230，T142:214</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.2T52A:28</p>
+<p>南宋官窑垫烧具（皆为V型<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.4式 T2:2B:96</p>
+  </div>
+</div>
+
+<div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)"><a href="./广州汉墓1982.html" style="color:var(--muted);text-decoration:none">← 广州汉墓</a><a href="./巩县铁生沟.html" style="color:var(--muted);text-decoration:none">巩县铁生沟 →</a></div>
+</div>
+
+<div class="toc-float" id="tocPanel">
+  <h4>目录</h4>
+  <div id="tocContent">正在生成...</div>
+</div>
+</div>
+<footer class="site-footer">
+<div class="footer-inner">
+  <p>中国考古学专刊·丁种 实体标注知识库 &copy; 2026</p>
+  <p class="footer-links">
+    <a href="https://github.com/CrossTheOcean/archaeology-report-kb" target="_blank">GitHub</a> ·
+    <a href="../about.html">关于本站</a>
+  </p>
+</div>
+</footer>
+<script>
+
+// Generate TOC from headings
+setTimeout(function() {
+  const body = document.getElementById('reportBody');
+  const headings = body.querySelectorAll('h1, h2, h3');
+  const toc = document.getElementById('tocContent');
+  if (headings.length === 0) {
+    toc.innerHTML = '<span style="color:var(--muted)">无标题</span>';
+    return;
+  }
+  toc.innerHTML = '';
+  headings.forEach((h, i) => {
+    h.id = 'heading-' + i;
+    const a = document.createElement('a');
+    a.href = '#heading-' + i;
+    a.textContent = h.textContent;
+    a.style.paddingLeft = (h.tagName === 'H3' ? '12px' : '0');
+    toc.appendChild(a);
+  });
+}, 500);
+
+</script>
+</body>
+</html>

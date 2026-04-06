@@ -1,0 +1,3091 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>京山屈家岭 — 中国考古学专刊·丁种 — 实体标注知识库</title>
+<meta name="description" content="基于70份考古学专刊·丁种发掘报告的实体标注与结构化知识库">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏺</text></svg>">
+<style>
+:root {
+  --bg: #0f1117;
+  --card: #1a1d27;
+  --border: #2a2d3a;
+  --text: #e4e4e7;
+  --muted: #8b8fa3;
+  --accent: #f59e0b;
+  --accent2: #ec4899;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* Navigation */
+.topnav {
+  background: rgba(15, 17, 23, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.nav-links a.active { color: var(--accent); background: rgba(245,158,11,0.08); }
+
+/* Layout */
+.container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+.hero {
+  text-align: center;
+  padding: 48px 20px 32px;
+}
+.hero h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.hero .subtitle { color: var(--muted); font-size: 1.05rem; }
+
+/* Stats */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin: 28px 0 36px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 28px;
+  text-align: center;
+  min-width: 150px;
+  flex: 1;
+  max-width: 200px;
+}
+.stat-card .num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.stat-card .label { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
+
+/* Grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+}
+.card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  background: var(--card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.82rem;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+thead th:hover { color: var(--text); }
+tbody td { padding: 10px 14px; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+tbody tr { transition: background 0.15s; }
+tbody tr:hover { background: rgba(245, 158, 11, 0.04); }
+
+/* Tags */
+.era-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.ebar {
+  display: inline-block;
+  height: 6px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Report detail page */
+.report-header {
+  margin-bottom: 28px;
+}
+.report-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.report-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.report-meta span {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+.report-body h2 { font-size: 1.3rem; margin: 32px 0 16px; color: var(--accent); }
+.report-body h3 { font-size: 1.1rem; margin: 24px 0 12px; }
+.report-body p { margin-bottom: 12px; }
+.report-body ul, .report-body ol { margin: 12px 0 12px 24px; }
+.report-body li { margin-bottom: 4px; }
+.report-body table { margin: 16px 0; }
+.report-body table th { background: var(--card); }
+.report-body table td, .report-body table th {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+}
+.report-body pre {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.report-body code {
+  background: rgba(245,158,11,0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* Image placeholder */
+.img-placeholder {
+  display: inline-block;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+/* Entity chips */
+.entity-section { margin: 20px 0; }
+.entity-section h4 { color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; }
+.echip {
+  display: inline-block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  margin: 2px 3px;
+}
+
+/* Report card (for list page) */
+.report-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.report-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.report-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.report-card .rc-meta { color: var(--muted); font-size: 0.84rem; }
+.report-card .rc-entities { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-top: 6px; }
+
+/* Search & filter */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+.search-input {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 260px;
+  outline: none;
+}
+.search-input:focus { border-color: var(--accent); }
+.filter-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(245,158,11,0.08);
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  margin-top: 60px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.footer-inner { text-align: center; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.footer-links { margin-top: 8px; }
+.footer-links a { color: var(--accent); text-decoration: none; }
+.footer-links a:hover { text-decoration: underline; }
+
+/* About page */
+.about-section { margin: 28px 0; }
+.about-section h2 { font-size: 1.3rem; margin-bottom: 12px; color: var(--accent); }
+.about-section p { margin-bottom: 12px; color: var(--muted); }
+.about-section ul { margin: 8px 0 8px 20px; color: var(--muted); }
+
+/* Download page */
+.dl-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.dl-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.dl-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; }
+.dl-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #000;
+  padding: 8px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.dl-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.dl-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.dl-btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Map page */
+.map-container {
+  text-align: center;
+  margin: 24px 0;
+}
+.map-container img {
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .stats-row { gap: 10px; }
+  .stat-card { min-width: 120px; padding: 14px 16px; }
+  .stat-card .num { font-size: 1.5rem; }
+  .nav-links a { padding: 6px 10px; font-size: 0.82rem; }
+  .search-input { width: 100%; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+}
+@media (max-width: 480px) {
+  .nav-links { gap: 0; }
+  .nav-links a { padding: 6px 8px; font-size: 0.78rem; }
+  .container { padding: 16px; }
+}
+
+
+.toc-float {
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.8rem;
+  max-width: 220px;
+  z-index: 50;
+}
+.toc-float h4 { color: var(--muted); margin-bottom: 8px; }
+.toc-float a { color: var(--muted); text-decoration: none; display: block; padding: 2px 0; }
+.toc-float a:hover { color: var(--accent); }
+@media (max-width: 1024px) { .toc-float { display: none; } }
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<nav class="topnav">
+<div class="nav-inner">
+  <a href="../index.html" class="logo">🏺 考古知识库</a>
+  <div class="nav-links">
+<a href="../index.html">总览</a>
+<a href="../reports.html" class="active">报告列表</a>
+<a href="../map.html">遗址地图</a>
+<a href="../download.html">数据下载</a>
+<a href="../about.html">关于</a>
+  </div>
+</div>
+</nav>
+<div class="container" style="display:flex;gap:24px">
+<div style="flex:1;min-width:0">
+<div class="report-header">
+  <a href="../reports.html" style="color:var(--muted);font-size:0.88rem;text-decoration:none">← 返回报告列表</a>
+  <h1 style="margin-top:8px">京山屈家岭</h1>
+  <div class="report-meta">
+    <span class="era-tag" style="background:#10b98122;color:#10b981">新石器时代</span>
+    <span>153 页</span>
+    <span>33.2 MB</span>
+    <span>708 个实体</span>
+    <span>密度 4.6</span>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:24px">
+  <h3>🏷️ 实体标注</h3>
+  <div class="entity-section"><h4>器物编号 (267)</h4><div><span class="echip">T118:6</span><span class="echip">T92:5</span><span class="echip">T79:7</span><span class="echip">T140:5</span><span class="echip">T130:6</span><span class="echip">T110:6</span><span class="echip">T96:9</span><span class="echip">T159:6</span><span class="echip">T150:7</span><span class="echip">T139:8</span><span class="echip">T111:9</span><span class="echip">T181:4</span><span class="echip">T54:6</span><span class="echip">T103:7</span><span class="echip">T113:7</span><span class="echip">T145:6</span><span class="echip">T155:8</span><span class="echip">T144:8</span><span class="echip">T84:6</span><span class="echip">T104:8</span><span class="echip">T90:7</span><span class="echip">T98:8</span><span class="echip">T84:4</span><span class="echip">T97:8</span><span class="echip">T84:5</span><span class="echip">T105:7</span><span class="echip">T105:6</span><span class="echip">T184:7</span><span class="echip">T134:6</span><span class="echip">T139:7</span><span class="echip">T129:6</span><span class="echip">T111:8</span><span class="echip">T171:6</span><span class="echip">T90:8</span><span class="echip">T104:9</span><span class="echip">T103:6</span><span class="echip">T125:6</span><span class="echip">T176:7</span><span class="echip">T92:8</span><span class="echip">T99:6</span><span class="echip">T144:7</span><span class="echip">T145:5</span><span class="echip">T159:5</span><span class="echip">T141:5</span><span class="echip">T99:4</span><span class="echip">T105:8</span><span class="echip">T91:8</span><span class="echip">T98:9</span><span class="echip">T139:5</span><span class="echip">T135:5</span><span class="echip" style="color:var(--muted)">+217 更多</span></div></div>
+<div class="entity-section"><h4>遗迹编号 (179)</h4><div><span class="echip">CH</span><span class="echip">T95</span><span class="echip">T1</span><span class="echip">T5</span><span class="echip">T99</span><span class="echip">II</span><span class="echip">IH22</span><span class="echip">IH16</span><span class="echip">IH2</span><span class="echip">IH5</span><span class="echip">IH6</span><span class="echip">IH7</span><span class="echip">IH8</span><span class="echip">IH9</span><span class="echip">IH10</span><span class="echip">IH11</span><span class="echip">IH12</span><span class="echip">IH14</span><span class="echip">IH15</span><span class="echip">IH17</span><span class="echip">IH19</span><span class="echip">IH20</span><span class="echip">IH21</span><span class="echip">IH23</span><span class="echip">IH24</span><span class="echip">IH4</span><span class="echip">T181</span><span class="echip">T118</span><span class="echip">T92</span><span class="echip">T79</span><span class="echip">T140</span><span class="echip">T130</span><span class="echip">T110</span><span class="echip">T179</span><span class="echip">T96</span><span class="echip">T126</span><span class="echip">T159</span><span class="echip">T112</span><span class="echip">T150</span><span class="echip">T139</span><span class="echip">T111</span><span class="echip">T155</span><span class="echip">T54</span><span class="echip">T103</span><span class="echip">T113</span><span class="echip">T145</span><span class="echip">T144</span><span class="echip">T84</span><span class="echip">T104</span><span class="echip">T90</span><span class="echip" style="color:var(--muted)">+129 更多</span></div></div>
+<div class="entity-section"><h4>探方编号 (149)</h4><div><span class="echip">T95</span><span class="echip">T1</span><span class="echip">T5</span><span class="echip">T99</span><span class="echip">T181</span><span class="echip">T118</span><span class="echip">T92</span><span class="echip">T79</span><span class="echip">T140</span><span class="echip">T130</span><span class="echip">T110</span><span class="echip">T179</span><span class="echip">T96</span><span class="echip">T126</span><span class="echip">T159</span><span class="echip">T112</span><span class="echip">T150</span><span class="echip">T139</span><span class="echip">T111</span><span class="echip">T155</span><span class="echip">T54</span><span class="echip">T103</span><span class="echip">T113</span><span class="echip">T145</span><span class="echip">T144</span><span class="echip">T84</span><span class="echip">T104</span><span class="echip">T90</span><span class="echip">T98</span><span class="echip">T97</span><span class="echip">T105</span><span class="echip">T184</span><span class="echip">T134</span><span class="echip">T167</span><span class="echip">T106</span><span class="echip">T129</span><span class="echip">T171</span><span class="echip">T125</span><span class="echip">T176</span><span class="echip">T141</span><span class="echip">T85</span><span class="echip">T119</span><span class="echip">T91</span><span class="echip">T135</span><span class="echip">T117</span><span class="echip">T164</span><span class="echip">T156</span><span class="echip">T172</span><span class="echip">T109</span><span class="echip">T163</span><span class="echip" style="color:var(--muted)">+99 更多</span></div></div>
+<div class="entity-section"><h4>测量数据 (70)</h4><div><span class="echip">42</span><span class="echip">1</span><span class="echip">1.55</span><span class="echip">1.75</span><span class="echip">2.8</span><span class="echip">1.7</span><span class="echip">2.2</span><span class="echip">2.65</span><span class="echip">0.6</span><span class="echip">2.77</span><span class="echip">8</span><span class="echip">0.7</span><span class="echip">0.8</span><span class="echip">0.25</span><span class="echip">25</span><span class="echip">35</span><span class="echip">0.45</span><span class="echip">0.5</span><span class="echip">0.3</span><span class="echip">0.2</span><span class="echip">0.4</span><span class="echip">4.9</span><span class="echip">1.2</span><span class="echip">6</span><span class="echip">1.6</span><span class="echip">2</span><span class="echip">2.6</span><span class="echip">3</span><span class="echip">4</span><span class="echip">88</span><span class="echip">0.75</span><span class="echip">5</span><span class="echip">0.35</span><span class="echip">2.5</span><span class="echip">6.3</span><span class="echip">7</span><span class="echip">40</span><span class="echip">20</span><span class="echip">1.22</span><span class="echip">3.2</span><span class="echip">1.1</span><span class="echip">0.05</span><span class="echip">45</span><span class="echip">4.5</span><span class="echip">11</span><span class="echip">0.55</span><span class="echip">0.1</span><span class="echip">94</span><span class="echip">0.9</span><span class="echip">18.3</span><span class="echip" style="color:var(--muted)">+20 更多</span></div></div>
+<div class="entity-section"><h4>陶器 (15)</h4><div><span class="echip">陶钵</span><span class="echip">陶豆</span><span class="echip">陶鼎</span><span class="echip">红陶</span><span class="echip">灰陶</span><span class="echip">黑陶</span><span class="echip">陶纺轮</span><span class="echip">陶罐</span><span class="echip">鼎</span><span class="echip">盆</span><span class="echip">罐</span><span class="echip">钵</span><span class="echip">盘</span><span class="echip">盂</span><span class="echip">豆</span></div></div>
+<div class="entity-section"><h4>石器 (9)</h4><div><span class="echip">石锛</span><span class="echip">石球</span><span class="echip">石斧</span><span class="echip">石刀</span><span class="echip">石凿</span><span class="echip">石铲</span><span class="echip">石杵</span><span class="echip">石镰</span><span class="echip">石矛</span></div></div>
+<div class="entity-section"><h4>地层 (6)</h4><div><span class="echip">10层</span><span class="echip">1层</span><span class="echip">2层</span><span class="echip">3层</span><span class="echip">4层</span><span class="echip">6层</span></div></div>
+<div class="entity-section"><h4>铜器 (2)</h4><div><span class="echip">鼎</span><span class="echip">盘</span></div></div>
+<div class="entity-section"><h4>骨器 (2)</h4><div><span class="echip">骨锥</span><span class="echip">骨针</span></div></div>
+<div class="entity-section"><h4>保存状况 (2)</h4><div><span class="echip">完整</span><span class="echip">残缺</span></div></div>
+<div class="entity-section"><h4>年代 (2)</h4><div><span class="echip">早期</span><span class="echip">晚期</span></div></div>
+<div class="entity-section"><h4>纹饰 (1)</h4><div><span class="echip">圆圈纹</span></div></div>
+<div class="entity-section"><h4>制作工艺 (1)</h4><div><span class="echip">手制</span></div></div>
+<div class="entity-section"><h4>地理位置 (1)</h4><div><span class="echip">区</span></div></div>
+<div class="entity-section"><h4>土样特征 (1)</h4><div><span class="echip">黄土</span></div></div>
+<div class="entity-section"><h4>发掘信息 (1)</h4><div><span class="echip">科学出版社</span></div></div>
+
+</div>
+
+<div class="card">
+  <h3>📖 报告全文</h3>
+  <div class="report-body" id="reportBody">
+    <h1 id="_1">中国田野考古报告集</h1>
+<h1 id="_2">考古学专刊</h1>
+<p>丁种第十七号</p>
+<h1 id="_3">京山屈家嶺</h1>
+<p>中国科学院考古研究所编</p>
+<p>科学出版社 出版</p>
+<h1 id="_4">中国田野考古报告集</h1>
+<h1 id="_5">考古学专刊</h1>
+<h1 id="_6">丁种第十七号</h1>
+<h1 id="_7">京山屈家嶺</h1>
+<p>中国科学院考古研究所編著</p>
+<p>科学出版社出版</p>
+<h1 id="_8">中国田野考古报告集</h1>
+<h1 id="_9">考古学专刊</h1>
+<h1 id="_10">丁种第十七号</h1>
+<h1 id="_11">京山屈家嶺</h1>
+<p>中国科学院考古研究所编著</p>
+<p>科学出版社出版</p>
+<h1 id="_12">内容简介</h1>
+<p>湖北京山县屈家岭遗址是一处新石器时代遗存。1954年冬发现后，1955年春和1956年秋先后作过两次发掘。这本报告报道的是第二次发掘的资料。</p>
+<p>报告概述发掘的经过，详细介绍地层关系、遗迹和遗物。根据对地层堆积和出土遗物的分析，将文化层分为三阶段。以第一阶段属于早期，第二、三阶段属于晚期的一、二两个分期，表现了这一文化遗存的发展关系。</p>
+<p>出土遗物，以彩陶纺轮、朱绘黑陶和蛋壳彩陶等最具特色，陶器中的碗、鼎、豆等造型，又具有共同特征，有别于其它新石器时代文化。这种文化乃以这一遗址而定名“屈家岭文化”。它是研究我国长江流域新石器文化的重要资料。</p>
+<h1 id="_13">京山屈家岭</h1>
+<h1 id="_14">中国田野考古报告集</h1>
+<p>考古学专刊</p>
+<p>丁种第十七号</p>
+<p>中国科学院考古研究所编</p>
+<p>*</p>
+<h1 id="_15">科学出版社出版</h1>
+<p>北京朝阳門内大街117号</p>
+<p>北京市书刊出版业营业許可証出字第061号</p>
+<p>中国科学院印刷厂印刷</p>
+<p>新华书店北京发行所发行 各地新华书店经售</p>
+<p>*</p>
+<p>1965年9月第一版</p>
+<p>开本： $787\times 1092$ 1/16</p>
+<p>1965年9月第一次印刷</p>
+<p>印张：51/2</p>
+<p>道精装：1-1,150</p>
+<p>插页：34</p>
+<p>报平装：1-500</p>
+<p>字数：106,000</p>
+<p>统一书号：11031·61</p>
+<p>本社书号：3302·11</p>
+<p>定价：[科士] 道林精装本3.60元</p>
+<p>定价：[科七] 报纸平装本2.50元</p>
+<p>Akaemn Hayk Krtan</p>
+<p>HCTHTyT apXeOJIoTHN</p>
+<h1 id="heojihtuhckaa-ctohka-iioi3ajiinh-b-ye3de-i3hhiiahb">HEOJIHTUHcKAA CTOHKA IIOI3aJIINH B YE3DE I3HHIIAHb</h1>
+<p>(Cpe3IOmeHa aHrJIHHckOM y3bIke)</p>
+<p>H3daTeJIbCTBO «IlayKa»</p>
+<p>IIeKNH·1965</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="chu-chia-ling-chinshan">CH'U CHIA LING, CHINSHAN</h1>
+<p>(with an English abstract)</p>
+<p>Edited by</p>
+<p>The Institute of Archaeology, Academia Sinica</p>
+<p>Published by</p>
+<p>THE SCIENCE PRESS</p>
+<h1 id="_16">目录</h1>
+<h1 id="1">壹 絲言 1</h1>
+<h1 id="4">贰 地层堆积 4</h1>
+<h1 id="_17">参 早期文化遗存</h1>
+<h1 id="8">一 遗迹和所出遗物· 8</h1>
+<p>（一）灰坑 8<br />
+（二）墓葬 12</p>
+<h1 id="12">二 文化层中出土的遗物 12</h1>
+<p>（一）生产工具 12<br />
+（二）生活用具 16<br />
+（三）装饰品 20<br />
+（四）其它 21</p>
+<h1 id="24">肆 晚期文化遗存 24</h1>
+<h1 id="24_1">甲 晚期一文化遗存 24</h1>
+<p>一 遗迹二 24<br />
+二 蓦葬· 25<br />
+三 文化层中出土的遗物 25</p>
+<p>（一）生产工具 25<br />
+（二）生活用具 31<br />
+（三）装饰品 37<br />
+（四）其它 38</p>
+<h1 id="39">乙 晚期二文化遗存 39</h1>
+<p>一 遗迹一 39<br />
+二 蓬葬· 39</p>
+<p>三 文化层中出土的遗物 39</p>
+<p>（一）生产工具 39<br />
+（二）生活用具 49<br />
+（三）装饰品 67<br />
+（四）其它 69</p>
+<p>伍 結論 72<br />
+后記 77<br />
+附录 78<br />
+外文提要 81</p>
+<h1 id="_18">图版目录</h1>
+<p>彩色版壹 早期和晚期一的彩陶</p>
+<p>彩色版贰 晚期二的彩陶纺輪和蛋壳彩陶片</p>
+<p>壹 屈家岭遗址地形及发掘情况</p>
+<p>贰 屈家岭遗址发掘区全景</p>
+<p>叁 早期的灰坑</p>
+<p>肆 晚期遗迹二烧土残迹层</p>
+<p>伍. 晚期一红烧土中的稻谷壳</p>
+<p>陆 早期灰坑出土的陶器</p>
+<p>柒 早期及晚期二的墓葬</p>
+<p>捌 早期的石斧、石锛</p>
+<p>玖 早期的石器、陶纺輪</p>
+<p>拾 早期的陶碗、陶钵</p>
+<p>拾壹 早期的陶盘、碟及器盖</p>
+<p>拾贰 早期的陶鼎、罐和壶形器</p>
+<p>拾叁 早期的陶、玉器</p>
+<p>拾肆 晚期一的石斧</p>
+<p>拾伍 晚期一的石器</p>
+<p>拾陆 晚期一的石、玉器等</p>
+<p>拾柒 晚期一的陶器</p>
+<p>拾捌 晚期一的陶碗</p>
+<p>拾玖 晚期一的陶碗、陶豆</p>
+<p>贰拾 晚期一的陶罐、陶鼎</p>
+<p>贰壹 晚期一的陶器</p>
+<p>贰贰 晚期一的陶球及彩陶片</p>
+<p>贰叁 晚期二的建筑遗迹</p>
+<p>贰肆 晚期二的建筑遗迹</p>
+<p>贰伍 晚期二的石斧</p>
+<p>贰陆 晚期二的石器</p>
+<p>贰柒 晚期二的石器等</p>
+<p>贰捌 晚期二的石、陶镞</p>
+<p>贰玖 晚期二的小石器及骨锥</p>
+<p>叁拾 晚期二的陶器</p>
+<p>叁壹 晚期二的陶鼎</p>
+<p>叁贰 晚期二的陶鼎</p>
+<p>叁叁 晚期二的陶碗</p>
+<p>叁肆 晚期二的陶碗</p>
+<p>叁伍 晚期二的陶器</p>
+<p>叁陆 晚期二的陶器</p>
+<p>叁柒 晚期二的陶豆</p>
+<p>叁捌 晚期二的陶豆、杯</p>
+<p>奎玖 晚期二的陶器</p>
+<p>肆拾 晚期二的蛋壳彩陶杯</p>
+<p>肆壹 晚期二的陶器</p>
+<p>肆贰 晚期二的高圈足杯</p>
+<p>肆叁 晚期二的蛋壳彩陶杯殘片(采集)</p>
+<p>肆肆 晚期二的蛋壳彩陶片</p>
+<p>肆伍 晚期二的陶罐</p>
+<p>肆陆 晚期二的陶器</p>
+<p>肆柒 晚期二的陶器</p>
+<p>肆捌 晚期二的壶形器</p>
+<p>肆玖 晚期二的壶形器</p>
+<p>伍拾 晚期二的缸形器</p>
+<p>伍壹 晚期二的缸形器</p>
+<p>伍贰 晚期二的陶器</p>
+<p>伍叁 晚期二的器盖、器座</p>
+<p>伍肆 晚期二的陶、玉器</p>
+<p>伍伍 屈家岭遗址红烧土块和洛阳汉墓出土谷粒</p>
+<p>伍陸 湖北放鹰台、屈家岭新石器时代遗址出土谷壳</p>
+<h1 id="_19">插图目录</h1>
+<p>一 屈家岭遗址的地形和发掘坑位图… 2<br />
+二 探方1—197位置图 3<br />
+三 早期与晚期典型探方地层剖面图<br />
+四 T99的早期和晚期出土主要遗物…<br />
+五 T95 的晚期一和晚期二出土主要遗物…<br />
+六 早期灰坑出土的陶器… 9<br />
+七 早期灰坑出土的陶器口沿 ………………………………………… 10<br />
+八 早期灰坑出土的陶罐口沿、器盖… 11<br />
+九 早期的石斧 … 13</p>
+<p>一O 早期的石器<br />
+—— 早期的陶纺输· 16<br />
+一二 早期的陶器盖· 18<br />
+一三 早期的彩陶片 ………………………………………… 19<br />
+一四 早期的朱绘黑陶… 20<br />
+一五 早期的陶环、玉质饰品… 21<br />
+一六 早期的陶球、石球… 22<br />
+一七 晚期一的石斧… 26<br />
+一八 晚期一的石斧 27<br />
+一九 晚期一的石器… 28<br />
+二O 晚期一的陶纺輪… 29<br />
+二一 晚期一的陶纺輪 30<br />
+二二 晚期一的陶器· 31<br />
+二三 晚期一的陶碗 32<br />
+二四 晚期一的陶器· 34<br />
+二五 晚期一的陶器 35<br />
+二六 晚期一的陶器盖 36<br />
+二七 晚期一的陶环、玉质饰物· 37<br />
+二八 晚期一的陶球 38<br />
+二九 晚期二的石斧… 40</p>
+<p>三O 晚期二的石器… 41<br />
+三一 晚期二的石器… 42<br />
+三二 晚期二的石镶嵌 43<br />
+三三 晚期二的小石器等 45<br />
+三四 晚期二的陶纺輸 46<br />
+三五 晚期二陶纺輪剖面示意· 46<br />
+三六 晚期二彩陶纺輪剖面示意· 46<br />
+三七 晚期二的彩陶纺輪… 47<br />
+三八 晚期二的彩陶纺输 48<br />
+三九 晚期二的陶器<br />
+四○ 晚期二的陶鼎· 50<br />
+四一 晚期二的陶碗 52<br />
+四二 晚期二的陶碗· 53<br />
+四三 晚期二的陶器 54<br />
+四四 晚期二的陶豆· 55<br />
+四五 晚期二的陶杯 56<br />
+四六 晚期二的陶器 57<br />
+四七 晚期二的高圈足杯 59<br />
+四八 晚期二的陶器 61<br />
+四九 晚期二的陶器 62<br />
+五○ 晚期二的缸形器 64<br />
+五一 晚期二的四耳陶器 65<br />
+五二 晚期二的陶器盖 66<br />
+五三 晚期二的彩陶器盖 66<br />
+五四 晚期二的陶环、玉质饰品等 68<br />
+五五 晚期二的陶球和彩陶球· 70</p>
+<h1 id="_20">壹緒言</h1>
+<p>屈家岭新石器时代遗址，位于湖北省京山县城西南约30公里的屈家岭村，是湖北省文物管理委员会于1954年冬季配合石龙过江水库工程调查时发现的<sup>1)</sup>。</p>
+<p>京山县位于江汉平原北面，县境内北半部是大洪山的东南麓，南半部为平原。南部县境边缘地区有一条天门河，上游分两支，西源出于锺祥县的东部，东源名寨子河、出于京山县的西部边缘。寨子河又汇有七条支流，沿北岸有均水、司马河、青木塗河、杨水和巾水河五条；沿南岸有小河与高桥水两条。屈家岭遗址就在青木塗河与它的小支流青木河之间的三角地带上（图一；图版壹，1）。</p>
+<p>遗址的自然环境与鄂西和鄂东的遗址不大相同, 是在海拔 300 米以下的山区中。东、南、北三面是海拔 40—50 米的或聚或散的小丘陵, 西南地势较平坦, 青木塗河在它的东南面, 青木河在它的西面, 两河自遗址的北部环绕而南, 到屈家岭村西南约 750 米汇合。两河之间的地形作椭圆形, 东、西、南部地势平坦, 海拔约 40—42 米, 南低北高, 中部及东部是一个长 3550, 宽 1930, 海拔 43—51 米的不规则的椭圆形岗地。在这岗地上, 发现有五处暴露新石器时代文化遗存的地方。我们先后在这里发掘过两次。</p>
+<p>第一次发掘，是在1955年2月间，由湖北省石龙过江水库指揮部文物工作队负责。发掘面积很小，只在屈家岭村的西部渠道经过的地方开了 $2 \times 10$ 米的探沟四条。初步了解到它的文化内涵及地层堆积情况，看出遗址的文化遗物属于新的文化系统。</p>
+<p>第二次发掘, 是在 1956 年 6 月到 1957 年 2 月间, 前后历时八个月。发掘地点在屈家岭村北面 70 米的渠道两旁, 即椭圆形岗地的西南面与平坦地方交接处。目的是为了探索遗址的文化特征。在渠道以东作了大面积的揭开, 在渠道以西进行过钻探, 共开探方 197 个, 发掘面积为 858 平方米 (图一、二; 图版壹, 2; 贰)。探方编号自 T1-197, 由北而南顺次序列, 其中大多数均为 $2 \times 2$ 米, 仅 T5、178、196、197 为 $2 \times 10$ 或 $2 \times 8$ 米 (图二)。</p>
+<p>本报告的资料,全部为第二次发掘的,第一次发掘的沒有收入。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一 屈家岭遗址的地形和发掘坑位图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二 探方1一197位置图</p>
+<h1 id="_21">貳地层堆积</h1>
+<p>屈家岭遗址的文化层，经过发掘得知厚约0.3—3米不等，由多种不同的土质和土色交错组成，堆积层次多为1—10层。土层的大小厚薄亦各悬殊，最大的是烧土层（遗迹二），面积约500平方米，厚约0.1—1米(图版肆)；最小的只有几个平方米。</p>
+<p>在第二次发掘的地方,从水渠的纵剖面和T5、169、170、177、178、196、197等探方的底部得知,当遗址的文化层未形成以前,原来是一个南北长约100、东西宽约40米,中间深约3米的洼地。因此遗址的文化层堆积,中部较厚、层次也较多,四周较薄、层次也较少。</p>
+<p>在这原来的洼地生土面上, 分布有 24 个筒形灰坑, 这是发掘范围内的早期遗迹 (图版叁)。至于整个文化层的堆积, 从发掘的探方中得知, 大体可分为三个阶段。在烧土层以下的各层 (包括灰坑), 由不同的黑色土层组成, 小层编号多到五或十层, 均属于第一堆积阶段。烧土层以上, 由不同的黄色土层组成, 小层编号多为四、五层到八层, 属于第三堆积阶段。在烧土层西部, 上部几与烧土层等高的地层 (图三上用虚线表示), 由不同的褐色土组成的小层, 属于第二堆积阶段。这三个堆积阶段, 我们在地层剖面图上分别以较粗的线</p>
+<p>图三 早期与晚期典型探方地层剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+说明：----线以上是晚期二，以下是晚期一；——线以下是早期;两线中间棱形是遗迹二烧土层；<br />
+a-e是深浅不同的灰土层。<br />
+T99-1层(T95-1层)灰黑地表土 2层(3层)褐黄土红斑 3层(4层)红斑黄褐灰土3D层红斑 <br />
+黄土 4层烧红土 5层黄灰土 5C层红黑斑黄褐灰土 5D层红黑斑黄褐土 6层红斑灰黄土<br />
+6B层(6层)红黑斑褐灰黄土 6C层灰土 7层黑灰土 7A层灰黑土 7B层(7B层)红斑灰黑土 <br />
+8层灰黄白土 8A、8C层(5、7D层)红黑点灰黄土 8B层(5B、6D层)红斑砂质褐黄土 8D层<br />
+赭黄土 (2层)灰白土 (2D层)褐红土 (4D层)灰褐土 (5A层)红点褐灰土 (7、7C层)红 <br />
+斑黑灰土</p>
+<p>条或虚线表示出来，以资区别。在渠道破坏的T7、8、13、14、20、21、28、29、36、37等十个探方中，是以破坏的为第一层编起的。</p>
+<p>在发掘的地层堆积中间,发现两大片红烧土层。从它们的出土层位看来,是属于压在早期文化堆积之上的晚期文化遗存。由于出土先后和交界处的互相压迭,编号为“遗迹一”和“遗迹二”,“遗迹二”属于晚期一,“遗迹一”属于晚期二。这两片红烧土遗迹,可能为当时的建筑遗存或窑址。它成为这一文化堆积的早晚期的划分界线。有关两片红烧土层的情况,详后。</p>
+<p>现选择两个可以说明不同阶段堆积的T99和T95来说明它。T99是属于第一、三阶段的堆积(图三,左), T95是属于第二、三阶段的堆积(图三,右)。</p>
+<p>T99 探方</p>
+<p>1—3层属第三阶段，厚1.45—1.55米。除去表土为灰黑色外，2和3层都为深浅不同的褐黄色土，夹有烧土斑点。这二层几乎遍布于全发掘区。其间还有几个褐色或黑褐色的小层。出土陶片，灰陶占 $44.4\%$ ，黑陶占 $28.38\%$ ，黄陶占 $14.53\%$ ，红陶占 $6.36\%$ ，各种胎色的粗陶和夹砂陶占 $6.33\%$ （表一)。并出土蛋壳彩陶片53片，其中有碗底、杯口沿和底部等。完整或能复原的陶器有彩陶纺输6、纺输2、蛋壳彩陶杯2、陶鸟1、II式碗一、彩陶壶形器1、高圈足杯1件。</p>
+<p>表一 T99 陶片陶系統計表  </p>
+<table><tr><td rowspan="2" colspan="3">项 别</td><td colspan="11">陶 系</td></tr><tr><td>黑</td><td>灰</td><td>黄</td><td>红</td><td>粗黑</td><td>粗灰</td><td>粗黄</td><td>粗红</td><td>粗褐</td><td>夹砂黄</td><td>夹砂红</td></tr><tr><td rowspan="4">文化分期</td><td rowspan="2">早期</td><td>片数</td><td>719</td><td>615</td><td>100</td><td>41</td><td></td><td>4</td><td>14</td><td></td><td>135</td><td>2</td><td>2</td></tr><tr><td>百分比</td><td>45.30</td><td>35.93</td><td>6.30</td><td>2.58</td><td></td><td>0.25</td><td>0.88</td><td></td><td>8.50</td><td>0.13</td><td>0.13</td></tr><tr><td rowspan="2">晚期二</td><td>片数</td><td>660</td><td>1043</td><td>338</td><td>148</td><td>4</td><td>1</td><td>5</td><td>2</td><td>78</td><td>15</td><td>42</td></tr><tr><td>百分比</td><td>28.38</td><td>44.40</td><td>14.53</td><td>6.36</td><td>0.17</td><td>0.04</td><td>0.22</td><td>0.09</td><td>3.35</td><td>0.65</td><td>1.81</td></tr><tr><td colspan="3">总数</td><td>1379</td><td>1663</td><td>438</td><td>189</td><td>4</td><td>5</td><td>19</td><td>2</td><td>213</td><td>17</td><td>44</td></tr><tr><td colspan="3">百分比</td><td>34.57</td><td>42.13</td><td>10.95</td><td>4.73</td><td>0.10</td><td>0.13</td><td>0.48</td><td>0.05</td><td>5.33</td><td>0.43</td><td>1.10</td></tr></table>
+
+<p>第4层是烧土层（遗迹二）的一部分，亦属第二阶段。厚1.0—0.2，深1.45—1.75米。出土陶碗、器盖各1，陶片199片，以红、黄陶为主，红陶占 $34\%$ 强，黄陶占 $28\%$ 强，灰陶占约 $8\%$ ，黑陶约 $7\%$ ，粗红陶约占 $20\%$ 。</p>
+<p>第5—8层属第一阶段的堆积，厚1.05—1.2，深2.6—2.8米。为不同的黑色或灰色土层组成，也有烧土斑点。其中还有可分若干黄色或褐色小层，一般湿度较大土质较软。出土陶片以黑陶为主，占 $45.3\%$ ，灰陶占 $35.93\%$ ，黄陶占 $6.3\%$ ，红陶占 $2.58\%$ ，余为夹砂</p>
+<p>陶和粗泥陶占 $9.89\%$ （表一）。朱绘黑陶为这几层所特有，共出58片，其中有盘、杯和罐等残片。完整或能复原的器物，有纺輪4、陶碟1、陶球3、陶錐形器1、黑陶环3段、黑陶器盖1、黑陶罐1和石斧1件。</p>
+<p>这个探方按土色土质的不同, 分了八个大层, 每大层中又分了若干小层。从地层堆积和出土遗物观察, 有明显的早晚不同, 即 1—3 层属于第三阶段堆积, 5—8 层属于第一阶段的堆积。这个探方早晚期出土主要遗物, 列表说明(图四)。</p>
+<h1 id="t95">T95 探方</h1>
+<p>这个探方的地层堆积, 表明了第二、三阶段。现说明它的层次如下。</p>
+<p>第1—4层和5A层，与T99的第1—3层相同，属于第三阶段堆积。厚1.6—1.7米。为这遗址最晚的堆积层次。除1、2层为灰黑色和灰白色土层外，3、4层都为不同深浅的褐色土，分布也几乎遍于全发掘区。陶片仍以黑、灰陶为主，占 $79.46\%$ ，余为黄陶和红陶(表二)。蛋壳彩陶48片，多为杯的口沿。完整或复原的器物，有纺输7、彩陶纺输15、陶杯4、陶碗1、陶环5和I式石斧1、石镞1件。</p>
+<p>表二 T95 陶片陶系統計表  </p>
+<table><tr><td rowspan="2" colspan="3">项 别</td><td colspan="13">陶 系</td></tr><tr><td>黑</td><td>灰</td><td>黄</td><td>红</td><td>粗黑</td><td>粗灰</td><td>粗黄</td><td>粗红</td><td>粗褐</td><td>夹砂黑</td><td>夹砂灰</td><td>夹砂黄</td><td>夹砂红</td></tr><tr><td rowspan="4">文化分期</td><td rowspan="2">晚期一</td><td>片数</td><td>4300</td><td>3572</td><td>282</td><td>153</td><td>32</td><td>466</td><td>2</td><td>14</td><td>39</td><td>1</td><td>11</td><td>22</td><td>26</td></tr><tr><td>百分比</td><td>47.30</td><td>41.18</td><td>3.10</td><td>1.68</td><td>0.35</td><td>5.13</td><td>0.02</td><td>0.15</td><td>0.43</td><td>0.01</td><td>0.12</td><td>0.24</td><td>0.29</td></tr><tr><td rowspan="2">晚期二</td><td>片数</td><td>3799</td><td>3623</td><td>1246</td><td>121</td><td>133</td><td>148</td><td>120</td><td>8</td><td>71</td><td>48</td><td>5</td><td>29</td><td>16</td></tr><tr><td>百分比</td><td>41.06</td><td>38.40</td><td>13.21</td><td>1.27</td><td>1.40</td><td>1.55</td><td>1.26</td><td>0.08</td><td>0.75</td><td>0.50</td><td>0.05</td><td>0.30</td><td>0.17</td></tr><tr><td colspan="3">总数</td><td>8099</td><td>7195</td><td>1528</td><td>274</td><td>165</td><td>614</td><td>122</td><td>22</td><td>110</td><td>49</td><td>16</td><td>51</td><td>42</td></tr><tr><td colspan="3">百分比</td><td>44.98</td><td>38.85</td><td>8.25</td><td>1.48</td><td>0.89</td><td>3.32</td><td>0.66</td><td>0.12</td><td>0.59</td><td>0.26</td><td>0.09</td><td>0.28</td><td>0.23</td></tr></table>
+
+<p>第5—7层与T99的第4层（即烧土层)同属第二阶段堆积。由不同的黄褐色土层组成。厚0.9—1.1,深2.15—2.2米。第5层为灰黄色土，第6层为褐灰黄色土，第七层为灰黑土，它们的小层还有夹砂质褐灰、黑褐土层。出土遗物，陶片仍以黑、灰陶为主，占 $88.48\%$ ，余为黄、红陶。蛋壳彩陶12片。完整或复原的器物，有陶鼎2、小陶碟1、纺输4和IV式石斧1件。这几层里，出土有第三阶段的遗物，也有少数第一阶段的遗物，如红衣陶、薄胎小陶鼎和大型黑、灰陶纺输等。</p>
+<p>这个探方的7D层以下的生土层内,发现筒形灰坑一个,编号为IH19,属于第一阶段。出土遗物很少。灰坑口径为0.95,底径0.6,深0.85-1.1,口深2.1-2.65米。坑内堆积可分五层,编号为a一e层。最厚的是b层,厚0.1-0.6米。都由深浅不同的灰土或黑土组</p>
+<table><tr><td rowspan="4">晚期</td><td>1</td><td>2</td><td>3</td></tr><tr><td>4</td><td>5</td><td>6</td></tr><tr><td>7</td><td>8</td><td>9</td></tr><tr><td>11</td><td>12</td><td>13</td></tr><tr><td rowspan="4">早期</td><td>14</td><td>15</td><td>16</td></tr><tr><td>17</td><td>18</td><td>19</td></tr><tr><td>20</td><td>21</td><td>22</td></tr><tr><td>23</td><td>24</td><td>25</td></tr></table>
+
+<p>图四 T99的早期和晚期出土主要遗物</p>
+<table><tr><td rowspan="2">晚期二</td><td>1
+5
+9
+13</td><td>2
+6
+10
+15</td><td>3
+7
+11
+14</td><td>4
+8
+12</td></tr><tr><td colspan="4">13</td></tr><tr><td>晚期一</td><td>14
+17
+20</td><td>15
+18
+22</td><td>16
+19</td><td></td></tr></table>
+
+<p>图五 T95的晚期一和晚期二出土主要遗物</p>
+<p>成,湿度大也很软。出土陶片有黑陶12、灰陶3片,都为素面。</p>
+<p>这个探方除灰坑外, 分为七个大层和若干小层。从地层堆积和出土遗物观察, 7D 以下的灰坑属第一阶段的堆积, 5—7 层属第二阶段堆积, 其中出有少数第三阶段的遗物, 如 I、II 式碗、I 式鼎、蛋壳彩陶杯和彩陶纺輪等; 1—4 层属第三阶段堆积, 与 T99 探方相同。这个探方出土主要遗物, 列表说明 (图五)。</p>
+<p>从上述地层堆积和出土遗物比较，可以看出三个堆积阶段有早晚的不同。烧土层以下的属早期，即第一阶段的堆积。烧土层以上包括第二、三阶段堆积属晚期，即第二阶段堆积为“晚期一”，第三阶段堆积为“晚期二”。</p>
+<p>现按我们定出的早晚两期文化，分别介绍出土遗物。</p>
+<h1 id="_22">叁 早期文化遗存</h1>
+<p>早期文化遗存, 包括底部的灰坑及第一阶段堆积层中出土的遗物。</p>
+<h1 id="_23">一 遗迹和所出遗物</h1>
+<h1 id="_24">（一）灰坑</h1>
+<p>在上述的文化层下的洼地的北部生土地面上, 集中地分布着 24 个灰坑, 其分布没有什么规律(图版叁)。这些灰坑的口部, 大体与洼地的生土面平齐, 而坑身则都挖入生土层中。灰坑一般都作圆筒形, 平底; 部分灰坑底部较小, 坑壁略斜。灰坑的大小不同, 最大的 IH22, 径长 1.9-2, 深 1.5-1.8, 口距地表 2.8 米; 最小的 IH16, 径长 0.9-0.96, 深 0.46, 口距地表 2.77 米。坑内灰土堆积, 最少的仅一层, 最多的可分为七层, 都是色深浅不同的黑灰土, 湿度很大, 也极软。出土遗物都是陶片, 没有早晚的区别。</p>
+<p>复原的陶器只有带盖小陶鼎一件。陶片以黑陶和灰陶最多，有极少数表面磨光的黑陶。在灰坑出土的3788块陶片中，能辨出器形的约占1/10左右，有甑、碗、高圈足豆、平底杯、小盘、盆、缸形器、大小陶罐、小陶鼎和器盖等。这些陶器几乎全是黑胎或灰胎的，红、黄胎只是个别的(表三)。</p>
+<p>表三 灰坑出土陶片的陶系統計表  </p>
+<table><tr><td colspan="2">陶系</td><td>黑</td><td>黑亮</td><td>灰</td><td>红</td><td>黄</td><td>粗黑</td><td>粗灰</td><td>粗黄</td><td>粗褐</td><td>红夹砂</td><td>合计</td></tr><tr><td rowspan="18">灰坑</td><td>IH2</td><td>204</td><td>7</td><td>70</td><td>23</td><td>53</td><td>1</td><td>2</td><td>3</td><td>1</td><td>3</td><td>367</td></tr><tr><td>IH5</td><td>5</td><td></td><td>2</td><td></td><td>3</td><td></td><td></td><td></td><td></td><td></td><td>10</td></tr><tr><td>IH6</td><td>86</td><td>5</td><td>28</td><td>6</td><td>5</td><td></td><td>1</td><td></td><td>1</td><td></td><td>132</td></tr><tr><td>IH7</td><td>7</td><td>5</td><td>3</td><td></td><td></td><td></td><td></td><td></td><td>5</td><td></td><td>20</td></tr><tr><td>IH8</td><td>196</td><td>11</td><td>73</td><td>18</td><td>27</td><td></td><td></td><td>3</td><td>21</td><td></td><td>349</td></tr><tr><td>IH9</td><td>231</td><td>13</td><td>81</td><td>7</td><td>18</td><td></td><td></td><td>3</td><td>26</td><td></td><td>379</td></tr><tr><td>IH10</td><td>54</td><td>3</td><td>20</td><td></td><td>85</td><td>3</td><td>9</td><td></td><td>9</td><td>1</td><td>184</td></tr><tr><td>IH11</td><td>136</td><td>7</td><td>48</td><td>4</td><td>9</td><td>1</td><td></td><td>1</td><td>3</td><td>1</td><td>210</td></tr><tr><td>IH12</td><td>96</td><td>4</td><td>34</td><td>11</td><td>17</td><td></td><td></td><td></td><td></td><td></td><td>162</td></tr><tr><td>IH14</td><td>84</td><td>11</td><td>28</td><td>8</td><td>10</td><td>1</td><td></td><td>1</td><td></td><td></td><td>143</td></tr><tr><td>IH15</td><td>49</td><td>3</td><td>16</td><td>4</td><td>2</td><td>6</td><td></td><td></td><td>1</td><td></td><td>81</td></tr><tr><td>IH17</td><td>40</td><td>2</td><td>12</td><td>7</td><td>13</td><td></td><td></td><td>2</td><td></td><td></td><td>76</td></tr><tr><td>IH19</td><td>11</td><td></td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>15</td></tr><tr><td>IH20</td><td>77</td><td></td><td>26</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>103</td></tr><tr><td>IH21</td><td>70</td><td>3</td><td>24</td><td>3</td><td>5</td><td></td><td></td><td>2</td><td>5</td><td></td><td>112</td></tr><tr><td>IH22</td><td>466</td><td>34</td><td>157</td><td>2</td><td>17</td><td>23</td><td>2</td><td>10</td><td>28</td><td></td><td>739</td></tr><tr><td>IH23</td><td>47</td><td>2</td><td>16</td><td></td><td>3</td><td>4</td><td></td><td>3</td><td></td><td></td><td>75</td></tr><tr><td>IH24</td><td>19</td><td>4</td><td>6</td><td>1</td><td>3</td><td></td><td></td><td></td><td>9</td><td>1</td><td>43</td></tr><tr><td rowspan="5">号</td><td>IIH3</td><td>70</td><td>4</td><td>23</td><td>1</td><td>6</td><td></td><td></td><td rowspan="5">2</td><td>5</td><td></td><td>109</td></tr><tr><td>IIH4</td><td>50</td><td>5</td><td>17</td><td>2</td><td>8</td><td></td><td></td><td>1</td><td></td><td>85</td></tr><tr><td>IIH5</td><td>80</td><td>11</td><td>29</td><td>17</td><td>26</td><td>10</td><td></td><td>6</td><td></td><td>179</td></tr><tr><td>IIH8</td><td>94</td><td>3</td><td>34</td><td>6</td><td>21</td><td>24</td><td></td><td>20</td><td></td><td>202</td></tr><tr><td>IIH18</td><td>6</td><td>3</td><td>2</td><td></td><td>2</td><td></td><td></td><td></td><td></td><td>13</td></tr><tr><td colspan="2">合计</td><td>2178</td><td>140</td><td>753</td><td>120</td><td>333</td><td>73</td><td>14</td><td>30</td><td>141</td><td>6</td><td>3788</td></tr><tr><td colspan="2">百分比</td><td>57.62</td><td>3.70</td><td>19.87</td><td>3.17</td><td>8.71</td><td>1.90</td><td>0.37</td><td>0.79</td><td>3.71</td><td>0.16</td><td>100</td></tr></table>
+
+<p>图六 早期灰坑出土的陶器（1/3）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.小型鼎 IH22:3A (1)(b) 2.甑底 IH20:1 (1) 3-5.III式碗 IH9:1(1),IH9:2(1),IIH4:1(1) <br />
+6、7. IV式碗IH6:1(1), IH12:1(1) 8. 平底杯 IH8:2(1)(a) 9. II式碗IH22:3A(1)(a) 10、11.<br />
+高圈足豆IH21:1(1), IH8:1(1)(a) 12、13. 小盘 IH10:1(1)(a), IH17:3(1) 14.III式碗 IH11:2B(1)<br />
+15. I式碗 IH21:1A(1)</p>
+<p>只见底部残片。IH20:1(1) 器形较小, 器身作盆形, 素面。底径约 8 厘米, 上有较密的镂孔 (图六, 2; 图版陆, 8)。</p>
+<p>碗 均为器底殘部。可分四式：</p>
+<p>I式：平底。IH21:1A(1)斜壁，胎色褐黄。底径13,厚0.5—0.7厘米（图六，15）。</p>
+<p>II式：圜底三足。IH22:3A(1)(a) 圜底下的三足为控制，足短矮。胎色黑，质较硬（图六，9）。</p>
+<p>III式：圈足。圈足有高矮，底有平底和圜底之分。IH9:1(1) 平底，器形大而规整，胎较薄，质较硬。足径13，厚0.3—0.6厘米（图六，3）。IH11:2B(1) 斜壁，底呈弧形，圈足仅成一凸起的棱。圈足径10厘米（图六，14）。圜底的有大小两种：大的如IIH4:1(1)足径10.4，厚0.4—0.8厘米（图六，5；图版陆，9）；小的如IH9:2(1)足径6.2，厚0.1—0.25厘米（图六，4）。</p>
+<p>IV式：镂孔圈足。圈足有高矮不同。IH6:1(1)器底近平，圈足较高微外斜，上有圆形镂孔。足径9, 殖高3.2, 厚0.25厘米（图六, 6；图版陆, 10）。IH8:2(1)(c)圈足较高而下部外侈，孔镂在足壁的中部。器表磨光。足径长8, 厚0.35厘米（图版陆, 6）。IH12:1(1)圈足最高，上有直行双镂孔。圈足底径12, 厚0.25—0.45厘米（图六, 7）。</p>
+<p>高圈足豆 IH21:1(1) 只残存底部及圈足上部（图六, 10; 图版陆, 2）。IH8:1(1)(a) 为圈足下部, 作喇叭状, 上有圆形镂孔（图六, 11）。</p>
+<p>平底杯 IH8:2(1)(a) 只残留下半部, 器壁垂直, 底近平, 周边凸出类矮圈足。红陶。足径 8, 厚 0.3-0.5 厘米 (图六, 8; 图版陆, 3)。</p>
+<p>小陶盘 IH10:1(1)(a) 为器底。直壁, 平底。薄胎黑陶。底径 6.7, 厚 0.1-0.25 厘米 (图六, 12)。IH17:3(1) 器形较大。底径 11, 厚 0.15-0.3 厘米 (图六, 13)。这类盘在文化层中亦有出土, 但上有硃绘。</p>
+<p>盆数量很少。IH14:3(1)侈口,斜弧壁,深腹(图七,6;图版陆,1)。IH21:2(1)器壁作弧形,口径30,厚0.4-0.5厘米(图七,1)。</p>
+<p>缸形器 器形较大。出土最多是弄口折唇弧壁的。只一件为红陶，余均为黑陶。IH14:3(1)唇外侈,中部微凹,口径34,厚0.4—0.8厘米(图七,4)。IH9:1(1)斜唇,口径30,厚0.3—0.5厘米(图七,3)。IIH4:3(1)弄口锐折平唇,口径40,厚0.6—0.8厘米</p>
+<p>图七 早期灰坑出土的陶器口沿（1/7）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、6. 盆 IH21:2(1), IH14:3(1) 2. 小型鼎 IH22:2(1) 3-5. 缸形器 IH9:1(1), IH14:3(1), IH4:3(1)</p>
+<p>（图七，5）。</p>
+<p>罐器有大小, 口颈形式也多不同。有小直口弧肩的, 蛋壳黑陶, 輸制。IH10:1(1)(b)肩较小, 口径6.4, 厚0.1-0.2厘米(图八, 6; 图版陆, 7)。IH11:1(1)肩大而斜, 口径6.2, 厚0.1-0.2厘米(图八, 1; 图版陆, 4)。这类陶罐是早期文化特征之一。有侈口弧肩的, IH14:2(1)颈内敛, 口径18厘米(图八, 4)。IH8:2(1)(b)侈口, 颈较高, 弧肩较大(图八, 2; 图版陆, 11)。有敛口平肩的, IH11:2A(1)唇锐折, 胎浅灰色, 质软鞣较粗陶末, 手制。口径16, 厚0.4-0.5厘米(图八, 5)。有敛口弧肩的。IH14:4(1)灰陶, 质软。口</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图八 早期灰坑出土的陶罐口沿、器盖<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、6. 小型罐 IH11:1(1), IH10:1(1)(b) 2、3-5. 罐 IH8:2(1)(b), IH14:4(1), IH14:2(1), IH11:2A(1) 7、8. 器盖 IH2:1(1), IH22:4B(1) 9-11. 罐 IH8:1(1)(b), IH2:2(1), IH12:1(1) (3、5、11. 为 $1/6$ , 余皆 $1/3$ )</p>
+<p>径18, 厚0.4—0.8厘米(图八, 3)。有直颈斜肩的。为数较少，IH2:2(1）唇厚微凸，肩上有凸弦纹一圈，上有按窝三组，每组二个。口径12, 厚0.3—0.5厘米（图八, 10；图版陆, 12)。IH8:1(1)(b）直颈较高，胎灰色。口径14, 厚0.2—0.4厘米(图八, 9)。有弁口有嘴的，IH12:1(1)平唇，肩呈斜弧度，肩腹交接处有一圆嘴。口径30, 厚0.4—0.6厘米（图八, 11)。</p>
+<p>小陶鼎 为数特多。器小胎薄, 器形基本相同, 一般多有盖。这种小鼎是早期文化最具特征有代表性的器形之一。IH22:3A(1)(b)敛口锐折唇, 腹径下部较大, 有凹弦纹一周, 大圜底, 底部有三个矮足。盖作球面形, 直唇, 顶部钮作盅形。胎黑色, 质硬。手制。口径与器身高均为 10.5, 足高 3.1, 厚 0.3; 盖径 9.9, 高 4.9 厘米 (图六, 1; 图版陆, 13)。另一种器身作球形的陶鼎, 未发现有完整的, 但由灰层中出土的推知, 如 IH22:2(1)敛口锐</p>
+<p>折唇, 肩壁呈弧形, 下部残缺, 质软胎薄, 亦通体黑色。口径 14, 厚 0.15-0.3 厘米 (图七, 2)。</p>
+<p>器盖 从形制上看, 大部分都是小型陶鼎的盖。其中有盖面较大或钮较高的, 则为其它容器的盖。均为泥质黑陶, 有的表面磨光。与地层中出土的相同。IH22:4B(1) 缺钮 (图八, 8)。IH2:1(1) 钮作喇叭状, 钮沿缺损, 盖面亦残去, 质硬, 器表黑亮。这种盖钮发现也多, 为一种小型容器的盖 (图八, 7; 图版陆, 5)。</p>
+<h1 id="_25">（二）墓葬</h1>
+<p>在T178的2D层以下的生土面上，发现一座墓葬。方向 $53^{\circ}$ 。发掘时没有发现墓坑，似乎是埋在当时的地面上的。骨架已腐朽，但还可辨出为仰身直肢葬式，面向东。随葬陶器五件，均为薄胎黑陶。二件放置在骨架的右侧，一件在骨架的左侧，二件在腹部（图版染，1）。</p>
+<p>陶鼎 4 件。器形相同。都有盖, 出土时盖与鼎分离。这种陶鼎的形制, 与上述灰坑中出土的 IH22:3A(1) (b) 器形完全相同。IIM1(4) 口径 11.5, 高 9.6; 盖径 10.1, 高 4.6, 厚 0.1-0.7 厘米(参阅图六, 1; 图版陆, 13)。</p>
+<p>圈足器 1件。殘破过甚,无法辨出其器形为何种容器。</p>
+<h1 id="_26">二 文化层中出土的遗物</h1>
+<p>早期文化层中出土的遗物，石器有斧、锛、刀、凿和有孔石铲等；陶质工具有纺輪。陶质器皿的数量较多，有碗、钵、盘、碟等。以硃绘蛋壳黑陶最为突出，而且数量亦多。有带盖黑陶鼎、敛口或直口罐和少数的彩绘壶形器等。装饰品有黑陶和灰陶的陶环，还有长方形玉质饰物等。</p>
+<h1 id="_27">（一）生产工具</h1>
+<p>石斧 为数最多。有大小之分，我们把它分为大、中、小三型：长15—26.8厘米的为大型，10—15厘米的为中型，10厘米以下的为小型。器形可分四式：</p>
+<p>I式：上窄下宽形，共5件。中型3,大、小型各1件。T181:4B(1)大型，上端和刃部残缺，器表磨制不平整(图版捌，1)。T118:6(1）中型，上端窄薄，壁刃部较厚，刃呈弧形（图九，1；图版捌，2)。T92:5(4）小型，体厚上下近同，刃部对称（图九，2)。T79:7(1)中型，刃部残损（图版捌，3)。</p>
+<p>II式：长方形，共12件。大型5、中型6、小型1件。T140:5(3）中型，顶端及刃部残缺，上端微窄而特薄(图九，7)。T130:6(2）中型，上端微窄，两头尖薄、中部最厚（图九,8；图版掷,6)。T110:6(1）中型，上端较薄，对称平口刃(图九,5)。T179:7J,7I(1)小型，体平薄，上下端均残(图九,3)。T96:9(1)小型，上端残去，刃作斜弧形(图九,6)。T126:4F(1）器体较厚，磨制粗糙(图版掷,4)。T159:6(1）小型，刃部残缺，器表不平，周边及顶部留有打制痕迹(图九,4;图版掷,5)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>图九 早期的石斧<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、2. I式T118:6(1)，T92:5(4) 3-8. II式T179:7J，7I(1)，T159:6(1)，T110:6(1)，T96:9(1)，T140:5(3)，T130:6(2)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>9 <br />
+图一O 早期的石器（2/5）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1-3.II式T92:8B(5)，T112:7D(2)，T150:7(6) 4.I式T155:6C(3) 5、8. 铲T155:8,8B,8C(3),<br />
+T139:8(1) 6.II式凿T155:8,8B，8C(2) 7.刀T130:6G(2) 9.II式凿T145:6(16)</p>
+<p>III式：方柱形，12件。器身较厚。T139:6A(1）中型，刃部及上端的一侧缺残，体方而稍扁(图版捌，8)。T92:8B(5）中型，上端缺残，上厚下薄(图一〇，1)。T150:7(6)小型，刃残，壁刃处最厚(图一〇，3)。体近正方柱体的有4件：T112:7D(2）中型，上窄下宽，刃面从中部开始(图一〇，2)。T111:9(4）大型，上端残，两面微鼓起，器形不规整（图版捌，9)。T181:4(1）中型，刃及顶部残，亦两面凸起，器形不规整(图版捌，10)。</p>
+<p>石锛 2 件。器型不大, 长度都在 10 厘米以下。可分二式:</p>
+<p>I式：长方扁平形。T155:6C(3）斜弧形刃口，体薄，磨制平整（图一O，4；图版玖，1）。</p>
+<p>II式：上窄下宽形。T139:8(1）长度约宽度的两倍以上，即所谓“有段石锛”的原始型（图版捌，7）。</p>
+<p>石刀 2 件。都是刮刀。T130:6G(2) 上部及两侧残缺, 右侧较薄, 刃部对称。长 10, 宽 7.75, 厚 0.8-1.2 厘米 (图一〇, 7; 图版玖, 6)。T54:6(4) 两侧残, 刃部左端似残后改制, 斜刃口不对称。</p>
+<p>石凿 可分三式：</p>
+<p>I式：斧形，2件。T103:7(10)器形似斧，上部残缺，作下窄上宽的长方柱形，刃对称，残长6.7，宽3—4.3，厚3.1厘米（图版玖，9）。T113:7(6）近长方形，顶及两侧磨平，器表留有打制痕迹（图版玖，2）。T159:6E(1）刃对称，长3.6，宽1.4，厚0.6厘米（图版玖，5）。</p>
+<p>II式：锛形，1件。T145:6(16）略呈棒形，上端窄薄，一面微隆起，一面平，偏刃。长8.8，宽2.4，厚0.7—1.6厘米（图一〇,9；图版玖，4）。</p>
+<p>III式：方柱形，2件。T155:8, 8B, 8C(2) 上部残缺，上宽厚向下逐渐窄薄成刃。长9.3，宽3.9，厚3.2厘米（图一〇，6；图版玖，7）。T144:8(1) 刃殘，横剖面作梯形，上端薄，刃部最厚（图版玖，3）。</p>
+<p>石铲 2件。均残。T155:8, 8B, 8C(3) 器身扁平长方, 穿孔, 孔以上及刃部的左角残缺。残长 10.3, 宽 10.3, 厚 2.6 厘米 (图一〇, 5)。T139:8(1) 穿孔以上及刃部的一侧残缺 (图一〇, 8; 图版玖, 8)。</p>
+<p>陶纺輪 胎色有灰、黑、黄、红四种。两面近平, 有大小厚薄之分。我们将径长 4 厘米以上的列为大型, 3 厘米以上的为中型, 3 厘米以下的为小型。大型的为粗陶, 胎内屧有大量草末, 这是较有代表性的一种纺輪。现按周边形式不同, 分为三式:</p>
+<p>I式：直边，2件。T84:6(3）大型，周边平直而中间有凹槽一周，内饰方形小凹点组成的线纹(图一一,1)。T84:6(2)大型，它与上一件不同处，是一面穿孔处稍内凹，周边有方形小凹点组成的线纹三周(图一一，2；图版玖，10)。</p>
+<p>II式：弧边，5件。T104:8(3）大型，周边作弧面，有平行方形凹点组成的线纹三周。T90:7(1）大型，两面微隆起，周边无纹饰(图一一，3、4；图版玖，11)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>12 <br />
+图一一 早期的陶纺轮（2/3）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、2. I式T84:6(3)，T84:6(2) 3、4. II式T104:8(3)，T90:7(1) 5-12.<br />
+III式 $\mathrm{T98:8(4)}$ ，T84:4(7)，T97:8(9)，T104:8,8C(2)，T111:9(2),<br />
+T84:5(2), T105:7(4), T130:6(13)</p>
+<p>III式：角形边，为数最多，共30件。周边有呈钝角或锐角之分。呈钝角的24件：T111:9(2）大型，周边饰方形凹点组成的线纹三周。它可代表21件。T104:8,8C(2）为大型，一面穿孔处微凸起，周边上下沿饰方形凹点线纹二周。T97:8(9）大型，两面穿孔处下凹呈窝状，周边有方形凹点纹一周（图一一，7一9；图版玖，13)。T84:5(2）仅此一件属中型。T105:7(4）体特厚，不同其它纺輪（图一一，10、11)。T130:6(13）中型，体较薄，上下两面周沿凸出，两面向内凹平，无纹饰（图一一，12)。呈锐角的6件：中型5件，大型1件。T105:6(4）中型；T84:4(7）大型，周边皆无纹饰（图一一，6；图版玖，12)。另3件中型，周边中间作锐角的，如T98:8(4)，周边上下沿作直线，各饰有方形凹点线纹一周（图一一，5）。</p>
+<h1 id="_28">（二）生活用具</h1>
+<p>生活用具主要为陶器。早期陶器能复原的很少，器形有碗、钵、盘、碟、罐、小陶鼎、彩绘壶形器和器盖等，还有朱绘黑陶碗、盘、杯、盂、罐等残片和彩陶片。</p>
+<p>碗有大小型之分。大型碗口径多在15—26厘米左右，小型碗的最大口径是10.6厘米。可分四式：</p>
+<p>I式：斜壁圜底，1件。T184:7(6）唇折，壁斜内收，上有凸弦纹九周，其中两周并有压点纹为饰。輪制，器形规整（图版拾，4）。</p>
+<p>II式：弧壁圈足，1件。T134:6(25）敞口唇外折，圈足，素面，翰制（图版拾，2）。</p>
+<p>III式：平唇弧壁，1件。T140:6B(1）唇平阔外折，壁作弧形，圈足仅象一周突棱。夹砂粗黑陶，质坚硬。壁有凸弦纹四周，中间两周附有小钮两个，四周弦纹上均有压点为饰，约9—10个不等（图版拾，5)。</p>
+<p>IV式：三足圜底，1件。T139:7(1）腹深似盆，敞口仰唇，唇下有凹槽一周，圜底下附三个矮足。素面，器表黑亮。口径14.5，高6，厚0.25—0.7厘米(图版拾，1)。</p>
+<p>另有小碗6件。T167:9B(1)敞口,斜壁,小底,圈足。灰陶,质软,表面粗糙。手制,器形不规整(图版拾,3)。T106:7D(8)敞口,弧壁,圈足较高而下端外侈。手制(图版拾,7)。T130:6(83)斜弧壁,深腹,凹圜底(图版拾,8)。T118:6(15)弧壁,有三锥形足。器表黑亮,素面。</p>
+<p>缺1件。T134:6A(8) 直口, 平唇外折, 壁作圆弧形下内收, 小平底有凸弦边似足沿。壁下部饰凸弦纹一周。胎红黄色, 质软。輪制。口径34.5, 高17.9, 厚0.6厘米（图版拾, 6）。</p>
+<p>盘只见小型的直壁平底盘一种。数量多，为早期文化特征之一的遗物。直口，浅盘，有圈足象凸棱。通体黑色，质硬，胎薄类蛋壳。器表有硃绘彩纹。这种陶盘，在灰坑中亦有出土。T129:6(8）圈足略侈出于器壁。口径11.7，高2.4，厚0.3厘米（图版拾壹，8)。T134:6(26）唇略厚于壁，腹略深，圈足是器底的延长似弦纹（图版拾壹，9)。</p>
+<p>碟 器形较小,口径一般约10厘米左右。都是黑、灰陶。有的屠有大量草末。可分四式:</p>
+<p>I式：弧壁平底。出土最多，但均为残片。这种陶碟是早期文化特征之一。敞口，斜弧壁，浅腹，平底，二个梯形足。从其特点推测，似也可作器盖用。T97:8A,8(2）锐折小平唇。T159:6F,7(1）器略大，直口仰唇，平底略呈弧形。T97:8(21）侈唇，腹略深，有三个矮足（图版拾壹，1一3)。</p>
+<p>II式：弧壁圜底。T104:8(1）钝折平唇，唇上有凹弦纹二周。T111:8(12）器呈球形，较规整（图版拾壹，5、6）。</p>
+<p>III式：斜壁平底。T97:8A,8(1)小唇，壁斜略仰，底较小。器形不规整（图版拾壹，4）。</p>
+<p>IV式：带底饼足。T84:6(22）形似现在的小碟而略深，敞口，斜弧壁，平底作饼状凸出（图版拾壹，7）。</p>
+<p>罐 2件。都是磨光黑陶。T113:7(7) 小型, 弃口钝折唇, 斜弧壁, 腹底处径最大, 上有凹弦纹一周, 底作饼状凸出。輪制。T99:8B(3) 器形略大, 底残, 唇缘有凸弦纹三周, 腹有凹弦纹四周; 三周在上, 一周在下, 其间各饰菱形挑点纹两组, 每组六行, 每行八个, 挑点成三角形。輪制(图版拾贰, 4、6)。</p>
+<p>小陶鼎是早期文化特征之一。器形较小，口径都在10厘米左右。器身多呈球形，三足大部为锥体。多有盖，但同鼎一齐出者较少。胎薄，质较硬，屑有碎陶末。胎色全系</p>
+<p>黑色的占绝大多数，胎色浅灰而表面黑色的较少。T130:6(76）弁口钝折唇，体略扁，腹底处有凸弦纹一周。T130:6(78）口部略侈，深腹上部直径略大，圜底，锥形三足略内敛。T134:6(28）腹略深，三足作柱状外侈（图版拾贰，1一3）。</p>
+<p>彩绘壶形器 1件。T171:6(1) 直口, 高筒形颈, 身作扁球形, 下有喇叭形圈足。器表及口颈内壁施有暗红色陶衣。彩绘作黑色, 花纹模糊, 只肩部残有平行彩纹三周, 腹部残存斜线纹。胎作黄白色, 质松软屑有较多的碎陶末。輪制。口径8.5, 高14.9, 厚0.35—0.45厘米（图版拾贰, 5）。</p>
+<p>器盖 能修复的有19件。除灰陶、红陶各2件外，均为黑陶。都是手制的。可分四式：</p>
+<p>I式：杯形钮，7件。盖身差别不大。T105:7(17）钮形似杯，口径11，高5.6厘米。T111:6A(4）钮壁内斜,盖面弧度较鼓,形较小（图一二，1、2;图版拾壹，15）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图一二 早期的陶器盖(3/10)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、2. I式T105:7(17)，T111:6A(4) 3.II式T140:6B(4) 4-6.III式T104:9(8)，T99:8A(6)，T90:8(5)</p>
+<p>II式：盘形钮，1件。T140:6B(4）器较大，钮作盘形，器表黑亮（图一二，3；图版拾壹，14）。</p>
+<p>III式：盅形钮，11件。盖与上式同，但盖唇外侈，钮作盅形。T113:7(8）平唇，仰口斜壁，口径10,高4.4厘米。T99:8A(6）盅形钮较大，器表黑亮，钮壁较直。T90:8(5)钮高口外侈，钮身细直，盖上有凸弦纹一周。T104:9(8）唇上有凹弦纹三周，钮壁处有凸弦纹一周，器表黑亮（图一二，4一6；图版拾壹，10一13）。</p>
+<p>IV式：塔形钮，1件。T103:6,7(1）器身残缺，钮形似塔，上尖下大，钮上有螺旋式凸棱五周，上有平行斜划纹，颇似齿輪。质软胎灰，内外表面均作黄白色。手制。高8.8，下径7.55，厚0.88厘米（图版拾壹，16）。</p>
+<p>另外，还有彩陶片和硃绘黑陶片。</p>
+<p>彩陶片有：薄胎彩陶片1片。系罐类口沿片。T125:6(9) 子口锐折唇，胎色橙黄，质较软，屑有碎陶末，表面披暗红色陶衣。彩绘颈有黑色弦纹三周，下绘斜格纹。厚0.4厘米（彩色版壹，1）。厚胎彩陶片3片。纹饰具有仰韶文化的特征，但其制法与陶质则不同。</p>
+<p>两片为罐类器口沿：T176:7(3）直口平唇，颈肩处特薄。胎色砖红，内外表面披灰红色陶衣，而唇的底面没有陶衣。彩绘黑色，在唇缘及肩颈交界处为直线与圆点，其组合关系是，唇上残有平行彩线，两侧为线条内饰圆点，颈上有两道平行弦纹。輪制。火候很高。口径16.4，厚0.2—0.75厘米（图一三，2；彩色版壹，3)。T92:8(1）质松软，屑有碎陶末，胎色砖红略泛白色，表面披有白色陶衣，与河南仰韶文化典型遗物的陶衣相同。彩色褐、黑色和灰红色。纹饰是圆点、弧面。厚0.5厘米（图一三，1；彩色版壹，2)。</p>
+<p>硃绘黑陶片为早期文化特征之一。都是细泥质，质软，胎薄似蛋壳，色黑有光泽。硃绘是陶器烧好以后绘上去的。器形都不大，口径多在10厘米左右。沒有完整的。按殘器可分下列各种：</p>
+<ol>
+<li>碗类：1件。T106:6B（1）底殘，仰唇，斜弧壁，輪制。彩纹结构不明。口径12，殘高2.6，厚0.1—0.2厘米（图一四，12）。  </li>
+<li>杯类：1件。T99:7B(1)仰唇，口下微内束，腹深弧壁，腹下残缺。彩绘结构不明。口径12，厚0.3—0.35厘米（图一四，8）。  </li>
+<li>盘类：10 件。T99:6(1) 浅弧壁, 底残, 器表残有直线、斜线组成的彩纹。胎色灰黑。口径 10.2, 厚 0.2-0.3 厘米 (图一四, 11)。T144:7(1) 仰口斜壁, 浅腹平底, 底边突出似凸弦纹。纹饰似作双线纽带纹。口径 15, 厚 0.1-0.2 厘米 (图一四, 7)。另 7 件为仰口直壁, 但有深、浅腹之分。T145:5(1) 浅腹, 底残, 器表饰平行弦纹两周, 内填斜“田”字纹。硃色鲜艳, 胎色墨黑, 器表有光泽。口径 11, 残高 2, 壁厚 0.1-0.2 厘米 (图一四, 10)。T98:8B(1) 浅腹, 底亦残, 纹饰由直线、弧线组成, 结构不明。口径 12.8, 残高 2.2, 厚 0.1-0.2 厘米 (图一四, 6)。深腹的 5 件, 器形相同, 口沿多残破。T159:5 底残 (图一四, 1-4)。仅 T141:5(1) 完整, 底下沿外侈构成凸出的底边。纹饰由直、弧线和圆圈组成。口径 10, 高 4.2, 厚 0.6 厘米 (图一四, 5)。另 1 件, T159:5(2) 直壁平底, 口残, 壁底处有凹弦纹一周。纹饰由直、斜线组成 (图一四, 13)。  </li>
+<li>孟类：1件。T106:6B(3) 弃口弧唇，颈腹相连呈弧状。纹饰结构不明。口径18, 厚0.2—0.25厘米。  </li>
+<li>罐类：6 件。都是殘片。T171:6(1) 为器口殘片，敛口，器表黑色，似涂抹的陶衣，满饰硃绘彩纹。輪制。口径 18，厚 0.25—0.3 厘米。T134:6A(3) 直口，口部饰平行弦纹两周，下为斜线。輪制。口径 6，厚 0.15—0.2 厘米。T118:6(1) 肩呈凹弧形，肩壁</li>
+</ol>
+<p>图一三 早期的彩陶片（2/5）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 白衣彩陶片 T92:8(1) 2. 罐类器口沿 T176:7(3)</p>
+<p>图一四 早期的朱绘黑陶<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1-7. 盘类 T159:5(1), T85:6B(1), T119:6D(1), T139:6A, 7(1), T141:5(1), T98:8B(1), T144:7(1) <br />
+8. 杯类 T99:7B(1) 9. 罐类 T118:6(1) 10、11. 盘类 T145:5(1), T99:6(1) 12. 碗类 T106:6B(1)<br />
+13. 盘类 T159:5(2) 14. 罐类 T99:4,5(1)</p>
+<p>处为直折角并作脊棱伸出。颈部为三段斜线和两周平行弦纹。肩径12，厚0.2—0.3厘米（图一四，9）。T99:4,5(1) 殼存肩部，平肩呈直折角并作棱状伸出，肩下残存彩纹。肩径13.6，厚0.2—0.3厘米（图一四，14）。</p>
+<p>殘陶管 1件。T171:6(11) 质软脆, 胎黑表面发亮, 器表及内上部都披硃红色, 似陶衣。殘长 2.2, 径长 1.6, 厚 0.4 厘米。</p>
+<h1 id="_29">（三）装饰品</h1>
+<p>装饰品只发现陶环和玉质饰物两种。陶环数量多,就其横断面观察,约有八种不同形式,以圆形、半圆形和带槽的较多。玉质饰物琢磨较好,有扁平长方形和龟头形两种,以后一种较多。</p>
+<p>陶环 多为残段, 径长大部分在 3-4 厘米之间, 也有大到 8 厘米左右的。胎色有黑、灰、浅黄和褐色四种, 而以黑、灰为最多。有的表面磨光。从其剖面区分: (a) 椭圆形, 5 件, 多为小型, 如 T105:8(10) 是 (图一五, 6); (b) 半圆形, 环内壁垂直, 外壁呈弧形, 如 T84:6, 7A, 7(1) 是 (图一五, 11)。T105:7(9) 小型, 器表黑亮 (图一五, 1); (c) 新月形, 环内壁内凹, 外壁成凸弧, 如 T113:7(3) 是 (图一五, 4); (d) 长方形, 5 件, 有横、竖的区别, T91:8(4) 为横长方形 (图一五, 8; 图版拾叁, 2); (e) 扁平形, 2 件, T98:9(7) 外壁有凹槽 (图一五, 5; 图版拾叁, 3)。T104:8(5) 体较厚, 内壁平直, 外壁有凹槽, 径长</p>
+<p>8, 身宽 1.28, 厚 0.5 厘米 (图一五, 9; 图版拾叁, 6); (f) 带槽方形, T111:8(8) 近正方, 外壁内凹成槽。T104:8,8C(4) 体较粗, 凹槽大而深 (图一五, 7、12; 图版拾叁, 5、7)。T84:6(10) 外壁薄于内壁, 凹槽亦深细, 器表黑亮 (图一五, 3; 图版拾叁, 4); (g) 三角形, T98:9(8) 内壁是三角形的底边 (图一五, 10; 图版拾叁, 1); (h) 番茧形, T84:6(14) 厚大于宽的两倍以上, 两面圆近似球形, 中收作束腰, 看去似蚕茧状, 器表黑亮 (图一五, 2)。</p>
+<p>玉质饰品 5件。可分两种：</p>
+<p>1.扁平长方形：2件。T139:5(22)左右部分均残。残长1.62—1.92，宽1.11—1.2，厚0.6—0.7厘米。质似玛瑙。T135:5(12)残缺，中有对穿孔一个，色似象牙白。残长0.62，宽1.4，厚0.3—0.4厘米（图一五，13；图版拾叁，8）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一五 早期的陶环、玉质饰品（2/3）</p>
+<table><tr><td>1.T105:7(9)</td><td>2.T84:6(14)</td><td>3.T84:6(10)</td></tr><tr><td>4.T113:7(3)</td><td>5.T98:9(7)</td><td>6.T105:8(10)</td></tr><tr><td>7.T111:8(8)</td><td>8.T91:8(4)</td><td>9.T104:8(5)</td></tr><tr><td>10.T98:9(8)</td><td>11.T84:6,7A,7(1)</td><td>12.T104:8,8C(4)</td></tr><tr><td colspan="3">13、14.T135:5(12)，T117:5A(13)(1-12.陶环，13、14.玉质饰品)</td></tr></table>
+
+<p>2.龟头形：3件。侧视作龟头状，有对穿孔。T117:5A(13）断面呈椭圆形，头部尖薄。残长5.8，宽1.02—1.3，厚0.2—0.7厘米（图一五，14；图版拾叁，9）。T145:5(8)俯视脊作锥形，前尖后粗。T164:5B(5）俯视脊作长方形。</p>
+<h1 id="_30">（四）其它</h1>
+<p>陶祖 1件。T117:5A(1) 上下端略殘, 器表披暗红色陶衣, 胎色外层灰白, 中部灰色。质软層碎陶末。长7.7, 径1.5-2.5厘米（图版拾參, 17）。</p>
+<p>陶球 18 件。有无彩与有彩之分; 无彩的又有素面或有压划纹饰的区别。无彩陶球在表面处理上可分: (a) 素面不加修饰的; (b) 表面经过压磨的; (c) 表面加施陶衣的; (d) 表面压划纹饰的。在制法上又有空心和实心的不同。实心的陶球较完整, 空心的多残破。陶质都是细泥的, 胎色不同, 有灰 10、黑 3、黄 3、褐 1。我们将它分为直径 4 厘米以上的为大型, 3-4 厘米的为中型, 3 厘米以下的为小型。</p>
+<ol>
+<li>空心陶球：大、中、小型均有。T119:6D(4) 大型, 素面, 胎作浅灰黄色（图一六，</li>
+</ol>
+<p>1)。T105:6(8) 中型, 素面, 器表披橙黄色陶衣, 胎色浅灰 (图一六, 4)。T98:9A(4) 小型, 器表有凹点四个, 各在直径的顶端。这种陶球均为残片。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11 <br />
+图一六 早期的陶球、石球（7/10）</p>
+<ol>
+<li>
+<p>陶球 T119:6D(4)</p>
+</li>
+<li>
+<p>陶球 T92:7(3)</p>
+</li>
+<li>
+<p>陶球 T156:7(2)</p>
+</li>
+<li>
+<p>陶球 T105:6(8)</p>
+</li>
+<li>
+<p>陶球 T105:7(1)</p>
+</li>
+</ol>
+<p>6.彩绘陶球T85:7(5)</p>
+<ol>
+<li>
+<p>陶球 T112:6A(2)</p>
+</li>
+<li>
+<p>陶球 T98:8,9A(1)</p>
+</li>
+<li>
+<p>陶球 T105:7(8)</p>
+</li>
+<li>
+<p>陶球 T140:6A,6(2)</p>
+</li>
+<li>
+<p>石球 T113:7(5)</p>
+</li>
+<li>
+<p>实心陶球：多属中、小型。T98:8,9A(1) 大型，表面饰凹点线纹，胎灰色，质硬（图一六，8；图版拾叁，13）。T139:5(1) 中型，表面饰不规则的螺旋形凹槽纹。T105:7(1) 小型，表面饰压划槽纹呈十字形（图一六，5）。</p>
+</li>
+</ol>
+<p>这种陶球表面压划纹饰的占多数。纹饰的基本元素是凹点、凹点组成的线和小圆洞。</p>
+<p>它们的组合关系是：(a) 单线十字凹槽相交处加凹点或圆洞的，如 T105:7(1)、T105:7(8) 是（图一六，5、9）；(b) 螺旋形凹纹中间贯以相交的凹线一周的，如 T92:7(3) 是（图一六，2；图版拾叁，12）；(c) 以凹点组成的线排成叶脉纹再加一个大凹点的，如 T98:8,9A (1) 是（图一六，8；图版拾叁，13）；(d) 类似地球仪经纬线，在顶部及线相交处加凹点的，如 T156:7(2) 是（图一六，3；图版拾叁，14）；(e) 双凹线作垂直状，相连处加四个凹点的，如 T112:6A(2) 是（图一六，7）；(f) 以凹点作成线，每三、四线为一组相互构成三角形菱形等几何纹，又饰大圆洞的，如 T140:6A,6(2) 是（图一六，10；图版拾叁，16）。从上述这些纹饰的组合关系来看，有简有繁，变化也多样。</p>
+<ol>
+<li>彩绘陶球：1件。T85:7(5)大型，为残片。纹饰模糊，颇似龟甲纹样。彩绘黑色，胎米红色（图一六，6）。</li>
+</ol>
+<p>另有石球1件。T113:7(5)直径5.8—6.3厘米，制作不圆整，表面粗糙（图一六，11）。</p>
+<p>陶质禽畜 3件。质较硬，犀有较多的碎陶末。胎色黄白或黄色，都披有暗红色陶衣。手控制。造形简朴。</p>
+<ol>
+<li>陶鸡：1件。T134:6(1) 颇似母鸡，颈上伸，头仰微左向，翅略作展开状，尾向后翘。残长3厘米（图版拾叁，11）。  </li>
+<li>陶羊：1件。T129:6(1)仅剩头和颈、肩部分，心空。残长7.6，高5.4厘米（图版拾叁，15）。  </li>
+<li>陶兽：1件。T135:6A(2) 面部、臂部以下及腿部残缺，种属难辨，可能为家畜造型。残长3.8，高2.7厘米（图版拾叁，10）。</li>
+</ol>
+<h1 id="_31">肆 晚期文化遗存</h1>
+<p>晚期文化遗存，即分别属于地层堆积第二、三阶段出土的“晚期一”和“晚期二”的遗迹和遗物。由于晚期出土的遗物比早期丰富，而且器物形制较为完备，可以看出这一文化到了晚期已发展而进入新的阶段，充分反映出文化的特色。</p>
+<h1 id="_32">甲 晚期一文化遗存</h1>
+<p>从屈家岭遗址的文化发展阶段来说，晚期一文化遗存是属于早期和晚期二之间的文化。在晚期一的文化遗存中，除发现新的器物外，早期某些有代表性的遗物仍有出现，如早期的大型柱状石斧、石锛，大型的黑、灰陶纺輪，还有一定的数量出土；薄胎带盖黑陶鼎、朱绘黑陶亦有发现。在晚期二中大量出现的中小型的上窄下宽式的石斧，蛋壳彩陶杯、碗，彩陶纺輪和碗、鼎、豆等，晚期一中也有一定数量出土。</p>
+<p>晚期一的文化遗存中，出土的遗迹有遗迹二和墓葬一座。现分别叙述如下。</p>
+<h1 id="_33">一遗迹二</h1>
+<p>遗迹二是以出土先后编号的。它位于T44—T49及以南的诸探方内，在遗迹一的南边。它们的交界处相互压迭，即遗迹一在上，为时较晚，遗迹二在下，为时较早。</p>
+<p>遗迹二是大片烧土, 它不具形制, 不成结构。面积约 500 平方米, 体积约 200 立方米左右。从现场观察, 它可能是一种建筑物倒坍后的堆积。在 T172、173、180、181、186、187、191、192、194、195 等探方的第 2 层以下, 发现有近 30 平方米左右的一块烧土地面, 在它的北面堆积着类似墙壁的拐角或平整的墙面残块。还有一些带有木柱痕迹的柱穴, 其径长约 10 厘米以上, 深约 30-40 厘米。有的烧土残块坚硬平整, 色红或褐灰, 有的上面涂有钙质白片, 即通常说的“白灰面”(图版肆)。</p>
+<p>这一大片烧土，是由泥土層稻谷壳和作物的茎做成的，为一种坚硬的草拌泥，经火烧成的。</p>
+<p>值得特别提出的, 是泥土中落入稻谷壳的数量相当多, 在我们发掘的 200 立方米左右的烧土中, 不论大块或小块烧土里面都有, 而且密结成层 (图版伍)。稻谷壳的发现, 不仅说明用它来拌泥土作为建筑材料, 更重要的是反映了当时的农业生产和社会经济情况。这种稻谷壳, 据中国农业科学院丁颖院长的鉴定, 属粳型, 与现在江汉平原普遍种植的稻种相同<sup>1)</sup>。</p>
+<h1 id="_34">二墓葬</h1>
+<p>晚期一只发现一座墓葬，它出土于T174中，编号为IM2。墓的方向 $61.5^{\circ}$ 。无墓坑，无随葬品，无葬具。人骨架的上肢骨、胫骨和足骨均已腐朽无存，残留的部分亦已成灰，但尚可看出为仰身直肢葬，残长约1.20米。</p>
+<h1 id="_35">三 文化层中出土的遗物</h1>
+<h1 id="_36">（一）生产工具</h1>
+<p>晚期一的生产工具可分石质和陶质两种。石质的生产工具有农耕砍伐工具和工艺加工工具，陶质的生产工具主要是纺輪。</p>
+<p>石斧 共36件。有大型9，中型21，小型6。可分四式：</p>
+<p>I式：上窄下宽，24件。T109:5(1）大型，上、中部宽近同，下部外斜，中部最厚，刃呈斜弧形（图一七，1；图版拾肆，1)。T163:5B(4）小型，顶部及刃口微缺，上端略窄薄，刃口近平（图一七，2)。T164:4(14）中型，中部最厚，顶成平面，刃口呈弧形微有缺损（图一七，4)。T164:4,5D,5E(1）中型，体较薄，厚度上下近同，顶作弧面，刃一边微缺（图一七，6；图版拾肆，2)。T143:4(4）中型，上部较薄，近刃处较厚，横剖面作椭圆形，刃面微凹（图一七，5；图版拾肆，3)。T137:4(5）中型，刃部残缺，身较狭长，刃部最宽（图一七，3)。T164:6(16）中型，器身稍短，刃残，上薄，壁刃厚（图版拾肆，4)。T81:6D(1)小型，厚度近同，斜刃口，表面不平（图版拾肆，10)。</p>
+<p>II式：长方形。这式石斧上下宽度近同。T149:4(4）大型，中部以上残，体较薄，边棱整齐，刃锐呈弧形(图一七，7)。T118:5(4)中型，棱角整齐，上端稍薄，斜刃口，磨制较细（图一七，9；图版拾肆，7)。T154:7B(12）中型，上部残，刃口近平（图一七，8；图版拾肆，5)。</p>
+<p>III式：长方柱形。器身厚薄不同，平面亦有上窄下宽的，但横剖面一般都呈方形。T156:5(1)大型, 刃残, 器面及两侧稍呈弧形（图一八, 5; 图版拾伍, 5）。T142:4(2)中型, 斧身较小，上端较窄薄，壁刃处最厚，刃面窄而呈斜刃口（图一八, 1; 图版拾肆, 6）。T148:6(17)中型, 顶近平, 刃残（图一八, 4）。这一式中有近扁柱体的：T128:3(13)大型, 顶部残, 上部微宽厚（图一八, 3）。T123:6(2)中型, 顶及刃微残, 顶部微窄薄, 壁刃处最厚，刃面钝窄（图一八, 2）。</p>
+<p>IV式：长方形有孔，2件。T82:5B(2）穿孔以上及刃部均残，体扁平（图一八，6；图版拾肆，9)。T88:4G(1）穿孔以上及左侧与刃部均有残损，磨制不平（图版拾肆，8）。</p>
+<p>石锛 可分三式:</p>
+<p>I式：体作长方柱形或扁柱形，偏刃。T153:8(8）大型，顶残，上宽厚，刃面斜度甚大（图一九，2；图版拾伍，2）。T76:6,7D(1)中型，四面不平并有残缺，刃亦稍残（图一九，</p>
+<p>图一七 晚期一的石斧<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1-6.I式T109:5(1)，T163:5B(4)，T137:4(5)，T164:4(14)，T143:4(4)，T164:4,5D,5E(1) 7-9 II式T149:4(4)，T154:7B(12)，T118:5(4)(1、2为2/3，余为1/3)</p>
+<p>图一八 晚期一的石斧<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1-5. III式T142:4(2), T123:6(2), T128:3(13), T148:6(17), T156:5(1) 6. IV式T82:5B(2)</p>
+<p>6; 图版拾伍, 9)。T148:7A(1) 中型, 体为扁柱形, 刃部稍宽厚有缺损, 顶平 (图一九, 1; 图版拾伍, 1)。</p>
+<p>II式：扁平形，1件。T164:8(1) 小型，上部残，侧面平直，一面稍弧（图一九，4；图版拾伍，8）。<br />
+III式：即“有段石锛”。T159:4,5(1)体长方，上窄下宽，琢磨甚精（图版拾伍，3）。T95:4(38）体短，一面平直，一面成段。长4,宽2.7，厚1.3厘米（图版拾伍，4）。</p>
+<p>石凿 3件。可分二式：</p>
+<p>I式：斧形，1件。T89:5C(5）大型，顶稍残，上端宽厚，下端狭薄作楔形，对称刃（图版拾伍，7）。<br />
+II式：方柱形，2件。T83:6E(9)小型，上部殘，刃口锋利，作弧形，色绿似玉（图一九，7）。T81:4(1）刃殘，体瘦长，不规整。</p>
+<p>图一九 晚期一的石器（2/3）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、2. I式锛 T148:7A(1),T153:8(8) 3. 刀 T96:7(5) 4. II式锛 T164:8(1) 5. 刀T75:6(3) 6. I式锛 T76:6,7D(1) 7. 凿 T83:6E(9) 8. 镰 T74:5(6) 9-12、14. I式锛 T164:4B(12), T89:5B(3), T185:5(40), T171:6E(9), T179:5(23) 13. II式锛 T74:8(2)</p>
+<p>石杵 1件。T166:5(3) 大型, 上部作方柱形, 下部成圆棒状 (图版拾伍, 6)。</p>
+<p>石刀 2件。T75:6(3) 一侧残, 体作长方形, 刃与脊均作弧形, 对称刃。残长9.8, 宽7.15, 厚0.6-1.2厘米, (图一九, 5; 图版拾陆, 2)。T96:7(5) 只残存一角, 体薄, 对称刃较钝（图一九, 3）。</p>
+<p>石镰 3件。T74:8(1) 柄部残, 刃口与脊均呈弧形。残长 12.2, 宽 1.2-4.6, 厚 0.45-1.22 厘米 (图版拾陆, 1)。T74:5(6) 柄及刃部残, 脊呈弧形, 刃口近平, 刃不对称 (图一九, 8; 图版拾陆, 3)。T159:6E(1) 柄、尖皆残, 左侧有刃口 (图版拾陆, 4)。</p>
+<p>石镶嵌一般长约4.5—6.25厘米左右。可分二式：</p>
+<p>I式：菱形。T185:5(40）铤，后锋较肥。T179:5(23）脊棱较显，稍残，宽在中部。T89:5B(3）较厚，脊棱不直。T164:4B(12）较大，脊棱不直。T171:6E(9）体较短，有残缺，器形不整（图一九，9—12、14；图版拾陆，5、6、8)。T154:4D(5）两端稍残，脊棱在后锋以上(图版拾陆，7)。T165:4,5(6）两端残，脊棱不显，体侧较直，横剖面作扁椭圆形（图版拾陆，9）。</p>
+<p>II式：扁平形，即横剖面作扁平棱形。T74:8(2）尖残，体较狭长（图一九，13；图版拾陆，12)。T149:5(29）尖、锭均残，锭作锥形（图版拾陆，11)。T165:4(41)体作菱形，剖面为长条形，表面磨制不平整(图版拾陆，13)。</p>
+<p>另有，陶镶嵌1件，T149:5(14)体短而宽，双面有棱（图版拾陆，14）。骨镶嵌1件，T148:5A,5E(1）横剖面呈三角形，呈扁平锥状（图版拾陆，10）。</p>
+<p>陶纺輪 晚期一的纺輪，与早期不同的是出现了彩绘的，因而有有彩和无彩的区别。</p>
+<p>无彩纺輪的形制，大体与早期的相同，也多属大型的。</p>
+<ol>
+<li>无彩纺輪：多于有彩的数倍。胎色可分灰、黑、红、黄四种。都屑有碎陶末或草末。分式与早期同，但缺I、II式，仅见III式，分为A、B两型。</li>
+</ol>
+<p>III式A型：平面角边形，为数最多。T95:6A(8)、T95:5(18）两面平，边作钝角，中穿孔（图二〇，1、2）。T82:5F(2)体较薄，一面穿孔处下凹呈窝状(图二一，3)。</p>
+<p>III式B型：凹面角边形。T149:5(8)、T165:5(8)两面或一面的中间稍凸而逐渐向四周下凹，至周沿又突起成棱，边为钝角，中穿一孔（图二〇,6,7）。T148:4(50)、</p>
+<p>T148:5(8) 形同, 周边呈钝角或锐角 (图二一, 7、9)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9 <br />
+图二 $①$ 晚期一的陶纺轮（2/3）</p>
+<p>无彩纺轮：1-3.II式A型T95:6A(8)，T95:5(18)，T82:5F(2) 6、7.III式B型T149:5(8)，T165:5(8)</p>
+<p>彩陶纺轮：4、5.Ⅱ式T14:2(2)，T81:4(1)8、9. I式T88:5B，5C，5D(2)，T89:4(1)</p>
+<p>无彩纺輪的纹饰，与早期纺輪大体相同，也都是以凹点组成的线纹饰在周边上，或作平行的二至三周，或作螺旋式（图二一，6、8）。</p>
+<p>2.彩绘纺輪：都是泥质的，屑有细碎陶末。胎色有灰白、橙黄、灰黄等种。器型大、中、小均有。可分二式：</p>
+<p>I式：弧面角边形。T88:5B, 5C, 5D(2)、T89:4(1)，前一件两面呈弧面，边呈钝角，中穿一孔，剖面似梭形。后一件一面呈弧面，一面平，边呈偏刃式锐角（图二O,8、9）。</p>
+<p>II式：平面角边形。T14:2(2)、T81:4(1)，前一件器面平，边呈钝角，中穿一孔，体厚。后一件一面平，一面穿孔处凸起，中穿一孔，体较薄（图二O，4、5）。</p>
+<p>彩绘纺輪是屈家岭遗址中最具特色的一种生产工具。它的形制有与无彩纺輪相同</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图二一 晚期一的陶纺轮（2/3）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1—5.彩绘纺轮T12:2(2)，T28:5(2)，T110:4A(9)，T88:5A,5C,5D(2)，T81:4(1)6—9.无彩纺轮T81:6B(1)，T148:4(50)，T161:6(7)，T148:5(8)</p>
+<p>的,也有另具形式的。彩绘的颜色,有橙黄、橙红和褐黑三种。纹饰都绘在纺輪的平面和周边上。纹饰的基本元素,有直线、弧线两种。其组合关系是:(a)直线的,由七条短直线为一组,四组横直各占一直角的位置排列,周边作圆圈形,如T28:5(2)、T110:4A(9)是(图二一,2、3);(b)弧线纹,以短弧线六、七条为一组,五组均以穿孔为中心等分地作螺旋式的排列,如T81:4(1)是;另外,T88:5A,5C,5D(2)的纹饰也应属于这种(图二一,4、5)。还有一些纹饰模糊不清的,大体不外乎直线与弧线,如56GC(63)、T12:2(2),前者为直线,后者为弧线(图二一,1;彩色版壹,7、8)。</p>
+<p>彩纹的线条,不论直线弧线,笔划粗细颇不一致,距离也不均匀,其每组线条的第一笔较粗或起笔处较粗,颇具有粗放的感觉。</p>
+<h1 id="_37">（二）生活用具</h1>
+<p>生活用具中主要为陶质器皿。器形有锅、甑、鼎、碗、钵、豆、杯、碟、罐、壶形器、器盖等。另外还有彩陶片。</p>
+<p>锅只1件。T108:4(45）器作缸形，可分上下两部分。上部作直筒形，壁较薄，直口，唇下有凹宽带一周，壁面压划凸起的菱形格纹。下部为斜弧壁，圜底，素面，壁厚于上</p>
+<p>部约一倍强。上下交接处内外均作阶状凸出。质松软, 含有较多的砂粒和陶末。胎色橙黄。輪制, 器形规整。口径 50.3, 高 50.4, 厚 3.2 厘米 (图二二, 1; 图版拾柒, 6)。</p>
+<p>甑 1件。T53:6(7)作深腹盆形，口微弁，唇侈外折，弧壁平底，矮圈足，底部满布圆形算孔，器表下部有凸弦纹两周。陶质较软，胎色浅灰，表面黑色。口径18,高11.4,厚0.45—0.6厘米（图版拾柒,3、5）。</p>
+<p>鼎 出土较多。可分二式：</p>
+<p>I式：4件。器形基本相同。口唇特侈，外敞似盘，颈以下逐渐内收，仰折弧壁，腹形似盆，圜底，腹有凸弦纹二周，腹下有三个直足；足扁平两侧微掩成浅槽形。器身輪制。胎多为灰色，也有黑色的。这式陶鼎是屈冢岭遗址典型的一种遗物，它与Ⅱ式碗有颇多相同的地方。T142:6(22）口径20.2，高12.2，厚0.3—0.5厘</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1 <br />
+2 <br />
+图二二 晚期一的陶器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.锅 T108:4(45) 2.钵T36:4(10) <br />
+(1. 为 $1 / 9$ , 2. 为 $2 / 9$ )</p>
+<p>米；T171:6B(3)口径22.5，高12.3，厚0.3—0.5厘米（图版拾柒，1、4）。</p>
+<p>II式：1件。T109:4(21）盘形口较上式略窄，腹深鼓作半球形，腹下有凸弦纹一周。足形与上式同，但安法内敛，足亦稍短。陶质与上式同。口径18,高9.6,厚0.3—0.4厘米</p>
+<p>（图版拾柒，2）。</p>
+<p>小鼎 共5件。口径多在10厘米左右。盂形的1件，T153:6F(1）类似上述第二式而腹较扁浅,足作短柱形。胎灰，表灰黑色。口径9.8，高5.6，厚0.3—0.5厘米。罐形的有4件，T95:6A(1）拿口侈唇，球形腹，圜底，三小锥形足。素面，黑色。口径10.2，高9，厚0.2—0.3厘米（图版式拾，5、6）。</p>
+<p>碗·都是泥质的，屑有碎陶末。质以硬的为多，也有软的。胎色浅灰，器表黑色，水浸即脱落。可分六式：</p>
+<p>I式：T163:6(3）侈口，壁斜下内收，小圜底加矮圈足。素面。輪制，表面有压磨痕迹。口径22,高6.8,厚0.3—0.4厘米（图二三,5;图版拾捌,5)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7 <br />
+图二三 晚期一的陶碗（2/9）</p>
+<ol>
+<li>薄胎彩陶碗 T153:6(46)</li>
+</ol>
+<p>2.V式碗T20:4(9)</p>
+<p>3.蛋壳彩陶碗T149:5A,5E(2)</p>
+<p>4.II式碗T153:7B(3)</p>
+<p>5.1式碗 T163:6(3)</p>
+<p>6.II式碗 T153:6(14)</p>
+<p>7.VI式碗T36:4(8)</p>
+<p>II式：这式陶碗是屈家岭文化特征之一。T95:4(42）敞口，壁作双弧形，中部内缩，腹下部有凸弦纹二周，深腹，圈足近垂直。輪制。口径20—20.2，高8.9，厚0.5—1.1厘米（图版拾掷,7)。T153:6(14）弧壁斜度较大，口较敞，中间向内折，腹下部微外鼓，圜底，圈足较高作喇叭状。腹下部有凸弦纹一周，圈足上有圆形镂孔三组，每组七孔；中间一大孔，六小孔直排在大孔两侧(图二三，6；图版拾掷，8)。T164:4B(13）口较敞，腹较小，壁的斜度较大，圈足残，倘存圆形镂孔三个。壁底处有凸弦纹一周（图版拾掷，6)。</p>
+<p>III式：T173:5C,5D(2）敞口，宽唇锐折，腹为斜弧壁，矮圈足壁略斜。胎色浅灰，表面黄灰色，輪制(图版拾掷,4)。T95:4A,5(3）小型，敞口钝折平唇，斜弧壁，圜底，矮圈足</p>
+<p>（图版拾捌，2）。T153:7B(3）斜壁,平底,矮圈足壁外斜,胎色灰白(图二三，4)。</p>
+<p>IV式：T95:4(35）唇部内凹似子母口，腹壁斜弧，小圜底，小圈足作喇叭形（图版拾捌，3）。</p>
+<p>V式：T20:4(9）唇侈，深腹似球形，矮圈足，器形似盆不规整（图二三，2；图版拾捌，1)。</p>
+<p>VI式：T36:4(8）敞口唇微锐折，壁作弧形，圈足短小壁近垂直，腹有凸弦纹四周，上附两小竖耳。表面黑色有光泽。圈足上有清楚的輪制痕迹（图二三，7；图版拾玖，3）。T95:4(30）器形同上，仅折唇较宽，无耳，圈足已殘，底中央有凹下的小圆坑，腹下部有凸弦纹两周（图版拾玖，2)。这式碗，前一件发现很少，后一件因器形大部分相同，故附入。</p>
+<p>在这一期文化中还出土有少数的彩陶碗。细泥黄陶质, 屐有碎陶末, 质软。有三件为蛋壳彩陶, 一件为薄胎彩陶。</p>
+<ol>
+<li>薄胎彩陶碗：1件。T153:6(46) 做口，壁弧斜，矮圈足。胎薄色黄白，屠宰有较多的褐红色碎陶末。口外壁残有橙红色彩纹一块；上为斜方格纹，下为粗弦纹，圈足的下缘有宽弦纹彩一周。口径 15—16，高 6.6，厚 0.3—0.6 厘米（图二三，1；图版拾玖，1）。  </li>
+<li>蛋壳彩陶碗：3件。胎色红黄，有的中间呈灰色。T149:5A, 5E(2) 做口，斜弧壁，深腹，平底，圈足矮小。质较软，屑有碎陶末，表面上部披橙红色陶衣，已大部分脱落；下部披灰色陶衣，也许是火候关系。器内表全系灰黑色陶衣。腹部有凸弦纹一周。輪制。口径10.2，高4.3，厚0.2厘米（图二三，3；图版拾玖，5）。T81:6G（4）口部殘，内表披黑色陶衣，纹饰在圈足内器底上。彩纹分四组，两组各由八根直线组成的方格纹，另两组各由三根平行线组成。四组纹饰交错对称排列。底径30，厚0.25厘米。T150:6(1)，亦只殘存底部。器表橙黄色，内壁披深灰色陶衣。彩纹亦在圈足以内，四组横竖直线相互垂直。輪制。</li>
+</ol>
+<p>由上述3件标本和已发现的一些彩陶片观察，表饰均有陶衣和彩纹。陶衣多为黑色或橙红色，彩纹为黑色。主要纹饰除器底为直线外，器壁上都是方框和卵点。其组合关系有：（a）弦纹与菱形格纹，如T105:5(11)是（彩色版壹，6)。(b)平行方格内加方框，如T108:4(30)；(c)方格内饰卵点，如T96:6,5C(4)(彩色版壹，4)；(d)器外为平行方格内加方框，器内为平行方格内加卵点，如T174:6D(1)；(e)平行线与垂直线组合如T95:6B(11)、T57:5B(2)是（彩色版壹，10、11)。</p>
+<p>缺 1 件。T36:4(10) 做口, 宽唇外侈, 斜弧壁, 圬凹底。胎黄色, 质软茸有较多的红色碎陶末。素面, 管制。口径 25.6, 高 9.6, 厚 0.2-0.3 厘米 (图二二, 2; 图版贰壹, 2)。</p>
+<p>豆都是泥质黑陶，质与碗同。盘径多在20、高15厘米以下。这些陶豆的形制均与碗同，仅圈足加高。可分三式：</p>
+<p>I式：T163:5(1）豆盘有如Ⅱ式碗，圈足肥矮作喇叭状，上有小镂孔一组约廿一个，</p>
+<p>成三直行排列（图版拾玖，7）。T95:4(37）盘形同而较瘦小，圈足亦细而高作喇叭状，中下部有等距的三角形镂孔三个（图版拾玖，6）。</p>
+<p>II式：T166:4(3）盘似IV式碗，圈足亦细，已残，看去亦属高圈足，残存圆形镂孔两个（图版拾玖，4）。</p>
+<p>III式：T81:6,6B,6C(1)盘与V式碗同，圈足不高作喇叭状，上有圆形镂孔六组，每组二个作直行排列（图版拾玖，8）。</p>
+<p>杯 能复原的有7件。分蛋壳胎与厚胎二种。厚胎的3件，都是泥质黑陶。可分二式：</p>
+<p>I式：1件。T96:4, 4D, 5B, 5(2)器形似漏斗，唇锐折，壁斜下收为尖圆小底，有外侈的矮小圈足。口径6.2, 高3.8—4, 厚0.5—0.6厘米（图二四，2；图版贰壹，11）。</p>
+<p>图二四 晚期一的陶器（1/3）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.II式杯T82:5D,5B(3) 2.I式杯T96:4,4D,5B,5(2) 3.蛋壳彩陶杯T148:5(37) 4-6、8.三足碟 T88:5C(5),T102:8C(3),T104:6(1),T166:5B(5) 7.四足碟 T95:4,4B,5B,5(1)</p>
+<p>II式：T82:5D,5B(3）口钝折外侈，壁上部较直，下部稍内收，深腹作筒形，平底有矮圈足；这种圈足仅是器壁的延长，侧视不见。口径7.7，高5.6，厚0.4—0.6厘米（图二四，1；图版贰壹，8）。</p>
+<p>蛋壳陶杯：有无彩和有彩之分。</p>
+<ol>
+<li>无彩蛋壳陶杯：4件。胎色浅黄，有的下部为灰色。T163:5B(1) 表面披黄红色</li>
+</ol>
+<p>陶衣，大部分脱落。器形为敞口平底。T166:5(33) 做口, 斜壁, 平底。素面, 輸制（图版贰壹, 5）。T104:6(4) 侈唇, 直壁, 平底, 器身矮肥, 壁下部延长似圈足。素面, 輸制（图版贰壹, 6）。</p>
+<ol>
+<li>蛋壳彩陶杯：T148:5(37) 大口, 斜壁, 小平底。胎薄作浅橙黄色, 表涂黑色有光泽, 外底无黑色。彩绘在器内壁, 亦为黑色, 近口沿有弦纹两周, 弦纹中间饰有小点四组, 等距分布, 每组有卵七个左右。第二周弦纹下, 殼有三个不规则的圆形彩面, 每个彩面的左右下方都有小点饰; 每个彩面中间有弧形三角纹。中间圆形彩面以下鳞有漆黑色与底色相连。輪制。这种黑色彩绘是利用胎色作地的, 故呈橙黄、黑色。口径 10.7, 高 8.5, 底径 5.6, 厚 0.05 厘米 (图二四, 3; 彩色版壹, 9)。</li>
+</ol>
+<p>从发现的8275片蛋壳彩陶片中，可以知道属于陶杯的，其表饰有涂色衣与彩纹两种。涂色衣有灰、黑、灰黑三种，有的涂在外表，有的内外表均有。这种色衣大都是浸沾上去的，施涂的很少见。所绘彩纹，器内外表都绘彩的只有一件，余都绘在器内的上部。彩纹是直线、弧线、方格纹和圆点。组合关系是：有两周平行弦纹的；有半圆形彩面与“ $\vee$ ”形纹的，如T102:4(14)；有平行线内饰成组的菱形方格纹的，如T57:5B(2)；有平行弦纹内加卵点，下有卵点和短垂线的，如T148:5；有不规则的圆形彩面和短直线卵点的，如T148:5；有平行弦纹与方格纹，左侧有垂直线一根的，如T130:3，等等。</p>
+<p>三足碟共7件。都是泥质红、黑陶，有的有碎陶末。一件胎红色，六件胎黑色。黑</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二五 晚期一的陶器</p>
+<p>1.I式罐T95:4A,5(4)</p>
+<p>2.II式罐T109:5(6)</p>
+<ol>
+<li>壶形器 T95:4(36)</li>
+</ol>
+<p>4.II式罐T166:5(10)</p>
+<p>胎中有的间灰色, 或表面黑色, 表皮下灰黄色。硬度不同。都是手制。素面。器形作敞口, 斜弧壁, 圈底下有三个锥形矮足。T102:8C(3) 足近直, 口径 10.5, 高 3.2, 厚 0.3-0.6 厘米。T88:5C(5) 足外斜, 大部残缺。T104:6(1) 口径作椭圆形, 唇部中间微凸出, 足较尖而外斜。T95:4, 4B, 5B, 5(1) 腹较深, 有四足, 唇外侈。T166:5B(5) 唇外侈 (图二四, 4-8; 图版贰壹, 7、10、12)。</p>
+<p>罐 多为泥质灰陶, 屐有碎陶末。陶质以硬的为多, 软的较少。可分三式:</p>
+<p>I式：T95:4A,5(4)小口，高颈，深腹作球形，底殘，肩上有凸弦纹两周。口径12.5，高26，厚0.6厘米（图二五，1；图版贰拾，3）。<br />
+II式：这一式罐属小型。T109:5(6）夹砂粗陶，底殘，侈口，球形腹稍扁。輪制。口径8,殘高6.3,厚0.3—0.4厘米。T28:2(2)弧壁平底,腹饰宽凹弦纹一周。胎色黑有光泽(图二五,2;图版贰拾,1、4)。<br />
+III式：T166:5(10）敞口侈唇，腹亦作球形，腹下部有凸弦纹三周，肩部有短流，底内凹，底边微凸类圈足。輪制。口径12.8,高15.7,厚4厘米(图二五,4;图版贰拾,2)。</p>
+<p>壶形器 3件。T95:4(36) 直口高颈似筒形, 肩腹呈扁圆形, 底近平, 高圈足亦作筒形但比颈较细。胎色浅灰, 表面黄白色, 殖有米黄色陶衣。輪制（图二五, 3; 图版贰壹, 9）。56GC(163) 口部残, 形制与上件略同, 但腹部较鼓, 圈足作喇叭形。胎色浅黄, 细泥麸有碎陶末。器内的口颈部涂有很薄的橙黄色, 外表满涂暗橙红色, 颈、肩、腹部饰有菱形格纹, 其分界处皆用两条平行弦纹分开; 彩纹黑色。圈足下部有圆形镂孔四个（彩色版壹, 12）。</p>
+<p>器盖共7件。口径多在10厘米以内，高多在5厘米以下。胎色有黑、灰、黄三种。有5件质较软，均素面，手制。一般钮部比早期的较短浅。可分二式：</p>
+<p>I式：盖钮作碗形。T125:5,6(1)、T103:6(6)、T119:4A,4Q(1)，器形大体相同，仅T103:6(6）面较弧，钮较深，个别有侈唇(图二六，1一3；图版贰壹，1、3、4)。</p>
+<p>图二六 晚期一的陶器盖（2/9）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1-3. I式T125:5, 6(1), T119:4A, 4Q(1), T103:6(6) <br />
+4、5. II式T95:4, 4A(1), T153:6(14)</p>
+<p>II式：盖钮作盘形，钮大而口浅。T153:6（14）盖面斜直，唇外侈。T95:4,4A(1）盖面微弧，钮较小（图二六，4、5）。</p>
+<p>另外，还有一些彩陶片和硃绘黑陶片。彩陶片中有厚胎和薄膜的区别。</p>
+<ol>
+<li>薄胎彩陶片：在晚期一中</li>
+</ol>
+<p>出土较少。胎色都为黄灰或白色, 较里处作浅灰色。T36:4(6) 为罐类口沿, 表涂橙红色陶衣, 彩纹黑色, 为三道弦纹上加直线组成 (图版贰贰, 11)。T89:4(7) 表涂橙黄色陶衣, 彩纹褐色, 为平行弦纹中间加斜线组成编织纹 (图版贰贰, 10)。T49:5,6(7) 为单线</p>
+<p>弦纹中间饰斜方格纹,彩绘线条粗细不匀(图版贰贰,5)。T154:6(22）为壶形器肩部残片,彩纹为编织形的格纹(图版贰贰,6)。</p>
+<ol>
+<li>厚胎彩陶片：发现较薄胎彩陶片为多，但能辨明器形的却很少。胎质较硬，细陶末。T130:5(1)、T130:5(4）为壶类器或罐类器残片，纹饰相同，均为方框四角加三角、中间加圆点，方框侧加平行直线，方框下有弦纹（图版贰贰，2、3）。T112:4(3）为罐的肩部残片，胎色砖红，彩纹黑褐色，为两周弦纹下有两组斜方格纹。肩棱上有压划的齿状堆纹（图版贰贰，1）。T173:5C,5D(1）为容器肩部残片，质硬，胎色淡黄，彩纹亦褐黑色，为两弦纹之下有菱形格纹，亦有压划齿纹。T125:5(2）亦为罐的肩部残片，彩纹与上同（图版贰贰，4、7；彩色版壹，5）。T173:5,5B(1）表面涂红色陶衣，彩纹黑褐色，由直线与斜线组成（图版贰贰，9）。其中有彩陶鼎足1件，T180:25(35）作扁平长方形，胎色橙黄，表涂红色衣，外侧面满饰横直线绘成的黑色格纹。长4.3，宽2.5—2.9，厚0.45厘米（图版贰贰，8）。</li>
+</ol>
+<p>硃绘黑陶片 在晚期一里只发现18片。胎色漆黑有光泽, 殖存有硃红色的花纹或作衣状。T153:6F(1) 可能为豆类的圈足, 表面涂红色似衣, 壁有圆形和不甚规则的长条形镂孔。T186:5(1) 似为容器腹部殘片, 表绘有硃红色纹饰。</p>
+<h1 id="_38">（三）装饰品</h1>
+<p>晚期一的装饰品, 种类与早期相同, 有陶环和玉饰品两种。陶环中增加了彩绘陶环。</p>
+<p>陶环的剖面以圆形、椭圆形和方形带槽为主。玉饰品除龟头形外，还有弧形的。</p>
+<p>陶环 都为残段。有无彩与有彩的分别。</p>
+<ol>
+<li>无彩陶环：8件。径长在4.9厘米之间，都是泥质，大都屠有碎陶末。胎色有浅灰、黑、红色。从其剖面区分：有圆形的，T102:5(12)细泥质，表面涂有浅灰色衣，有光泽（图二七，6）；有扁圆形的，T130:5A(1)外沿作弧形，内沿近直；有半圆形的，T153:6(2)外沿为弧形，内沿直，上下面较平；有弧形的，T120:5(11)胎深灰，表面黑色光平(图二七，4)；有方形的，T102:8C(2)，质硬，胎色灰黄（图二七，3；图版拾陆，16)；有长方带槽的，T163:6(1)</li>
+</ol>
+<p>图二七 晚期一的陶环、玉质饰物(2/3)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、2.彩陶环T95:5B(3)，T88:5B，5C(2）3-6.陶环T102:8C(2)，T102:5(11)，T171:6A(10)，T102:5(12)7-10.玉质饰物T111:4,5(1)，T164:5B(5)，T103:5A(1)，T153:6(3)</p>
+<p>外沿中部有凹槽一周,胎黑色;有棒形的,T171:6A(10)内外壁有凹槽,质软,胎作黄白色,表面涂浅橙色,有光泽(图二七,5;图版拾陆,15)。</p>
+<p>2.彩绘陶环：7件。胎色有灰、红、黄三种。剖面可分：有圆形的，T95:5B(3）胎灰色，表面涂橙黄色衣，彩纹深灰，有光泽（图二七，1)；有椭圆形的，T88:5B,5C(2)表面涂橙黄色衣，周壁饰黑色彩纹，有光泽（图二七，2）。</p>
+<p>玉质饰品 只发现两种。</p>
+<ol>
+<li>龟头形：T111:4,5(1) 质很软，刻之成粉末脱落。色雪白无光泽。头部有圆孔，为对穿的（图二七,7）。T164:5B(5) 体较厚，头部较平。石色洁白有光泽（图二七,8；图版拾陆,17）。  </li>
+<li>弧形：T103:5A(1) 两端均残, 体作弧形, 左端较薄, 右端较厚, 剖面作椭圆形。质似玛瑙有光泽。T153:6(3) 两端亦残, 剖面作半椭圆形。表面有光泽（图二七, 9、10; 图版拾陆, 18）。T89:6(1) 两端及左上侧残缺, 残部作弧形, 剖面近半圆形, 两端各有穿孔一个（图版拾陆, 19）。</li>
+</ol>
+<h1 id="_39">（四）其它</h1>
+<p>陶球共10件。器形亦分大、中、小等型，也有空心和实心的不同。都是泥质磨有碎陶末。一部分质松软，一部分较软或硬。胎色有黄、灰白、黑三种。手制，经过压磨，表面多光平。</p>
+<ol>
+<li>空心陶球：T95:4(30) 大型，表面饰压划方格纹（图二八，1）。T102:6A(12) 素面，表面经压磨（图二八，6）。T174:6,7(2) 表面饰凹点线组的米字纹（图二八，2）。</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>6 <br />
+图二八 晚期一的陶球（2/3）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 格纹 T95:4(30)<br />
+2.米字纹 T174:6,7(2)<br />
+3.素面 T88:5A(8)<br />
+4.凹槽纹 T160:4(18) <br />
+5. 麻面纹 T88:5(8)<br />
+6.素面 T102:6A(12)</p>
+<ol>
+<li>实心陶球：只有中、小型两种。T88:5(8) 中型，表面布凹窝似麻面（图二八，5；图版贰贰，13）。T160:4(18) 表面满布经线似的凹槽纹（图二八，4；图版贰贰，12）。T88:5A(8) 小型，素面（图二八，3；图版贰贰，14）。T89:6C(4) 表面有由孔与凹槽组</li>
+</ol>
+<p>成的十字纹,孔在十字纹中间(图版贰贰,15)。</p>
+<p>石球 3件。直径都在4厘米左右，磨制均不规整。T95:7G,7C(2)径长4.3—4.5厘米。</p>
+<h1 id="_40">乙 晚期二文化遗存</h1>
+<p>晚期二的遗物更为丰富，说明这一文化已达到成熟和繁荣阶段。</p>
+<p>晚期二除遗物外，亦出土遗迹和墓葬各一处。</p>
+<h1 id="_41">一遗迹一</h1>
+<p>遗迹一在现在的屈家岭村北约150米,探方号为T6-65。</p>
+<p>遗迹保存不十分完整, 西侧被水渠冲坏, 殖存部分作长方形, 南北长 14, 东西宽约 11 米, 由两部分组成。在北边的是一个长方形烧土台子; 东西长 8.9, 南北宽 6.62, 高 0.55 米。方向 $340^{\circ}$ 。是遗迹的主要部分。烧土台子上面不光平, 在东部的中间, 有一块不规则的长方形, 面积约 21 平方米, 凹下约 0.1 米, 土色褐黄。台子的宽厚是不同的, 西宽于东约 0.4, 东南高于西北约 0.2, 西部厚于东部约 0.2-0.3 米(图版贰叁)。</p>
+<p>台子的南北两侧面保存较好, 垂直而规整, 棱线整齐。靠南侧有明显的柱穴四个, 分布在约 $340^{\circ}$ 的一条直线上, 两个在东端, 两个在西端, 对称排列。柱穴径约 0.26—0.46, 深约 0.4 米。北侧面亦有柱穴四个, 与南侧的对称, 但保存不好, 个别已经坍没了 (图版贰肆, 1、2)。</p>
+<p>遗迹的另一部分, 在烧土台子的南边, 是一片平坦的烧土。因破坏, 作不规则的长方形。它低于烧土台子约 0.2—0.5 米, 是烧土台子底边的延长。东西残长约 5.04, 南北宽约 7.38, 厚约 0.1 米。上面有不规则的圆洞十六个, 最小的径长 0.13, 最大的径长 0.4 米, 深度与烧土厚度同。</p>
+<p>这处遗迹的残存部分，全系烧土。有些烧土颇类似房子的地面或墙面。烧土台子是先将褐黄色红斑土作成长方台形后，表面加工，最后用火烧成的，可能为一建筑遗迹。在烧土中也发现稻谷壳，与遗迹二同，但要少些。</p>
+<h1 id="_42">二墓葬</h1>
+<p>墓葬出自T182、183两个探方交界的第二层中，只发现一座，编号为M1。方向 $26.5^{\circ}$ 。无墓坑，无随葬品，也无葬具。葬式为屈肢葬，骨架已朽，残长0.94米(图版染，2)。</p>
+<h1 id="_43">三 文化层中出土的遗物</h1>
+<h1 id="_44">（一）生产工具</h1>
+<p>晚期二的生产工具，反映了这一时期的生产水平有所提高。出土数量也与晚期一有</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二九 晚期二的石斧</p>
+<p>1、3、4、7、10.Ⅱ式T133:3(10)，T194:2(3)，T39:2(1)，T25:2A(3)，T64:4(4)2、5、8、9.I式T160:2(30)I式T5:2E(9)，T124:2(3)，T103:1(1) 6.III式T110:3(15)(1、3、4、7约为2/3，余约为1/3)</p>
+<p>显著的不同。</p>
+<p>石斧 87 件。长 15-20.7 厘米的大型斧, 只有 12 件, 以中小型的最多。可分三式:</p>
+<p>I式：上窄下宽形。为数最多，计41件。T124:2(3）大型，刃口残，顶端呈弧状，刃壁最厚（图二九，8；图版贰陆，1)。T160:2(30）刃口部分残去（图二九，2)。T90:2(1)小型，刃残，刃壁角处较厚（图版贰伍，1)。T33:2F(7）小型，顶端较薄，斜刃口（图版贰伍，4)。T103:1(1)小型，上部微厚，斜刃口（图二九，9；图版贰伍，2)。T5:2E(9）顶端较薄，刃壁处厚，刃面短，口近平(图二九，5)。</p>
+<p>II式：长方形，45件。属大型的5件。T25:2A(3）扁平长方形，上端窄薄（图二九，7；图版贰陆，2)。余均属中、小型。T133:3(10）中型，厚度较大，上端略薄，刃口近平（图二九，1)。T39:2(1）中型，刃微残，顶较薄，刃壁处有明显棱角（图二九，4；图版贰伍,6)。T194:2(3）中型,体较宽,上端稍窄,刃残,刃壁处较厚（图二九，3；图版贰伍，8)。T66:3F(4）中型,近正方形,上端较窄薄,刃部较高(图版贰伍，3)。T64:4(4)小型,顶微</p>
+<p>殘,作扁平长条形,刃不对称(图二九,10;图版贰伍,7)。T105:2(7)小型,身较薄,刃壁处成钝角(图版贰伍,5)。T139:1(1)小型,中部特厚,两侧面薄,平刃口(图版贰伍,9)。</p>
+<p>III式：长方有孔形，1件。T110:3(15)穿孔以下残缺，孔由两面对钻。残长5.1，宽5.6，厚1.6厘米（图二九，6）。</p>
+<p>石锛 7 件。器形作长方扁柱形或扁平长方形。T31:3C,2K,3(9)、T122:2(20),侧边平直,横断面似梯形(图三〇,3;图版贰陆,6)。T165:3(38)狭长条形,上端狭厚(图三〇,1;图版贰陆,3)。T142:3A(4)扁平长方形,体平薄(图三〇,2;图版贰柒,5)。</p>
+<p>石刀 2件。T117:3(36)右部残，脊与刃均呈斜线，刃对称锐利（图版贰柒，8）。T124:3(9）扁平长方形，两侧残，刃对称，刃面较短，口近平（图三O，4）。</p>
+<p>石镰 7 件。沒有完整的。凹刃的 4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图三○ 晚期二的石器</p>
+<ol>
+<li>
+<p>铸 T165:3(38)</p>
+</li>
+<li>
+<p>铸 T142:3A(4)</p>
+</li>
+<li>
+<p>铸 T31:3C,2K,3(9)</p>
+</li>
+</ol>
+<p>4.刀 T124:3(9)</p>
+<p>件,均偏刃。T117:3(21)脊薄近平,刃作斜弧形(图三一,6)。凸刃的3件。T113:4A(1)残存尖部,中部厚,剖面似核形,对称刃(图三一,4;图版贰染,11)。T96:1(1)右侧</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图三一 晚期二的石器（约2/3）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.凿T5:2(3) 2、3.铲T159:4(2)，T91:4(5） 4.石镰T113:4A(1) 5.陶镰T129:2E(6) 6、7.石镰T117:3(21)，T138:2(2)</p>
+<p>殘，脊平，刃作斜弧形(图版贰柒，10)。T138:2(2）尖略殘，脊近平，刃厚不对称（图三一，7；图版贰柒，9)。</p>
+<p>另有陶镰1件。T129:2E(6) 殖存尖部，刃弧，刃不对称，脊稍圆。为胎色深灰的硬质陶片磨成（图三一，5；图版贰柒，7）。</p>
+<p>石凿 2 件。T5:2(3) 作圆柱形, 下收为刃, 对称钝刃口 (图三一, 1; 图版贰柒, 1)。T97:4(40) 上端及一侧残缺, 作方柱形, 偏刃似锛 (图版贰柒, 2)。</p>
+<p>石铲 9 件。2 件完整。T159:4(2) 上窄下宽, 扁平, 刃对称, 刃口作弧形, 穿孔居上 (图三一, 2; 图版贰陆, 4)。T138:3(8) 一面刃, 弧形刃口, 孔居中 (图版贰陆, 5)。T91:4(5) 磷存穿孔以上部分, 上端及两侧面较薄 (图三一, 3)。</p>
+<p>钻形器 1件。T112:2(10)作锥体,顶平,两面作弧形,上宽厚而下圆尖,尖端锋利 (图版贰柒,3)。</p>
+<p>石杵 1 件。T124:2(4) 作长方柱形, 顶平, 上端粗, 下端细呈圆形 (图版贰柒, 6)。</p>
+<p>石镶嵌有大有小。长多在3.25—6.75厘米之间。以中部剖面为准，可分四式：</p>
+<p>I式：菱形。为数最多，有57件。平面似柳叶形的，T187:2(24)脊刃锋利（图三二，1；图版贰捌，1）。平面似鸭嘴形的，有T108:3(10)、T190:2(9）（图三二，2；图版</p>
+<p>图三二 晚期二的石（7/10）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1—6.I式T187:2(24)，T108:3(10)，T84:2(11)，T82:2(4)，T113:3C(7)，T191:2(39) 7—14.II式T120:3(26)，T105:4(10)，T85:5(13)，T116:3(26)，T195:1(1)，T191:2(8)， T69:3(9)，T158:2(8） 15.IV式T121:2B，2J，2L(15） 16.III式T158:3(18） 17.IV式 T196:2J(5） 18.陶鐵 T165:3(16） 19—22.IV式T159:3A(1)，T129:2C (1)，T173:1 (1)，T23:3，3E(1)</p>
+<p>贰捌, 2、3)。平面似槐叶形的24件: T84:2(11) 上下端殘, 錾作扁錐形 (图三二, 3)。T114:2D(1) 身略瘦, 两侧呈弧形 (图版贰捌, 7)。T125:3(17)、T113:3C(7)、T163:3(2), 上下端微殘, 身较宽肥 (图三二, 5; 图版贰捌, 4、6)。平面似果核的3件: T82:2(4)、</p>
+<p>T191:2(39)、T161:2(5)，多身短而较阔（图三二，4、6；图版贰捌，5）。T129:1(2)、56GC(412)，身肥大（图版贰捌，8）。</p>
+<p>II式：三角形，24件。形似槐叶的3件，T195:1(1)刃面宽，铤扁，剖面作长条形（图三二，11）。T120:3(26）较厚，后端剖面作扁平三角形；T84:2(17）后端为三角形，铤呈锥形（图三二，7；图版贰捌，9)。形似鸭嘴的1件，T197:4(6）细长，尾端呈锥形（图版贰捌，11)。形似枣核的12件：T191:2(8）、T69:3(9）、T158:2(8)，中部剖面呈弧面三角形，有呈锥状的（图三二，12—14)。T105:4(10）、T85:5(13）、T116:3(26)，剖面均呈弧底三角形（图三二，8—10；图版贰捌，10)。</p>
+<p>III式：弧面形，2件。横断面呈长条形，体较薄无棱。T158:3(18)形似槐叶，绽成三角形（图三二，16）。</p>
+<p>IV式：平面形，7件。两面平无棱，两端各与刃面成钝角。T121:2B, 2J, 2C(15)尖端剖面成菱形，锉作锥状，刃面宽(图三二，15；图版贰捌，17)。T196:2J(5)细长(图三二，17)。T116:3(4)下端大于上端（图版贰捌，16)。T173:1(1)器形规整(图三二，21；图版贰捌，19)。T158:3A(32）身较肥（图版贰捌，18)。T159:3A(1)身较长，挺钝(图三二，19；图版贰捌，14)。T129:2C(1）锉部剖面呈椭圆形（图三二，20；图版贰捌，12)。T23:3,3E(1)中部以下残缺（图三二，22；图版贰捌，15)。</p>
+<p>另有陶镜3件。属平面形。陶胎橙黄色。T165:3(16)剖面长条形。T120:2, 2B(1) 刃面宽（图三二，18；图版贰捌，13）。</p>
+<p>石矛 1 件。采集。56GC(15) 棱线不显, 下端较薄。长 9.5, 宽 1.8-3, 厚 0.9 厘米 (图版贰柒, 4)。</p>
+<p>斧、锛形小石器 是最多的一种。可分四式：</p>
+<p>I式：T23:3A(1）玉质，色黄褐，一面刃（图版贰玖，2)。T93:4(8）长方形，一面刃(图三三，10；图版贰玖，6)。T102:2B(3）长方形，对称刃（图三三，1；图版贰玖，1)。</p>
+<p>II式：2件。T108:4(22)似长刀,弧尖,刃在一面。T125:5B(1)上端残,对称刃,刃面很短（图三三，5；图版贰玖，24、25）。</p>
+<p>III式：T72:3(1）方柱形，对称刃口近平。T136:3(12）厚略大于宽的方柱形，刃对称。T32:(21）身细长，上窄下宽，一面刃（图三三，7；图版贰玖，17、18)。T132:2(13)上端残，上下宽度近同，对称刃(图版贰玖，19)。</p>
+<p>IV式：T80:4H(4）扁平长方形，上窄下宽（图版贰玖，3)。T164:4(45）体较宽，上窄薄下宽厚，双刃不对称（图三三，11；图版贰玖，4)。T148:4(4）上下宽度近同（图版贰玖，9)。T46:2(16）左侧微残（图三三，12；图版贰玖，8)。T169:2A(1）双刃不对称（图版贰玖，7)。T129:2E(1）左侧残，刃面平，背面弧（图版贰玖，15)。T23:3A(10)左下侧残（图版贰玖，11)。T50:2(10）不规则长方形（图版贰玖，23)。T11:3A(1）近正方形，刃斜（图三三，9；图版贰玖，10)。T137:2(13）形最小，长仅2.1厘米（图三三，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图三三 晚期二的小石器等（4/5）</p>
+<p>1.I式小石器 T102:2B(3)</p>
+<ol>
+<li>陶棒 T139:3(12)</li>
+</ol>
+<p>7.II式小石器T32:(21)</p>
+<p>10.I式小石器 T93:4(8)</p>
+<ol>
+<li>陶针形器 T52:4(9)</li>
+</ol>
+<p>5.II式小石器 T108:4(22)</p>
+<p>8、9.IV式小石器T141:1(3)，T11:3A(1)</p>
+<p>11—13.IV式小石器 T164:4(45)，T46:2(16)，T137:2(13)</p>
+<p>13；图版贰玖，14)。T141:1(3）棱角整齐，段在中上部（图三三，8；图版贰玖，5)。T96:2(4）左侧残,段在中部,刃锋利(图版贰玖，13)。T114:2(1）石色灰白,长条形(图版贰玖，16)。T138:2(10）体较薄,段在中上部,石色乳白(图版贰玖，12)。</p>
+<p>钻形石器 1件。T182:2(21)作柱形,下圆尖,体上窄薄下宽厚（图三二,3;图版贰玖,20）。</p>
+<p>棒形石器 1件。T59:3A(2) 顶微殘, 体作棒形, 顶扁平有穿孔, 下端作錐形 (图三三, 6)。</p>
+<p>陶棒 1件。T139:3(12) 上端细圆下端粗。胎色土黄, 质硬。长仅4.1, 粗0.3-0.6</p>
+<p>厘米（图三三，4）。</p>
+<p>骨锥 2件。56GC(11)、56GC(13)，均作棒形，两端尖，呈锥状，一粗一细（图版贰玖，21、22）。</p>
+<p>纺輪 有无彩和有彩的区别。</p>
+<ol>
+<li>无彩纺輪：质有细泥、粗泥和夹砂陶三种。细泥质的较软，胎密结成层，屑有碎陶末，胎色有灰、黑、黄、红、褐灰等，亦有因火候而一枚兼有几色的。粗泥陶质的屑有大量的草末，表面粗糙。夹砂陶质的胎红色，屑有大量的白色细砂粒。均为手制。属于平面直边式的，有T114:4G(3)（图三五，3）。属于平面螺旋边式的有T132:3(16)、T113:2(2)（图三四，1、2；三五，1）。属于平面角边式的，有T91:3(5)、T105:5(5)（图三四，3；三五，2）。它们的形制，均与晚期一的相同。不同的形制，只有一种珠算球式的纺輪，T93:4(9)夹砂粗陶质（图三五，4）。</li>
+</ol>
+<p>图三四 晚期二的陶纺轮<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.T132:3(16) 2.T113:2(2) 3.T91:3(5)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图三五 晚期二陶纺轮剖面示意</p>
+<p>1.T132:3(16) 2.T105:5(5)</p>
+<p>3.T114:4G(3) 4.T93:4(9)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图三六 晚期二彩陶纺轮剖面示意</p>
+<p>1.T88:3D(1) 2.T52:3(2) 3.T56:2(1) 4.T105:4(1)<br />
+5.T98:4A(3) 6.T120:3(29) 7.T90:3(3) 8.T89:4A(5)</p>
+<p>9.T134:3D(8) 10.T97:4(3)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+12</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+13</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+14</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+15</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+16 <br />
+图三七 晚期二的彩陶纺轮（7/10）</p>
+<p>1.辐射旋涡纹T83:4(1) <br />
+5.三组直线纹T102:3A(3) <br />
+9.四组直线纹T88:3D(1) <br />
+13.四组圈纹T96:3C(1)</p>
+<p>2.三组旋涡纹T97:4(3) <br />
+6.三组直线纹 T120:3(29) <br />
+10.四组直线纹 T56:2(1) <br />
+14.四组圈纹T98:4A(3)</p>
+<p>3.三组直线纹 T107:4B(1) <br />
+7.三组旋涡纹T65:2(9) <br />
+11. 四组直线纹 T116:3(2)<br />
+15.三组旋涡纹T88:3D(14)</p>
+<p>4.三组直线纹 T52:3(2) <br />
+8.四组弧线纹T83:4G（1）<br />
+12. 弧线纹 T90:3(3) <br />
+16.彩纹T105:4(1)</p>
+<p>2.彩绘纺输：都是细泥质的。胎以白黄色为普遍，灰白、灰黄、橙黄、灰褐等色也有；通体一色者较少，大部分中间呈不同程度的灰色。保存较好的表面有浅橙黄色陶衣，薄而均匀。这种彩绘纺输，几乎全是中型的，极少为小型的（图三七；彩色版贰，1—6）。其分式情况亦与晚期一大体相同。I式：T88:3D（1）小型，为直边（图三六，1）。II式：T52:3(2)、T105:4(1)、T98:4A(3)、T120:3(29)，均为角边（图三六，2、4—6）。III式：T89:4A(5)、T134:3D(8)、T97:4(3)，均为弧面角边（图三六，8—10）。IV式：T56:2(1)、T90:3(3)，体平薄，周边为弧形面（图三六，3、7）。</p>
+<p>彩绘纺輪的纹饰, 都是红褐色。其纹样基本与晚期一近同, 但增添了新的内容。(a)有用直线四组构成的 (图三七, 9-11; 彩色版贰, 2); (b)有用短直线三组构成的 (图三七, 3-6); (c)有以四组短直线向穿孔处构成十字形的, 有的中断, 有的靠近周边 (图三八, 5-7; 彩色版贰, 5), 这种纹饰晚期一未见; (d)有以弧线从穿孔辐射成旋涡纹 (图三七, 1; 彩色版贰, 3); (e)有以三组弧线构成旋涡纹 (图三七, 2), 属于这种的还有几件, 纹残蚀不清 (图三七, 7、15); (f)有以四组弧线分饰表面的 (图三七, 8), 还有的与上类接近的 (图三七, 12); (g)有以四组短弧线构成中断圈纹的 (图三七, 13、14); (h)有以圈纹作螺旋纹的 (图三八, 1; 彩色版贰, 1); (i)有以卵点构成麻面的 (图三八, 8; 彩色版贰, 6); (j)有以卵点与彩面对向分饰的 (图三八, 4)。还有纹彩结构不明类似格形的</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图三八 晚期二的彩陶纺轮（7/10）</p>
+<ol>
+<li>
+<p>圆圈纹 T97:4(4)</p>
+</li>
+<li>
+<p>圆圈纹 T102:3A(5)</p>
+</li>
+</ol>
+<p>3.圆圈纹T89:4A(5)</p>
+<p>4.卵点与三角面纹T92:2(1)</p>
+<p>5.十字形纹 T133:2(32)</p>
+<p>6.十字形纹T132:3D(7)</p>
+<p>7.十字形纹T106:4A(3)</p>
+<p>8.卵点纹T89:31(1)</p>
+<p>(图三七,16)。上述彩纹都饰在纺輪的一面上，周边亦涂彩色。另一面也有饰彩纹的，但很少，有系周边施彩纹时带到另一面的，也有勾绘在周缘上的。</p>
+<p>陶针形器 2件。T52:4(9) 胎橙黄色, 质软。上端作扁椭圆形, 有穿孔, 中部作棒形, 下端尖圆。长3.8, 粗0.6—0.7厘米（图三三，2）。这种器物, 非作缝纫用。</p>
+<p>骨针 1 件。T121:2D,2E(1) 下端圆尖。残长 3.7,粗 0.4-0.8 厘米。</p>
+<h1 id="_45">（二）生活用具</h1>
+<p>锅 1 件。T104:2(10) 粗泥陶质, 较软, 胎色褐黄, 含有大量碎陶末。器形与现在的大铁锅相同。长唇外侈, 壁上部作弧形内凹, 中部有凸起的附加堆纹, 下部内收构成圜底, 底部下突呈乳头状。口沿上满饰双人字形划纹, 壁中部附加堆纹为格形纹。手制。高 33, 口径 86, 厚 1.8-3 厘米, 容量为 0.625 立方米 (图三九, 2; 图版叁拾, 1)。</p>
+<p>图三九 晚期二的陶器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.II式陶T149:2H(5) 2.锅T104:2(10) 3.I式陶T197:4(32） (1、3为1/5，2为1/10)</p>
+<p>甑 5 件。除一件胎色灰黄外, 都是黑陶。口径多在20厘米左右, 亦有大至32.8厘米的。可分四式:</p>
+<p>I式：2件。T197:4(32）器身似缸，带盖。直口侈唇，斜弧壁下内收，圜底附矮圈足。素面。器底有镂孔五个；中间一个为圆形，侧边四个为椭圆形。盖似I式碗，上有凸弦纹一周，盖钮作盆形，有镂孔两组。輪制。口径32.8，甑高24，盖高12.8，厚0.3—0.5厘</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>12 <br />
+图四○ 晚期二的陶鼎<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1-3.1式T113:3A(1)，T154:2(1)，T182:2(13) 4.II式T173:3(5) 5-10.IV式T180:2(9)，T193:2(39)，T193:2(46)，T185:2B(2)，T193:2(31)，T134:2(20) 11、12.V式T21:3(12)，T196:2(43) (1-4为7/30，余为7/20)</p>
+<p>米（图三九，3；图版叁拾，2）。</p>
+<p>II式：1件。T149:2H(5）形似盆。直口侈唇，壁作弧形，平底微凹，有圆形镂孔三周。素面。輪制。质软屑有陶末和细砂，胎色灰黄（图三九，1）。</p>
+<p>III式：1件。T183:2(2)形似碗。敞口侈唇，斜弧壁，圜底，圈足残，底有圆形镂孔一个，器内唇有凹弦纹一周。輪制。质硬，胎色浅灰，屧有较多陶末（图版叁拾，3）。</p>
+<p>IV式：1件。T97:4(7）作筒形。口部殘，唇钝折，直壁略弧，圜底圈足，底有圆形镂孔一个，腹有凸弦纹四周。輪制。</p>
+<p>鼎 为蒸煮器中最多的一种, 形制也复杂。最大口径多在 20 厘米以上。都是泥质黑陶。可分五式:</p>
+<p>I式：仰折弧壁。T113:3A(1)、T182:2(13)、T154:2(1)、T119:3(1)、T138:2(83)，与晚期一的I式鼎同。腹较浅，三足较长，腹部有凸弦纹两、三周（图四O，1-3；图版卷壹，1、5）。</p>
+<p>II式：1件。T11:2A(6）器形与上式同，带盖。盖与Ⅱ式碗相同。口径21.8，高10.5，厚0.2—0.5厘米。輪制。</p>
+<p>III式：盘口球腹，为数最多。腹部较深作半球形，与晚期一的同式鼎基本上一致。T187:2A(1)、T173:3(5)、T173:2(1)，均足较短，腹部多有凸弦纹一周（图四O，4；图版叁壹，3—5）。</p>
+<p>IV式：器身作罐形，球形腹，足扁平或作柱状。T135:3D(1)、T186:2B(1)，后者胎色浅灰，犀有碎陶末(图版叁壹，2、6)。这一式的陶鼎中还有一种小型的：T188:2(17)、T180:2(9)、T185:2B(2)、T129:2(21)、56GC(470)、T193:2(39)、T134:2(20)等，体有大小，腹有深浅，口有侈敛，足有长短锥形或柱形的不同。胎多灰色，或器表黑色（图四O，5、6、8、10；图版叁贰，1—6、8)。在小型陶鼎中，还有一种带盖的罐式鼎：T193:2(31)、T193:2(46)，器小胎薄，有盖，盖似碗，足作锥形或鸭嘴形。后一件盖上有凸弦纹三周。身高11.3—11.6，口径11—18.3厘米（图四O，7、9；图版叁拾，4；叁贰，7）。</p>
+<p>V式：在陶鼎中，还有一种小型陶鼎作筒形或袋形的。T23:3(1）口侈唇短，腹壁直下收为圜底，三柱形小足，胎灰色，表黑色。T196:2(43）壁底处钝折，圜底稍尖，柱形三足残缺。T21:3(12）口残，足作扁锥状，腹下部有凸弦纹一周，胎黑色（图四O，11、12；图版叁贰，9、10)。T89:3B(2）口唇侈，腹作袋形，圜底，三足矮作扁锥形。质硬，表面光平有凹弦纹五周。輪制（图版叁贰，11)。</p>
+<p>碗 出土最多。胎质可分粗、细泥陶，色分灰和黑色。已复原的有44件。口径多在20厘米左右。可分六式：</p>
+<p>I式：1件。T111:2(6）斜壁，器形与晚期一I式同（图四一，7;图版叁叁，8)。</p>
+<p>II式：仰折弧壁，器形亦与晚期一Ⅱ式相同。T196:2J(4)、T144:2(1)、T159:2(3)，口、腹、圈足稍有不同（图四一，6；图版叁叁，5—7）。</p>
+<p>III式：有折唇、平唇、敛口的分别。一般腹壁作斜弧形，圈足有深浅不同。T124:3(16)、T182:2(38)、T120:3(1)、T196:2(52)、T119:2(7)、T120:2(14)、T129:2D(2)、T116:3, 4(5)、T197:4(31)、T197:4(13)等件，多素面，有的上有弦纹（图四一，1—5、8、9；图版叁叁，1—4；叁肆，1、4、6）。T21:3B(16)小型，无圈足（图版叁陆，3)。T186:2(15)、T116:3(1)圈足矮小（图版叁陆，4、6）。</p>
+<p>IV式：这式陶碗的圈足很象盖钮。T88:3C(3）平唇有凹弦纹二周。T98:4(7）唇外折，圈足大，有三角形镂孔三组，腹有凸弦纹三周。T129:2F(2）唇钝折，壁底有凸弦纹一周（图四一，10；图版叁肆，3、5；叁伍，5）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>10 <br />
+图四一 晚期二的陶碗（1/4）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1-5.II式T120:2(14)，T124:3(16)，T119:2(7)，T129:2D(2)，T196:2(52) 6.II式T159:2<br />
+(3) 7.1式 T111:2(6) 8、9.III式 T120:3(1), T182:2(38) 10.IV式 T129:2F(2)</p>
+<p>V式：侈唇或敛口，球腹，圈足。T178:2B(14）圈足矮而大，素面。T173:2(16)腹较圆，上有凸弦纹一周，圈足稍高，有镂孔。T174:2(40）圈足极矮，腹下部有凸弦纹二周。T197:4(30）敛口，腹作半球形，圈足较高，沿外敞，有圈形镂孔。T139:3(2）腹较浅（图四二，1一4；图版叁肆，2、7；叁伍，6、7；叁陆，5）。</p>
+<p>VI式：T49:2(7）长唇外侈，斜弧壁，腹深，平底，圈足直，器形似盆。腹有细凸弦纹六周。口径30，高11.6，厚0.5厘米（图四二，5；图版叁肆，8）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>5 <br />
+图四二 晚期二的陶碗（2/9）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1—4. V式 T178:2B(14), T173:2(16), T197:4(30), T174:2(40) 5.VI式 T49:2(7)</p>
+<p>还有蛋壳陶碗, 器形不大, 口径多在 10 厘米左右。胎薄似蛋壳, 屐有细陶末。厚度 0.05-0.2 厘米。胎色橙黄, 陶质软硬都有。輪制。有无彩与有彩的区别。</p>
+<ol>
+<li>无彩陶碗：只1件。T133:3(2)敞口，腹呈斜弧形，下部垂直，交界处钝折，平底圈足。素面，手制。口径7.9—8.2，高4.7，厚0.2—0.25厘米。  </li>
+<li>蛋壳彩陶碗：出土数量次于蛋壳陶杯。器形大体相同，口径多在10厘米左右。是屈家岭遗址具有特征的遗物。可分三式：</li>
+</ol>
+<p>I式：斜弧壁，3件。T130:2(1）内表披黑色陶衣，外表下部披黑灰色陶衣，彩纹为灰黑色。器中部饰方框内带卵点带纹二周，底部饰十六根直线组成的十字纹。T182:2(53)大部残缺，内外表披黑灰色陶衣，彩纹全残，近底有凸弦纹一周。T173:2(36）口部以下、内壁中部以下披灰色陶衣，有光泽。彩纹有黑、灰、褐三色，以黑或灰为主，浓淡不一。纹作梭形，上下附卵点，饰在器内，外口部饰狭细的黑彩一周（图四三，1、2、4；图版叁伍，1、2、4）。</p>
+<p>II式：T174:2(47）壁斜直，内外口部以下披黑色陶衣，彩绘黑灰色，浓淡不同。彩纹残存口部宽带纹一段，上下附卵点，壁中下部有凸弦纹一周(图四三，3；图版叁伍，3)。<br />
+III式：1件。T182:2(4）敞口，斜壁，矮圈足，器形似杯又似碗，内外残存陶衣与彩纹痕迹，色橙黄和浅灰。口径11.7，高5.7，厚0.08—0.15厘米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>8 <br />
+图四三 晚期二的陶器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+蛋壳彩陶碗：1、2、4.I式T130:2(1)，T182:2(53)，T173:2(36) 3.II式T174:2(47)<br />
+陶：5、6.II式T187:2(50)，T111:3(13) 7、8.II式T197:4(29)，T134:2A(5)<br />
+(1、2为 $2 / 5,3,4$ 为8/15，余皆为4/15)</p>
+<p>出土较少。几乎全是泥质黑陶。器形均作半球体。口径多在20厘米左右。主要区别在唇和底部。可分三式：</p>
+<p>I式：56GC(164）直口平唇外折，口下作半球体（图版叁陆，8）。</p>
+<p>II式：T134:2(7)、T134:2A(5)、T197:4(29)，小唇外折，腹近半球体，底内凹。T134:2A(5)腹较深，唇上有凹弦纹两周（图四三，7、8；图版叁陆，1、2）。<br />
+III式：器较大而深，近盆形。T187:2(50)、T111:3(13)，底内凹或平（图四三，5、6；图版叁陆，7）。</p>
+<p>盘2件。T95:2B,C,D(1)形似II式碗但较浅,下附扁长方形三足。质硬,胎灰白,素面。T159:2(6)宽平唇外侈,圈足肥大。圈足残,壁垂直,上饰凹弦纹三周,下残,存镂孔两周,各七个交错排列。胎浅灰,质较软,输制。口径31,高12.3,厚0.7厘米(图版叁伍,8)。</p>
+<p>三足盘碟 器型很小, 个别口径大到 10 厘米以上。体似盘却有三个锥形小足。胎多黑色, 也有灰色的, 黑胎有的表面见光泽, 质软, 素面。T137:3(13) 做口锐折唇, 斜壁, 深腹, 圆底。T72:5B(2) 唇侈, 圆底略平, 手制。T173:2(21) 唇锐折, 颇似盘(图四六, 12-14; 图版叁玖, 12-14)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>7 <br />
+图四四 晚期二的陶豆（4/15）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.I式T182:2(12) 2.IV式T187:3(4) 3、4.III式T129:2D(6)，T132:2A(3) 5、6.II式T186:2(23),<br />
+T177:2F(15) 7.III式T160:2(19)</p>
+<p>豆多为黑陶，只一件为红陶。它们的器形除圈足外，都可以从陶碗找到相同的地方。可分四式：</p>
+<p>I式：2件。T182:2(12）豆盘作盘形，高圈足作喇叭状，下部殘，有圆形镂孔十个分三组排列。殘高10.2，口径15.1厘米(图四四，1)。T106:4G(4)唇窄外折，大圜底，肥圈足作喇叭状，有镂孔三组（图版參柒，4）。</p>
+<p>II式：复原7件，为数量最多的一式。盘与Ⅱ式碗同。T177:2F(15)、T43:1, 2(7)、T120:3(2)、T120:3(6)、T96:4G(3)、T186:2(23)，豆盘均为深浅侈棄不同的碗形，圈足亦有高矮肥瘦的不同，多作喇叭形，上有圆形、或圆形排成直行、梅花形的镂孔多个（图四四，5、6；图版叁柒，1、5、6；叁捌，1、3）。</p>
+<p>III式：T129:2D(6)、T132:2A(3)，盘壁深斜，小圜底。前一件圈足较肥，有圆形镂孔三个；后一件腹下部有凸弦纹二周。圈足较小，下部残缺(图四四，3、4；图版叁染，3)。T160:2(19）盘唇内敛作榫口，壁斜，圈足作喇叭形，上有三角形镂孔三个。高13.4，口径20.5，厚0.3—0.5厘米(图四四，7；图版叁染，2)。</p>
+<p>IV式：1件。T187:3(4）唇外折，盘深作半球形，圈足矮小呈喇叭状，盘上有凸弦纹一周，足有圆形镂孔八个，分四组作直行排列。口径15.5厘米（图四四，2；图版叁捌，2）。</p>
+<p>杯 出土数量仅次于陶碗。大体分厚胎和蛋壳两种。</p>
+<ol>
+<li>厚胎陶杯：都素面。多平底，间有矮圈足。都是泥质陶，质软犀有碎陶末。胎色除少数为浅黄或灰色外，余都是黑色。可分六式：</li>
+</ol>
+<p>I式：敞口，壁作凹弧或双弧形，圈足。T96:3C(2）为圆底圈足，足壁有圆形镂孔五个。胎黑色。口径9.3，高9.3，厚0.2—0.3厘米(图四五,6;图版叁捌，5)。T196:2(39)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>3 <br />
+图四五 晚期二的陶杯（1/3）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、2.II式T106:4G(30)，T106:4G,4F(5) 3.IV式T133:3(2) 4、5.III式T129:2C(7),<br />
+T88:3,3C(1) 6.I式 T96:3C(2) 7.III式 T137:2(3)</p>
+<p>为平底圈足（图版叁捌，4）。T138:2(76）圈足较直（图版叁捌，6）。</p>
+<p>II式：T106:4G(16)、T106:4G(30)、T106:4G,4F(5)，器形大小深浅不同，但都作敞口，斜壁，平底（图四五，1、2；图版叁玖，1、2）。</p>
+<p>III式：6件。大敞口，斜壁下收成小底，矮侈圈足。T129:2C(7)身较长。T137:2(3)身较肥。T104:3(1)圈足较大。T88:3,3C(1)壁上部有凹槽一周，胎黑色，表有光亮黑陶衣（图四五，4、5、7；图版叁玖，7、11）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+12</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+13</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+14 <br />
+图四六 晚期二的陶器</p>
+<p>蛋壳陶杯：1、2、3、8.I式T113:3D(4)，T129:2D(3)，T100:4D(5)，T158:3A(40) 5.III式T129:2C(2)</p>
+<p>蛋壳彩陶杯：4、7、9.I式T197:3A(3)，T96:3C(23)，T173:2(47) 6.II式T88:3C(4)</p>
+<p>小型陶杯： 10、11. T197:4(40)，T197:1(7)</p>
+<p>三足盘碟：12—14．T137:3(13)，T72:5B(2)，T173:2(21) (9、10 为 8/15，余皆为 2/5)</p>
+<p>IV式：1件。T133:3(2）直敞口，壁上部斜弧，下部较直，平底，矮圈足。胎灰色，素面。口径8.3,高4.6,厚0.2—0.3厘米（图四五，3；图版叁玖，3）。</p>
+<p>V式：2件。T187：（22）侈口折唇，壁下部内收，平底，矮圈足。胎灰黑色，素面。T187：（23）直口折唇，斜弧壁，平底。素面，胎黑色（图版叁玖，4、5）。</p>
+<p>VI式：1件。T82:5D,5B(3）器近筒形，口微弁，直壁下端略收，平底，小圈足。口径7.7，高5.6，厚0.6厘米。T124:3(1)器身细长似竹筒。胎色橙黄，手制。口径5.6，高8.6，厚0.4—0.8厘米（图版叁玖，8）。</p>
+<ol>
+<li>蛋壳陶杯：有无彩与有彩的区别，以有彩的占大多数。两者器形相同。无彩的很可能因彩绘脱落所致。无彩蛋壳陶杯均为泥质陶，陶质软硬都有，胎色有黄11、灰5、黑1。可分三式：</li>
+</ol>
+<p>I式：T129:2D(3)、T158:3A(40)、T113:3D(4)、T100:4D(5)，斜壁，平底（图四六，1—3、8；图版肆壹，3、4、7）。</p>
+<p>II式：大口小底，2件。56GC(1)器较小，表面残有暗红色陶衣。T130:2E(3)器瘦长，口敞大，小平底内凹（图版叁玖，6；肆壹，5）。</p>
+<p>III式：1件。T129:2C(2)壁中部内凹，底平亦略内凹。素面，泥质黄陶（图四六，5；图版肆壹，1）。</p>
+<p>蛋壳彩陶杯：都是细泥陶，胎色多橙黄，輪制。复原41件。可分二式：</p>
+<p>I式：蛋壳彩陶杯几乎全属于这一式。器身有高矮肥瘦的区别，壁有仰斜直之分，底有平底和圜凹底。T96:3C(23）披黑色陶衣，彩纹在器内，口部饰弦纹二周，下有“ $\text{艹}$ ”形彩面纹三组，上都有卵点，壁底处饰宽带纹一周。T197:3A(3）表披黑色陶衣，口内部残有黑色平行弦纹二周。T149:2(10）陶衣与彩纹跟T96:3C(23）同。T173:2(47）表披橙红色陶衣，下部披黑色陶衣似宽带纹，口内部饰平行弦纹二周，内有卵点纹两段，下有“ $\text{艹}$ ”纹三组，彩绘黑色。T158:3A(1）器表上部饰宽带纹一周。T197:3A(2）表披红色陶衣，有光泽，下部黑色陶衣似宽带纹一周，器内纹饰与T197:3A(3）同，仅彩色不同，为上橙红，下黑色（图四六，4、7、9；图版肆拾，1—6）。</p>
+<p>II式：1件。T88:3C(4）身瘦长似筒形，下部近垂直，平底，圈足是器壁的延长。口径7.8，高9.3，厚0.2—0.4厘米（图四六，6；图版肆壹，2）。</p>
+<p>小型陶杯 大小象现在的酒杯。都是斜壁平底或凹底, 胎色黄白, 质软。T197:1(7)身较肥, 表披暗红色陶衣, 口部略下有黑色宽带纹一周。T197:4(40)表披暗红色陶衣, 口部有黑色宽带纹一周。T126:2(1)表残有暗红色陶衣, 口部残有黑色宽带纹。T196:2(22)口部内残有黑红色弦纹一周（图四六，10、11；图版叁玖，9、10）。</p>
+<p>从上述标本和许多残片看，表饰分有衣和饰彩两种。绝大多数有陶衣，作灰、灰黑、橙红、橙黄、暗红、黑色，有深浅的区别。一个杯涂一色衣的很少，多两种以上，有的还两层迭着。陶衣有涂的有浸沾上的，均浓淡均匀，色彩鲜艳，有的有光泽，也有较为粗糙的（彩色</p>
+<p>版贰, 13-18; 图版肆拾, 1、5、6)。</p>
+<p>陶杯的彩绘颜色与陶衣同。彩纹多在器内表的中上部，在器外表的仅在口部。纹饰的基本元素有直线、弧线、卵点、方格纹及彩面五种（彩色版贰，7、11、13—18；图版肆叁、肆肆）。组合关系是：（a）两周平行线与“ $\vee$ ”形纹，是最多的一种；“ $\vee$ ”形为三组，等距分布在平行线以下，里面V纹多为彩面；（b）斜方格带形纹，饰在器外口部，这种纹饰较少；（c）宽带弦纹，多饰在器内外口部，小型的陶杯多这种纹饰；（d）宽带、卵点、“ $\vee$ ”形和椭圆形彩面，是组合较复杂的一种；只发现一件，纹在器内，口饰平行弦纹二周，中间残卵点两段，“ $\vee$ ”纹与椭圆形彩面在靠弦纹下交错等距排列；（e）卵点与彩面，在器内上部；（f）方格、彩面与卵点，饰在器内外口部，外饰成组的方格菱形纹，下面紧接陶衣，内为树叶形彩面或附卵点，或平行线内饰卵点；（g）弦纹与彩面，器口内部饰弦纹二周，下饰不规则的树叶形彩面；（h）平行弦纹上侧饰卵点，下侧饰成组的斜方格纹。</p>
+<p>杯形器 2件。T125:4(9)体作锥形, 做口钝折唇, 壁斜, 底尖圆, 三足呈锥体, 壁中下部有圆孔一个, 用途不明。胎色浅黄, 质软, 霾有大量陶末和草末。口径10.3, 高8.8, 厚0.5—0.21厘米。T104:3(4)形同, 圈足残, 壁中部有圆孔一个。胎黑色, 质软细（图版肆壹，6、8）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>7 <br />
+图四七 晚期二的高圈足杯（3/10）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、3.II式T89:4D(5)，T97:4(48) 2.I式T197:3(5) 4、5.II式T138:2(77)，T102:3A(6)<br />
+6.II式T129:2C(5) 7.I式T98:4(10)</p>
+<p>高圈足杯 复原9件。属夹砂质的2件,其余为泥质,胎色有灰、黑、红、黄四种,以灰色最多。质软硬都有。可分三式:</p>
+<p>I式：4件。壁底均有凸棱一周。T98:4(10）唇微外侈，近底处弧形，平底，圈足呈喇叭形，壁下部有竖线划纹十一组，每组三或四根，下有凹槽纹一周。高11.5，口径7，厚0.6厘米(图四七，7；图版肆壹，9)。T96:4G(1）口径7，高9.7，厚0.3—0.6厘米（图版肆贰，4)。T197:3(5）身较短肥，圈足残，表有斜划纹五组，每组五根，壁底有凹弦纹二周（图四七，2；图版肆贰，2)。T90:3(16）表面有划纹九组，每组十根作人字形排列，平唇（图版肆贰，3)。</p>
+<p>II式：4件。T89:4D(5)口微弁,唇折,口沿有凹弦纹一周,表面有竖划纹十四组,每组八到十二根,底角有附加堆纹一周,圈足残(图四七,1;图版肆贰,5)。T102:3A(6)形同,胎色砖红,屠宰大颗粒砂粒,表饰有斜绳纹(图四七,5)。T99:3(1)口残,圈足壁近垂直,足沿有凹弦纹一周,壁有三角形镂孔三个。器表披黑色陶衣,胎红色,质较软(图版肆壹,10)。T97:4(48)器形较小,圈足残(图四七,3)。T138:2(77)身短,圈足肥大,素面(图四七,4)。</p>
+<p>III式：1件。T129:2C(5）身中部内折似高颈敞口罐，底平，圈足残。口径9.3，残高9.3，厚0.4—0.6厘米（图四七，6；图版肆贰，1）。</p>
+<p>罐 为数较多。除一件夹砂陶外, 都是泥质黑陶和灰陶, 火候较高。可分六式:</p>
+<p>I式：圆肩凹底。T151:2(4）直口高颈，腹作球形，凹底。口径10.5，高12.5，厚0.5厘米（图四八，1；图版肆伍，1)。T133:3(15）直口，唇较侈，底微凹，腹较深，肩有凸弦纹三周（图四八，7；图版肆伍，2)。T129:3E(14）底残，口略侈，颈壁有凹槽一周，腹中部有凸弦纹七周，间距1厘米左右（图版肆伍，4)。T182:2(39）口略侈，直颈，腹深作椭圆形，底小，已残，腹有凸弦纹六周（图四八，3;图版肆伍，6)。T92:2(2）肩长，底小中凹，表饰凹弦纹三组，每组三根（图版肆伍，3)。</p>
+<p>II式：圆肩平底。T106:4G(1）口残，直颈，圆肩，圆腹，平底，器内外留有泥条圈筑痕迹（图四八，2；图版肆陆，3）。</p>
+<p>III式：侈口弧壁。T106:4G(14）大敞口，斜直颈，肩腹作弧形，底小中凹，肩有凸弦纹三周，胎薄。口径10.8，高12.6，厚 $0.2 - 0.4$ 厘米（图版肆陆，2）。</p>
+<p>IV式：平唇弧壁。56GC(261）直折凹弧唇，圆肩下斜，底小内凹，肩腹处有凸弦纹四周。表披黑衣，口有旋纹痕迹（图版肆伍，5）。</p>
+<p>V式：敛口球腹。56GC(77）小敛口，矮颈，身作球形，小圈足似弦纹，表饰凸弦纹十四周，三、四周间饰横置平行八字纹一周。胎色黑灰（图版肆陆，1）。</p>
+<p>VI式：球体三足。1件。T192:2(48）直口，颈略侈，圜底，下附柱状矮足三个，足内斜，胎色浅灰（图版肆陆，6）。</p>
+<p>陶罐中有小型的，口径或高多在10厘米以内，胎多黑、灰色，犀有碎陶末，素面无纹饰。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图四八 晚期二的陶器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.I式罐T151:2(4) 2.II式罐 T106:4G(1) 3.I式罐 T182:2(39) 4-6.小型罐 T27:2(2)，T165:3(61)，T192:2(46) 7.I式罐 T133:3(15) 8.小型罐 T186:2(20) 9.筒形器 T78:2(27) 10.瓶形器 T109:2(1) 4、6、8为 $2/5,1-3,5,7$ 为 $4/15,9$ 约为 $1/8,10$ 约为 $3/16$</p>
+<p>T132:3D(3)、T165:3(61)，属侈口球腹式（图四八，5；图版肆柒，1、6）。T192:2(46)、T27:2(2)、T186:2(20)，亦侈口球腹，器形不规整（图四八，4、6、8；图版肆柒，2、4）。T196:2J(1）属直口弧壁式（图版肆柒，7）。T183:2(1）属杯式（图版肆柒，8）。</p>
+<p>壶形器 为出土较多的器皿, 但复原很少。陶质软硬都有, 有的胎薄应属蛋壳陶。胎色以不同深浅的黄色为主, 黄灰较多, 精致的都作淡黄色。可分有彩与无彩的, 有彩的都有陶衣。可分三式:</p>
+<p>I式：2件。T197:4(9）直口，高颈，斜肩，圜底，圈足殘，素面。T197:3A(5）口颈殘，肩较平，腹突出处较圆，圜底，圈足小而作喇叭状，上有镂孔四个，素面（图四九，2、3；图版肆捌，2；肆玖，3）。</p>
+<p>II式：这一式共复原5件。直颈，平肩，斜腹壁。T110:4D（14）腹径较小，圈足较肥，表有橙黄色衣，肩有斜方格纹，色米红微暗，圈足有镂孔四个。T197:4（11）圈足较肥，高15.6，腹径14.7，厚0.2—0.6厘米。T197:4（14）表有橙黄色衣，颈有斜方格纹（图四九，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9 <br />
+图四九 晚期二的陶器</p>
+<p>t.II式壶形器 T197:4(14)</p>
+<p>2.I式壶形器 T197:3A(5)</p>
+<p>3.I式壶形器T197:4(9)</p>
+<p>4.II式壶形器T128:2(75)</p>
+<p>5.II式壶形器T129:2(17)</p>
+<p>6.II式孟形器T20:4(5)</p>
+<p>7.I式孟形器T178:2B(11)</p>
+<p>8.II式孟形器T188:4C(2)</p>
+<p>9.II式孟形器T92:3(19)</p>
+<p>(1—5为7/30,6—9为7/10)</p>
+<p>1；图版肆捌，1、3、4）。</p>
+<p>III式：5件。圈足均残。T127:3,4(1)颈较肥，胎红色，间见灰色。T128:2(75）圈足较高作喇叭形，上有圆形镂孔五个。T115:3(21）口颈残，腹浅外突成棱，底近平，素面（图四九，4；图版肆玖，1、2、4)。T129:2(17）带彩，残有红色陶衣（图四九，5)。由此推知同式壶形器都应有陶衣，并有彩纹。</p>
+<p>壶形器虽属蛋壳陶类, 但不如蛋壳彩陶杯碗来得标准。一般口部颈部较薄, 多在 0.2 厘米左右, 腹底部较厚, 最厚在 0.5 厘米以内。彩纹的多有陶衣, 饰纹只见斜方格纹一种。</p>
+<p>孟形器 都属小型。除一件腹径大至13.1厘米外，一般口径或高都在10厘米以下。均为黑陶，质坚硬，屑有碎陶末。手制。可分三式：</p>
+<p>I式：T178:2B(11）直口无颈，弧壁，平底，圈足，肩腹处有圆点凸饰二个，表面满饰菱形划纹。口径3.8，高4.1厘米。T99:(12）敛口钝折唇，扁腹，平底，圈足。胎色灰褐，表披黑色陶衣（图四九，7；图版肆染，3、9）。</p>
+<p>II式：2件。T20:4(5)大直口，高颈，浅扁腹，底近平，表面有的地方现瘤状。素面。口径5，高4，腹径6.2厘米（图四九，6；图版肆染，5）。T188:4C(2）唇残，腹下壁斜度大，平底。素面，輪制。口径9.5，高4.4，厚0.2—0.4厘米(图四九，8；图版肆陆，5)。</p>
+<p>III式：1件。T92:3(19）敛口凹弧唇，扁身，折腹，平底，矮圈足。胎色浅灰，表黑色，素面，輪制。口径8.7，腹径13，高8.3，厚0.3—0.6厘米（图四九，9；图版肆陆，4）。</p>
+<p>缸形器 器形较大,口径或高多在40厘米左右。只发现6件,两件为夹砂黄陶,余均是泥陶,屑有碎陶末,质分软硬,胎多黑色,少数为灰色。可分四式:</p>
+<p>I式：器形似罐。T104:3(12）敞口侈唇，腹下部较大，有凸弦纹两周。56GC(494)底残,器作球形,素面。T197:4(38） 弃口侈唇,斜肩,圜底内凹,腹有凸弦纹四周,唇上有凹弦纹一周,胎色浅灰,表黑色。口径33.9,高27—29.9,厚0.3—0.4厘米。T110:2(2)底残,腹下部有凸弦纹四周（图五O,3—6;图版伍拾,2、3;伍壹,1、4）。</p>
+<p>II式：T89:4H(2）器形较大，作圆筒状。侈唇，直壁下内收，平底，唇外饰细弦纹，壁饰弦纹三组，每组三根等距分布，每组中间满饰柳条纹（图版伍拾，4）。</p>
+<p>III式：T175:2(1）唇钝折，深腹中部微鼓，底小中凹，素面（图版伍拾，1)。</p>
+<p>IV式：2件。T138:2A(1）仰口侈唇，壁斜直，平底，似锅形。器口内外各有凸弦纹一周，壁部有宽带凹弦纹二周，余满饰柳条纹。质软夹砂，胎黄色。T109:2(2）器形近同，质亦为夹砂黄陶（图五O，1、2；图版伍壹，2、3）。</p>
+<p>瓶形器 1件。T109:2(1) 直口唇钝折, 壁近垂直, 平底已残。器壁上有三周带饰, 每周中间微凹入, 形成两根凸线, 近底处有菱形划纹一周, 在带饰之间各有三个等距的圆形镂孔, 每一镂孔的四角又各镂一“Y”形饰。胎色灰白, 器表黑色。质硬, 细密成层。輪制。口径 22.2, 高 39.4, 厚 0.3-0.5 厘米。从形制上看决非容器 (图四八, 10, 图版伍贰, 1)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>6 <br />
+图五○ 晚期二的缸形器（7/40）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、2.IV式T138:2A(1), T109:2(2) 3-6.I式T104:3(12), 56GC(494), T197:4(38), T110:2(2)</p>
+<p>筒形器 1件。T78:2(27)体作筒形,上小下大,唇微内敛呈榫口,用途不明。壁上有凸弦纹三十四周,上压斜槽似齿輪。质松软,犀有大量碎陶末,胎作浅砖红色。手制。高64.5,上口径17.5,下口径32.7,厚0.8-1.4厘米(图四八,9;图版伍贰,2)。</p>
+<p>四耳器 1件。T138:3(9) 上端残, 直口颈, 圆腹, 腹下垂直, 腹壁四面各伸出一个圈</p>
+<p>足式的耳,相对作十字形。四个耳中间各有一段堆纹。胎红色,厚处中间作灰色,内外表面砖红色。手制。残高20,口径11.2,腹径16.1,厚0.5厘米(图五一;图版伍贰,3)。</p>
+<p>器盖是器皿附件，为数最多。其中碗形盖，既似盖又似碗，可能两用。都是泥质陶，屑有碎陶末。质多软的，也有硬的。胎色黑多灰少，红黑色的只一件。都是手制。形式与晚期一的基本相同。可分五式：</p>
+<p>I式：1件。T21:3(29）很小，钮作圈足形，中有一孔。表面黑色有光泽，素面（图版伍叁，13）。</p>
+<p>II式：是盖中形式较简单的一种。T105:5A, 5D(1)、T90:4C(1)、T131:5(4)、T83:3(13)、T82:4D(1)、T113:4(10)、T99:4(4)、T113:4(9)，虽盖面弧度不同，钮有大小侈直不同，口唇有伸出或直斜不同，但大致是相似的。T195:2(27）口沿似有榫口，唇以上残有点饰两组，每组由十七个点组成，胎黑色有光泽。余均素面（图五二，1、4—9；图版伍叁，4、5、7、9—12、14）。T89:4C(1）身中部较厚作丘状隆起，钮很低，唇有榫口（图版伍叁，3）。</p>
+<p>III式：3件。T197:4（13）形似覆碗，钮高，壁有凸弦纹三周。T150:2(22）盖稍浅,近钮处微凸,钮似矮圈足（图五二，2、3）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图五一 晚期二的四耳陶器T138:3(9) $(2 / 3)$</p>
+<p>IV式：2件。T82:4C(1) 盖较大，逐渐上收呈柱形钮，上有菌形顶，壁中部有凸弦纹二周。质较硬，胎浅灰，表面黑色。手制。T95:4A(1) 柱形钮较长，菌形顶有残缺，钮下有凸弦纹两周（图五二，10、11；图版伍叁，1、2）。</p>
+<p>V式：1件。T166:2(1)作塔形，周壁有脊棱四周，脊棱上有斜线似齿輪。三周凹槽上各有圆形镂孔六个。质坚硬，小刀刻之不入。胎为暗硃红色，手制。高8.6，底径4.1—6.8，厚1.2—2.2厘米（图版伍叁，6）。</p>
+<p>彩陶器盖 完整的只发现2件。T182:2(1)器身较平,唇有榫口,平顶上有钉形小钮。胎灰白色,质硬,犀有细陶末。表面披黄白色陶衣,彩纹褐色,顶绘十字形纹,身绘波浪形纹十组。高2.7,口径9.6厘米。T193:3A(2)质特硬,侧视似亭形,下有直榫口,上有圆形小钮。胎色橙黄,表披红色陶衣,彩绘黑色,纹饰为交错方形格,彩纹和陶衣都脱落一部分(图五三,1、2)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图五二 晚期二的陶器盖（2/9）</p>
+<p>9</p>
+<p>(22) 4.II式T90:4C(1)</p>
+<p>A,5D(1) 8.II式T99:4(4)</p>
+<p>C(1)</p>
+<p>1.II式T195:2(27)</p>
+<p>2.II式T197:4(13)</p>
+<p>3.II式T150:2(22)</p>
+<p>5.II式T83:3(13)</p>
+<p>6.II式T131:5(4)</p>
+<p>7.II式T105:5A,5D(1)</p>
+<p>9.Ⅱ式T113:4(10)</p>
+<ol>
+<li>
+<p>IV式T95:4A(1)</p>
+</li>
+<li>
+<p>IV式T82:4C(1)</p>
+</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2 <br />
+图五三 晚期二的彩陶器盖</p>
+<p>1.T182:2(1)</p>
+<p>2.T193:3A(2)</p>
+<p>器座 只发现两件。T182:2(1) 质软屑碎陶末, 胎色灰白。壁上有圆形镂孔四个, 等距分布。手制。高 20, 口径 25 厘米。T111:5(7) 较上件略矮, 呈圆圈形, 上下端外侈, 中部垂直, 上有圆形镂孔四个。胎色砖红略暗 (图版伍贰, 4; 伍叁, 8)。</p>
+<p>彩陶片 有薄胎、厚胎两种。</p>
+<ol>
+<li>
+<p>薄胎彩陶片：胎厚多0.3厘米左右。陶质软的较多，犀有碎陶末。胎多为土黄色。有属于壶形器口、肩部残片，彩色黑褐，纹饰是两道平行带状弦纹和一道弦纹中间填斜线两组；两道双弦纹中间填平行折线，弦纹上下为两组斜线组成的菱形纹。有属于罐类口沿的残片，T187:3唇上部有弦纹一周，上饰短线两组，交界处作三角形；T123:2(10）彩黑色，唇部残有弦纹一周，腹部为平行交错的方块纹；T129:3(1）罐颈残片，近肩处残有平行弦纹二周，以上有圆点饰两个（图版肆肆，1）。</p>
+</li>
+<li>
+<p>厚胎彩陶片：厚度多在0.5厘米左右。陶质大部分坚硬，都属有陶末。胎色多灰黄，也有中间略呈浅灰或深灰的。属于罐类的T155:(2）肩</p>
+</li>
+</ol>
+<p>有褐黑色彩纹; 近颈饰平行弦纹三周, 下为直短线和方框纹, 有的方框内并饰斜线和卵点; T155:2(13) 彩纹浅黑色, 器外壁和唇内饰菱形纹; T70:4(4) 彩色黑褐, 上面是三周平行弦纹, 下面右侧有七道垂直线, 右侧是一个不圆的彩点。属于鼎足的 T54:3(5) 外侧面满饰褐色彩纹, 上部是平行线内饰对顶角三角形, 中下部饰类似波浪纹 (图版伍肆, 21)。T182:3(1) 系容器残片, 彩色黑褐, 彩纹为弧线, 结构不明 (图版伍肆, 17)。</p>
+<h1 id="_46">（三）装饰品</h1>
+<p>装饰品亦为陶环和玉质饰品两种。玉质饰品比晚期一和早期较多。</p>
+<p>陶环 可分无彩与有彩两种：</p>
+<ol>
+<li>无彩陶环：环径比较小。都是泥质的，属有陶末和草末。胎色多黑灰，黄色的只几件。形制的不同，主要在剖面上，较多的与晚期一近同。剖面可分：（1）圆形，都很小，T171:3(13)有铅灰色陶衣，见光泽；T139:3(11)较大，表面未修饰(图五四，11)。（2）长方形，这种形制较少，T196:2(99) 胎浅灰色(图五四，2)；T158:3(12)、T165:3(54)、T129:3C(2)，均较宽厚(图五四，3、4、6；图版伍肆，5)；T156:4B(4)外周壁有凹槽，剖面近方形(图五四，1)。（3)半圆形，外壁作弧形，内壁近平直，T69:4(7)大型，宽厚近同(图五四，12)；T115:3(2)小型，厚大于宽(图五四，9)。（4)三角形，T60:4(1)、T104:2C(1)，粗细不同；T117:3(14)大型(图五四，7、8)。（5）带槽椭圆形，这一式也较少，T25:2(1)外壁有凹槽(图五四，10)。  </li>
+<li>彩绘陶环：为数不多。剖面作圆形的，径长多在 0.5 厘米以内。质较软，胎泥细密，大多数没有屑和料。胎色多中间灰白色，表披浅红或黄色，器表外面上下有黑色彩或深橙红色衣，光亮美观，如 T189:2(1) 是（图版伍肆，7）。</li>
+</ol>
+<p>另有为数很少的石环, 琢磨精致, 剖面亦可分长方形、半圆形、瘦卵形等。T56:2(25)宽略大于厚, 角棱整齐 (图五四, 5; 图版伍肆, 4)。T192:1(1)外周壁作弧形, 内壁近直。T124:2(5)剖面象个瘦长卵形。</p>
+<p>玉质饰品 主要为玉石制，也有珮瑙制的。有下列各种形制：</p>
+<p>1.龟头形：6件。侧视似龟头形，有穿孔似眼睛。T18:2(4）石质灰白色（图五四，14)。T159:2A(1）一端有一穿孔，另一端有圆形孔两个构成弧形孔道（图五四，18；图版伍肆，6)。T46:2(15）头薄尾厚，较长，石质较好(图五四，17;图版伍肆，1)。T98:3(16)体最长而细，头薄有小孔，尾部剖面呈椭圆形，其质可能为瑶(图五四，16;图版伍肆，2)。T188:3(33)尾部残，剖面作椭圆形。<br />
+2.鱼形：1件。T166:2,3(16）扁平长方形，侧视似鱼形，嘴残，尾较窄薄，剖面呈长方形，尾部上下各有锥形小孔一个，在一直线上，但未穿透（图五四，13；图版伍肆，3）。<br />
+3. 长方形：3 件。侧视作长方形，两端残，上下面略弧。T188:2(45) 一端剖面作半圆形，一端作方形（图五四，21）。T128:2(5) 剖面似菱形，质洁白似玛瑙（图五四，23）。T116:3(8) 剖面长椭圆形（图五四，22）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图五四 晚期二的陶环、玉质饰品等（4/5）</p>
+<p>陶环：1—4、6.长方形T156:4B(4)，T196:2(99)，T165:3(54)，T129:3C(2)，T158:3(12）7、8.三角形T117:3(14)，T104:2C(1) 9、12．牛圆形T115:3(2)，T69:4(7）10.带槽椭圆形T25:2(1）11.圆形T139:3(11）5.石环T56:2(25)</p>
+<p>玉质饰品：13.鱼形T166:2,3(16) 14、16—18.龟头形T18:2(4),T98:3(16),T46:2(15),T159:2A(1) 15.圆形T142:2(78) 20.珠形T21:3(11) 21—23.长方形T188:2(45),T116:3(8), T128:2(5) 24.环形T145:2(9)</p>
+<p>陶鸡：19.T99:2(1)</p>
+<ol>
+<li>环形：1件。T145:2(9) 剖面略似长方形，一侧残存小孔，已残。石质似玛瑙（图五四，24）。  </li>
+<li>珠形：1件。T21:3(11) 作小柱状，中穿不规则小孔。长1.01,粗1.2厘米（图五四，20；图版伍肆，13）。  </li>
+<li>圆形：1件。T142:2(78) 很小，俯视作圆形，侧视为梯形，周壁满布螺旋纹。牙白色。直径0.9，厚0.3厘米（图五四，15；图版伍肆，14）。</li>
+</ol>
+<h1 id="_47">（四）其它</h1>
+<p>包括陶球、石球、陶鸡、锥形器等。</p>
+<p>陶球 分无彩和有彩两种。有空心和实心的。</p>
+<ol>
+<li>空心陶球：T175:2(6) 表面残有小孔及成组的平行槽纹。T111:3(4) 表饰小孔和凹槽十字纹（图五五，7、9）。  </li>
+<li>实心陶球：T165:3(62）表饰凹点麻面纹，径长约3.7—3.9厘米。T70:3(6）胎色浅褐，饰双线十字形划槽纹，相交处有凹点四个（图五五，4、5；图版伍肆，10、15）。</li>
+</ol>
+<p>陶球的表饰, 可分: (a) 素面, 如T95:3(9)(图五五, 8); (b) 麻面, 即表面满饰凹点, 如 T165:3(62) (图五五, 4; 图版伍肆, 15); (c) 圆孔与槽纹, 数量多, 组合颇不同, T111:3(4) 两端有圆孔, 槽纹通过各孔组成十字纹 (图五五, 9), T180:2(36) 为两根平行槽纹 (图版伍肆, 12), T70:3(6) 直径两端各有圆坑五个, 有八根直线分四组由四个圆坑处构成双十字纹 (图五五, 5; 图版伍肆, 10), T70:3(7) 直径两端的凹坑各为五个; (d) 圆孔、点线与槽纹, 组合不同, T182:3(3) 由二或三根平行线组成如等边三角形, 每角都有圆孔一个 (图五五, 3), T141:2I(2)、T64:2(4), 由二或三根平行线组成等腰三角形, 角上有圆窝 (图五五, 1、2), T182:2(46) 每个三角形角上都有圆孔一个 (图版伍肆, 9); (e) 凹点与平行槽纹, T137:2C(1) 满饰平行圈纹, 上下端小圈内各饰凹点七个 (图五五, 6); (f) 圆孔与平行槽纹, T175:2(6) 殼有平行槽纹三组, 左侧有圆孔一个 (图五五, 7)。</p>
+<p>彩绘陶球 4件。空心实心各2。大型1,中型3。T187:3(11)为残片,胎色橙黄,表有暗红色陶衣,上饰褐黑色彩线,纹作平行圈线(图五五,11)。T143:3C(3)胎色浅红,衣灰色,彩纹橙红,纹饰结构不明(图五五,13)。T142:3(4)胎色浅灰,表浅黄色,彩纹暗红色,残有平行弦纹多周(图五五,12)。T84:3(2)质软,胎黄色,表粉黄色,陶衣暗红色,彩纹黑褐色,结构不明(图五五,10)。</p>
+<p>另有石球4件。表面制作粗糙。T104:3(22)为最大的一件,径长7.2-7.5厘米（图版伍肆，11)。T103:4(8）为最小的一件,径长3.4-4.4厘米。</p>
+<p>锥形陶器 除个别为夹砂粗红陶外，其余是黑、灰、黄陶。用途不明。T159:3B(5)底作椭圆形，顶圆尖，高4,径2.7—3.1厘米（图版伍肆，20）。T30:3B,3(1）形同，周壁有方形凹点，纹饰组合是两根平行线内饰三组三角形，底部中心有圆孔（图版伍肆，19）。T98:3(13）底部有一圆孔，夹砂粗红陶，高4.7，径2.5厘米（图版伍肆，16）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+12</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+13 <br />
+图五五 晚期二的陶球和彩陶球（5/6）</p>
+<p>陶球：1.T64:2(4) 2.T141:2I(2) 3.T182:3(3)</p>
+<p>4.T165:3(62) 5.T70:3(6) 6.T137:2C(1)</p>
+<p>7.T175:2(6) 8.T95:3(9) 9.T111:3(4)</p>
+<p>彩绘陶球；10.T84:3(2) 11.T187:3(11) 12.T142:3(4)</p>
+<p>13.T143:3C(3)</p>
+<p>另有石质锥形器1件。T165:3A(2)底呈椭圆形,周壁近直,色灰绿,高5.6,底径3.8—4.6厘米(图版伍肆,18)。</p>
+<p>陶鸡 2件。T99:2(1) 尾、足部残。颈作上伸状, 眼为小圆坑, 很象母鸡。残长 3.8, 高 2.9, 宽 0.9-1.2 厘米, 胎作暗砖红色 (图五四, 19)。T179:(1) 象一只静立的母鸡, 足残, 胎黑灰色。长 4.7, 宽 2.2, 残高 3.1 厘米 (图版伍肆, 8)。</p>
+<h1 id="_48">伍結論</h1>
+<p>屈家岭遗址出土的遗物,具备了较多的特有的文化特征,应属于已发现的新的一个文化系统,因此我们命名它为“屈家岭文化”。这一发现,使我们看到当时生息于江汉平原地区的人们,创造了具有地区特征的文化面貌。</p>
+<p>现在, 就这一文化所反映出来的一些问题, 提出如下的一些初步看法。</p>
+<h1 id="_49">（一）文化分期</h1>
+<p>从地层堆积并结合出土遗物研究,我们将屈家岭文化分为早晚两期,而晚期当中又可分为晚期一和晚期二。</p>
+<p>早期的生产工具,石器以磨制比较粗糙的大型柱状石斧、石锛和大型的黑、灰陶纺輪为代表。生活用具中以黑陶为主,灰陶次之,器形有薄胎黑陶带盖鼎,蛋壳黑陶杯、罐、盘、硃绘黑陶罐、盘,圈足豆、圈足碗和圜底三足碗、平唇弧壁钵、三足盘和碟等,是其主要遗物;其中硃绘黑陶更具有代表性。这一期的彩陶片多为厚胎,其中有三片的彩绘纹饰,颇具有仰韶文化的彩绘风格,但质料和器形有所不同。这一期的装饰品中以陶环为代表,造型从剖面看颇为多样化,但不见彩绘陶环。</p>
+<p>晚期的文化遗存，比早期显然有所发展。生产工具以石器中的中小型的I式斧为代表，并较多的出现了小型的工艺品加工工具和石镞。出土较多的彩陶纺輪，是早期不见的。生活用具中的陶器，种类和数量均比早期有所增加，更出现了很多新的器形，如大型陶锅和缸等；还有别具风格的蛋壳彩陶杯、碗，以及各式陶鼎、豆、碗、高圈足杯等。这一期的装饰品，比早期数量有所增加，出现了彩绘陶环等。</p>
+<p>另外，从第贰章中所举例的T95、99两个探方中出土遗物，也可以看出早晚期的区别。彩陶纺輪和蛋壳彩陶片都出于晚期，而晚期一比晚期二要少(表四一七)。</p>
+<p>再以T81、88、95、102、109、85、92、99、106、113等十个探方出土的遗物进行分析，彩陶纺输共出39个，晚期二占36个，晚期一仅有3个；蛋壳彩陶共89片，皆出于晚期，而晚期二多于晚期一的约三分之二左右。硃绘黑陶是早期有代表性的遗物，晚期一有</p>
+<p>表四 T95彩陶紗輪統計表  </p>
+<table><tr><td rowspan="2" colspan="2">项 别</td><td colspan="3">胎 色</td><td colspan="2">型</td><td colspan="4">器 形</td></tr><tr><td>粉黄</td><td>褐红</td><td>灰</td><td>中</td><td>小</td><td>I</td><td>II</td><td>III</td><td>IV</td></tr><tr><td rowspan="2">晚 期 二</td><td>数 目</td><td>11</td><td>2</td><td>2</td><td>3</td><td>12</td><td>9</td><td>3</td><td>2</td><td>1</td></tr><tr><td>百分比</td><td>77.36</td><td>13.32</td><td>13.32</td><td>19.98</td><td>80.02</td><td>60.04</td><td>19.98</td><td>13.32</td><td>6.66</td></tr></table>
+
+<p>表五 T95 蛋壳彩陶統計表  </p>
+<table><tr><td rowspan="2" colspan="2">项 别</td><td colspan="2">陶 系</td><td colspan="2">器 形</td></tr><tr><td>黄</td><td>灰</td><td>杯 口</td><td>陶 片</td></tr><tr><td rowspan="2">晚期一</td><td>片 数</td><td>10</td><td>2</td><td></td><td>12</td></tr><tr><td>百分比</td><td>83.34</td><td>16.66</td><td></td><td>100</td></tr><tr><td rowspan="2">晚期二</td><td>片 数</td><td>2</td><td>46</td><td>2</td><td>46</td></tr><tr><td>百分比</td><td>4.16</td><td>95.84</td><td>4.16</td><td>95.84</td></tr><tr><td rowspan="2">总计</td><td>数</td><td>12</td><td>48</td><td>2</td><td>58</td></tr><tr><td>百分比</td><td>19.92</td><td>80.08</td><td>3.32</td><td>96.68</td></tr></table>
+
+<p>表六 T99彩陶紉輪統計表  </p>
+<table><tr><td rowspan="2" colspan="2">项 别</td><td colspan="3">胎 色</td><td colspan="2">大 小</td><td colspan="2">器 形</td></tr><tr><td>黄</td><td>浅黄</td><td>白灰</td><td>中</td><td>小</td><td>1</td><td>11</td></tr><tr><td rowspan="2">晚期二</td><td>数</td><td>4</td><td>1</td><td>1</td><td>1</td><td>5</td><td>4</td><td>2</td></tr><tr><td>百分比</td><td>66.68</td><td>16.66</td><td>6.66</td><td>16.66</td><td>83.34</td><td>66.68</td><td>33.32</td></tr></table>
+
+<p>表七 T99 蛋壳彩陶統計表  </p>
+<table><tr><td rowspan="2" colspan="2">项 别</td><td colspan="2">陶 系</td><td colspan="4">器 形</td></tr><tr><td>黄</td><td>灰</td><td>碗 底</td><td>杯 口</td><td>杯 底</td><td>陶 片</td></tr><tr><td rowspan="2">晚期二</td><td>数</td><td>35</td><td>18</td><td>1</td><td>2</td><td>2</td><td>48</td></tr><tr><td>百分比</td><td>65.98</td><td>34.02</td><td>1.88</td><td>3.76</td><td>3.76</td><td>90.6</td></tr></table>
+
+<p>少数出土,晚期二则不见。薄胎彩陶片都出于晚期,晚期一只有14片,晚期二有50片。</p>
+<p>再从整个发掘区来看，出土蛋壳彩陶共8275片（能复原的除外），晚期一占 $29\%$ 强，晚期二占 $70\%$ 左右；彩陶纺輪共261个(殘破的除外)，早期无出，晚期一占 $23\%$ 强，晚期二占 $76\%$ 强；硃绘黑陶共354片，早期占 $94\%$ ，晚期一只占 $5\%$ 强，而且这 $5\%$ 的都出于与早期地层交接处，晚期二无出。又从蛋壳陶片、薄胎彩陶片和厚胎彩陶来看：蛋壳陶片3730片(蛋壳黑陶除外)，早期无出，晚期一占 $35\%$ ，晚期二占 $65\%$ ；薄胎彩陶1261片，早期占 $8\%$ ，晚期一占 $34\%$ ，晚期二占 $58\%$ ；厚胎彩陶30片，早期和晚期一各占 $10\%$ ，晚期二占 $80\%$ ；彩陶环共555残段，早期无出，晚期一占 $24\%$ 强，晚期二占 $75\%$ 强。</p>
+<p>从以上典型举例探方、10个探方和全发掘区所出土的这些遗物的统计比较，可以看出屈家岭文化的分期，自早期到晚期一和晚期二，既有某些差别，也具有该文化的发展情况。</p>
+<h1 id="_50">（二）社会经济</h1>
+<p>屈家岭文化的社会经济形态，是以农业为主的兼营狩猎活动的一种原始社会结构。</p>
+<p>从晚期遗存的500多平方米拌有密结成层的稻谷壳烧土看出，当时种植水稻已得到发展。遗址所在地也适宜于水稻耕作，所出土的有关农耕砍伐工具也不少，这都足以证明当时农业生产是其主要的经济活动。狩猎经济，从兽骨(因朽腐过甚，未经鉴定)和大量的石鏃出土，都说明了是当时的一种辅助性的生产。</p>
+<p>关于家畜饲养, 在农业发展的基础之上必然得到发展。兽骨中有能看出属于猪、狗的骨骼, 而 T94C-2 层曾出土完整的狗架一具 (已腐朽), 或可证明当时已有较为发展的家畜饲养。在陶质的动物造型方面, 有家畜中的羊和母鸡等。</p>
+<p>手工业生产,从制陶业来说,大量的蛋壳彩陶器,各种造型比较新颖的陶器,别具装饰特色的彩陶纺输,大型陶锅和缸等等,都表明烧陶技术已有较高水平。从碗、鼎、豆的形制看,它们的器身特点有一致的地方,即双弧形的腹壁,成为这一文化陶器的特征。</p>
+<p>纺织手工业是当时重要的生产活动，大量的纺輪的出土，可以看出纺织手工业达到一定水平。纺輪的形制多样，其彩纹也富于变化，可能反映着当时纺织有精粗的不同。从早期出土无彩纺輪多属大型，晚期出土彩绘纺輪多属小型，也证明晚期纺织手工业比早期更为进步。</p>
+<p>石器的制作,都是磨制的,小型的磨制精致,形制工整,棱脊明显,刃部锋利,不仅看出制作上的进步,也反映了生产效率的进展。</p>
+<p>关于屈家岭文化的社会性质,从农业的进步,说明男子担负了较为复杂的水稻种植技术和体力劳动。早期中出有带红色陶衣的陶祖,是一种父权崇拜的象征。晚期出有大型陶锅,正表明是氏族集体的生活用具。因此,屈家岭文化似乎属于父系氏族社会时期。</p>
+<h1 id="_51">（三）屈家岭文化时期的精神文化</h1>
+<p>屈家岭文化的人们, 其精神生活可以从出土遗物中直接反映出来。如纺輪彩纹为直线、弧线等所组成, 正是纺线和编织的一种象征图案。在器物造型上, 能把一种形式分别用于几种不同用途的器物上, 如碗、豆、鼎的体部, 以求得多样的统一, 又按不同器物附加高矮不同的圈足或三足, 这种变化与统一的形式, 是屈家岭文化造型艺术的一大特色。</p>
+<p>在彩绘方面,最普遍的用红褐、黑、灰和橙黄等色,作为彩绘花纹的色调。在纹饰结构方面,如彩陶纺輪已采用了四分的对称式和三分的平分式,并应用同心圆、辐射线等,作为图案的结构形式。蛋壳彩陶杯的彩纹都绘于器内,多黑色,少数橙黄色,为紋纹下加弧面或树叶形彩面。陶碗的花纹则内外兼绘,彩纹与陶杯不同,是用平行方框格纹或方格内加卵点等等。可见屈家岭文化的彩绘,已按不同器物加以变化,形成了丰富多彩的绘画艺术。</p>
+<p>在装饰品方面，陶环的造型就平面看虽均为环形，但在剖面的处理上有圆形、方形、半圆形、方形带槽和蚕茧形等种。而且还有彩绘陶环。同时还有玉琢饰品和陶塑动物等。可见屈家岭文化的人们，也是喜爱装饰的，并且有很好的成就。</p>
+<h1 id="_52">（四）屈家岭文化与仰韶、龙山文化的关系</h1>
+<p>屈家岭文化陶器的形制, 与仰韶文化是截然不同的。虽有某些器形近似河南龙山文</p>
+<p>化的陶器, 但作为屈家岭文化最主要最普遍的几种陶器, 均为河南龙山文化所不见。如早期出土的蛋壳黑陶罐、杯、盘, 泥质黑陶圈足碗及圈足豆等, 颇具备一些龙山文化的特征, 却有更多的陶器形制为龙山文化中所沒有。尤其到了晚期, 出现很多新的器形, 更是龙山文化不曾发见的。早期出土有几片近似仰韶文化的彩陶片, 在纹饰结构、饰法和色彩上有所不同; 早期和晚期的彩绘陶器, 都具有屈家岭文化的特点。</p>
+<h1 id="_53">（五）屈家岭文化的年代问题</h1>
+<p>屈家岭文化的年代, 我们认为似应晚于黄河流域早期龙山文化, 而早于中原地区的商殷文化。从遗址中出土的早期遗物来研究, 如大量的黑、灰陶, 占相当比例的光亮黑陶, 和前面提到的圈足碗、镂孔圈足豆及蛋壳黑陶杯、罐等, 均类似或接近龙山文化。到了晚期涌现出大量代表屈家岭文化的遗物, 显示了这一文化的特色。</p>
+<p>又从天门石家河罗家柏岭遗址的下层属于屈家岭文化，上层则出土有铜剑残片和周代式的玉器<sup>1)</sup>，说明了屈家岭文化要早于中原的周代是没有问题的。如果从屈家岭遗址上下层出土的遗物，与武汉盘龙土城<sup>2)</sup>、圻春毛家嘴两遗址出土的商殷遗物，如铜爵杯和陶器比较，并没有具备商殷遗物的某些特征。因此，我们认为屈家岭文化的下限不仅早于周代，似乎还早于中原地区的商殷文化。</p>
+<h1 id="_54">（六）屈家岭文化的分布范围</h1>
+<p>从我们在工作中了解到的一些遗址，和继屈家岭遗址发掘之后在江汉地区所作的发掘工作，虽然这些资料尚待系统整理，但对于属于屈家岭文化的遗址的分布范围，是可以看出一个輪廓的。这一文化遗存，向北到大别山与桐柏山一带，向西到武当山、大巴山附近，向南当过江陵，向东似到达黄岗、鄂城以西地区，在这个范围内，可以看到屈家岭文化与邻近诸文化的分布关系。</p>
+<p>在它的北面,是河南仰韶、龙山文化的南部边缘,从河南南阳黄山、唐河磐茨岡两遗址出土的遗物来看3),桐柏山的南、北面,似为仰韶文化与屈家岭文化的接触地区。湖北均县观音坪遗址出土大量的屈家岭式的遗物,郧县城西的大寺遗址属于仰韶文化系统,而其以东15公里左右的青龙泉遗址4),既出土有屈家岭文化的遗物,也有具备仰韶文化和河南龙山文化特征的遗物,这个地区可能是屈家岭文化与陕西汉水流域仰韶文化的接触地区。从宜昌杨家湾、四川巫峡大溪5)两遗址出土的遗物来看,似与屈家岭文化有着一定的联系。湖北黄岡诸城与鄂城和尚山两遗址,前者出土有大批的属于青莲岡文化的陶器,同时两处也出有仰韶文化和屈家岭文化某些特征的遗物,这个地区似乎是上述几种文化的交汇地</p>
+<p>区。据此，我们对屈家岭文化的分布范围，大体有如上的一些看法。</p>
+<h1 id="_55">（七）屈家岭文化的早晚演变关系</h1>
+<p>根据屈家岭遗址早晚期遗物的不同特征，和这一文化分布范围来分析，我们认为屈家岭遗址的早期遗存，似和龙山文化有关系，同时也受到地区性发展不平衡的晚期仰韶文化的影响，因而在早期中体现了某些仰韶文化的表饰因素。到了晚期，屈家岭遗址已丰富和发展了这一文化的自己的特点，形成了这种文化面貌。因此我们认为，屈家岭遗址的早晚期，既有着前后的承续关系，也有着晚期比早期更为繁荣充实的地区性特色。例如晚期的泥质黑、灰陶镂孔圈足豆，薄胎黑陶带盖鼎，厚胎彩陶和硃绘黑陶等，都是承续早期遗留下来的，除其中陶豆的形制有了新的发展以外，其它陶器大部呈现衰退或少见的现象。晚期一的几件大型彩绘纺輪，它的形制是从早期泥质黑陶大型纺輪的基础上加彩绘形成的。到了晚期二，彩绘纺輪才在形制和纹饰得到发展。如果再从晚期的彩陶杯和碗的造型，也可追溯到早期的蛋壳黑陶杯、盘和硃绘蛋壳黑陶上去，似乎它们之间也有某些渊源关系。</p>
+<h1 id="_56">后記</h1>
+<p>屈家岭遗址前后曾发掘两次。</p>
+<p>第一次发掘于1955年2月，由湖北省石龙过江水库指挥部文物工作队负责，参加这次发掘的，有湖北省文化局周秉荃同志，湖北省文物管理委员会谭维四、王劲、程欣人、毛在善、江海、夏盾同志，荆州专署杨元发同志，和钟群县文化馆的同志，中国科学院考古研究所张云鹏、陈作良同志等十人。</p>
+<p>第二次发掘于1956年4月到1957年2月，由考古研究所负责组成发掘队。参加这次发掘的，有考古研究所张云鹏，湖北文物管理委员会王劲、陈安仪，和前后参加一段时间工作的程欣人、张方英、徐松俊、舒端立同志等。</p>
+<p>本报告由张云鹏执笔编写。前后参加室内整理工作的，有湖北省文物管理委员会王劲同志、中国科学院武汉分院李绪志同志，和临时协助工作的田志达同志。前后参加技术工作的，有临时协助的吕佩珊、江国芝、袁品芳、王振行、刘金平、陈锡岭同志，有考古研究所高英、周世颖、赵文林、席昭霞、张寅、陆式薰和许觉等同志。</p>
+<p>报告编写初稿，曾经考古研究所学术秘书组审阅并提出很多修改意见。在修改过程中，饶惠元同志曾给予很多帮助。</p>
+<h1 id="_57">附 录</h1>
+<h1 id="_58">江汉平原新石器时代紅烧土中的稻谷壳考查</h1>
+<p>丁穎</p>
+<p>（中国农业科学院）</p>
+<p>中国科学院考古研究所长江流域考古队于1955年起，在武昌西150公里的京山县屈家岭发掘出新石器时代的红烧土中的稻谷壳很多。其后又在天门县石家河（武昌西110公里）和武昌洪山放鹰台等新石器时代遗址中续有发现。同时出土的石刀、石斧和陶器等很多。这三个地方都在广闊的江汉平原范围内，地势约高出海平面50—100米，适于农耕活动。考古队综合其它出土遗物，认为这一发现应属于新石器时代末期原始父系氏族社会时代，约比黄河流域的仰韶文化和龙山文化为晚，距今尚不及四千年。据考古队的意见，这个红烧土是新石器时代末期建筑物的主要材料，即将谷壳和草类入泥中，作成房子后，为了更加牢固，特加火烧成红色坚硬的土块，因而形成红烧土。据武汉大学生物系的化学检定结果，这些谷壳以砂的成分为主，因砂的化合物是很牢固的，所以能长期保存（据考古队通讯）。这些落入土中的谷壳有很多断碎的，也有少数相当完整的（图版伍伍，1)，还有不少断碎的谷芒，间有一些程屑。这些红烧土块和一些图片，由该队张云鹏同志送给我的，希望将这些谷壳加以考查。现将考查结果报告于下。</p>
+<h1 id="_59">一、谷壳形态</h1>
+<p>犀在土中的谷壳, 一般可以看到淡稗黄或灰稗黄色, 与当今栽培的品种相同。粒形如图(图版伍伍, 1; 图版伍陆, 1-3)。把碎片放大, 可以看到稗面有齐整格子形中的颗粒状突起, 稗棱和稗间有显著的茸毛, 稗端有芒的断痕 (图版伍陆, 4、5), 这似乎是一个成熟未完全的谷壳粒。从芒的断片看 (图版伍陆, 6), 芒是很粗长的。护颖仅见痕迹。</p>
+<p>表一 紅烧土中的谷壳粒形測定  </p>
+<table><tr><td>标 本</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>平均</td></tr><tr><td>长(毫米)</td><td>7.0</td><td>7.0</td><td>7.5</td><td>7.0</td><td>7.0</td><td>6.8</td><td>7.0</td><td>6.8</td><td>6.8</td><td>6.8</td><td>6.97</td></tr><tr><td>幅(毫米)</td><td>3.5</td><td>3.5</td><td>3.5</td><td>3.5</td><td>3.0</td><td>3.5</td><td>3.8</td><td>3.4</td><td>3.5</td><td>3.5</td><td>3.47</td></tr><tr><td>长幅比(倍)</td><td>2.00</td><td>2.00</td><td>2.14</td><td>2.00</td><td>2.33</td><td>1.94</td><td>1.84</td><td>2.00</td><td>1.94</td><td>1.94</td><td>2.01</td></tr></table>
+
+<p>根据较为完整的10个谷壳标本（图版伍陆，7）的测定结果（表一）：最长的7.5，最短的6.8，平均6.97毫米；粒幅最大的3.8，最小的3，平均3.47毫米；长幅比最大的2.33倍，最小的1.84倍，平均2.01倍。</p>
+<h1 id="_60">二、考查結果</h1>
+<p>从图片的籽毛、粒形和标本测定看，这些谷粒当属于粳稻，且在我国是比较大粒的硬型品种。一般籼粳的谷粒区别：籼（籼）的谷粒多长歪椭圆形，籽端无芒或有少数的短芒（如深水稻或咸水稻有长芒的很例外），籽面茸毛少而短；粳（粳）的谷粒多短圆形，腹背两面的长短相称，籽端有长芒，籽端茸毛既多而且长（表二）。</p>
+<p>表二 粘粳区别表  </p>
+<table><tr><td>籼</td><td>粳</td></tr><tr><td>谷粒多长歪椭圆形,籽面茸毛少而短,芒无或少而短</td><td>谷粒多短圆形,腹背相称,籽端有长芒,籽面茸毛多而长</td></tr><tr><td>糙米多长形,间有短圆粒则多白肚,粒中含糖少,味较淡,粘性弱</td><td>糙米多短圆形,粒多玻璃色,中含糖分较多,味较甘,粘性强</td></tr><tr><td>叶多长大,绿色淡,茸毛多,中肋基部毛特密生</td><td>叶多短小,绿色浓,茸毛少,近中肋处无毛</td></tr><tr><td>茎多高大,穗梗短直,脱粒较易</td><td>茎多矮小,穗梗细硬弯垂,脱粒较难</td></tr></table>
+
+<p>根据我们所测定的现在长江流域和珠江流域的稻3509个品种，粳稻114个品种的结果，稻长幅比在1.75—3.60之间，平均2.38倍；粳稻在1.60—2.55之间，平均1.95倍。</p>
+<p>表三 現在华东栽培的粳稻粒形  </p>
+<table><tr><td>早粳</td><td>长</td><td>幅</td><td>长/幅</td><td>晚粳</td><td>长</td><td>幅</td><td>长/幅</td></tr><tr><td>昆山900</td><td>6.75</td><td>3.61</td><td>1.87</td><td>云和旱粳谷</td><td>7.08</td><td>3.62</td><td>2.00</td></tr><tr><td>丹阳光壳粳</td><td>7.02</td><td>3.52</td><td>2.00</td><td>崇明密子晚</td><td>7.34</td><td>3.63</td><td>2.02</td></tr><tr><td>昆山沈阳粳</td><td>7.18</td><td>3.53</td><td>2.03</td><td>五夫云晚粳</td><td>7.41</td><td>3.55</td><td>2.08</td></tr><tr><td>昆山黄胖子</td><td>7.72</td><td>3.79</td><td>2.04</td><td>云和大白谷</td><td>7.50</td><td>3.47</td><td>2.16</td></tr><tr><td>昆山涿州稻</td><td>7.62</td><td>3.64</td><td>2.09</td><td>9298</td><td>7.19</td><td>3.31</td><td>2.17</td></tr><tr><td>松江白稻</td><td>7.17</td><td>3.43</td><td>2.09</td><td>丽水百年粳</td><td>7.76</td><td>2.64</td><td>2.94</td></tr><tr><td>昆山白香粳</td><td>7.69</td><td>3.57</td><td>2.15</td><td rowspan="6" colspan="4">注:丽水百年粳似籼稻单位:毫米</td></tr><tr><td>飞来凤</td><td>7.26</td><td>3.33</td><td>2.18</td></tr><tr><td>松江铁梗青</td><td>7.90</td><td>3.46</td><td>2.28</td></tr><tr><td>紫金箍</td><td>7.90</td><td>3.46</td><td>2.28</td></tr><tr><td>八十子</td><td>7.16</td><td>2.99</td><td>2.39</td></tr><tr><td>昆山铁耙子</td><td>8.28</td><td>3.39</td><td>2.44</td></tr></table>
+
+<p>就现在看法,这些标本不可能属籼型品种。据现在华东栽培的粳稻18个品种的测定结果(表三),与上列红烧土中的粒形类似的很多;也有与下述汉墓出土的稻谷粒形类似的,可见距今三千多以至四千年前,在江汉平原栽培的品种粒形与今天栽培的粳型品种最为相近。</p>
+<p>查1953年洛阳汉（公元25—219）墓出土的稻谷形状比江汉平原出土的更长大些，</p>
+<p>稷面方格条纹和稗毛与江汉平原出土的同样显著（图版伍伍，2）；这与日本中尾佐助的检查结果称为无稗毛的不同（见《考古学报》1957年4期）。根据稗毛和粒形，我认为汉墓出土的谷粒当属于粳稻而非稗稻。</p>
+<h1 id="_61">三、推 論</h1>
+<p>据江汉平原出土的新石器时代的红烧土中的谷壳,可以肯定约距今三、四千年前,在这个大平原里已有不少的粳稻栽培,这可能与上述汉墓出土的和当时分布于黄河流域的梗稻类型有一定的关系;同时也使汉代典籍说到稻的多称为“粳”,得了一些具体证明;和根据我国古籍,认定古代在黄河流域所栽培的水稻品种当以粳为代表的論定(参阅农业学报1957,8:3),得了一些有关的事实根据。相信今后在长江和黄河流域可能发现的这类出土遗物一定不少,这有助于我国古代农业文化和史前期文化发展的研究也不少。</p>
+<p>本文中的谷壳检查由广东农业科学研究所钱詠文同志协助进行，图片摄映由华南农学院吴炎龙同志协助进行，谨此提明。</p>
+<p>（原载《考古学报》1959年第4期）</p>
+<h1 id="chu-chia-ling-chinshan_1">CH'U CHIA LING, CHINSHAN</h1>
+<p>(ABSTRACT)</p>
+<p>The neolithic site of Ch'ü Chia Ling is located in the hilly country of Chinshan County, Hupei Province in the northern part of the Chiang-Han Plains. It was first discovered in the winter of 1954. Since then, two seasons of excavations have been carried out at the site. Those of the second season, conducted from June, 1956 through February, 1957, were of a rather large scale and exposed a total area of 858 square metres. The cultural deposits, measuring about 3 metres in thickness, can be divided into three layers, with the first dating from the early period and the second and third layers from the late period.</p>
+<p>Both the stratigraphical evidence and typological studies show a marked difference between the cultural remains of the early and late periods. Thus, while black pottery with painted vermilion decoration constitutes an outstanding characteristic of the early period, the painted pottery spindle whorls are found exclusively in the late period. Moreover, the artifacts unearthed from the third layer of the deposits (late period) are richer in both quantity and the variety of vessel shapes. Accordingly, the cultural deposits of the site are divided into three parts: (1) those representing the early period, (2) those representing the first stage of the late period and (3) those representing the second stage of the late period.</p>
+<p>The remains of the early period consist of 24 ash pits and a single tomb. Among the artifacts are cylindrical stone axes, black ware bowls, pan-basins, cups, kuan-vases and small ting-tripods with covers, and pan-basins and cups of both black pottery with painted vermillion decoration and black egg-shell ware.</p>
+<p>The deposits of the first stage of the late period have yielded an architectural remain which has already been disturbed and a tomb. The architectural remain measures about 200 square metres in area and contains a large amount of red burnt clay tempered with rice husks. Apart from those found in the deposits of the early period, there are also some characteristic objects of the second stage of the late period. The painted pottery spindle whorls are found in the deposits of this stage.</p>
+<p>The deposits of the second stage of the late period also consist of an architectural remain and a single tomb. Likewise built of red burnt clay and tempered with rice husks, the architectural remain here is in the shape of a square earthen terrace bearing traces of post holes. Among the wealth of artifacts unearthed are large numbers of bowls, ting-tripods, stemmed tou-vessels, cups, cups with a high ring-foot and painted pottery spindle whorls. An interesting feature of some of the ting-tripods, bowls and stemmed tou-vessels unearthed here is that their bodies are all identical, the only difference being the height of the ring-foot or the presence of three legs in the case of the</p>
+<p>ting-tripods.</p>
+<p>In view of some of their distinctive vessel shapes, the artifacts of the Ch'ü Chia Ling site have given rise to the name Ch'ü Chia Ling Culture. So far, the remains of this culture are mainly found in the Chiang-Han Plains.</p>
+<p>The people of the Ch'ü Chia Ling Culture had a rather highly developed agriculture and planted rice. The pottery they produced is dominated by a grey ware but there are also black wares with either a thick, thin or egg-shell paste. In some cases, the vessels are further embellished with a painted decoration. The pottery spindle whorls often bear painted decoration while the pottery balls are decorated with incised designs.</p>
+<p>It is highly probable that the Ch'ü Chia Ling Culture is somewhat related to the Yangshao and Lungshan Cultures. For instance, the remains of its early period have yielded some painted pottery sherds similar to those of the Yangshao Culture while its egg-shell black ware and the tou-vessel with an openwork stem are both highly reminiscent of those found in the Lungshan Culture. However, it was not until the late period that the characteristics of the Ch'ü Chia Ling Culture became particularly pronounced.</p>
+<p>An analysis of the artifacts seems to suggest that this culture is probably later in date than the early stage of the Lungshan Culture of the Yellow River valley but earlier than the Shang-Yin period.</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+彩色版壹（I'）<br />
+早期和晚期一的彩陶</p>
+<p>1、3.罐类器口沿T125:6(9),T176:7(3) 2.白衣彩陶片T92:8(1) 4、6、10、11.蛋壳陶片T96:6,5C(4).</p>
+<p>T105:5(11), T95:6B(11), T57:5B(2) 5. 厚胎彩陶片 T125:5(2) 7、8、彩陶纺轮 56 GC (63), T12:2(2)</p>
+<p>9.蛋壳陶杯T148:5(37) 12.壶形器56GC（163）（1—3.早期，4—12.晚期一，除12为2/3外，余皆原大）</p>
+<h1 id="ii">彩色版贰（II'）</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+$\therefore m = \frac{3}{11}$ ;</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+12</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+15</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+13</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+14</p>
+<p>晚期二的彩陶纺轮和蛋壳彩陶片（原大）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1—6. 彩陶纺轮 T104:4(1), T56:2(1), T94:4(1), T120:3(39), T106:4A(3), T115:4(1) 7、11. 蛋壳彩陶杯残片 T164:3(1), (7. 正面, 11. 背面) 8. 蛋壳彩陶碗残片 T117:5A 9、10、12. 蛋壳彩陶碗残片(采集) 13—18. 蛋壳彩陶杯残片(采集)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 遗址地形(由西北一东南)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 遗址发掘情况<br />
+屈家岭遗址地形及发掘情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版贰 (II)<br />
+屈家岭遗址发掘区全景（由北一南）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+早期的灰坑（由北一南）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+晚期一红烧土中的稻谷壳（出自T145，放大约--倍）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+12</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+13</p>
+<h1 id="_62">早期灰坑出土的陶器</h1>
+<ol>
+<li>盒口沿 11114:3(1) 2. 甲 11121:1(1) 3. 平底杯 1118:2(1)(a) 4、7、11、12. 罐口沿 11111:1(1),</li>
+</ol>
+<p>1110:1(1)(b)，1118:2(1)(b)，1112:2(1) 5. 器盖 1112:1(1) 6.10. IV 式碗 1118:2(1)(c)，1116:1(1)</p>
+<ol>
+<li>题底 11120:1(1) 9. III 式碗 11144:1(1) 13. 小型鼎 11122:3 A(1)(b) (以上均为 $1/2$ )</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 晚期二的墓葬（IM1，由西一东）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+早期及晚期二的墓葬<br />
+1. 早期的墓葬（HM1，由南一北）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版捌(VIII)<br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10 <br />
+早期的石斧、石锛</p>
+<ol>
+<li>1 式等 T181:4B(1)</li>
+</ol>
+<p>2.1式T118:6(1)</p>
+<p>3.1式7T79:7(1)</p>
+<p>4.11式除T126：4F（1）</p>
+<p>5.11式T159:6(1)</p>
+<p>6.11式 $\mathrm{T}130:6(2)$</p>
+<ol>
+<li>
+<p>11 式 锻 T139:8(1)</p>
+</li>
+<li>
+<p>1H 式容 T139:6A(1)</p>
+</li>
+</ol>
+<p>9.111式T111:9(4)</p>
+<ol>
+<li>111 式除 T181:4(1)</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+12</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+13 <br />
+早期的石器、陶纺轮</p>
+<p>1.1式铸T155:6C(3) 2.1式凿T113:7(6) 3.1H式凿T144:8(1) 4.1H式凿T145:6(16) 5.1式凿T159:6E(1)</p>
+<ol>
+<li>
+<p>刀 T130:6G(2) 7. 111 式凿 T155:8,8B,8C(2) 8. 铲 T139:8(1) 9. 1 式凿 T103:7(10) 10. 1 式纺轮 T84:6(2)</p>
+</li>
+<li>
+<p>II式纺轮T104:8(3) 12.II式纺轮T84:4(7) 13.II式纺轮T104:8,8C(2)</p>
+</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+早期的陶碗、陶钵</p>
+<ol>
+<li>IV式碗T139:7(1)</li>
+</ol>
+<p>2.11式碗T134:6（25）</p>
+<ol>
+<li>小型碗 T167:9B(1)</li>
+</ol>
+<p>4.1式碗T184:7(6)</p>
+<ol>
+<li>
+<p>1H式碗T140:6B(1)</p>
+</li>
+<li>
+<p>轴 T134:6A(8)</p>
+</li>
+<li>
+<p>小型碗 T106:71(8)</p>
+</li>
+<li>
+<p>小型碗 T130:6(83)</p>
+</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+12</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+13</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+14</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+15</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+16 <br />
+早期的陶盘、碟及器盖</p>
+<ol>
+<li>1式碟 $\mathrm{T}^{97}:8\mathrm{A},8(2)$ 2. 1式碟 $\mathrm{T}^{97}:8(21)$ 3. 1式碟 $\mathrm{T}^{159}:6\mathrm{F},7(1)$ 4. 11式碟 $\mathrm{T}^{97}:8\mathrm{A},8(1)$</li>
+</ol>
+<p>5.11式碟T111:8(12)6.11式碟T104:8(1)7.1V式碟T84:6(22)8.盘T129:6(8)9.盘T134:6(26)</p>
+<ol>
+<li>
+<p>III式盖T104:9(8) 11. III式盖T113:7(8) 12. III式盖T99:8A(6) 13. III式盖T90:8(5)</p>
+</li>
+<li>
+<p>11式盖T140:6B(4) 15. 1式盖T105:7(17) 16. IV式盖T103:6,7(1)</p>
+</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 小陶鼎 T130:6(76)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 小陶鼎 T130:6(78)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 小陶鼎 T134:6(28)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 陶罐 T113:7(7)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 壶形器T171:6(1)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 陶罐 T99:8B(3)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+12</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+13</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+17</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+14</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+16 <br />
+早期的陶、玉器</p>
+<p>1—7. 陶环 $\mathrm{T}98:9(8)$ , $\mathrm{T}91:8(4)$ , $\mathrm{T}98:9(7)$ , $\mathrm{T}84:6(10)$ , $\mathrm{T}111:8(8)$ , $\mathrm{T}104:8(5)$ , $\mathrm{T}104:8,8\mathrm{C}(4)$</p>
+<p>8、9. 玉质饰品 T135:5(12), T117:5A(13) 10. 陶兽 T135:6A(2) 11. 陶鸡 T134:6(1) 12—14、16.</p>
+<p>陶球 $\mathrm{T}^{92:7(3),\mathrm{T}^{98:8,9A}(1),\mathrm{T}^{156:7(2)},\mathrm{T}^{140:6A},6(2)}$ 15.陶羊T129:6（1）17.陶祖T117:5A(1)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版拾肆 (XIV)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>晚期一的石斧<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I式T109:5(1) 2. I式T164:4,5D,5E(1) 3. I式T163:5B(4) 4. I式T164:6(16) 5. II式T154:7B(12) 6. III式T142:4(2) 7. II式T118:5(4) 8. IV式T88:4G(1) 9. IV式T82:5B(2) 10. I式T81:6D(1)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9 <br />
+晚期一的石器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版拾陆 (XVI)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+晚期一的石、玉器等</p>
+<p>1、3、4. 石锤 T74:8(1), T74:5(6), T159:6E(1) 2. 石刀 T75:6(3) 5. I 式钛 T185:5(40) 6. I 式钛 T89:5B(3) 7. I 式钛 T154:HD(5) 8. I 式钛 T171:6E(9) 9. I 式钛 T165:4,5(6) 10. 骨钛 T148:5A,5E(1) 11. II 式钛 T149:5(29) 12. II 式钛 T74:8(2) 13. II 式钛 T165:4(41) 14. 陶钛 T149:5(14) 15、16. 陶环 T171:6A(10), T102:8C(2) 17. 鬼头形玉饰 T164:5B(5) 18、19. 弧形玉饰 T153:6(3), T89:6(1)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.1式鼎T142:6(22)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.11 武鼎 T109-4(21)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 题153:6(7)俯视</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.1式T171:6B(3)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 题153:6(7) 侧视</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 锅T108:4(+)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版拾捌(XVIII)<br />
+1. V式T20:4(9)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.111式T173:5C,5D(2)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. III式T95:4A,5(3)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. I式T163:6(3)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. IV式 $\mathrm{T}^{95}:4(35)$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. II式T164:4B(13)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7. II式T95:4(42)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8. II式T153:6(14)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<h1 id="_63">晚期一的陶碗、陶豆</h1>
+<ol>
+<li>
+<p>薄胎彩陶碗 T153:6(46)</p>
+</li>
+<li>
+<p>V1式碗 $\mathrm{T}^{95}:4(30)$</p>
+</li>
+<li>
+<p>VI式碗T36:4(8)</p>
+</li>
+<li>
+<p>II式豆T166:4(3)</p>
+</li>
+<li>
+<p>蛋壳彩陶碗 $\mathrm{T}1 + 9:5\mathrm{A},5\mathrm{E}(2)$</p>
+</li>
+</ol>
+<p>6.1式豆T95:4(37)</p>
+<p>7.1式豆T163:5(1)</p>
+<ol>
+<li>H1式可T81:6,6B,6C(1)</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版贰拾 (XX)<br />
+晚期一的陶罐、陶鼎</p>
+<ol>
+<li>
+<p>Ⅱ式罐T28:2(2) 2. Ⅲ式罐T166:5(10) 3. 4式罐T95:4A,5(4)</p>
+</li>
+<li>
+<p>H式罐T109:5(6) 5、6. 小陶鼎 T153:6F(1), T95:6A(1)</p>
+</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+晚期一的陶器</p>
+<ol>
+<li>1式器盖T125:5,6(1) 2. 蚤T36:4(10) 3. 1式器盖T103:6(6) 4. 1式器盖T119:4A,4Q(1) 5. 蛋壳陶杯 T166:5(33) 6. 蛋壳陶杯T104:6(4) 7. 三足碟T95:4,4B,5B,5(1) 8. II式杯T82:5D,5B(3) 9. 壶形器 T95:4(36) 10. 三足碟T102:8C(3) 11. I式杯T96:4,4D,5B,5(2) 12. 三足碟T104:6(1)</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版贰贰 (XX11)<br />
+晚期一的陶球及彩陶片</p>
+<p>1—4、7、9. 厚胎彩陶片 T112:4(3), T130:5(1), T130:5(4), T173:5C, 5D(1), T125:5(2), T173:5, 5B(1) 5、6、10、11. 薄胎彩陶片 T49:5, 6(7), T15:6(22), T89:4(7), T36:4(6) 8. 彩陶鼎足 T180:2S(35) 12—15. 陶球 T160:4(18), T88:5(8), T88:5A(8), T89:6C(4)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+晚期二的建筑遗迹(山西一东)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版贰肆 (XXIV)<br />
+1. 建筑遗迹的南侧（由南一北）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 建筑遗迹的北侧（由东北一西南）</p>
+<p>晚期二的建筑遗迹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9 <br />
+晚期二的石斧</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6 <br />
+晚期二的石器</p>
+<ol>
+<li>
+<p>1 式斧 T124:2(3) 2. II 式斧 T25:2A(3) 3. 铸 T165:3(38) 4. 铸 T159:4(2)</p>
+</li>
+<li>
+<p>铸 T138:3(8) 6. 铸 T31:3C,2K,3(9)</p>
+</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11 <br />
+晚期二的石器等</p>
+<ol>
+<li>石凿T5:2(3) 2. 石凿T97:4(+0) 3. 钻形器T112:2(10) 4. 石矛56GC(15)</li>
+</ol>
+<p>5.石阵T142:3A(4) 6.石杆T124:2(4) 7.陶镰T129:2E(6) 8.石刀T117:3(36)</p>
+<p>9.右廉T138:2(2) 10.右廉T96:1(1) 11.右廉T113:4A(1)</p>
+<p>晚期二的石、陶镶嵌<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1—8.1式簇T187:2(24)，T108:3(10)，T190:2(9)，T113:3C(7)，T161:2(5)，T163:3(2)，T114:2D(1)，T129:1(2)<br />
+9—11.11式簇T84:2(17)，T116:3(26)，T197:4(6) 12、14—19. IV式簇T129:2C(1)，T159:3A(1)，<br />
+T23:3,3E(1)，T116:3(4)，T121:2B，2J，2L(15)，T158:3A(32)，T173:1(1) 13. 陶簇T120:2,2B(1)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版贰玖 (XXIX)<br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+12</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+13</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+14</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>22</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+15</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+16</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+17</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+18</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+19</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+20 <br />
+21</p>
+<p>22</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+23</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+24</p>
+<p>25 <br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、2.1式小石器T102:2B(3)，T23:3A(1) 3-5. IV式小石器T80:4H(4)，T164:4(45)，T141:1(3) 6.1式小石器T93:4(8) 7-16. IV式小石器T169:2A(1)，T46:2(16)，T148:4(4)，T11:3A(1)，T23:3A(10)，T138:2(10)，T96:2(4)，T137:2(13)，T129:2E(1)，T114:2(1) 17-19. III式小石器T32:(21)，T72:3(1)，T132:2(13) 20. 钻形石器T182:2(21) 21、22. 骨锥56GC(11)，56GC(13) 23. IV式小石器T50:2(10) 24、25. II式小石器T125:5B(1)，T108:4(22)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版叁拾 (XXX)<br />
+1.锅T'104:2(10)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1式 $\mathrm{T}197:4$ (32)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. IV式鼎T193:2（46）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.111式 $\mathrm{T}183:2$ (2)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.Ⅲ式鼎T187:2A（1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版参壹 (XXXI)<br />
+1. I式T119:3（1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1V式T135:3D（1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. I1I式T173:3(5)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. III式T173:2（1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.1式T138:2(83)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. IV式T186:2B(1)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版叁贰 (XXXII)<br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+晚期二的陶鼎</p>
+<p>10</p>
+<p>11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<h1 id="_64">晚期二的陶碗</h1>
+<ol>
+<li>
+<p>III式T124:3(16) 2. III式T116:3,4(5) 3. III式T119:2(7) 4. III式T120:2(14)</p>
+</li>
+<li>
+<p>II式T196:2]（4） 6. II式T144:2(1) 7. II式T159:2(3) 8. I式T111:2(6)</p>
+</li>
+</ol>
+<h1 id="xxxiv">图版叁肆 (XXXIV)</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<h1 id="_65">晚期二的陶碗</h1>
+<ol>
+<li>III式T120:3(1) 2. V式T139:3(2) 3. IV式T88:3C(3) 4. III式T197:4(31)  </li>
+<li>IV式T98:4(7) 6. III式T197:4(13) 7. V式T178:2B(14) 8. VI式T19:2(7)</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版叁伍 (XXXV)<br />
+1.1式蛋壳彩陶碗T182:2(53)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. IV式碗 $\mathrm{T}12^{9}:2\mathrm{F}(2)$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 1式蛋壳彩陶碗T473:2(36)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. V式碗T197:4(30)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. II式蛋壳彩陶碗T174:2(47)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7. V式碗T174:2(40)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.1式蛋壳彩陶碗T130:2(1)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8. 盘 1159:2(6)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版叁陆 (XXXVI)<br />
+晚期二的陶器</p>
+<ol>
+<li>II式体T134:2（7） 2. II式体T134:2A（5） 3. III式碗T21:3B（16） 4. III式碗T186:2(15)  </li>
+<li>V式碗T173:2(16) 6. III式碗T116:3(1) 7. III式体T187:2(50) 8. I式体56GC(164)</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<h1 id="_66">晚期二的陶豆</h1>
+<ol>
+<li>II式T177:2F(15) 2. III式T160:2(19) 3. III式T129:2D(6)</li>
+</ol>
+<p>4.1式T106:4G（4） 5.II式 $\mathrm{T} + 3:1$ ，2(7) 6.II式T120:3(2)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版参捌 (XXXVIII)<br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>晚期二的陶豆、杯</p>
+<p>1.Ⅱ式T120:3(6) 2.IV式T187:3(4) 3.II式T96:4G(3)</p>
+<p>4.1式杯T196:2(39) 5.1式杯T96:3C(2) 6.1式杯T138:2(76)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+12</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+13</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+14 <br />
+晚期二的陶器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版肆拾 (XL)<br />
+1. I式 $\mathrm{T}^{96:3C}(23)$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1式 $\mathrm{T}1^{07}:3\mathrm{A}$ (3)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. I式 T149:2(10)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.1式T173:2(·17)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.1式T158:3A（1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（1.上式 $\mathrm{T}107:3\mathrm{A}(2)$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10 <br />
+晚期二的陶器</p>
+<p>蛋壳陶杯：1. Ⅲ式T129:2C(2) 3. 1式T158:3A(40) 4. 1式T100:4D(5) 5. Ⅱ式T130:2E(3)</p>
+<p>7.1式 $\mathrm{T}129:2\mathrm{D}$ (3)</p>
+<p>蛋壳彩陶杯：2.11式T88:3C（4）</p>
+<p>杯形器：6、8.T125:4(9)，T104:3(4)</p>
+<p>高圈足杯：9.1式T98:4(10) 10.11式T99:3(1)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5 <br />
+晚期二的高圈足杯</p>
+<ol>
+<li>
+<p>I1 式 T129:2C(5) 2. I 式 T197:3(5) 3. I 式 T90:3(16)</p>
+</li>
+<li>
+<p>I式T96:4G(1) 5. II式T89:4D(5)</p>
+</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+晚期二的蛋壳彩陶杯残片（采集）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+12</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+13</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+15</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+14</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+16</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+17 <br />
+晚期二的蛋壳彩陶片</p>
+<ol>
+<li>蔗胎彩陶片 T129:3(1) 2—9. 蛋壳彩陶杯残片 10—17. 蛋壳彩陶碗残片</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版肆伍 (XLV)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+晚期二的陶罐</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版肆陆 (XLVI) <br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6 <br />
+晚期二的陶器</p>
+<ol>
+<li>
+<p>V式罐56GC（77）</p>
+</li>
+<li>
+<p>III式罐T106:4G（1-4）</p>
+</li>
+<li>
+<p>II式罐T106:4G（1）</p>
+</li>
+<li>
+<p>111式盖形器 $\mathrm{T}^{02}:3(19)$</p>
+</li>
+<li>
+<p>II式盖形器T188:4C（2）</p>
+</li>
+<li>
+<p>VI式罐T192:2(48)</p>
+</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9 <br />
+晚期二的陶器</p>
+<p>1、2、4、6—8. 小型陶罐 T132:3D(3), T192:2(46), T186:2(20), T165:3(61), T196:2](1),</p>
+<p>T183:2(1) 3、9.1式盖形器T99:(12)，T178:2B(11) 5.11式盖形器T20:4(5)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版肆捌 (XLXIII)<br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4 <br />
+晚期二的壶形器</p>
+<ol>
+<li>II式 $\mathrm{T197:4(11)}$ 2. I式 $\mathrm{T197:3A(5)}$ 3. II式 $\mathrm{T110:4D(14)}$ 4. II式 $\mathrm{T197:4(14)}$</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<h1 id="_67">晚期二的显形器</h1>
+<ol>
+<li>III式T127:3,4(1) 2. III式T128:2(75) 3. I式T197:4(9) 4. III式T115:3(21)</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版伍拾 (L) <br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>4 <br />
+晚期二的缸形器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I1I式T175:2(1) 2. I式T197:4(38) 3. I式T104:3(12) 4. I1I式T89:4H1(2)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 1式T110:2(2)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. IV式T138:2A（1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. IV式T109:2(2)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.1式56GC（494）<br />
+晚期二的缸形器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版伍贰 (LII)<br />
+1. 瓶形器 $\mathrm{T109:2(1)}$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 筒形器 T78:2(27)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 四环器 T138:3(9)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 器座 T111:5(7)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. IV式器盖T95:4A（1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. IV式器盖T82:4C（1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. II式器盖T89:4C(1)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. II式器盖T113:4(10)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. II式器盖T195:2(27)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. V式器盖T166:2(1)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7. II式器盖T113:4(9)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9. II式器盖T90:4C(1)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10. 11式器盖T82:4D（1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8. 器座 T182:2(1)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11. II式器盖 T105:5A, 5D(1)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+12. II式器盖T83:3(13)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+13.1式器盖T21:3(29)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+14. II式器盖T131:5(4)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版伍肆 (LIV)<br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5 <br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3 <br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+15</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+12</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+13</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+17</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+18</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+19</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+20</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+21 <br />
+晚期二的陶、玉器</p>
+<p>1—3、6.玉质饰品T46:2(15)，T98:3(16)，T166:2,3(16)，T159:2A(1) 4.石环T56:2(25）5.陶环 T165:3(54）7.彩陶环T189:2(1）8.陶鸡T179:(1）9、10.陶球T182:2(46)，T70:3(6）11.石球 T104:3(22）12、15.陶球T180:2(36)，T165:3(62）13、14.玉质饰品T21:3(11)，T142:2（78）16、 19、20.陶质锥形器T98:3(13)，T30:3B,3(1)，T159:3B(5）17、21.彩陶片T182:3(1)，T54:3(5)</p>
+<ol>
+<li>石质锥形器 T165:3A (2)</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 洛阳汉墓出土谷粒形、秤面方格和秤毛（放大30倍）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 湖北京山屈家岭出土犀入谷壳的红烧土块</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.谷壳(放魄台)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 谷壳(屈家岭)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 谷壳（放夔台）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 稗面方格、毛和稗端断痕</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 稍面一部分（放大36倍）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 谷粒上的芒 (放大18.9倍)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7. 谷壳(右二行放鹰台，左二行屈家岭)</p>
+<p>湖北放鹰台、屈家岭新石器时代遗址出土谷壳</p>
+  </div>
+</div>
+
+<div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)"><a href="./鄂城六朝墓.html" style="color:var(--muted);text-decoration:none">← 鄂城六朝墓</a><a href="./武功发掘报告浒西庄与赵家来遗址.html" style="color:var(--muted);text-decoration:none">武功发掘报告 →</a></div>
+</div>
+
+<div class="toc-float" id="tocPanel">
+  <h4>目录</h4>
+  <div id="tocContent">正在生成...</div>
+</div>
+</div>
+<footer class="site-footer">
+<div class="footer-inner">
+  <p>中国考古学专刊·丁种 实体标注知识库 &copy; 2026</p>
+  <p class="footer-links">
+    <a href="https://github.com/CrossTheOcean/archaeology-report-kb" target="_blank">GitHub</a> ·
+    <a href="../about.html">关于本站</a>
+  </p>
+</div>
+</footer>
+<script>
+
+// Generate TOC from headings
+setTimeout(function() {
+  const body = document.getElementById('reportBody');
+  const headings = body.querySelectorAll('h1, h2, h3');
+  const toc = document.getElementById('tocContent');
+  if (headings.length === 0) {
+    toc.innerHTML = '<span style="color:var(--muted)">无标题</span>';
+    return;
+  }
+  toc.innerHTML = '';
+  headings.forEach((h, i) => {
+    h.id = 'heading-' + i;
+    const a = document.createElement('a');
+    a.href = '#heading-' + i;
+    a.textContent = h.textContent;
+    a.style.paddingLeft = (h.tagName === 'H3' ? '12px' : '0');
+    toc.appendChild(a);
+  });
+}, 500);
+
+</script>
+</body>
+</html>

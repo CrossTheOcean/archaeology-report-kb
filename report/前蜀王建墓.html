@@ -1,0 +1,2201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>前蜀王建墓 — 中国考古学专刊·丁种 — 实体标注知识库</title>
+<meta name="description" content="基于70份考古学专刊·丁种发掘报告的实体标注与结构化知识库">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏺</text></svg>">
+<style>
+:root {
+  --bg: #0f1117;
+  --card: #1a1d27;
+  --border: #2a2d3a;
+  --text: #e4e4e7;
+  --muted: #8b8fa3;
+  --accent: #f59e0b;
+  --accent2: #ec4899;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* Navigation */
+.topnav {
+  background: rgba(15, 17, 23, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.nav-links a.active { color: var(--accent); background: rgba(245,158,11,0.08); }
+
+/* Layout */
+.container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+.hero {
+  text-align: center;
+  padding: 48px 20px 32px;
+}
+.hero h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.hero .subtitle { color: var(--muted); font-size: 1.05rem; }
+
+/* Stats */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin: 28px 0 36px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 28px;
+  text-align: center;
+  min-width: 150px;
+  flex: 1;
+  max-width: 200px;
+}
+.stat-card .num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.stat-card .label { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
+
+/* Grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+}
+.card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  background: var(--card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.82rem;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+thead th:hover { color: var(--text); }
+tbody td { padding: 10px 14px; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+tbody tr { transition: background 0.15s; }
+tbody tr:hover { background: rgba(245, 158, 11, 0.04); }
+
+/* Tags */
+.era-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.ebar {
+  display: inline-block;
+  height: 6px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Report detail page */
+.report-header {
+  margin-bottom: 28px;
+}
+.report-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.report-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.report-meta span {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+.report-body h2 { font-size: 1.3rem; margin: 32px 0 16px; color: var(--accent); }
+.report-body h3 { font-size: 1.1rem; margin: 24px 0 12px; }
+.report-body p { margin-bottom: 12px; }
+.report-body ul, .report-body ol { margin: 12px 0 12px 24px; }
+.report-body li { margin-bottom: 4px; }
+.report-body table { margin: 16px 0; }
+.report-body table th { background: var(--card); }
+.report-body table td, .report-body table th {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+}
+.report-body pre {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.report-body code {
+  background: rgba(245,158,11,0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* Image placeholder */
+.img-placeholder {
+  display: inline-block;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+/* Entity chips */
+.entity-section { margin: 20px 0; }
+.entity-section h4 { color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; }
+.echip {
+  display: inline-block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  margin: 2px 3px;
+}
+
+/* Report card (for list page) */
+.report-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.report-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.report-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.report-card .rc-meta { color: var(--muted); font-size: 0.84rem; }
+.report-card .rc-entities { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-top: 6px; }
+
+/* Search & filter */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+.search-input {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 260px;
+  outline: none;
+}
+.search-input:focus { border-color: var(--accent); }
+.filter-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(245,158,11,0.08);
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  margin-top: 60px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.footer-inner { text-align: center; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.footer-links { margin-top: 8px; }
+.footer-links a { color: var(--accent); text-decoration: none; }
+.footer-links a:hover { text-decoration: underline; }
+
+/* About page */
+.about-section { margin: 28px 0; }
+.about-section h2 { font-size: 1.3rem; margin-bottom: 12px; color: var(--accent); }
+.about-section p { margin-bottom: 12px; color: var(--muted); }
+.about-section ul { margin: 8px 0 8px 20px; color: var(--muted); }
+
+/* Download page */
+.dl-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.dl-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.dl-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; }
+.dl-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #000;
+  padding: 8px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.dl-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.dl-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.dl-btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Map page */
+.map-container {
+  text-align: center;
+  margin: 24px 0;
+}
+.map-container img {
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .stats-row { gap: 10px; }
+  .stat-card { min-width: 120px; padding: 14px 16px; }
+  .stat-card .num { font-size: 1.5rem; }
+  .nav-links a { padding: 6px 10px; font-size: 0.82rem; }
+  .search-input { width: 100%; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+}
+@media (max-width: 480px) {
+  .nav-links { gap: 0; }
+  .nav-links a { padding: 6px 8px; font-size: 0.78rem; }
+  .container { padding: 16px; }
+}
+
+
+.toc-float {
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.8rem;
+  max-width: 220px;
+  z-index: 50;
+}
+.toc-float h4 { color: var(--muted); margin-bottom: 8px; }
+.toc-float a { color: var(--muted); text-decoration: none; display: block; padding: 2px 0; }
+.toc-float a:hover { color: var(--accent); }
+@media (max-width: 1024px) { .toc-float { display: none; } }
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<nav class="topnav">
+<div class="nav-inner">
+  <a href="../index.html" class="logo">🏺 考古知识库</a>
+  <div class="nav-links">
+<a href="../index.html">总览</a>
+<a href="../reports.html" class="active">报告列表</a>
+<a href="../map.html">遗址地图</a>
+<a href="../download.html">数据下载</a>
+<a href="../about.html">关于</a>
+  </div>
+</div>
+</nav>
+<div class="container" style="display:flex;gap:24px">
+<div style="flex:1;min-width:0">
+<div class="report-header">
+  <a href="../reports.html" style="color:var(--muted);font-size:0.88rem;text-decoration:none">← 返回报告列表</a>
+  <h1 style="margin-top:8px">前蜀王建墓</h1>
+  <div class="report-meta">
+    <span class="era-tag" style="background:#ec489922;color:#ec4899">隋唐</span>
+    <span>201 页</span>
+    <span>28.1 MB</span>
+    <span>52 个实体</span>
+    <span>密度 0.3</span>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:24px">
+  <h3>🏷️ 实体标注</h3>
+  <div class="entity-section"><h4>测量数据 (34)</h4><div><span class="echip">2</span><span class="echip">8</span><span class="echip">4</span><span class="echip">41</span><span class="echip">85</span><span class="echip">62</span><span class="echip">6</span><span class="echip">58</span><span class="echip">47</span><span class="echip">71</span><span class="echip">35</span><span class="echip">5</span><span class="echip">13.5</span><span class="echip">37</span><span class="echip">22</span><span class="echip">45</span><span class="echip">42</span><span class="echip">60</span><span class="echip">83</span><span class="echip">1</span><span class="echip">1.5</span><span class="echip">63</span><span class="echip">56</span><span class="echip">7</span><span class="echip">9</span><span class="echip">3</span><span class="echip">3.7</span><span class="echip">10.6</span><span class="echip">厚</span><span class="echip">高</span><span class="echip">口径</span><span class="echip">腹径</span><span class="echip">底径</span><span class="echip">深</span></div></div>
+<div class="entity-section"><h4>年代 (7)</h4><div><span class="echip">公元918年</span><span class="echip">公元925年</span><span class="echip">公元933年</span><span class="echip">公元1518年</span><span class="echip">公元915年</span><span class="echip">公元955年</span><span class="echip">公元943年</span></div></div>
+<div class="entity-section"><h4>遗迹编号 (4)</h4><div><span class="echip">HL</span><span class="echip">IV</span><span class="echip">K878</span><span class="echip">OF</span></div></div>
+<div class="entity-section"><h4>葬具葬式 (2)</h4><div><span class="echip">棺</span><span class="echip">椁</span></div></div>
+<div class="entity-section"><h4>陶器 (1)</h4><div><span class="echip">陶盆</span></div></div>
+<div class="entity-section"><h4>遗存类型 (1)</h4><div><span class="echip">瓷片</span></div></div>
+<div class="entity-section"><h4>制作工艺 (1)</h4><div><span class="echip">雕刻</span></div></div>
+<div class="entity-section"><h4>地理位置 (1)</h4><div><span class="echip">北京</span></div></div>
+<div class="entity-section"><h4>发掘信息 (1)</h4><div><span class="echip">文物出版社</span></div></div>
+
+</div>
+
+<div class="card">
+  <h3>📖 报告全文</h3>
+  <div class="report-body" id="reportBody">
+    <h1 id="_1">前蜀王建墓發掘報告</h1>
+<p>馮漢驥 撰</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+NHS RREHJLO NVIT 5NVAIO WOL TVAOR HL</p>
+<h1 id="_2">中國田野考古報告集</h1>
+<h1 id="_3">考古學專刊·丁種第十五號</h1>
+<h1 id="_4">前蜀王建墓發掘報告</h1>
+<p>冯漢驛 撇</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+90035017</p>
+<p>中國科學院考古研究所編輯</p>
+<p>文物出版社出版</p>
+<p>封面設計 張希廣</p>
+<p>責任校對 華新</p>
+<p>周蘭英</p>
+<p>責任印製 陸聯</p>
+<p>再版編輯 張征雁</p>
+<h1 id="cip">圖書在版編目（CIP）數據</h1>
+<p>前蜀王建墓發掘報告/馮漢驛著.－北京：文物出版社，</p>
+<ol>
+<li>10</li>
+</ol>
+<p>ISBN 7-5010-1386-1</p>
+<p>I.前…Ⅱ.馮…Ⅲ.五代墓-发掘报告-成都市</p>
+<p>IV.K878.85</p>
+<p>中國版本圖書館CIP數據核字（2002）第065572號</p>
+<h1 id="_5">前蜀王建基發掘報告</h1>
+<p>馮漢驛 播</p>
+<p>￥</p>
+<p>文物出版社出版發行</p>
+<p>（北京五四大街29號）</p>
+<p>http://www.wenwu.com</p>
+<p>E-mail: web@wenwu. com</p>
+<p>北京安泰印刷厂印刷</p>
+<p>新華書店經銷</p>
+<p>$889\times 1194$ 1/16 印張：12.5 插頁：5</p>
+<p>1964年6月第一版 2002年10月第二版第一次印刷</p>
+<p>ISBN 7-5010-1386-1/K·633 定價：110元</p>
+<h1 id="_6">内容提要</h1>
+<p>本書是五代前蜀王建墓的發掘報告。王建墓在四川省成都市老西門外。1942～1943年發掘。報告中除對墓室的結構、雕刻和出土遺物等作了詳細叙述外，還對墓室的某些細部結構作了適當的復原。同時，更結合古代文獻，對一部分雕刻和遺物作了考證和研究。本書不但是研究唐宋考古的重要資料，并且是研究工藝美術史、建築史和音樂史的參考資料。</p>
+<h1 id="the-royal-tomb-of-wang-jian-of-the-former-shu">THE ROYAL TOMB OF WANG JIAN OF THE FORMER SHU</h1>
+<p>Feng Han Ji</p>
+<p>Edited by</p>
+<p>The Institute of Archaeology, Academia Sinica</p>
+<p>Published by</p>
+<p>Cultural Relics Publishing House</p>
+<h1 id="_7">再版説明</h1>
+<p>前蜀永陵（王建墓）的發掘，是二十世紀中國考古史上的一件大事，凝聚了許多前輩考古學家、史學家、建築學家的心血，開啓了中國古代帝王陵寢考古發掘與研究的先河。由著名考古學家馮漢驛教授撰、中國科學院考古研究所（現中國社會科學院考古研究所）編輯的《前蜀王建墓發掘報告》，是研究唐、五代時期歷史、音樂、建築、雕塑、工藝美術的必備考古專著。</p>
+<p>該報告1964年初版時僅印行500冊，如今已難尋覓，多年來，許多專家學者一直期盼能再版該報告。今年適逢永陵發掘60周年，文物出版社決定再版此書。經成都永陵博物館、成都市文物考古研究所、四川省博物館、文物出版社等單位共同努力，再版時增補了大量原營造學社莫宗江、盧淳等現場測繪的墓葬結構圖以及出土文物器形圖和部分圖片，規範了用字，并對開本和版式進行了調整。增補的墓葬結構圖和文物器形圖由成都市文物考古研究所曾歷、盧引科清繪，圖片由成都市文物考古研究所李緒成、李升拍攝。</p>
+<p>2002年8月30日</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+王建幕地官全录</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+衰册首神像原圆</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.1956年培修後的王建墓前門</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.自墓頂附況的王建墓前門<br />
+1949年後新培修之王建萬外景</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.发掘前西北面近景（由西北向南摄）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.发掘前两面被掘成之陡壁</p>
+<p>发掘前之王建墓近景</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.陵壁周围之界石（西南隅之残存）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.陵桌南面外第一，二道碑基及土墩之道存</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.封門墻上部被破壞情形及蓋口</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.封門墻墻西邊下部</p>
+<h1 id="iv">版肆（IV）</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.中室束墙靠近棺床部分卵石</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.東墻後部基腳下的卵石</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.束墙前部基脚下的卵石</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.束墙中部基脚下的卵石</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.棉床上部十屑中之漆皮布纹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.漆皮布纹洗净後之撕片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.前室第一券及其下的淤土</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.中室與後室券頭破損情況及原來修補之白單</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.前室第一券下右修封国的情况（淤土取去接）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.中室與前室之間的門限。踏道（西部）及西邊券墻上積存的白垩</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.前室門上金釘落下之情況</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.中室門上金釘落下散亂情況<br />
+前室、中室門飾出土時情況</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.前室門下部之轉白、銅飾片、金鈍等之原來位置</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.中室門中縫飾片出土情況</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.左領門上角鋼包片落下情況</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.門上鐵網，鋪首落于門限上的情況</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.門棗東部的門飾出土時情形</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.門帐中部的門錦出土時情形</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.左扇門下鋼轉白及肘板下部的鋼包片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.在扇門下鋼轉白及軸板下部的鋼包片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.鐵鎖、鑰搭鈕及受鎖環鈉</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.門管姿金的片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7.金钉</p>
+<p>後室門飾及其出土時情況</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.門中縫上溢金銅砂片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.整金润铺首及原（账面最大径29厘米）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.門中縫下端鐵金鋼饰片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 铺首塌下之鎏金铜的片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.肘板上、下端盖金钢包片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.銅鑰門絳白（下爲供視）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.彩畫全视</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.彩書帕部總的刻劃故</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+前室第三券券额上的彩書<br />
+2.彩畫西邊下部說役于土中情況</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.前室第三券与第四券同之威续和速</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.券缝中所砌入之卵石<br />
+前室淤土及券顶情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.中室與前室同之於土</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.前室淤上中所出之藏曜</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一<br />
+中</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（正）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+回家到</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图星新<br />
+高平颐恒星 1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+提显里新</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图中则当则<br />
+修国</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+数据来源：Wind</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（一）国家统一的组织<br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.拍板（南面西一）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（圆）细度<br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（三）和续</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2拍板</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）<br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（电）<br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（四）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）<br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（三）债券：</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（西）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.具（西八）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.周鼓（四十）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.笙（西七）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+伎樂（六）<br />
+3.铜鼓（西九）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.格床南面正中壶門柱上所雕之國</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.格床南面東二門柱上所雕之鐵</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.宿床南面東一處門柱上所雕之紋</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.棺床兩側壽門柱上所雕蓮荷花之一<br />
+棺床壶門柱上之雕刻</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.束一（腾蛇）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.東二（朱雀？）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.東三（六合）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.東四（句陳？）<br />
+十二神（一）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.東五（青能？）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.東六（天一？）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.西一（天后？）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.西二（太险？）<br />
+十二神（二）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.西三（玄武？）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.西四（太常？）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 西五（白虎？）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.西六（天空）<br />
+十二神（三）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.豪级的各解漆痕重叠情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.梯上铜堰属于第三层级铜堰之上的情形</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.棺、椁、第三铜章级的铜環相壓槓情形</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.棺底（東北部）漆框</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 桩、桿北端梯門，桿門漆痕洗淨後的情形</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 被级西的三级漆纹 <br />
+棺、椁、臺級等各層漆紋重疊情況</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.棉、棉、高级土粮漆胶全貌</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.三届泰级束之一，二届鑫金铜限出十时之位置</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.第一粥素束南角铜韵片出土时之位置</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.第一钢豪级束北角铜韵片出土时之位置</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.第一期高级别侧套金铜饰片之一</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.第二届国家级幅上之蝙形装前一束道者之</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.漆纹及铜（由南至北）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.漆纹及铜眼（與1聯接）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.漆纹及铜膜（与2脚接）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.漆纹及铜（粤3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.漆纹及铜（与4联接）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.涂纹及铜（与5联接）<br />
+棺、椁、冕级的束面一、二、铜塑位置</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 章级南端的三钢漆纹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.国家级南疆西部土纹分布</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.壹级南端東部各鋼鋼環位置</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.毫级南端三膜漆纹部</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.章级束南角铜包片及洞眼</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.毫级束面三唇铜膜的上、下位置</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.棺、棺門上（上一）及粵级兩側（下四）所餘金銅片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.销、椰、壹级转角處的包角泰金铜片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.棺、棺、票级转角的包角套金铜片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.档（右）.梯（左）門上金銅環及金針</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.大钢環機訂钉入彎轉的深度</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.桩、撑及喜级上的金大钢<br />
+棺、椁、臺級上的各種鎏金銅飾片及銅環</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 龍尾正面雕刻刻</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铅尾背面铭文及其附程部分</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+版参肆(XXXIV)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+大带玉钓</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.大寶玉鈴</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.银扣饰</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.蛇尾出土情形</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.大带带扣出土情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.大带银扣</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.大带银扣 <br />
+大带银扣等</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.银盒、银钵出土時之相互位置</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.银体出土时情形</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.银盒出上时情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.银碗、银插手出土情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5、铜镜出土时位置</p>
+<p>6.铜烷翻转镜套上平脱珠花粘于其土情形<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+银盒、钵及铜镜等出土情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.银盒（解视）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.银体</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.银盒（正面）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.银颐托</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.银盒（正面）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.银猪 <br />
+银盒、银钵等</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 钢镜</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.琥珀烧片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.绒拍片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.戴小刀及银销（正、铜、背面）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.水晶珠</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.银原杖 <br />
+7.小玉片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8.银搔手<br />
+铜镜及银器、玉片等</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.现金流量折算及折现</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一、临床症状和红细胞外周情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3、在红内新理接情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.陶臻一出土情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.陶罐二出士情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 陶谦 <br />
+4.陶碗一</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.陶碗二</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+如援<br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span>  </p>
+<h1 id="_8"></h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.後室全景（石床前之黑影爲中室之石缸）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.王建造像及谥室，王環等出土情形<br />
+3. 石床正面雕刻<br />
+夜空全景及石床</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.正面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.半侧面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.侧面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 背面<br />
+王建造像</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 资治外重複原</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.赛盈内重复原（放于外重孟中）</p>
+<p>復原後之寶益</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）<br />
+5.内（上）外（下）面有上之银银银</p>
+<h2 id="_9">🖼️  <span class="img-placeholder">[本地图片]</span></h2>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2   </p>
+<p>3.回上期</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6 <br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2 <br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.外重盖面正中之银管圆圈花<br />
+2.内重盖面正中之银窗则花纹 内，外重盖面之平脱银花</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版伍拾(L)<br />
+1.正面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 半侧面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.侧面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 俯视 <br />
+溢寶</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.玉峰（正面）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.玉（背面）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3、溢赛级上之王帅</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.後室門後東國第一券訣内出土之銀帶扣</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.盈管较上之银扣</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6、溢鑫级上之银管 <br />
+玉環及諧寶綏上之玉師，銀扣等。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.册匣角部残存之上纹漆皮</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铜提梁</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.册匝周邊銀帖白及銀釘位置復原圖</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.胭底大戴抬眼</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.脚上藏器残部</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6、琳其玉简成明之银丝</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7.国联王册之银丝剖视图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8.册世盖南端之银提瑞</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.金银胎漆碟 <br />
+2.研师上之银管平脱花纹出土時情况</p>
+<p>玉册出土情况及金银胎漆碟</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 刷匝盖面之雙狮花纹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.册匣上象券</p>
+<p>册蓋面之平脱銀花及象鼻銅誠</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+册匣盖面银平脱花纹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>复原后的册匣</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>国</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+衰册標首</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>形儀將問安而莫就欲侍驛以無期念</p>
+<p>扼哀咽宫闋凄凉 行止驛驛</p>
+<p>慈顔之禾遠憶風樹之難追傷懸寢</p>
+<p>谁诉哀子嗣皇帝臣衍恨</p>
+<p>歸蔡痛 仙驭以莫留仰高天而</p>
+<p>玄堂磐犀龍輻戒路六合悲慘萬方</p>
+<p>己撇鈞雯將舉</p>
+<p>神駕遷座于永陵禮也鳴呼撫塗</p>
+<p>大行皇帝登返粤十一月三日</p>
+<p>惟光天元年夏六月壬寅朔</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>聖胤光磐弱國惟</p>
+<p>明出震禮節樂和獻琛納寶常星永□ 皇撫運入海爲家萬方作錶體道承軌</p>
+<p>兩曜不食山呼萬年水變五色</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>以陳辟薛日</p>
+<p>用述孝思抑繆締而執筆收涕淚</p>
+<p>音徽之已隔冥盈聲以增悲爱詔宰輔</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>金戴素乌□神鼎豐芝禾生九穗麦秀</p>
+<p>乃聖乃神尤文允武況復□□□□</p>
+<p>睿作聖惟 德是輔王燭璇樞煙含露</p>
+<p>朱萼長摇三辰克□六符爱吐惟</p>
+<p>德音孔昭日瑙黄道雲簇絳霄</p>
+<p>搜羅俊逸明明在上濟濟□朝□□□</p>
+<p>思懷遠以 德承天之休順帝之則</p>
+<p>開國于坤恭險□人慈惠及物撫下以</p>
+<p>道孫收兵地絡仗劍天門金承土運</p>
+<p>帝力三面解纲中衡量神□聖□</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>增衰氣填膺而蜀關筋□兮慾□徒御</p>
+<p>驛駕難駐日慅行車應昏□路情觸緒以</p>
+<p>遠隔顯晦俄成古今鳴呼哀哉朝露易晞</p>
+<p>方藥無驗 靜威坐沉星流迥謹武□重□</p>
+<p>去華移實極思研精始因勤倦寒暑遠侵</p>
+<p>勞神苦志暮思畫行觀書乙夜求衣未明</p>
+<p>難默陸二載將期文軌混一囊</p>
+<p>宰輯中外九服骨恍萬靈和會 历□諸</p>
+<p>王道雍熙 御宇一纪上下交秦肃靖邊□</p>
+<p>兩歧瑞□盈歟嘉蓮出池禍祥學</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>呼哀哉雨濛王除月斜金殿申號幕而□</p>
+<p>託夢魂而如見思玄壤以傷心撫</p>
+<p>梓宫而一莫有哭如雷有淚如霰 置</p>
+<p>主清廟永申享薦鳴呼哀哉傭短常數司</p>
+<p>命難遷遺風餘烈子授孫傅□世長久瓜</p>
+<p>賄綿綿同金石而永固與日月而高鳴鳴</p>
+<p>呼衰哉</p>
+<p>裂摇兮歌薤露其反也如疑其往也如苇鸣</p>
+<p>呼哀哉□恨者不得告成□□□□</p>
+<p>□賈 墓城永享遐龄桂殿夕攘□門</p>
+<p>局勃懿而龍尚遙遙断續而馬懿□□鸣</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>罪</p>
+<p>靖</p>
+<p>序</p>
+<p>浦</p>
+<p>夜</p>
+<p>□□□□□□我武惟揚聖德無疆□</p>
+<p>大行皇帝睿圈天縱聖文日蹟□紫氣於</p>
+<p>□□皇帝衍俯伏衮鄂虔遵典禮伏惟</p>
+<p>惟光天元年歲次戊寅十年辛丑朔廿五日</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>□□□有大功於唐宝□□明德□□</p>
+<p>兵井□坤维善□□ 酰□其興</p>
+<p>润□□之洪波法度□□□□</p>
+<p>六合淮流</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>龍之等數俄悲 剑在連痛</p>
+<p>長登壽域永博蒸人下齊昌發之年齡上</p>
+<p>勤 逐邁沉綿方期避暑甘泉怡神温室</p>
+<p>日辰不食 躬覽萬機親臨庶政本乎□</p>
+<p>□□□ 爱正三綱漸成一統而猶夜分不寐</p>
+<p>服□□陶籠之規清風自遠茅屋土階之制</p>
+<p>□□府琥珀枕碎而不用雉頭裘焚以無</p>
+<p>□□酒不遂乎罷馨綴於虞人撤□</p>
+<p>□□亭毒萬方不尚繁華唯敦模□</p>
+<p>□□□□大□□□□□相而保久□□</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>□□南泣雲秋恨</p>
+<p>以摧攀 之晚出煙□海冤傷日馳之西傾</p>
+<p>□□而目斷鳴呼太白入南辰之際方啓</p>
+<p>□歲星臨井極之時忽嗟變易臣衍</p>
+<p>□□□末徒荷繫承欲報之恩昊天罔</p>
+<p>極昔居備位每聞當室之稱今紹</p>
+<p>洪绪獲奉 線衣之命忍悲茹數五内傷</p>
+<p>裂誓竭酒心庶幾□□今則弼霍將舉日</p>
+<p>月有期必賔 褹裕之儀以正 昭穆之序</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>永陵鸣呼</p>
+<p>玄宮擒耀王輓摧軀徒懷啜血之非宗承抱 終天之恨但嗟□頸長隔</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>呼衰哉</p>
+<p>是以就遷清廟□□□宜□於明堂矣</p>
+<p>□□遵告誠命□□司徒平章事□</p>
+<p>□天子之奠謹上尊詣日</p>
+<p>神武聖文孝德明惠皇帝 廖稱</p>
+<p>高祖武皇帝陵</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+哀朋第六简至第十拓本（5/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+15</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+14</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+13</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+12</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+哀册第十六简至第二十简拓本（5/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+哀册第二十六简至第三十简拓本（5/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+哀册第三十一简至第三十五简拓本（5/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+哀册第三十六簡至第四十簡拓本（5/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+哀册第四十六篇至第五十一篇拓本（5/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+15</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+14</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+13</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+12</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+册第十六简至第二十拓本（5/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+注册第二十六简至第三十简拓本（5/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+溢册第四十六简至第五十简拓本（5/7）</p>
+<h1 id="_10">目 錄</h1>
+<p>壹永陵的發現及發掘 1<br />
+贰 地理環境 4<br />
+参陵臺的外形及建筑 6<br />
+肆墓室的建筑 9 <br />
+伍木門 17<br />
+陆 前室 25<br />
+柴中室 26</p>
+<p>一、棺床 26<br />
+二、伎樂 28<br />
+三、十二神 36</p>
+<p>捌 槟梆 43</p>
+<p>一、椰 43<br />
+二、棺 44<br />
+三、臺級 44</p>
+<p>玖 榔中随葬器物 49</p>
+<p>一、大帶 49<br />
+二、银器 54<br />
+三、其他 59</p>
+<p>拾中室内其他出土物 63</p>
+<p>一、石缸 63<br />
+二、陶器 63</p>
+<p>三、鐵牛、猪 65</p>
+<h1 id="66">拾壹 後室 66</h1>
+<p>一、石床 66<br />
+二、王建造像 67<br />
+三、“駕頭” 70<br />
+四、寶盞及諧寶 72<br />
+五、其他出土物 76</p>
+<h1 id="82">拾贰 玉册 82</h1>
+<p>一、册匣 82<br />
+二、玉册 86</p>
+<h1 id="_11">後記</h1>
+<h1 id="_12">插圖目錄</h1>
+<p>成都西郊王建墓四周地形圖 3<br />
+二 王建墓地理位置图<br />
+三 王建墓陵臺實測圖<br />
+四 王建墓陵臺外形復原示意圖 6<br />
+五 王建墓陵臺平面圖<br />
+六 王建墓陵臺縱剖面圖<br />
+七 王建墓陵臺南面基脚結構平面圖 8<br />
+八 王建墓墓室平面圖 10<br />
+九 王建墓墓室透視圖 11</p>
+<p>一〇 王建墓墓室縱剖圖 12<br />
+王建墓墓室内部全景图 13<br />
+一一二 王建墓中室横断面剖視圖 13<br />
+一三 王建墓墓室第四、五券横剖圖 14<br />
+一四 王建墓墓室第九券横剖圖 14<br />
+一五 王建墓墓室後壁發掘現狀 15<br />
+一六 王建墓墓室後壁正視圖 15<br />
+一七 王建墓券拱結構圖 16<br />
+一八 王建墓墓室墻石排列詳圖 16<br />
+一九 王建墓中室木門復原圖 18<br />
+二〇 木門附件銷及鈎環 ………………………………………… 19<br />
+二一 門門及鎖復原圖 20<br />
+二二 鍍環金釘及金釘的正面、剖面圖 21<br />
+二三 銅門韓白器形圖 21</p>
+<p>二四 婆金銅鋪首器形圖 22<br />
+二五 鍔首環下鎏金鏽花新月形銅飾片 21<br />
+二六 攒花鎏金銅飾片 23<br />
+二七 副肘板上端鎏金镶花銅飾片 24<br />
+二八 副肘板下端鎏金镶花銅飾片 24<br />
+二九 须彌座石棺床結構圖 27<br />
+三〇 槽床平面玉板砌置圖 27<br />
+三一 槽床上棺、榔、臺基及鋪面玉板測繪圖 27<br />
+三二 槽床側面之浮雕（插頁）<br />
+三三 槟床束腰浮雕樂器圖 29<br />
+三四 槟床南面舞伎（南面東二）的服飾 34<br />
+三五 髓式 35<br />
+三六 髓髻 36<br />
+三七 十二神（一） 37<br />
+三八 十二神（二） 38<br />
+三九 十二神（三） 39<br />
+四〇 十二神（四） 40<br />
+四一 槟、柅鎏金銅釘器形圖 43<br />
+四二 槟、椰北端及門的復原示意圖 44<br />
+四三 第一、二、三層臺級及樸的縱剖面及棺西側面復原示意圖 46<br />
+四四 第一、二、三層臺級縱剖面及樸西側面復原示意圖 46<br />
+四五 第一、二層臺級縱剖面及第三層臺級西側面復原示意圖 47<br />
+四六 第一層臺級縱剖面及第二層臺級西側面復原示意圖 47<br />
+四七 第一層臺級復原示意圖 47<br />
+四八 槟、櫻及三層臺級平面示意圖 48<br />
+四九 玉大帶圖 50<br />
+五○玉大帶铊尾正（龍紋）、背（銘文）面圖… 51<br />
+五 一 玉跨龍紋拓本 52<br />
+五二 銀盒器形及花紋展示圖 55<br />
+五三 銀鈞器形及花紋展示圖 53<br />
+五四 銀猪器形圖 56</p>
+<p>五五 銀扣飾器形及花紋展示圖 56<br />
+五六 銀刀鞘器形及花紋展示圖 57<br />
+五七 銀頭杖 58 <br />
+五八 銀搔手器形圖 58<br />
+五九 銀颐托器形圖 58<br />
+六〇 銅鏡器形圖 59<br />
+六一 镜盒復原圖 60<br />
+六二 水晶珠 61<br />
+六三 瑰珀 61<br />
+六四 玉片 61<br />
+六五 槟床北端石缸器形圖 64<br />
+六六 石缸内放置的釉陶盆器形圖 64<br />
+六七 陶器 64<br />
+六八 石床正面雕刻（插頁）<br />
+六九 王建造像 68<br />
+七○ 外重盃平面、側面圖（插頁）<br />
+七一 内重疊平面、側面圖及内、外重疊結構位置圖（插頁）<br />
+七二 内、外重叠盖上的花紋細部 73<br />
+七三 外重盞蓋面正中的銀平脱雙鳳團花 73<br />
+七四 寶盞内、外層の銀提環 72<br />
+七五 内重蠹蓋面之平脱圜龍 75<br />
+七六 内、外重盈盖面上平脱之金甲武士像 75<br />
+七七 識寶器形圖 77<br />
+七八 證賣拓片 77<br />
+七九 證寶綏帶扣器形圖 78<br />
+八O 玉環器形圖 78<br />
+八一 玉環拓片 78<br />
+八二 鑫金銅爐及銅提梁盞復原圖 79<br />
+八三 金銀胎漆碟器形及花紋展示圖 ………………………………………… 80<br />
+八四 册匣横端復原圖 82<br />
+八五 册匣蓋横端銀提環 82</p>
+<p>八六 册匣正面、背面及剖視復原圖 83<br />
+八七 册匣蓋面銀平脱花紋平面復原圖 83<br />
+八八 册匣蓋面雙鳳團花細部 84<br />
+八九 册匣蓋面雙錫團花細部 84<br />
+九〇 册匣蓋面孔雀團花細部 85<br />
+九一 册匣蓋面雙獅圖案細部 85<br />
+九二 册匣蓋面圃花之間及兩端的忍冬紋 85<br />
+九三 玉冊在匣中的位置及聯簡的銀絲復原圖 86</p>
+<h1 id="_13">圖版目錄</h1>
+<p>彩色版 王建墓地宫全景</p>
+<p>哀冊標首神像復原圖</p>
+<p>壹 1949年後新培修之王建墓外景</p>
+<p>贰 發掘前之王建墓近景</p>
+<p>参陵臺四周之界石、磚基等遺存及封門墻破壞的情形</p>
+<p>肆 中室券墙基脚及棺床上的漆皮布纹</p>
+<p>伍 前室封門墻及基室內的情況</p>
+<p>陸 前室、中室門飾出土時情況</p>
+<p>柴 中室門飾出土時情況</p>
+<p>挪 後室門飾及其出土時情況</p>
+<p>玖 門上鎏金銅飾等</p>
+<p>拾 前室第三券券額上的彩畫</p>
+<p>拾壹 前室第三券券額上的彩畫</p>
+<p>拾贰 前室淤土及券顶情况</p>
+<p>拾叁 中室券頂下之鐵鍵、鐵鉤及淤土中所出的鐵頂架等</p>
+<p>拾肆 榷床南面（正面）雕刻</p>
+<p>拾伍 榷床東、西兩面全景</p>
+<p>拾陸 構床北面雕刻</p>
+<p>拾柒 伎樂（一）</p>
+<p>拾捌 伎樂（二）</p>
+<p>拾玖 伎樂（三）</p>
+<p>貳拾 伎樂（四）</p>
+<p>貳壹 伎樂（五）</p>
+<p>贰貳 伎樂（六）</p>
+<p>貳參 構床壺門柱上之雕刻</p>
+<p>貳肆 十二神（一）</p>
+<p>貳伍 十二神（二）</p>
+<p>贰陸 十二神（三）</p>
+<p>貳柒 槟、櫵上銅門飾及窗檻漆痕出土時情形</p>
+<p>贰捌 槟、椰、臺級等各層漆紋重疊情況</p>
+<p>贰玖 槽、標、臺級等出土情況</p>
+<p>參拾 槟、椰、臺級的東面一、二層漆紋及銅環位置</p>
+<p>參壹臺級及各層漆紋、銅環等出土時情形</p>
+<p>參貳 槟、櫻、臺級上的各種鎏金銅飾片及銅環</p>
+<p>叁叁 大帶铊尾</p>
+<p>参肆 大帶玉锛</p>
+<p>叁伍 大帶銀扣等</p>
+<p>參陸 銀盒、鈞及銅鏡等出土情況</p>
+<p>參柒 銀盒、銀鉢等</p>
+<p>叁捌 銅镜及银器、玉片等</p>
+<p>參玖 復原後之玉大帶</p>
+<p>肆拾 錢竄上的銀飾</p>
+<p>肆壹 石缸出土情况及其中器物</p>
+<p>肆贰 陶罐和陶碗</p>
+<p>肆叁 鐵牛、猪及出土情况</p>
+<p>肆肆 後室全景及石床</p>
+<p>肆伍 王建造像</p>
+<p>肆陸 復原後之寶盜</p>
+<p>肆柒 寶豔出土情況及結構復原圖</p>
+<p>肆捌 賓盞上平脱銀花</p>
+<p>肆玖 内、外重叠盖面之平脱银花</p>
+<p>伍拾 識寶</p>
+<p>伍壹 玉環及諧寶綴上之玉飾、銀扣等</p>
+<p>伍贰 册匣角部之殘存及拾環、銀絲等</p>
+<p>伍叁 玉冊出土情況及金銀胎漆碟</p>
+<p>伍肆 册匣蓋面之平脱銀花及象鼻鍍</p>
+<p>伍伍 册匣蓋面銀平脱團花</p>
+<p>伍陸 册匣蓋面銀平脱花紋</p>
+<p>伍柒 復原後的冊匣</p>
+<p>伍摺 哀冊復原圖</p>
+<p>伍玖 哀册標首</p>
+<p>陸拾～陸肆 哀册第一簡至第五十一簡</p>
+<p>陸伍～陸玖 識册第一簡至第五十簡</p>
+<p>柒拾～柒玖 哀册第一簡至第五十一簡拓本</p>
+<p>捌拾～捌玖 證册第一簡至第五十簡拓本</p>
+<h1 id="_14">壹 永陵的發現及發掘</h1>
+<p>宋歐陽修《新五代史》說王建卒後葬永陵[2]，王衍在位六七年之間，曾數次拜掃[3]；孟知祥入蜀，亦曾遣官修前蜀主墓[4]，但都没有明說永陵在什么地方。直至南宋中葉，陸游游蜀，方說永陵在成都大西門外[5]。自此而後，方志及雜記之書，輾轉抄襲，俱說王建墓在老西門外，但亦不能雍指其究在何處。故老相傳，以爲現在距成都新西門外約2.5公里石人壩的“皇墳”，有二石人甚偉者，爲王建墓。并說在清末時，爲人盜發，出殉葬物品甚多，認爲皆是五代時物[6]。又蘇兆奎所撰的《華陽古迹志稿》（成都美利利公司排印本），說王建墓在成都東南黃龍溪附近：</p>
+<p>“治束南九十五里黄龍溪羅家山，石臺三層，工程宏偉，相傳爲王建墓。按《通志》據陸游集，謂墓在成都縣西郭，有二石幢。然《蜀桷机》本《前蜀開國記》載葬永陵，而不言其處，或有疑塚，究何處者真歟？”</p>
+<p>按石人壩的“皇墳”與黃龍溪的墓葬，均爲明墓[7]，與王建墓無關。但由此也可見因爲記載中未曾明言永陵所在地，所以關于它的傳說也就多了。</p>
+<p>此次所發現的永陵，并不是傳說中或記載中所說的王建墓，而是一般所指爲漢司馬相如的琴臺[8]。琴臺在成都老西門外稍偏南不及半公里，土墜高聳，爲成都附郭丘陵中之最高大者。</p>
+<p>1940年秋，前天成鐵路局在琴臺下挖建防空室，其所開的西北隅的一洞，深至4米多時，即爲磚墻所阻，一般推測以爲係琴臺的基址。當時著者曾前往調查，認爲係一墓葬，從磚的形制上看，時代亦不會甚早。是時因無力發掘，故仍請該局將原洞封閉。</p>
+<p>1941年春，前四川博物館成立，才開始擬定琴臺的整理工作。至1942年9月15日開始發掘。參加工作的有馮漢驥、劉復章等，前華西大學博物館林名均等亦曾協助工作。</p>
+<p>開始時在琴臺北面原鐵路局防空洞偏西的地方開鑿，因此處適當北面墓壁的正中。先在墻壁正中開鑿寬約1米、高約2米的洞門一道，以達墓內。墻壁外層均爲巨磚，厚約2米；內層爲巨石條，厚約1米餘。洞門鑿開後，方知墓內已爲淤土所填。遂順着洞門在淤土中開寬1</p>
+<p>米、高2米的探洞一道，掘至半米時發現石像，再約半米，發現諧寶盃上的銀飾。後因探洞崩塌，于掘取崩下的泥土時，發現墓內上部尚未爲淤土所填滿。于是先清理入門處3米以內的地段，在清理中發現玉冊，乃確知其爲前蜀永陵。在清理期間，曾經當地流痞阻難破壞，停工一周，至11月底始將第一階段工作結束。</p>
+<p>第二階段的發掘工作，由前中央研究院歷史語言研究所和前中央博物院籌備處共同組織“琴臺整理工作團”，由吳金鼎領導發掘，參加工作的除第一階段工作人員外，還有王振鐸、王文林等。于1943年3月1日再行開工。</p>
+<p>此次發掘由兩方面進行，一方面由南面墓外封土的前面開掘，以探索前門外部及封閉的情況；另一方面由北面第一階段中所開掘的洞口清理墓內淤土，以期瞭解其內部構造。</p>
+<p>封土南面探溝起土工程，至7月底大體完成。發現墓室前面并無羨道及其他建築，僅在全墓室的第一道券下墜石封閉，石條外再封磚墻一道，再此以外有磚建築遺迹三道。墓室內面的清理工作至9月17日全部完竣。墓室内經過盜墓者的破壞，極爲零亂，棺榔的木質部分已完全腐朽，僅存金屬包角、銅環及鐵釘等。全部發掘工作至9月21日結束，所有出土文物皆運至前四川博物館進行整理。</p>
+<p>[1]“永陵”本爲王建墓在當時的正式稱號，本文有時爲行文方便，亦襲用之。<br />
+[2]歐陽修《新五代史》卷六十三（百納本）《前蜀世家》：“光天元年（公元918年）六月建卒……衍立，懿建曰神武聖文孝德明惠皇帝，廟號高祖，陵曰永陵。”宋張唐英《蜀樞叢》亦曰葬永陵。<br />
+[3] 宋张唐英《蜀檀机》（卷上，《艺海珠虞》本）：“（光天）二年十二月拜永陵。”又：“威廉元年（公元925年）三月，衍朝永陵。”<br />
+[4] 宋張唐英《蜀樺机》（卷下）：“長興四年（公元933年）二月，命修王建墓，蔡樵采。”此時距王建葬後不過十五年。<br />
+[5]陸游《劍南詩稿》（卷八，《四部備要》本）：“後凌永慶院在大西門外不及一里，蓋王建墓也。有二石幢，猶當時物；又有太后墓，琢石爲人馬甚偉。”<br />
+[6] 石人壕的所謂“皇墳”，一排三塚，南向，正中一塚</p>
+<p>最大，然亦不及王建基三分之一。在抗日戰爭期間，成都偶防空司令部移駐于此，曾就之作防空室，加以發掘，其專甚秘，外面亦不知其詳。自墓的形狀看來，大約爲明墓。其傍有石翁仲二，高2米餘，工極粗劣。</p>
+<p>[7]黄龍溪的墓葬，在華陽縣黃龍溪北附近岷江（即府河）的東岸。河岸層疊成自然的臺階三級，墓則因山爲之，但早經穿掘。據傳說：在初時原可入內，墓內的石門尚有存在者。墓為碑券，但其規模則遠非王建墓之比。按明正德十三年（公元1518年）熊相修《四川志》（卷四）《團寰》內說：“和王葬府城南八十里黃龍溪。”其所言方位與以上相合，故黃龍溪的墓葬可能爲明蜀和王墓。<br />
+[8] 參看拙著《相如琴臺爲王建基考》，戴四川大學史學系《史學論叢》，1950年。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一成都西郊王建墓四周地形图（1942年测增）</p>
+<h1 id="_15">貳 地理環境</h1>
+<p>永陵位于成都西郭老西門外稍偏南約一里許，離環城公路約132米。此一地帶係一高出地面1～2米的一段高地，東西長約300米，南北狹而形不規則，在地形上西部高而向東部傾斜。永陵即建築在此一高地的靠東部分（圖一、二）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二 王建基地理位置</p>
+<p>在墓的正南約93米處為一小河，流至陵臺正南時向北迂迴成一半月形（圖三）。此半月形的河流，似係人工所開。河流東行爲三洞橋，再東南半里許爲將軍堰，再南流入浣花溪。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+三 王建基凌鉴寅测图（1942年测增）</p>
+<p>墓後約八九十米處亦爲一小河，東流與護城河合，沿城南流至十二橋北分二支，一支由水洞入城爲金河，一支南流入浣花溪。</p>
+<p>墓南三四里許爲青羊宮、二仙庵及百花潭，潭水再東流即錦江。基北約五六里爲郵河，繞郭東北兩面而南流與錦江合。永陵適處于此數重河流之中心，亦爲西郭之勝地。</p>
+<p>但在王建葬時，此地的自然環境或與現在稍異。按現在環繞成都東北郭之大河（郵河），原係經成都西郭與永陵之間南流至現在的通惠門（新西門）入城，經方池街、上蓮池、中蓮池、下蓮池至東南角出城，在安順橋附近與錦江合，此地即歷代的名勝合江亭。而此一連串的大池，即是舊河床，亦即《華陽國志》（卷三，《四部備要》本）所稱“穿郵江、檢江，別支流雙過郡下”者。至唐末高駕帥蜀時，擴大</p>
+<p>舊城垣，始將郭江阻而東北流，而西郭外之大河遂廢。但此距王建葬時不過三四十年，此一帶之舊河床必尚存在。</p>
+<p>按永陵所在的一帶高地，在漢代似係一居住遺址。如在墓的南面封土上所開的探溝最下部，曾發現漢代陶井一座，井號尚完整。又在墓東約五六十米處所開的灌溉渠，在地表以下1米以内出唐、宋時期及近代的陶、瓷片，但數量極少；1米以下即大量出繩紋陶片、陶鼎足、高三足器脚、陶豆等，皆爲四川西漢至東漢時期陶器所常見的形制。墓西一帶高地曾發現銅鼎、敦及兵器等，視其形制，皆秦漢間物。又此地適當秦漢間成都西郭沖治橋與長升橋（相傳爲李冰所造七橋中之兩橋）之間，歷來爲成都西郭的勝地。所以我們推測，永陵係建造在一個漢代的遺址之上。</p>
+<h1 id="_16">参陵臺的外形及建築</h1>
+<p>陵臺現高約15米，直徑約80餘米，圓形，周圍界以石條（圖四）。石條共九層，原埋于地下者可能有四層，地面上有五層，現存者僅有東、南兩面（圖版參，1）。石條厚約0.28、長約1.2米，起嵌時每層向內收縮約10厘米。石條上面原嵌有磚五層，在南面的淤土中尚保存一段。陵臺的西北兩面，因取土已掘成陡壁（圖版貳）；東南兩面全爲盞塗，多爲清代所葬。頂上尚遺有少數石柱磚，可能是後來修建的“琴臺”亭榭的遺迹。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四 王建基陵墓外形原示意图</p>
+<p>陵臺上的土質與附近土質異。附近的土質砂質重，黏性小，乾後作灰白色；陵臺上的土質黏性大而色黄，雜質少，經過夯打，其中略含有文化物，如繩紋瓦片、殘破花磚及瓦當等。此類陶片，在川中之時代，以東漢末年及蜀漢時爲最多，晋以後則少見。</p>
+<p>在石條之外約2.5米處有磚基一道（第一道磚基），厚約1.8米。此類磚係四川唐宋時期所通用的小磚，長約38、寬約20、厚約5厘米。磚基在地面下共有十九層，地面上已完全無存。在此道磚基之外1.5米處，另有較薄的磚基一道（第二道磚基），厚約65厘米，其深度只探至第十層爲止（圈版參，2）。距此磚基1.5米處又有立嵌磚一周（第三道磚基），厚僅兩層，深只探至第三層爲止（圈五、六）。</p>
+<p>在墓的正南面第一道磚基之外，有兩土墩的遺迹。兩墩東西相距約18米，與第一道磚基</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+五 王建荣陵豪平面图</p>
+<p>1.王建基外界石烯烷（俗稱填）</p>
+<p>2.陵泰外第一道碑基</p>
+<p>3.陵亭外第二道碑墓</p>
+<p>4.陵查外第三道碑墓</p>
+<p>5.胶壶南面外两侧土壤</p>
+<p>6.墓室在陵墓中的位置</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+六 王建墓陵叠缘剖面圆</p>
+<p>上：1.陵外三道碑基的位置2.陵墓基脚外石格及碑的位置3.室空的位置4.发掘时陵墓封土实测缘5.陵墓封土原缘下：陵外三道碑基横断面及碑的剖法</p>
+<p>相接而跨于第二道磚基之上，三面界以磚，中填以土，原來高度不明。兩墩之正中第二與第三道磚之間亦嵌磚一段，寬約5米（圖七）。</p>
+<p>图七王建基陵臺南匝基脚结情平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 陵墓外界石体 2. 陵墓外第一道碑基 3. 陵墓外第二道碑基 4. 陵墓外第三道碑基 5. 陵墓外前面两侧土墙</p>
+<p>按漢代的陵臺，均作方形，故有“方上”之稱。但唐代多有因山爲陵者，如太宗的昭陵之因九峻山，高宗的乾隆之因梁山，玄宗的泰陵之因金粟堆，皆依循山勢不拘形體。今永陵陵臺作圓形，亦或爲唐代的制度。又按陵臺的外面，自漢以迄唐宋的制度，例綵以陵垣一重或二重（宋稱神墻）。垣的四角有角闕，四方有神門。永陵陵臺外的磚基建築遺迹，亦或與陵垣的建築有關。</p>
+<h1 id="_17">肆 墓室的建筑</h1>
+<p>墓室爲一紅砂岩建築，全長30.8米，室内長23.4米。墓由十四道券構成，分爲三室。中室最大，後室次之，前室最小（圖八～一八）。每室之間以木門間隔。</p>
+<p>建築的基脚係在平地上挖基，基內填以卵石（其中雜有少量的紅砂石小塊和陶片），券墻則直接建于卵石之上（圖版肆，1～4）。卵石的厚度及卵石之下是否還有其他築基工程，因未往下發掘，不得而知。建築材料全用紅砂岩，券墻的石塊大小不等，有長方形、長條形等。起嵌時用泥漿合縫，先平鋪一層或兩層，再堅立一層，如此互疊而上。這種平堅互嵌法，是四川唐及五代時期最流行的嵌磚法。</p>
+<p>墓內所有的券除前室第一券爲三重（圖版伍，1）、第二券爲單券外，其他均爲雙重券。前室第一券用三重券，大概以其爲門券，需要堅實之故。第二券用單券，係備門扇的啓闢，因若用雙重券，則高度不够，門扇不能向內完全敞開。券脚皆從墻面突出，突出的厚度與券的厚度相同。雙重券者，券脚再從第一道券脚突出而寬度略爲收縮，以成券的寬度。因爲每券券墻突出，故墓室内壁呈凹凸之狀。每道上重券寬約1.2、厚約0.4米；下重券寬約0.97、厚約0.41米；上重（亦即外重）券券與券之間的距離約為0.85米。起券石塊的寬、厚度與券等。發掘時，中室及後室的下重券，幾全部破裂。因上重券各石塊之間的縫隙不能完全相合，有的在縫中填以卵石（圖版拾贰，4），如此，在起成之後勢必稍爲下墜，致使整個墓頂重量，大部分壓在下重券之上。大概在墓室築成後，下重券即已部分被壓破，當時曾用石灰修補過（圖版伍，2）。在發掘時，這種填補的石灰，尚部分保存。</p>
+<p>券與券之間鋪以石板。石板以上，因未將覆土取去，故情況不明。不過自前門外開的探溝中以及後壁外的磚墻所顯露者推之，券墻之外似尚有磚墻，上爲平頂。</p>
+<p>墓室内四壁先敷細泥一層，厚約 $2\sim 3$ 厘米，再全部塗白聖（版伍，4)。在白聖的表面，券頂塗天青色，券以下的墻壁均塗朱色。這種顏色在發掘時尚有部分保存。</p>
+<p>在前室木門外，有一道封門墻。此墻共分兩層，內層用紅砂岩石條，緊靠木門封閉券洞。石條以縱排爲主而間以橫排(圖版伍,3)；外層以巨磚爲主而間以石條，磚每起三四層後即向</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图八 王建基基室平面图</p>
+<p>內收縮，使封墻的外面略成不等的階梯形（圖版參，3、4）。磚墻上部將券完全掩住，從存留的部分看，上部似爲方形。在封門墻外稍偏西的地方有一盜洞（圖版參，3），盜洞上口甚大，下口僅能容身，係先將磚墻頂部取去一部分，再將石條抽去數條而成。墓室中的泥土，即是從盜洞中流入的（圖版拾贰，1）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖九 王建墓墓室透视圖</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖一王建基基室縱剖圖</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图中甲型藻藻中首群王 二一</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图中邮点意意王</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图除桑平藻青囊章王 国一</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圆除桑王、国弟梁谦兼王 三一</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一</p>
+<h1 id="_18">伍 木門</h1>
+<p>全墓分三室，每室都用木門間隔。前室門高4.86（自門砧石白窩起，上引至門額上緣止）、寬4.62米；中室門連額高4.74、寬4.6米；後室門連額高3.53、寬4.58米。三門之中，前室與中室門幾乎相等，後室門稍矮，但製作與裝飾則完全相同。</p>
+<p>三門的木作部分雖完全朽腐不存，但門飾及門上的金屬附件尚保存完好，故不難作較準確的復原。今以中室門爲例加以復原，用以窺其全部（圖十九）。</p>
+<p>門的全部構造可分爲板門、栓、鎖、門飾、額、門楓六部分[1]。</p>
+<p>板門的高度，上自額上10厘米起，下至銅韋白上止，約高4.47米。寬則自兩門砧石白窩外邊緣實測，計為4.71米，這是板門本身的寬度。如門關閉後自外視之，則寬4.35米（即東西兩券墻間的距離），高亦4.35米（即額下緣至門秋下地面的距離），恰成正方形[2]。板門又可分爲肘板、副肘板、榀與身口板四部分。</p>
+<p>肘板——肘板的長度，也就是門的高度。其厚以銅飾片包轉的厚度和銅轆臼的中空距離測之，爲13.5厘米（圖版陸、柒；圖版摺， $1\sim 4$ ；圖版玖，5、6)。寬則無法推計。但以如此巨大的門扇推之，當亦不下50厘米左右[3]。</p>
+<p>副肘板——副肘板的長、寬、厚與肘板相同。以受鎖銅環上的鐵釘轉曲處測之，其厚亦爲13.5厘米。</p>
+<p>福——門福的數目，以金釘橫列爲七行推之，可能用七福，但亦可能用九福，因上下兩端亦可用福而不必用金釘[4]。</p>
+<p>身口板——身口板的長度應與肘板及副肘板的長度相等。身口板的厚度加福的厚度，當與肘板的厚度相等（13.5厘米）或稍厚。故身口板的厚度，當不出5厘米，面福的厚度當在8.3厘米左右，也可能稍厚些。身口板的塊數，本無定數，今以金釘每橫排十枚推之，可能每扇門用身口板八塊（肘板與副肘板除外），因金釘雖爲裝飾，而亦所以釘身口板于門福之上者。</p>
+<p>門額的長度，當與券闕的寬廣相合，計4.35米。額的寬厚，以現存券上納額之竅穴的縱橫計算，寬約48厘米，厚約22厘米。門額兩卵砌入石券內達1.37米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一九 王建基中室木門復原圖</p>
+<p>图二木門附件鎮及鉤環<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 镶镁及钩環 2. 镍鉤環正面 3. 镍鉤環剖面 4. 镍鈇</p>
+<p>鶉栖木的長度，當與額同。今以納上鑾的鐵鉤推求，鉤外徑19厘米（內徑17厘米），再加釘鐵鉤的鐵釘係由內向外釘計，則鶉栖木的寬度至少當在30厘米左右。鶉栖木的兩端，亦與額同砌入券壁內。其厚度可較額爲薄。今以鐵鉤廣僅3.3厘米推之，可能在10厘米上下。又此鐵鉤或係釘于鑾眼的一端。</p>
+<p>門簪現只存銅飾片，作五瓣梅花形，徑10厘米（圖版摺，6)，似嫌過小，亦可能只飾于簪的中心。再以飾片作五瓣推之，簪亦當作五瓣狀。門簪是用來連鷄栖木于額上的。今每門只兩飾片，可知每額只用兩簪。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>地秋用石料作成，長4.35、厚0.22米。中隆起而两端低，正中高29、两端高19厘米（圈版伍，4；圈版刻，2）。此種情況，係因券墻下沉所致。</p>
+<p>門砧石是用來承受葬白的。大小不一，想係依石材原來的大小所製成，但縱横均在40厘米以上，因埋于地下，未經發掘，其厚度想亦當不小于縱横之數。受葬白的白徑爲11.5厘米，極淺。</p>
+<p>門栓及鎖均應設于門內，此因爲墓，故設于門外。在門中縫用直門，上端納于額上弓形鋼扣中，下端插入地軸外石臼內。栓上釘有鐵搭鈕，以鐵領銷于鎖環的上面（圖二〇；圖版則，5）。木門全長當在5米以上。栓柱的過心，以鐵搭鈕的空間測之，約爲縱32厘米，橫22厘米（圖二一）。鎖環用金釘二枚，釘上出環（圖二二，1），釘于副肘板的上面。</p>
+<p>銅轉白用青銅铸成，重約48公斤。後室門較小，重量僅當中室門的一半。肘板下端插入其中，再用鐵釘釘牢（圖二三；圖版玖，6）。</p>
+<p>門飾，每門有鋪首二，鍍花飾片四種，金釘一百三十二枚。因板門已全朽，飾物均落于地上，且上下參差不齊，足證其落下時先後不一（圖版陸、柒；圖版則，1～4）。它們在門上的布置與排列，在復原時雖爲一種推測，但大致與原來的形狀相差不遠。</p>
+<p>鋪首原是釘于門上以備啓閉所用的環，後乃踵事增華，變爲獸面銜環的鋪首。漢以前無所知，至漢代則頗盛行。如《漢書》卷十一（百柄本）《哀帝紀》：</p>
+<p>“元壽元年…秋九月孝元廟殿門銅龜蛇鋪首鳴。”</p>
+<p>注“如淳曰：門鋪首作龜蛇之形，而鳴呼也。師古曰：門之鋪首所以銜環者也。”又如司馬相如《長門賦》中說：</p>
+<p>“挤玉户以撼金铺兮，聲嚥呼而似鍾音。”</p>
+<p>故首雖爲備門啓閉之用，亦可作爲敲擊之用[5]。所以，首原來的主體似在于環，而獸面則全爲後來的裝飾品。</p>
+<p>今永陵門上的鋪首，獸面銜環，全部鎏金，製作極精（圖二四；圖版玖，3)。環下着板門處墊以鎏金髒花新月形飾片（圖二五；圖版玖，4)。</p>
+<p>金釘的作用是將身口板釘牢于榻上。但釘頭露于板門之外，有損美觀，故加釘帽。所以釘在門上的排列及多寡，當視福及身口板的數目而定。發掘前室時，發現有釘一排，橫陳于門枕的上面，此當爲原來的位置。此排金釘每扇門一列九枚，門中縫下部銅飾片猶立于正中（圖版陸，1）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+二五 首下金新月形新饰片（约1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二三 剪門神白器形圖<br />
+1. 侧面 2. 将面 3. 平面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二二 嫩镶金钉及金钉的正面、剖面图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二四 塞全钢钢结构图形</p>
+<p>由此種發現，可以推知金釘在門上排列位置的大概。再以每全門金釘一百三十二枚，每扇門六十六枚的數目及發現的情形推算排列，則可知第一排與第七排因中縫飾片各占去門釘一枚的位置，</p>
+<p>故金釘各爲九枚。又第四排因每一鋪首各占去了二枚金釘的位置，故金釘只有八枚。第二、三、五、六等排，則各有金釘十枚。如此排列，既匀稱，亦美觀，想與原來形狀不遠（圖一九）。</p>
+<p>釘以鐵製成，長約15.4厘米，方形，頂端徑12毫米，以下漸減成尖形。釘頭加銅泡，泡上鍍金（圖二二，2；圖版，7)。今永陵金釘橫七行，大概與福的數目相同，直十行，想亦與肘板、副肘板及身口板的數目相同。尚不失爲實用與裝飾二者兼顧的作用。</p>
+<p>图二六 摊花鎏金铜饰片<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 铜饰正丑 2. 铜饰平面</p>
+<p>肘板兩端各横施鎏金銅片一，包片反面平截，正面出三尖鏽雲頭飾紋，此原爲由肘板鐵包條演變而來（圖二六）。副肘板上下端各置鎏金鏽花銅片一塊，于中縫相合，花紋構圖佳妙，鏽刻精麗（圖二七、二八；圖版玖，1、2）。此類飾片，察其原意，似亦爲牢固副肘板于福上之用者。至後則全變爲裝飾了。</p>
+<p>又自額至券頂，上爲券下的弧形，下爲額上的平直綫，二者恰構成一半月形的空隙。詳察此空隙中，券下留有未敷白墜的圈痕一道，且有鐵釘，想當時于此半月形空隙中，原裝有</p>
+<p>木板，且装于施聖及着色之前，故能留此圈痕一道。此木板因受券的建築所限，想極爲簡單，除裝板以外，或別無所有，惟板面可能有彩繪而已。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二七副衬板上端套全镶花钢饰片（2/9）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二八副射板下端鎏金镶花翎饰片（2/9）</p>
+<h1 id="_19">陸 前室</h1>
+<p>前室由石券四道構成，券與券之間的距離約0.8米不等。自門限至踏道全長4.45、寬3.8、高5.45米。木門裝置在第一道券的後壁上。第二道券爲單券，亦較其他券爲窄，故前室前半部較寬，約4.42米，以便門扇的啓闊。第三券後爲三級踏道，寬與室同。上踏道爲一0.75米寬的平臺，臺後即中室的門限（圖版伍，4）。</p>
+<p>第一道券墻從1.6米以下較寬，將封門石條取去後，發現此處的白垩上有紅綠顏色的痕跡，似繪有人物，但因漫濾過甚，不能得其詳。</p>
+<p>第三道券的下重券額上繪有彩畫，因第二道券爲單券，當木門完全啓開時，此券的正面即完全顯露。此彩畫僅保存券頂當額的一部分，且多已剥落，兩邊埋于淤土中者，則完全無存。彩畫寬約43～60厘米，現保存的一段長約4.5米。畫為紅、綠二色，繪寶相花紋，顏色尚十分鮮艷。其畫法係先在白墊上刻畫出輪廓綫，以赭色界之，再填以紅、綠二色（圖版拾、拾壹）。</p>
+<p>第三與第四道券之間頂上，縱嵌鐵條一，條的中間懸鐵鏈約長0.5米，鏈下有鉤（圖版拾贰，2)。此鐵鏈正當中室前門外正中，其上原係懸挂何物，已不得而知。在鐵鏈下稍前偏西的淤土中，發現鐵環二枚，其位置均在離地面1米以上的淤土中（圖版拾貳，3)。此類鐵環，可能是原懸挂于鐵鏈鉤上器物上的鐵環，後落于淤土中者。</p>
+<p>在室的東邊距地約1.6米的淤土中，發現鎏金銅環七枚，與中室棺榔的三層臺級上的第二號銅環相同，可能爲盜墓者擾亂所致。</p>
+<p>前室的主要作用是相當于羨道，其面積僅能容門扇的啓闊及踏道，想不會置有殉葬品，在發掘中亦未發現任何器物的痕迹。</p>
+<h1 id="_20">柒 中室</h1>
+<p>中室由石券七道構成，券均雙重，前六道券較前室和後室之券爲高，跨度亦較大。自地平至券頂高6.4米，券墻寬約1.2米，券墻與券墻之間的距離約0.83米。最後一道券之高度及跨度均收縮與後室之券相等。全室長12、寬6.1米。前後均有門作間隔。</p>
+<p>中室爲全墓最主要的部分，是放置棺槓的地方，故其面積及建築均較前後兩室爲大。室中央稍偏後有棺床，棺床兩旁有立雕的十二神，棺床後置石缸（圖八～一四）。</p>
+<p>在第二與第三道券頂之間正中縱嵌鐵條一，鐵條中央懸一鐵鏈，長約0.8米，鏈下端鈞上尚附有極粗的紡織物紋（圖版拾參，2、4）。鐵鈞下即爲棺床的前端。在發掘中，于棺床前端以及其前面和稍偏西的淤土中（距地面1～1.5米），發現數漆紡織紋甚多（圖版肆，5、6），其上亦有的部分數金。此類紡織紋，可能爲鐵鈞上的懸挂物，腐朽後墜下者。</p>
+<p>第三券與第四券之間，亦縱嵌鐵條二。其一較粗大，上懸鐵鏈及環，鏈的兩端附着于鐵條上；另一鐵條較細，中部懸鐵鏈長約1米（圖版拾參，1）。此鐵鏈及環正當棺床正中，其上所懸者當爲華蓋。在其下位于棺床中部偏西的淤土中，距地面約1米餘處，發現鐵頂架一件（圖版拾參，3)。頂架的中部作銅鉍形，鉍頂有環，四面對出四臂成“十”字形。“十”字的直徑約1米左右。此頂架可能是懸在鐵鏈上的。在棺樑以上的淤土中還發現有漆皮布紋，有的上面隱約有花紋及金箔的痕迹（圖版肆，5、6)。</p>
+<h1 id="_21">一、棺床</h1>
+<p>棺床爲紅砂岩建築，位于中室的正中而稍偏後，前距門限2.85米，後距後室門限1.6米，床作須彌座式，高0.89、長7.45、寬3.35米（圖二九）。床上鋪珉玉板一層，周邊用47厘米見方、厚5厘米的玉板正嵌，中心則用較小的玉板（36厘米見方）斜嵌，镶心四角及中心則兼嵌綠色珉玉（圖三〇、三一）。須彌座的方溢厚11.5厘米，東、南、西三面皆刻龍戲珠。南面刻二龍；東、西兩面各刻三龍，并間以雲氣紋；北面僅刻雲氣紋（圖三二；圖版拾肆）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖二九 須彌座石棺床結構圖</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图三 榷床平面玉板砌置图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图三一 槽床上棺、椁、臺基及鋪面玉板測繪圖</p>
+<p>韋溢厚約6厘米，雕仰蓮一周。</p>
+<p>床身東、西兩面各雕壺門十，內刻伎樂，壺門柱子皆雕蓮荷花（圖三二，3、4；圖版拾伍；圖版貳參，4)；南面雕壺門四，中刻伎樂，壺門柱子上刻有鸛鳳（圖三二，1；圖版貳參， $1\sim 3)$ ；北面（即床後面）亦雕壺門四，壺門中與壺門柱子皆刻蓮荷花（圖三二，2；圖版拾陸）。</p>
+<p>床脚上部刻寶裝覆蓮一周，腰部則刻單枝條仰、俯相間的蓮荷花，牙脚刻寶裝覆蓮。雕刻全部敷色，主要部分（如龍）曾貼金，在初出土時尚隱約可見。</p>
+<h1 id="_22">二、伎樂</h1>
+<p>伎樂全部刻于棺床南（即正面）、東、西三面的壺門中，每一壺門長約46厘米，高約28厘米，故人物的高度約在 $24\sim 25$ 厘米之間。計南面四人，東、西兩面各十人。其中舞者二人，奏樂器者二十二人，共計二十四人，均爲女伎（圖三二，1、3、4)。此一群雕刻，不只在藝術上表現出極高的水平，而且是一部極完整的和樂器最多的音樂隊，是考察唐五代時期音樂和樂隊組織的極重要的資料[1]（圖三三）。茲先將各樂器的名稱，說明于後。</p>
+<p>琵琶——南面東一（圖版拾染，4）。其所奏的琵琶爲燕樂的琵琶，亦即所謂胡琵琶，與清樂的琵琶不同。清樂的琵琶亦名秦琵琶，或稱秦漢子，相傳爲秦時所作。其制“圓體修頸而短”，四弦十二柱，所謂“弦叢之遺制”者。這裏所刻的琵琶，體大面櫓圓，所謂“充上銳下”者。曲頸，四軀，可知其爲四弦。刻柱的地方已脱落，不知其是否爲四柱，不過這種琵琶以四弦四柱爲最普通的形式。這種琵琶發祥于西亞細亞地方，是波斯、印度、中央亞細亞諸地方的主要樂器之一。隋唐時稱爲胡樂的天竺、龐兹、疏勒諸樂中沒有不使用這種琵琶的[2]。雲岡、龍門、麥積等石窟中石刻的伎樂天以及敦煌壁畫中所畫的伎樂天，其所奏的琵琶大都爲此種琵琶。這種琵琶用撥來彈奏，不用手擲。大概中國的秦琵琶原係用手擲，周、隋時傳入中原的龐茲樂的胡琵琶，則係用木擲。在唐初也有用手擲法彈胡琵琶的[3]。但王建墓内所刻者仍用擲。</p>
+<p>拍板——南面西一及東六（圖版拾柒，3；圖版拾玖，2）。共二。拍板爲節樂之器，係胡樂。《文獻通考》（卷一百三十九，商務印書館十通本）木之屬俗部有大拍板、小拍板之分。“拍版長闊如手，重大者九版，小者六版，以韋編之，胡部以爲樂節。”宋陳暐《樂書》（卷一百三十二，光緒二年丙子定遠方濬師刊本）云：</p>
+<p>“聖朝教坊所用六版，長□寸，上銳薄面下圓厚，以檀若桑木爲之。”</p>
+<p>今此用六板，亦即小拍板。由此可見，唐代拍板與現代拍板的樣式和擊法均不相同。</p>
+<p>齋築——東五和西四（圖版拾玖，1；圖版貳壹，2）。共二。齋築是唐代胡俗樂中的主要</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图三三 榻床束腰浮雕乐器图</p>
+<p>樂器之一[4]，又名悲築、筋管。後來又有風管、頭管之稱。其制略似近代的噴呐，但無下部的喇叭頭部分。《通典》（卷一百四十四，商務印書館十通本）說：</p>
+<p>“肇築本名悲築，出于胡中，聲悲。或云儒者相傳，胡人吹角以驚馬。一名筋管，以蘆爲首，竹爲管。”</p>
+<p>宋陳暐《樂書》（卷一百三十）說：</p>
+<p>“繫築一名悲築，一名筈管，羌胡龜茲之樂也。以竹爲管，以蘆爲首。……後世樂家者流，以其旋宮轉器，以應律管，因譜其音爲衆器之首，至今鼓吹教坊用之，以爲頭管。聖朝元會乘興行幸，并進之以冠雅樂，非先王下管之制也。然其大者九竅，以囍築名之；小者六竅，以風管名之。六竅者猶不失乎中聲；而九竅者其失蓋與太平管同矣。”</p>
+<p>自此雕刻所按指數觀之，似爲六竅者。不過其拇指所按之處，是否還有竅，則不得而知。“東五”所奏者略長，當爲大獸藥；“西四”所奏者略短，當爲小獸藥。</p>
+<p>笛——東四（圖版拾掇，4）。笛是清樂中主要的樂器之一。此處所刻之笛，與現在所用者無異。歷代論笛者甚多，此處不贊。</p>
+<p>篋——西一（圖版貳拾，3）。篋的管上有横出之小嘴，以口衛之而吹。《舊唐書》卷二十九（百衲本）《音樂志》說：</p>
+<p>“箴，吹孔有嘴如酸棗。”</p>
+<p>《通典》（卷一百四十四）所言更詳：</p>
+<p>“籬以竹爲之，長尺四寸，圜三寸，一孔上出寸三分，名曰翹，横吹之。”</p>
+<p>又有所謂義嘴笛者，亦加嘴，大概出于胡吹，故亦稱胡。此處之，乃清樂之，不可與胡樂的横笛一概而論。</p>
+<p>竖箜篌——西五（圖版貳壹，3）。竖箜篌係一種外來的樂器，唐代的胡樂中無不用之。《舊唐書》卷二十九《音樂志》：</p>
+<p>“豎篋篋胡樂也，漢靈帝好之。體曲而長，二十有二弦，豎抱于懷，用兩手齊奏，俗謂之擊篋篋。”</p>
+<p>所記正與此合。按此處箜篌的弦并未刻出，想原來係用顏色畫上者，但不知是否爲二十二弦。</p>
+<p>等——西三（圖版貳壹，1）。筝乃清樂中的樂器，其制似瑟而小，十有二弦，其始蓋在秦漢之際。《通典》（卷一百四十四）說：</p>
+<p>“筝，秦聲也。傅元筝賦序曰：代以爲蒙恬所造，今觀其器，上崇似天，下平似地，中空準六合，弦柱擬十二月；設之則四象柱，鼓之則五音發。斯乃仁智之器，豈蒙恬亡國之臣能闕思哉！”</p>
+<p>所謂蒙恬所造，大概係指秦漢之際所創製的。據《通典》及《舊唐書》，皆言清樂的筝十二弦，他樂的筝皆十三弦。</p>
+<p>笙——西七（圈版贰贰，1）。此女伎手的部分及樂器已剥落，然自其存留的部分及奏者的姿勢來看，可以肯定所奏之樂器爲笙。笙在唐代清樂中是主要的樂器之一，但在燕樂及胡樂中如龜兹、高昌、高麗樂部中亦皆有笙。胡部樂中的笙與清樂中的笙是否有所不同，現尚不知其詳。</p>
+<p>篇——西二（圖版貳拾，4）。篇雖爲中國原有的樂器，但各種胡樂中均有之。篇的變化甚大，管的數目亦各不同，多者二十余管，少者十六管。大概管的多少本無定制，各人得因時制宜，隨意增減。今所刻者爲十管，或是晚唐俗樂中的篇，亦未可知。</p>
+<p>正鼓——東一（圖版拾捌，1)。和鼓——東三（圖版拾捌，3)。正鼓與和鼓均係腰鼓，亦爲胡鼓。正鼓係一種杖鼓而兼拍鼓，所謂“右擊以杖，左拍以手”者，“東一”者正是如此。和鼓則爲拍鼓。《通典》（卷一百四十四）論正鼓、和鼓的用途說：</p>
+<p>“正鼓、和鼓者，一以正，一以和，皆腰鼓也。”</p>
+<p>又《文獻通考》（卷一百三十六）論腰鼓說：</p>
+<p>“唐有正鼓和鼓之别，後周有三等之制。右擊以杖，左拍以手，後世謂之杖鼓拍鼓，</p>
+<p>亦謂之魏鼓。每奏大曲入破時，與羯鼓、大鼓同震作，其聲和壯而有節也。”</p>
+<p>正鼓亦即宋沈括《夢溪筆談》（卷五，胡道静校注本，上海出版公司，1956年）中所謂“唐之漢震第二鼓也”。</p>
+<p>毛員鼓——東十（圖版貳拾，2）。毛員鼓亦爲一種腰鼓，在唐代的胡部樂中惟龜茲樂有之。其制“似都彎鼓而稍大”，而都彎鼓則“似腰鼓而稍小”。不過都彎鼓係杖鼓，而毛員鼓則係拍鼓。</p>
+<p>齊鼓——東二（圖版拾，2）。所奏者是一種杖鼓，今定爲齊鼓。《文獻通考》（卷一百三十六）論齊鼓說：</p>
+<p>“齊鼓狀如漆桶，一頭差大，設齊于鼓面如麝臥然，西涼、高麗之器也。”</p>
+<p>又說：</p>
+<p>“大周正樂所傳齊鼓，其形狀雖不甚相遠，其設飾不同，兩頭貫以綵帶。”</p>
+<p>《通典》及《舊唐書·音樂志》所言與此略同。齊鼓只高麗及西涼樂中有之。今在此樂隊的用法則不甚明了。</p>
+<p>答臘鼓——東九（圖版貳拾，1）。答臘鼓係一種指鼓。唐南卓《揚鼓錄》（《守山閣叢書》本）說：</p>
+<p>“答臘鼓者即指鼓也。”</p>
+<p>《通典》（卷一百四十四）謂其制：</p>
+<p>“廣羯鼓而短，以指揩之，其聲甚震，俗謂之揩鼓。”</p>
+<p>《文獻通考》又謂之爲“輅鼓”，謂：“後世教坊奏龜兹曲用焉”。</p>
+<p>羯鼓——東七、西十（圖版拾玖，3；圖版貳貳，4）。羯鼓是唐代胡樂及燕樂中的重要樂器之一。因其用兩杖并擊，故又稱兩杖鼓。唐玄宗尤喜之，謂爲八音之領袖。《羯鼓錄》論之甚詳，今錄于此以便與圖對照。</p>
+<p>“羯鼓出外夷，以戎羯之鼓，故曰羯鼓。其音主太簇一均，龜兹部、高昌部、疏勒部、天竺部皆用之。次在都彙鼓、答臘鼓之下，鷄婁鼓之上。榛如漆桶，下以小牙床承之，擊用兩杖。其聲焦殺鳴烈，尤宜促曲急破，作戰杖連碎之聲；又宜高樓晚景，明月清風，破空透遠，特異衆樂。杖用黃檀狗骨花楸等木，須至乾緊絕濕氣，而復柔膩；乾取發越響亮，賦取戰臭健舉。卷用剛鐵，鐵當精煉，卷當至匀。若不剛，即應緣高下，擇換不停；不匀，即鼓面緩急，若琴徽之恥病矣。”</p>
+<p>靴牢，鷄婁鼓——東八（圖版拾玖，4）。靴即是發，靴牢原是龜茲部的樂器。《文獻通考》（卷一百三十六）說：</p>
+<p>“靴牢、龜兹部樂也。形如路靴，而一柄疊三枚焉。古人嘗謂左手播靴牢，右手擊鶴婁鼓是也。”</p>
+<p>齋的用法，宋陳陽《樂書》（卷一百一十七）說：</p>
+<p>“鼓以節之，轟以兆之，作樂之道也。”</p>
+<p>大概作樂時，先以翹兆之，故曰翹。靴牢的每一小鼓上繫兩耳，播之則還而自擊，故靴牢稱播而不稱擊。靴牢必與鷄裏鼓由一人并奏。《文獻通考》說：</p>
+<p>“後世教坊奏龜兹曲用鶉叟鼓，左手持叢牢，腋挾此鼓，右手擊之以爲節焉。其形如瓮，腰有環以緩帶繫之腋下。”</p>
+<p>鶴婁鼓的形制，《通典》（卷一百四十四）說：</p>
+<p>“鷄妻鼓正圓，而首尾可擊之處平可數寸。”</p>
+<p>《文獻通考》亦說：</p>
+<p>“鶴婁鼓其形正而圓，首尾所擊之處平可數寸。龜兹、疏勒、高昌之器也。”</p>
+<p>由此雕刻上看，鷄婁鼓亦爲一種杖鼓。</p>
+<p>銅鍍——西九（圖版貳貳，3）。鍍爲和樂之器，是胡部樂中最重要的金屬樂器之一。《通典》（卷一百四十四）金類說：</p>
+<p>“銅鉄亦謂之銅盤，出西戎及南蠶。其圓數寸隱起如浮滬，貫之以韋，相擊以和樂也。南蠶國大者圓數尺，或謂齊穆王素所造。”</p>
+<p>《文獻通考》（卷一百三十四）金之屬胡部說：</p>
+<p>“唐之燕樂清曲有銅鍍相和之樂，今浮屠氏清曲用之，蓋出于夷音也。”</p>
+<p>同時又說：</p>
+<p>“唐胡部合諸樂，擊小銅鍍子合曲。西涼部、天竺部、龐兹部、安國部、康國亦用之。”可知鍍在唐代諸樂中的普遍應用。但有正、和之分，正大而和小。此處所用者，自其形制看，大概爲正鍍。</p>
+<p>吹葉——西六（圖版貳壹，4）。吹葉是清樂中的樂器，亦是中國南方的一種樂器[5]。唐人記載中亦時或言之，如白居易楊柳枝詞有：“卷葉吹爲玉笛聲”之句（見《白香山詩後集》卷十二，《四部備要》本)。《通典》（卷一百四十四）以爲係八音之外的樂器：</p>
+<p>“葉，銜葉而嘯，其音清震，橘柚尤善。或云卷蘆葉爲之，形如篩首也。”</p>
+<p>嘯葉之制，唐以後在中原雖不傳<sup>(6)</sup>，但言其“形如筋首”則不確。今由此伎所奏之姿勢推之，大概係將葉銜于唇間，奏時以右手食指及中指按唇而嘯，使氣自兩唇縫隙中激之彈動以發聲。葉易壞，故左手中尚持有數片，以備掉換。</p>
+<p>貝——西八（圈版貳貳，2）。貝亦稱蠡，原爲天竺的樂器，唐代的胡樂部中多用之，在中國則以爲係八音之外的樂器。《通典》（卷一百四十）說：</p>
+<p>“貝，大蟲也。容可數升，并吹之以節樂，亦出南蠶。”</p>
+<p>唐以後中國俗樂部中均不用貝，惟僧道的樂器中尚用之。</p>
+<p>南面正中二人爲舞者（圖版拾染，1、2)。唐代的樂隊，不論其爲清樂、燕樂或胡樂，均有舞者。此二人相對而舞，一舉右手，一舉左手，姿態生動。</p>
+<p>全部樂器共計琵琶一、堅箜篌一、筝一、簫築一、小簫築一、笛一、簫一、笙一、箫一、正鼓一、和鼓一、毛貝鼓一、齊鼓一、答臘鼓一、鶴婁鼓一、靴牢一、羯鼓二、銅鏽一、吹葉一、貝一、拍板二，共樂器二十三件，二十種，只羯鼓、拍板、簫築各二。鼓的種類最多，計八種九件。</p>
+<p>從這部樂器的性質看，它無疑地是屬於燕樂系統的，特別是華樂化了的龜茲樂系統，但其中屬雜有清樂系統的樂器。樂器中的琵琶、堅箜篌、簫築、正鼓、和鼓、毛員鼓、齊鼓、答臘鼓、鷄叟鼓、羯鼓、靴牢、銅餓、貝等都是和唐代龜茲部中的樂器相同的。另外，笛、箫、笙既是清樂部的樂器，也是龜茲樂部的樂器。至于筝、篪、葉當然是清樂系統的樂器。以樂器的數量論，龜茲系統的樂器占了絕對多數，清樂系統的樂器僅占少數。</p>
+<p>樂伎在雕刻中排列的位置，也絕不是偶然的。琵琶爲衆樂之首，故排在最前面的東首，而奏琵琶伎的裝束，亦略異于其他各伎，想其中或有等級之分，或者是這一音聲隊的領隊。這是與唐代燕樂的性質相合的，因燕樂是“以琵琶爲主而衆樂隨之”的。在裝束上與奏琵琶伎相同</p>
+<p>的，惟有正面西首的奏拍板伎。奏拍板者有二，似以此爲主。拍板爲節樂之器，在樂隊中的作用是很重要的，故亦列在最前面。</p>
+<p>這一音聲隊整個樂器的組合，與隋、唐時的西涼樂和張文收所造的燕樂的樂器組合，又大爲不同。以意度之，它或者是玄宗時以“道調、法曲與胡部新聲合作”後所發展的一種樂隊，它既不完全是胡部新聲（燕樂），也不完全是法曲（清樂），而是二者的混合。所以，這一</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圆三四 档床南面舞技（南面黑二）的服饰</p>
+<p>部音聲隊樂器的組合，對于研究唐代音樂後期的發展史，是極其重要的資料。</p>
+<p>各伎的服裝均大體相同，皆着圓領上衣，華袂廣袖，衣皆紅色，惟領及華袂上的顏色各有不同，在初出土時大半猶隱約可見，不外紅、綠、黄三色。裙均繫于上衣外胸以下，緊裙的纖縁雖各大體相似，但繫的結則各不相同，綠色亦各異。裙皆杏黄色。黃裙可能是當時的一種風尚。《新唐書》卷三十四（百衲本）《五行志》云：</p>
+<p>“楊貴妃常以假鬢爲首飾，而好服黄裙，近服妖也。時人爲之語曰：義髻拋河里，黄裙逐水流。”</p>
+<p>按各史《五行志》中所稱的“服妖”，大都係當時所最流行服飾。鞋的樣式係如何？因除二舞伎外，全皆盤膝而坐[8]，不可得見。由舞者足下所顯露的鞋頭視之，其鞋底前部上翻而作雲頭樣，亦可謂之“雲頭鞋”。另外，二舞伎及奏琵琶和拍板者，肩上着雲肩，想此四人爲隊中之最重要者，故服此以示特異（團三四；團版拾柒）。</p>
+<p>二十四個伎樂的髮髻，其梳法是相同的，均係將額前之髮略爲卷起而向後梳。但是，其挽髻之法則大不相同，在這二十四人中即有二十二種（三五、三六），如南面的兩個舞伎及東一、東五、東七、西六、西七等，皆係雙鬚髻一類（三六，1～6）；又如東四、西四亦可視為髮髻的變式（三六，7、8）。在此二十二種髻式中，具髪的形式者幾占半數。按唐代婦女髮髻的基本形式，似乎以髪爲主，故唐人之言髮者多髻并舉。王建墓的石刻伎樂亦可證明在縮髻中的重要。更由于其式樣變化之繁多，實爲研究唐、五代婦女髮飾的最好資料。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+12</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+13</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+14</p>
+<h1 id="_23">图三五 套式</h1>
+<ol>
+<li>四人 2. 真六 3. 百十 4. 百二 5. 百九 6. 真十 7. 真八 8. 百五 9. 真三 10. 真二 11. 真四二 12. 真九 13. 百三 14. 百一</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>8 <br />
+图三六餐<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+曼馨：1.京一2.京七3.京五4.百七5.百百百一6.百六馨馨：7.百四8.束四</p>
+<h1 id="_24">三、十二神</h1>
+<p>棺床的東、西南側列置十二神，每側六人，東一、東六、西一、西四爲單置，餘皆兩兩相并（圖三七～四〇；圖版拾伍）。神像僅刻半身，股以下則埋于地中。自股至頂高約50～63厘米。神身着甲，頭束髮或戴盔，雕刻極爲精細。盔甲上原皆數色貼金，但大半已脱落。</p>
+<p>十二神所披之身甲爲前後兩方，于肩上用革帶扣繫，腰束帶。背甲作連鎖狀。或者亦即所謂鎖子甲（圖三八，4）。胸甲則各爲不同，其屬鐵甲的有魚鱉式的胸甲、有扎甲，另也有皮甲。披膊亦各不同，有作魚鱉式，亦有皮甲式者。</p>
+<p>十二神像中有六人戴冠，計爲東二、東四、東六、西二、西四和西六，冠形僅緣額一周，頭頂則露馨于外。其他六像皆着盔，計有東一、東三、東五、西一、西三和西五，視其樣式，似爲皮製。此十二神中，戴冠者與戴盔者相間，在造像上必有一定意義。</p>
+<p>各神像皆以雙手置于棺床之下，似將棺床抬起攔護者然。</p>
+<p>按境中置十二神始见于《宋史·禮志》（卷一百二十二，凶禮、山陵，百柄本），“玄宫”中</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.夷一（腾蛇？）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.東二（朱省？）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.東三（六合？）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.寅四（句廉？）<br />
+图三七 十二神（一）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.東五（青龍？）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.東六（天一？）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.西一（天后？）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.匹一背面（子甲细部）</p>
+<h1 id="_25">图三八 十二种（二）</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.西二（太隆？）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.西三（玄武？）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.四四（太常）？</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 西五（白虎？）<br />
+图三九 十二神（三）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四0十二神（四）</p>
+<p>除當墮、當野、祖明、祖思、地軸之外，尚有十二神。從王建墓的發現和南漢劉龔墓被掘的記載來看，陵中置十二神當起于唐或五代。</p>
+<p>所謂十二神，亦即工技家六壬式所使之十二神。此說起源甚早，《漢書·藝文志》五行家有《轉位十二神》二十五卷，其書今佚。其他如《淮南子》、《論衡》中俱有此種記載。漢王充《論衡》卷二十四（《四部義刊初編》本）《難跋篇》說：</p>
+<p>“或上十二神登明從魁之，工技家謂之皆天神也，常立子丑之位，俱有衡抵之氣。”此雖未全舉十二神之名，但與後來六壬家所言者不殊。十二神之名，根據近來發現的隋六壬式及隋肅吉的《五行大義》（《知不足秦羲書》本）所言，爲微明、河魁、從魁、傳送、勝先、小吉、太一、天罡、大衝、功曹、大吉、神后。除此而外，十二神之中又有所謂十</p>
+<p>二將，其名爲天一、騰蛇、朱雀、六合、句陳、青龍、天后、太陰、玄武、太常、白虎、天空。在六壬式中，前者稱爲天神，後者稱爲天將。清俞正變《癸巳類稿》卷十（商務印書館排印本，1957年）《六壬古式考》說：</p>
+<p>“其隋時《五行大義》所謂十二將者，今謂之十二神。漢志云：《轉位十二神》二十五卷，則古所謂神，今所謂將也。《辨正論·歷代相承篇》云：案曹氏《太一式經》，黃帝神女上以神將立號，下以日辰爲名，宿合之神，以爲月神，月建之氣，以爲辰名。所謂月神者今之將，所謂上以神將者，乃今之神。”</p>
+<p>此爲“神”與“將”之別。按王建墓中所置者，應爲十二天將。以意度之，其置此于墓中者，用意在于“解除”。至于“大神”犯之則凶，而當趨避。《論衡》卷二十五《解除篇》說：</p>
+<p>“宅中主神有十二焉，青龍白虎列十二位。”</p>
+<p>清錢大昕《十駕齊養新錄》（卷十七，《四部備要》本）謂《論衡》：</p>
+<p>“雖不詳列十二之名，當與六壬家不異。”</p>
+<p>錢氏之說是正確的。十二將之義，在主驅除，而陰宅亦猶陽宅，故將其置于墓中，以除凶邪[10]。十二將之位置，兹根據《大唐六典》、《武經總要》等書推定如後。《大唐六典》（卷十四，</p>
+<p>日本京都帝大影印近衛家熙享保九年刊本）說：“十二將以天一爲首。”天一雖爲十二將之首，但其位置則居中。《武經總要後集》（卷二十，《四庫全書珍本》）說：“天一居中，而前盡于五，後盡于六。”是天一在十二將的系列中居于第六位，其前有五將，其後有六將。依此列推之，是王建墓內之十二神將中，“東六”應爲天一（土將）（圖三八，2；圖版貳伍，2)，因其位次適居于前五後六之數。其前“東一”應爲騰蛇（火將），因其居前列之首。“東二”應爲朱雀（火將),“東三”應爲六合（木將),“東四”應爲句陳（土將),“東五”應爲青龍（木將),此所謂“在方左者”（圖三七；圖三八，1；圖版貳肆；置版貳伍，1)。西面的六將，所謂“在方右者”，“西一”爲天后(水將)，因天后爲後列之首（圖三八，3、4；圖版貳伍，3)。“西二”爲太陰（金將),“西三”爲玄武（水將),“西四”爲太常（土將),“西五”爲白虎（金將),“西六”爲天空（土將）（圖三九、四○；圖版貳伍，4；圖版貳陸）。</p>
+<p>此雖爲一種推定，但與隋六壬式盤上所列者相合。《夢溪筆談》（卷七）說：“十一將前二火二木，一土間之；後當二金二水，一土間之。”亦爲相合。《夢溪筆談》所謂“十一將”，因“貴人（天一）對相無物”，故其對爲天空，“空者，無所有也，非神將也。”故止十一將<sup>[11]</sup>，故在墓中天一與天空各在兩列之最後<sup>[12]</sup>。</p>
+<p>“秦漢伎”。至唐初張文收又據之以作譜樂。《通典》（卷一百四十六）說：“貞觀中，景雲見，河水清。協律郎張文收采古朱雁天馬之義，制景雲河清歌，名曰譜樂，奏之管弦，爲諸樂之首。……樂用玉磬一架，大方響一架，笛、筝一，築一、卧箜篌一，大箜篌一，小箜篌一，大琵琶一，小琵琶一，大五弦琵琶一，小五弦琵琶一，吹葉一，大笙一，小笙一，大簾簾一，小簾簾一，大簾一，小簾一，正銅鍬一，和銅鍬一，長笛一，尺八一，短笛一，指鼓一，連鼓一，鞿鼓二，浮鼓二，歌二。”</p>
+<p>[8] 此種坐法非常時漢族的傳統坐法。其解釋可能有兩種：一為係受當時外來的影響，如“趺坐”；再為此係演奏樂器，端坐不便，故作此種坐法。<br />
+[9] 見嚴敦杰：《跋六壬式整》，《文物参考资料》1958年7期。<br />
+[10]《續漢書·禮儀志》（《後漢書》卷九十五）：“凡使十二神追惡凶，赫女驅，拉女干，節解女肉，抽女肺腸，女不急去，後者爲禮。”王先謙集解引惠棟述《論衡》曰：“宅中主神十有二焉。青龍白虎列十二位，</p>
+<p>有十二神舍之宅，立驅逐。名爲去十二神之客。”</p>
+<p>[11]《夢溪筆談》（卷七）說；“六壬有十二神將，以義求之，止合有十一神將，貴人爲之主，其前有五終，謂騰蛇、朱雀、六合、句陳、青龍也。此木、火之神，在方左（方左謂寅、卯、辰、巳、午）者。其後有五将，謂天后、太陰、玄武、太常、白虎也。此金、水之神，在方右（方右謂未、申、酉、亥、子）者。惟貴人對相無物，如日之在天，月對則虧，五星對則逆行避之，莫敢當其對，貴人亦然，莫有對者，故謂之天空；空者，無所有也，非神將也，猶月殺之有月空也。”沈括雖言天空非神將，但其所舉之順序則與以上所推定者相合。<br />
+[12] 十二神的排列，必有一定的次序，因在唐宋之时，十二神之像并不僅置于墓中，在其他地方亦用之，例如《通鑑》卷二百零五《唐紀》，武后天冊萬歲元年“命更造明堂天堂，仍以懷義充使。又铸銅爲九州鼎及十二神，皆高一丈，各置其方。”胡注以“十二神”為“十二屬神”，即子鼠、丑牛……，非是。此明言“各置其方”，其爲六壬十二神甚明。</p>
+<h1 id="_26">捌 槟榔</h1>
+<p>棺榔除其上的抬環、包片、飾片、釘、泡釘等爲銅鐵而外，全部爲木製。木上髹漆，大部分略有痕迹可尋（圖版貳玖，1）。但因棺榔的上部已被破壞，且經盜墓者移動，故棺榔的情況，僅能據其下部復原。所以許多復原圖的上層部分，僅能以示意圖視之，不完全準確。</p>
+<h1 id="_27">一、椰</h1>
+<p>棵全長4.24、南端寬1.6、北端寬1.8米，厚約8厘米。棵底爲雙層，每層略向外突。下層底的四角飾泥金鐵包角，上層底飾鎏金銅包角（圖版貳荣，4）。上層底板兩側各釘鎏金銅環四枚，兩端</p>
+<p>各釘銅環二枚，銅環之上飾以鎏金銅片（圖四；圖版素刻，2、3）。</p>
+<p>椰的上部已毀，故其樣式及高度不明。依據梆首門作的寬度在1.4米左右，椰的高度至少當在2米以上，因依照當時的營造法式，門的尺度大體上近乎正方。</p>
+<p>椰的兩檔爲門作形式，門的四角包金銅片，門扇上釘金銅泡釘七排（圖四一；版贰染，1、2)，每排十四枚，惟第四排爲十二枚，因中縫處須留出地位以釘門環（圖版參贰，4左）。此種門作大概僅爲一種裝飾，實際上是不能啓闊的（圖四二，左）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一棺、椰墓全铜钉器形</p>
+<p>的兩側有在發掘中所稱爲“柵形物”</p>
+<p>者各一排，西邊的一排已倒在第二層臺級之上（圖版貳柒，5）；東邊的一排，則垂直下落幾與底板齊（圖版貳柒，3）。此兩排所謂“柵形物”，當係一種裝飾性的窗檯。窗檯之柵，爲1厘</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+匯四二档、南北端及門的復原示意圖（左：，右：）（1/30）<br />
+1~3.套级4.柳5.档</p>
+<p>米餘見方的木條，裝置則是棱起的。窗之上下則飾以“丁”字形鎏金小銅片，在小銅片之間，則有裝飾性的小斗棟，其上部似爲一斗三升式（圖四四）。</p>
+<h1 id="_28">二、棺</h1>
+<p>棺置于椁内，全長3.66、南端寬1.26、北端寬1.56米，厚10厘米。底板略爲突出，四角包泥金鐵包角片。棺的兩側釘鎏金銅環八枚，兩兩相并（圖四三）。棺的兩端各飾門作，門的四角飾鎏金銅片，門上釘鎏金銅泡釘七排，每排十枚，但第四排僅八枚，中縫處釘門環（圖版參贰，1上、4右）。此種門作亦純爲裝飾性的，不能啓闢（圖四二，右）。</p>
+<p>棺的上部已毁，故其高度不明。棺盖已被掀置于棺的束侧，尚有部分漆痕可寻；棺底髹漆（图版贰捌，4）。</p>
+<p>自棺榔底部的形状看，整個棺榔爲一前略窄、後略寬，前略低、後略高的形狀。</p>
+<h1 id="_29">三、臺級</h1>
+<p>棺椁是放置在一個三層臺級之上，臺級全部爲木作。第一層長約6.88、南端寬約3、北端寬</p>
+<p>約3.2米，底厚約8厘米。底的四周略爲突出，轉角處包以鎏金銅飾片（圖版貳玖，3、4；圖版參貳，2、3)，兩邊有銅環，銅環之間各飾以鎏金銅片（圖版貳玖，5；圖版參貳，1中)。南端與北端正中亦飾鎏金銅片（圖版參貳，1下)。底上爲欄，欄的高度及上部的形狀不詳。據第二第三層臺級的西面欄高來推斷，全高當亦不下40厘米。欄厚約6厘米，周角及南、北端正中飾以鎏金銅飾片。欄的兩邊各釘鎏金銅環五枚，南端和北端各四枚（圖四七；圖版參貳，6)。</p>
+<p>第二層臺級長約5.97、南端寬2.5、北端寬2.7米。底板略爲突出，四角包以泥金鐵片。</p>
+<p>欄棧連底共高約40厘米。臺級兩側各釘鎏金銅環六枚（圖版貳玖，2），每枚之間飾以蝠形（或爲圖案化鳥形）紋飾（圖版貳玖，6）。紋飾係用漆堆起，每邊共七團。南北兩端各釘銅環四枚，欄正中飾以鎏金銅片（圖四六；圖版參拾；圖版參壹，2、3、5、6）。</p>
+<p>第三層臺級長約5.06、南端寬約2、北端寬約2.2米。底板略爲突出，四角包以泥金鐵片。欄、底共高約40、厚約6厘米。臺級兩側釘鎏金銅環六枚，中間兩環特大（圖版參貢，6左）。兩環之間底板上釘泥金鐵片。南北兩端各釘鎏金大銅環二枚（圖四五）。</p>
+<p>此一三層臺級的南端均較北端爲狹，大概係依照棺、梆的形狀而製成的（圖四八）。但三層臺級前後的排列比例，并不均稱，前逼而後寬。此種情況，不可能爲後來擾亂所致，因爲三級臺階之間均係用巨鐵釘釘牢者。在臺級下的淤泥中，此類鐵釘甚多。</p>
+<p>整個臺級及棺槨均髹漆（圖版貳摺，1、6；圖版參壹，1、4)，但各部分的顏色則略有不同。臺級似爲漆的本色，黑中略帶紅。槨的漆色中帶金色，門則爲朱紅。棺爲赭紅色，門則爲朱色（圖版貳摺，5)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四三 第一、二、三層臺級和棚的絵剖面及槍西側百夜原示意圖(1/37)<br />
+1-3.叠损4.格5.栏</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四五 第一、二層臺級線剖面及第三層臺級西側面復原示意图（1/37）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四八 档、擦及三灌量级平面示意图<br />
+1-3.套版4. 棱5. 框</p>
+<h1 id="_30">玖 槛中隨葬器物</h1>
+<p>棺底漆紋上的淤土中含有相當數量水銀，共取出約15公斤，尚未取盡。水銀在淤土中均成小珠狀，其範圍不僅限于棺內底部，棺外附近亦出現少許，但均在離棺底不遠的淤土中。此種情況，可能係棺樸腐朽後所浸出，也可能係被破壞時所取出。棺內的少數銀器上也粘有相當厚的水銀一層。</p>
+<h1 id="_31">一、大带</h1>
+<p>大帶位于棺底北部，排列頗爲紊亂。大帶的紅絳均已腐朽，僅餘漆痕，其附着于銅尾及鎌上者，尚部分保存。玉鎌、銅尾（亦作獵尾）、銀扣等均保存完好（圖版參伍，3、4）。所以韆雖已全腐，但由所保存的部分，結合出土的情況，尚可推見大帶的原來形制（圖四九），由之亦可考見唐、五代玉帶制度的形狀。</p>
+<p>铊尾及钙的玉質潔白溫潤，上均刻龍，工製極精（五○、五一；版參參、參肆；版參伍，1)。铊尾全長19.5、寬6.9厘米，厚約9毫米。玉鈇七方，每方約 $7.4\times 8.2$ 厘米，厚薄約與铊尾同。铊尾背面刻銘文，記製大帶的緣由（五○；版參參，2）：</p>
+<p>“永平五年乙亥，孟冬下旬之七日，焚惑次尾宿。尾主後宫，是夜火作，翌日于烈焰中得所寶玉一團。工人皆曰：此經大火不堪矣。上曰：天生神物，又安能損乎！遂命解之，其溫潤潔白異常，雖良工目所未睹。製成大帶，其胯方闊二寸，獵尾六寸有五分。夫火炎崢崢，玉石俱焚，向非聖德所感，則何以臻此焉！謹記。”</p>
+<p>此銘文除記製帶之原委外，還記載大火及鈇尾和鈇的尺寸。可知當時的尺，較現在的市尺相去不遠。如“獭尾六寸有五分”，合現在的市尺五寸九分，“胯方闊二寸”，合現在的市尺二寸二分以上；二者的度量略有不同，或者當時亦僅略言之而已。</p>
+<p>铊尾的背面（有銘文的一面）首部鑽象鼻小孔五，近四角處及中部各一，用綫或銀絲（？)將铊尾繫附于鞋的尾端。尾端又出如意頭約寸許，再用綫于象鼻眼孔中繫牢。鎘的背面近四角</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四九 王大帝图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+五 $\bigcirc$ 五大带蛇尾正（魏权）、背（铭文）面圆</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+五一玉婷魏纹拓本（向右者三方，向左者四方；原大）</p>
+<p>處亦各緣象鼻小孔，用綫附于韆上。</p>
+<p>大帶的韃分兩段，有銅飾的一段，即背後的一段，兩端有銀帶扣各一（圖版參伍，5、6)，係用銀釘釘上者。有猿尾的一段無扣，僅兩端穿小孔若干，俾以受扣針（圖版參玖）。</p>
+<p>按唐五代及北宋的革帶均係如此。陝西、河南新出土的唐代陶俑，敦煌唐代供養人畫像，五代後蜀宋琳墓所出之陶俑等，其束帶者亦均如此。所不同者，是因品級和時代的不同，致使跨的質料和數目有差別而已。</p>
+<p>按革帶之制，本爲胡服。宋沈括《夢溪筆談》（卷一）說：</p>
+<p>“中國衣冠，自北齊以來，乃全用胡服。窄袖緋綠、短衣、長勒靴，有韆韃帶，皆胡服也。……帶衣所垂踈踵，蓋欲佩帶弓劍、幑幑、算囊、刀闕之類。自後雖去踝踵，而猶存其環，環所以銜踈踵，如馬之轟根，即今之帶鉙也。天子必以十三環爲節，唐武德貞觀時猶爾。開元之後，雖仍舊俗，而稍褒博矣，然帶鈎尚穿帶本爲孔。本朝加順折，茂人文也。”</p>
+<p>《筆談》所言甚明，者原所以附以受環，環則銜蝶以懸物，然皆本爲馬帶上之飾，故在前亦名曰“校”[2]。其後因去其躁而獨留環，故稱曰“環”。其後又連環亦去之，只留附鞋之飾，故曰“”。《舊唐書》卷一百二十五《柳澤傳》：</p>
+<p>“時上命玉工爲帶，墜壞一銅，乃私市以補。及獻，上指曰：此何不相類？工人伏罪。”</p>
+<p>由此可知在唐時已通稱爲鎌了。鎌之原來用途，在于受環，環則以懸物。在唐以前的服飾上，物均懸在背後。故後來的帶鎌，均按以往的位置，附于帶後，故繫帶而不能自見其鎌。此爲鎌飾的通制。《宋史》卷二百八十二《王旦傳》：</p>
+<p>“有貨玉帶者，弟以爲佳，呈旦。旦命繫之，曰：還見佳否？弟曰：繫之安得自見！</p>
+<p>旦曰：自負重而使觀者稱好，無乃勞乎？”</p>
+<p>繫帶而不能自見其玉飾，正以鐃在帶後而不能自見。今觀王建造像上之玉帶正是如此。</p>
+<p>在北周、隋及唐初之時，天子之帶以十三環（鎘）爲節。《隋書》卷三十七（百衲本）《李穆傳》：</p>
+<p>“高祖作相……乃奉十三環金帶于高祖，蓋天子之服也。”</p>
+<p>《舊唐書》卷四十五.《興服志》：</p>
+<p>“隋代帝王貴臣，多服黄文絳袍、烏紗帽、九環帶、烏皮六合靴。百官常服，同于匹庶，皆著黃袍，出入殿省。天子朝服亦如之，惟帶加十三環，以爲差異。”</p>
+<p>在唐時以帶鎌之多少及質料，爲別品級高下的服飾之一。《通典》（卷六十三）說：</p>
+<p>“上元元年八月，敕文武官三品以上金玉帶十二胯，四品金魚袋十一胯，五品金帶十胯，六品、七品并銀帶九胯，八品、九品服并銘石帶八胯，庶人服黃銅鐵帶六胯。”[3]</p>
+<p>《通典》所載之制度似爲一種新制度，高宗上元以前似無之，至少尚未有明文規定，此時方加以制度化，觀于前面所引《舊唐書·興服志》所載即可知之。不過，這種制度以後逐有變化。今王建墓內的大帶，僅有七，而無“十三”之數，或者至晚唐、五代之時，的形制則增大，數目則相應减少了。按《夢溪筆談》所言，“開元之後，雖仍舊俗，而稍褒博矣”，故此種變革，似在開元以後。倘的形制加大，則數目必須減少，因腰圍有限制，不能因跨的形制增大而加大。大概自五代以後，即不以跨之多寡別品位之高下，而僅以跨之質料別之。如《宋史·興服志》言革帶之事甚詳，但僅言質料，而不復言跨數之多少，可以證之。</p>
+<p>王建墓大帶上之帶鐃爲方形，與唐五代陶俑和畫像上所作之長方形者不同，此或者爲宋人所言之方團鐃。又有所謂“排方玉帶”者，如王建宮詞（1933年田氏影宋本）所言“銀帶排方獵尾長”，但不知其形制[5]。宋蔡緣《鐵圜山叢談》（卷二，《知不足齋叢書》本）：</p>
+<p>“大觀初，魯公進師臣，及後，又第邊功，賞無官可遷。時當寧意嚮，有魚水之懼，遂以玉帶錫之，其錫乃排方玉帶也。排方玉帶近乘興所御。于是魯公惶懼，力辭不能得。”又《玉海》（卷八十六，光緒九年浙江書局刊本）亦載：“玉帶，乘興排方，東宮不佩魚。”《宋史·興服志》亦屢言“排方”，似爲封建皇帝及其近臣的專用品。</p>
+<p>再者，革帶本爲胡服，故在宋以前不得施之于公服，《宋史·興服志》說：“玉帶不許施于公服”，此所謂“公服”係指“衮冕”而言，故服衮冕則不得繫玉帶，而必得服與其相配之大帶。</p>
+<p>關於永平五年（公元915年）大火事，在當時想係一重大事件，各書中頗有記載，且有附會者。《新五代史·前蜀世家》說：</p>
+<p>“（永平）五年，起壽昌殿于龍興宮，畫建像于壁。又起扶天閣，畫諸功臣像。十一月大火，焚其宮室。”</p>
+<p>《資治通鑒》記此事尤詳。《通鑒》卷二百六十九（古籍出版社出版，1956年）《後梁紀》貞明元年（按是年爲梁乾化五年，十一月改元貞明，亦即前蜀永平五年）記載說：</p>
+<p>“十一月己未夜，蜀宮火。自得成都以來，寶貨貯于百尺樓，悉爲煨爐。諸軍都指揮使兼中書令宗侃等帥衛兵欲入救火，蜀主閉門不內。庚申旦火猶未熄。蜀主出義興門見群臣，命有司聚太廟神主，分巡都城。言訖，復入宮閉門。將相皆獻帷幕飲食。”</p>
+<p>此次大火，損失相當嚴重，更有加以附會者，如宋孫光憲《北夢頃言》（逸文卷一，中華書局排印本，1960年）說：</p>
+<p>“爲蜀王先主時，有軍校黃承真，就糧于廣漢綿竹縣，遇一叟曰鄭山古，謂黄曰：此國于五行中少金氣，有剥金之號，曰金熾鬼。此年蜀官大火，至甲申、乙酉則殺人無數。我授汝秘術，詣朝堂陳之，僕行吾教以懷鎮，庶幾滅于殺伐，救活之功，道家所重，延生試于我而取之。然三陳此術，如不允行，則子亦不免，蓋泄于陰機也。于能從我乎？黄亦好奇，乃曰：苟稟至言，死生以之，乃轢秘文詣蜀，三上不達，乃嘔血而死。其大火與乙酉亡國殺戮之事果驗。”</p>
+<p>又按《新五代史》記載大火之事爲“十一月”，而不係日。《通鑑》則記“十一月己未”。按己未爲該年十一月三日，庚申爲四日，與铊尾上所記不合。铊尾銘文則言爲“孟冬下旬之七日”，當爲是年十月二十七日（甲寅），與《通鑑》所記相去五日（按是年十月小）。铊尾銘文所記爲當時工匠目擊之事，故當以铊尾所記爲確。</p>
+<h1 id="_32">二、銀器</h1>
+<h1 id="1">1. 銀盒</h1>
+<p>2件。樣式相同，花紋亦相似。全盒作蝶形，最長徑11.5、最寬徑6.5、通高3厘米（圖五二；圖版參染， $1\sim 3$ ）。蓋上有凸出的鶯鶴花草紋，刻工精細入微，與陝西唐墓中所出者大體相同。出土時與大帶、銀扣、銀鉤等同在一處（圖版參陸，1、3）。</p>
+<h1 id="2">2. 銀鈇</h1>
+<p>1件。斂口，鼓腹，平底。高8.7、口径15.7、腹径18.5、底径12.5厘米。腹部有陰刻的花紋，以五團團花爲主，中以仰俯花草間隔，上下則刻仰俯蓮瓣。鉢底外刻“本道秤重拾伍</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图五二 鼎金器形及花放展示图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+五三 鲸鱼扇形及花纹展示图</p>
+<p>兩”七字（五三；版參陸，2；版參榮，4）。以現在的市秤（十六兩計者）衡之，實有二十五兩。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+五五四 银猪器形图</p>
+<h1 id="3">3. 銀猪</h1>
+<p>1件，發現于銀之內。長11.3、高3.2厘米。製作頗精工（五四；版參榮，6）。</p>
+<h1 id="4">4. 銀扣飾</h1>
+<p>發現于銀鈴的口部上側，係一木器或漆器上的口緣扣飾，故中孔略向下卷成唇。木漆部分已全朽，但自扣飾爲圓形推之，大概係一圓形器。銀飾的直徑10.6厘米，中孔徑約3厘米（圖五五；圖版參伍，2）。</p>
+<h1 id="5">5.小鐵刀和銀刀鞘</h1>
+<p>鐵刀全長約19、寬約2厘米。其形制上端略寬，下端略窄，一面刃。但因氧化過甚，刀身已粘著于銀鞘之内。刀柄外包銀套，內爲木質，但今木質已全朽。鞘長22、寬約2.5厘米，柄套</p>
+<p>與鞘共長29厘米。鞘係分三段製成，上下兩段係製成後而套于中段之上者。柄套與鞘合口處</p>
+<p>有凸出的長方套孔，孔約爲 $10 \times 5$ 毫米，下部略窄，共長約5.5厘米。銀鞘及柄套上一面雕瑩瑣紋，一面雕卷草紋，上下段各雕飛翔的水龜一，中段的一面已殘破（圖五六；圖版參見，6）。</p>
+<h1 id="6">6. 銀頭杖</h1>
+<p>長約73厘米。木質圓杆外縫以1厘米寬的銀皮條，一端爲立體方形銀質杖頭（五七；版參，5）。發現時已折斷爲三段，位于大帶銅尾束銀鉤之上。</p>
+<h1 id="7">7. 鉅搔手</h1>
+<p>長約45厘米，中部略爲折彎，在棺中南北直放于銀碗之側（五八；版參陸，4；版參，8）。因浸于棺中的水銀之中，故通體凝結有水銀一層。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+五五银扣师器形及花放展示</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="8">8. 銀碗</h1>
+<p>位于銀搔手之側，口径16.3厘米（圖版參陸，4）。其上凝結水銀一層。</p>
+<h1 id="9">9. 銀頗托</h1>
+<p>此種銀器，以陝西唐墓中所發現之金者例之[6]，乃係托于尸體之頤上，以免下領骨下墜而使口張開者，故稱之爲頤托（圖五九；圖版參染，5）。</p>
+<h1 id="_33">三、其他</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖六鋼鏡器形圖</p>
+<h1 id="1_1">1. 銅镜及镜盒</h1>
+<p>銅鏡25.2厘米正方，寬帶邊，鼻鈕，無紋飾（圖六〇；圖版參搢，1)。發掘時鏡已被取出置于鏡竄之上，面向下，其下爲散亂的朽木及漆痕（圖版參陸，5、6)。</p>
+<p>鏡盒係一銀平脱頂形朱漆盒，盒身27.5厘米正方，此係根據完整的銀平脱帖白（镶邊）轉角處的長短測定的，故十分準確（圖六一；圖版肆拾，2）。其高度因木胎全朽，僅能根據各銀镶邊的寬度及平脫銀花的寬度來推定。盒身上下各有帖白一道，各寬約1厘米；中間條枝銀花一道，寬約1厘米；再加上中間的空隙，故盒身的高度當在3.5厘米左右。子口榫高約1厘米，榫上镶1形銀扣，一方面可增强子口的力量，另一方面，因蓋開後子口榫顯露于外，故同時亦可增進其美觀（圖六一，下右）。木胎的厚度，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图六一 链套原图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+上：糖蜜盖面奶早脱花放下左：糖备侧面度原面下右：糖蛋结</p>
+<p>可能为1厘米或稍薄。</p>
+<p>蓋爲斜邊盃頂形，高度約爲3.8厘米。口邊镶帖白一道，斜邊（或稱落水邊）上各平脫麗春花紋一條，圖案的結構以花葉爲中心，兩邊各鍾瑞雀一（六一，下左；版肆捨，3）。頂面飾以方形團花，約23厘米見方。團花以麗春花爲地，中間鍾雙獅戲球（六一，上；版肆捨，1）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+六二 水晶珠</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+六三 瑰珀<br />
+六四 玉片</p>
+<h1 id="2_1">2. 水晶珠</h1>
+<p>兩粒。一大一小，大者直徑2.2、小者1.4厘米，中穿一小孔（圖六二；圖版參搢，4）。位于棺內東北端，浸于水銀中。</p>
+<h1 id="3_1">3.琥珀</h1>
+<p>僅兩殘片，可能爲冠上的裝飾品（圖六三；圖版參摺，2、3）。</p>
+<h1 id="4_1">4.小玉片</h1>
+<p>可能爲衣、帽上的飾片（圖六四；圖版參擬，7）。</p>
+<p>[1]四川省博物馆文物工作隊：《四川彭山後蜀宋琳墓清理簡報》，《考古通訊》1958年8期。此墓的年代為後蜀廣政十八年（公元955年）。<br />
+[2] 王國維《胡服考》（見《觀堂集林》卷二十二，排印本）謂：“古大帶、革帶皆無飾，有飾者胡帶也。”又言：“其帶之飾，則于革上列置金玉，名曰校具，亦謂之帖，亦謂之環。其初本以侃物，後但致飾而已。……按以上帶具之名，皆取諸馬鞍具，吳錄謂絡帶為鞍飾革帶，吳志及吳書調之校飾革帶，金校帶。校者即《朝野佥載》之鉤具，亦馬鞍之飾也。……古帶校具或作環形，或校具之上更綴以環，故其帶又謂之環帶。”<br />
+[3]《新唐書》卷二十四《車服志》所記與此略爲不同。《車服志》說：“其後（按即高宗顯慶以後）以紫爲三品之服，金玉帶，縛十三；緋爲四品之服，金帶，縛十一；淺緋爲五品之服，金帶，縛十；深綠爲六品之</p>
+<p>服，淺綠為七品之服，皆銀帶，鎔九；深青爲八品之服，淺青爲九品之服，皆銅石帶，鎔八；黃爲流外官及庶人之服，銅鐵帶，鎔七。”以《車服志》校《通典》之文，“四品金魚袋十一胯”應爲“四品金帶十一胯”；“庶人服黄銅鐵帶六胯”應爲“庶人服黄銅鐵帶七胯。”</p>
+<p>[4] 又如《車服志》載唐初的制度說：“一品、二品跨以金，六品以上以犀，九品以上以銀，庶人以鐵。”此僅言以鎔的質料別品級，而不言鎔數。可知以鎔的質料和數目來別品級的高下，實起于高宗顯慶以後。<br />
+[5] 按永平二年二月朱温赠王建物品中有：“黄排方珮琳腰带一條，頭尾順缺十二事；通牡丹犀排方腰帶一條，頭尾順缺十二事。”見《十國春秋》卷三十六（清乾隆五十八年周少霞校刊本）。<br />
+[6] 見張正嶺：《西安韓森寨唐墓清理記》，《考古通訊》1957年5期，頁 $57\sim 62$ 。按張文稱為“下頸托”。</p>
+<h1 id="_34">拾 中室内其他出土物</h1>
+<h1 id="_35">一、石缸</h1>
+<p>位于中室的最後面，離棺床僅16厘米。缸爲紅砂岩質，圓形，直徑1.13、厚0.1、高0.45米（圖六五；圖版肆壹，1)。缸下有磚座，多係殘磚疊砌，共五層，高42厘米。</p>
+<p>石缸内有紅砂岩石餅一，餅徑36.5、厚16.5厘米（圖版肆壹，3)。石餅之上置陶盆一，原已破碎，復原後高23、口径56、底徑39厘米。爲紫泥胎，粉黃釉，無紋飾（圖六六；圖版肆壹，2）。</p>
+<p>燈臺二具，均破損。一出于陶盆內，一出于石缸外東面脚下。殘高22.5厘米，頂盤已缺，中盤徑7、下盤徑16.5、足徑10.5厘米。白泥胎，綠琉璃釉，質近于瓷（圖六七，1；圖版肆壹，4）。</p>
+<p>據發現的情況看，此石缸、陶盆、燈臺等可能爲中室內照明的設備。石缸可能是用來貯燃料（如油脂類）的，故陶盆在缸中須用石餅塗起。在當時或有一整套設備。</p>
+<h1 id="_36">二、陶器</h1>
+<h1 id="1_2">1. 四耳罐</h1>
+<p>2件。一在棺床東南角地上，一在西南角地上。其一高33、口徑15、腹徑30、底徑17.5厘米。紫泥胎，粉黄釉，釉僅及腹下，耳與耳之間繪黑、黃、紅三彩的草葉形花紋（圖六七，3；圖版肆貳，2、3右）。另一件的胎、釉、形狀均略與前同，惟器略小。高31.2、口徑14、腹徑28.7、底徑15厘米（圖版肆貳，1、3左）。</p>
+<h1 id="2_2">2.六耳罐</h1>
+<p>1件。發現時在棺床後靠近西邊券墻處，已破爲數十片，但尚可復原。此罐除具六耳外，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图六五 榆床北端石缸墓形图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+六六 石色内放置的精陶釜器形图</p>
+<p>六七南县<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 绿袖燈 2. 破 3. 四耳螺 4. 六耳螺 (1、2 為 1/4, 3、4 為 1/8)</p>
+<p>胎質、釉色、形狀等與四耳罐同。高45.3、口径19.2、腹徑40.08、底徑23.2厘米（圖六七，4；圖版肆貳，3中）。</p>
+<h1 id="3_2">3. 碗</h1>
+<p>2件。位于棺床西邊地下。其一高6.3、口徑18.3、足徑7厘米（圖版肆貳，4）。此碗在窑中燒造時已變形。另一件略小，高4.5、口徑13.5、足徑6.5厘米（圖六七，2；圖版肆貳，5）。皆紫泥胎，粉黄釉，實足。</p>
+<p>以上五件陶器，均出于中室地上，均係成都“琉璃廠窑”的產品，窑址在成都城外東南約5公里，窑址甚大，均出此類陶器及陶片，其時代約爲唐中葉以後至北宋，成都附近此時期的墓葬中均出此類陶器。又燈臺二件，可能係邛窑産品，邛窑址中間有此種琉璃釉器出土，但爲數不多。</p>
+<h1 id="_37">三、鐵牛、猪</h1>
+<h1 id="1_3">1. 鐵牛</h1>
+<p>位于棺床的西南隅，紧靠床脚。牛爲鐵，頭北向，全長74、高32厘米，重60公斤（圖版肆參，1、3）。</p>
+<h1 id="2_3">2.鐵猪</h1>
+<p>在棺床的東南隅，原倒卧于地，背向東，頭北向。鐵鑄，全長66、高32厘米（圖版肆參，2、4）。</p>
+<p>牛與猪的鑄造頗精，但外面一層已經氧化，且部分脱落。按此種猪、牛，自不是祭奠中犧牲的象徵品，而是作爲厭勝之物以置于墓中的。唐劉肅《大唐新語》記異第二十八（卷十三，《稗海》本）記張說引僧泓之言對徐堅論“兆域”之事說：</p>
+<p>“……墓欲深而狹，深者取其幽，狹者取其固。平地之下一丈二尺爲土界，又一丈二尺爲水界，各有龍守之。土龍六年而一暴，水龍十二年而一暴，當其隧者，神道不安。故</p>
+<p>深二丈四尺之下，可設奄窘……鍊鐵爲牛、豕之狀像，可以御二龍……。”此論或者雖係假托于張說、徐堅，但由此可知墓中置鐵牛、鐵猪，當係盛唐以來的葬俗。</p>
+<h1 id="_38">拾壹 後室</h1>
+<p>後室爲全墓最後的一部分，由三道券構成，但較中室之券爲低，跨度亦較小。全室長5.7、寬4.4、高5.5米。後室門與前、中室者相同而略矮，門下有石門限。門爲木質，已全朽，門上的鋪首、金釘及飾片均脫落于門限前後地上，有少數落于中室最後的石缸內。從後室的高度和突出的券墻來看，此門實過大，不能完全敞開。後壁是在最後一道券內的後半部，用石壘成。石壁外再嵌磚壁，厚約2米，與石壁共厚約3.7米。</p>
+<p>此室的主要用途，爲置死者的造像、諧寶以及玉冊等法物。室内雖曾被盜，但自發掘的情況看，各物似皆在原來位置。</p>
+<h1 id="_39">一、石床</h1>
+<p>位于後室最後，約占全後室之半。床正中高79厘米，兩端略下沉。其正面，上爲檐，突出約4厘米，寬16厘米，浮雕雙龍戲珠；檐下正中雕盤龍一，東西兩邊各浮雕如獅形的獸一，其周圍則刻雲紋，兩端各有一龍戲珠（圖六八）。王建造像、寶盃及冊匣等，均置于其上（圖版肆肆，1、3)。</p>
+<p>此“床”似爲仿當時帝王生前的御座或御床而製造的。</p>
+<p>漢代以後，封建皇帝接見群臣，設床爲御座，或稱御床，群臣或坐或立于其前。《續漢書·禮儀志》言天子崩，太子于柩前即位說：</p>
+<p>“太尉升自阼階，當枢御坐，北面稽首讀策。”</p>
+<p>《後漢書·循吏列傳》說光武：</p>
+<p>“數引公卿郎將列于禁坐（注：禁坐猶御坐也）。”</p>
+<p>同書卷六十五《張奂傳》：</p>
+<p>“明年（建寧二年）夏，青蛇見于御坐軒前。”</p>
+<p>《宋書》卷十八（百衲本）《禮志》：</p>
+<p>“天子坐漆床居朱屋。……漆床，亦當是漢代舊儀，而漢儀不載。”</p>
+<p>兩晋南北朝之中，均同此制，至唐猶然。如《舊唐書》卷七十四《劉洎傳》：</p>
+<p>“太宗工王羲之書，尤善飛白。嘗宴三品已上于玄武門，帝操筆作飛白字賜群臣，或乘酒爭取于帝手，洎登御座引手得之。皆奏曰：洎登御床，罪當死，請付法。帝笑而言曰：昔聞婕妤辭蟄，今見常侍登床。”</p>
+<p>由此可見，唐代帝王的御座，是同于魏晋六朝的。王建稱帝于蜀，想亦係仿照唐制。宋秦再思《洛中記異錄》（引自《說邪》卷二十，商務印書館排印本）說：</p>
+<p>“蜀王建屬兔，于天佑四年丁卯歲偕即帝位，乃以‘兔子上金床’之識，遂以金飾所坐，復謂左右曰：朕承唐以金德王，踞此床天下孰敢不賓者乎？聞者皆嗤之。”</p>
+<p>由上而的記載，證以墓內的情形，此石臺爲王建墓內的御床。床可甚大，故晋元帝（司馬睿）可詔王導同坐<sup>[1]</sup>，唐高祖（李淵）亦多引貴臣共榻<sup>[2]</sup>。雖以帝座尊嚴，臣下莫敢攀登，但其製作之寬大，則可想而知。此墓內的石床，必係仿生時的御床而建造的，處于全墓的最後，當爲全墓最尊嚴之地，故其上置建像及其法物。</p>
+<h1 id="_40">二、王建造像</h1>
+<p>此像爲坐像，坐于几上，全高96.5、几高30.5厘米（圖六九；圖版肆伍）。像下有淤泥一層，厚約4厘米。泥內含漆皮、小銀片、石灰塊、木紋土等。可能造像原放子矮木座上，木座腐朽後，像乃落于淤泥之上。</p>
+<p>此造像自其面部觀之，濃眉深目，隆準高顛，薄唇大耳，望之頗爲莊嚴。記載中之言前蜀事者，多言王建的狀貌甚偉，如《新五代史·前蜀世家》說：</p>
+<p>“王建，字光圃，許州舞陽人也。隆眉廣穎，狀貌偉然。”</p>
+<p>《册府元龜》卷二百二十（中華書局影印明刻本）《僧僕部二·形貌》：</p>
+<p>“蜀王建，字光圃，隆眉廣穎，龍睛虎視。嘗于五當山遇僧處常，謂建曰：子骨相甚貴，何不從軍，自求豹變，而乃區區爲盜，掇賊之號！”</p>
+<p>王建生時，畫像亦頗多，如《新五代史·前蜀世家》說：</p>
+<p>“（永平）五年，起壽昌殿于龍興宮，畫建像于壁。”</p>
+<p>宋郭若虚《圖畫見聞志》卷二（《四部叢刊續編》木）：</p>
+<p>“阮知晦，蜀郡人，工畫貴戚子女，兼長寫貌，事王蜀爲翰林待詔，寫王先生主真爲首出。”</p>
+<p>宋黄休復《益州名畫錄》（《湖北先正遺書》影印明刊本）卷上妙格中：</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图六九 王建造像</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>“常重胤者，粲之子也……玉局化寫王蜀先主爲使相日真容，後移在龍興觀天寶院壽昌殿上。”</p>
+<p>此皆王建生時畫像之可考者，其歿後亦有造像及畫像，如《新五代史》卷六十三：</p>
+<p>“（乾德）五年起上清宫，塑王子晋像，尊以爲聖祖至道玉宸皇帝。又塑建及衍像侍立于其左右。”</p>
+<p>青城山亦有王建铸像，宋張唐英《蜀樺机》卷上：</p>
+<p>“（咸康元年）九月，衍與母同樺青城山……衍至青城，住旬日，設醮祈福。太妃太后，謁建鑄像。”[3]</p>
+<p>青城山又有建畫像，《益州名畫錄》卷中妙格下：</p>
+<p>“杜觀龜者，其先本秦人，避禄山之亂，遂居蜀焉。觀龜少能博學，涉獵經史，專師常粲寫真雜畫，而妙于佛像羅漢。王蜀少主……命觀龜寫先主、太妃、太后真于青城山金華宮。”</p>
+<p>由上面所引，可以知道在王建生前及歿後，均有畫像及塑像。</p>
+<p>故自各方面觀之，王建此一造像，雖難免有“理想化”之處，但仍不失爲一寫實之作。在造像上口的兩角，各有小孔深約 $0.2\sim 0.3$ 厘米，可用作裝鬚之用。可能此像原係有鬚。</p>
+<p>陵中置像，或係五代時的風氣。王士禎《漁洋山人精華錄訓纂》卷四下（黄豆齋刊本）偽漢劉龐冢歌，記其發現的情形，頗可參考：</p>
+<p>“劉龐墓，在番禹東二十里。崇禎九年秋，北亭洲間有雷出奮而成穴一，田父見之，投以石，空空有聲，乃內一雄鶯，夜盡聞鶯鳴，于是率子弟以入，堂宇豁然，珠簾半垂，左右金案玉几備列。有金人十二，舉之重各十五六斤。中二金像，冕而坐，若王與后，重各五六十斤。旁有學士十八，以白銀爲之。……于是鄰人覺而爭往，遂白邑令，令亟臨其地視搜發，令得玉枕一，金人四以歸。……碑當穴門中立，辭稱高祖天皇大帝哀冊文，翰林學士知制詫正議大夫尚書右丞相紫金袋臣盧應救譜并書。其所爲大帝者，崩于歲壬寅四月甲寅朔，甦廿四日丁丑，號爲大有十五年，葬以光天元年，陵曰康陵。蓋劉興基也。”</p>
+<p>按南漢光天，爲劉龐之子劉玢的年號。南漢光天元年，爲晋出帝天福八年（公元943年），晚于王建的光天元年（公元918年）二十五年，故大略可謂之同時。據王士禕所記，有若干處有與永陵相似者。例如有金人十二，永陵內亦有十二神像承棺床；又“中有二金像，冕而坐。若王與后”，想係劉夔與其后的造像。由此可知陵中置本人的像，或係當時的風尚，但是否唐制，則不得而知。</p>
+<p>王建造像頭上所戴者，爲折上巾，亦即樸頭。其服制爲唐代帝王的常服。《舊唐書·興服</p>
+<p>志》說：</p>
+<p>“太宗又制翼善冠，朔望視朝以常服，及帛練裙襦，通著之。若服袴褶，又與平巾幘通用，著于令。其常服，赤黄袍衫，折上頭巾，九環帶，六合韆，皆起自魏周，便于戎事。自貞觀以後，非元日冬至受朝及大祭祀，皆常服而已。”</p>
+<p>造像所著的僕頭，正爲折上頭巾，不過其下垂兩帶特長，至肩下二三寸，其上繫的兩腳，則繫于頂，度其長短，已不能繫于額下，形成虛設。其上著黑色，初發現時尚粘有黑色甚多。其二色法，係先上一層白粉，再上黑色。</p>
+<p>袍爲赤色，其上色法，亦先上白粉，再上赤色，但大部已脱落。其色與赤黄袍衫正爲相合。其制大小稱身，袖亦狹小而長，雙手合于袖内，想皆是唐代的風俗。</p>
+<p>造像腰間的玉帶，想爲犀革玉帶。因唐制天子及三品以上方能用玉<sup>(4)</sup>。帶之後以玉鐙爲飾，似僅七方。铊尾下垂于後方的左面，帶扣當在左手。此種製作，與棺中所發現大帶亦相合，帶軫爲紅色，在初出土時尚顯然可見。</p>
+<p>雕像足上所著者，是否爲靴，則不得而知。因爲袍衫所蓋，不知其上是否尚有長鞠。其翹頗尖，正中有梁，而旁有褶，似爲靴之制。</p>
+<h1 id="_41">三、“駕頭”</h1>
+<p>王建造像所坐者，似爲一几于或凳子。四脚，形爲不規則的椭圓形或半月形。因其前面不可得見，究係何狀，不能得其詳。然自其雕刻的形狀推之，似爲仿木器的製作。此種几于大概爲宋代所稱之“駕頭”，宋代史籍中曾屢言之。《宋史》卷一百四十四《儀衛志》：</p>
+<p>“仁宗康定元年，參知政事宋庠言：車駕行幸，非郊廟大禮，具陳鹵簿外，其常日導從，惟前有駕頭，後擁繡扇而已，殊無禮典。”</p>
+<p>《宋會要輯稿·興服》一（中華書局影印本，1957年）記大駕儀仗之中，亦數數言之：</p>
+<p>“駕前諸班直駕頭鳴鞭誕馬燭罩三百三十人。”</p>
+<p>又如：</p>
+<p>“殿前指揮使，引駕骨朵于，直四十人，分左右，夾門旗外駕頭，駕頭下天武宮二十二人。”</p>
+<p>又如：</p>
+<p>“駕頭扇篤下各天武官二十二人。”</p>
+<p>《宋會要輯稿》所言人數，係北宋之制，南宋孝宗時曾分別省減。不過駕頭在北宋時，不拘其在大駕儀仗中，或日常導從中，均爲極重要的法物。不僅生時如此，歿後的明器中，亦有駕</p>
+<p>頭。《宋會要輯稿·禮》二十九，歷代大行喪禮，貢宗：</p>
+<p>“少府監言：檢會永熙陵法物，比永昌陵凶仗又增辟惡車、重車、象生轟、逍遥子各一。</p>
+<p>今請如永熙陵修製。從之。又添造涼車、甌帳……從物白藤櫋子、駕頭、扇籠各一。”</p>
+<p>據此，明器中有駕頭，似爲真宗時所添，永昌陵與永熙陵中無之。然駕頭雖爲重要法物，當時已少有人知之，《翁注困學紀聞》卷十五（《四部備要》本）引《江鄰幾雜志》說：</p>
+<p>“韓維問李淑，駕頭何物？曰：百講坐之一。劉敞訪之王洙云：御座傳四世矣。”</p>
+<p>宋孔平仲《孔氏談苑》（卷三《藝海珠塵》本）：</p>
+<p>“駕頭者，祖宗即位時所坐也，相傳寶之。”</p>
+<p>陸游《老學庵筆記》（卷二，商務印書館《叢書集成初編》影印《津逮秘書》本）：</p>
+<p>“駕頭，舊以一老宦者抱繒裹杌子于馬上，高廟時猶然。今乃代以閣門官，不知自何年始也。”</p>
+<p>趙升《朝野類要》（卷一，《知不足齊叢書》本）故事：</p>
+<p>“駕頭皇朝類苑曰：謂之正銜法座，香木爲之，加金飾，四足，墮其角，其前小偃，織藤冒之。駕頭至，則宣贊喝引迎駕者起居也。”</p>
+<p>《愛日齊叢鈔》（卷五，《守山閣叢書》本）：</p>
+<p>“舊制駕頭，未詳所始，相傳更一朝，即加覆黄帽一重。”</p>
+<p>綜觀以上記載，對于駕頭或不知爲何物，或表現奇異，故均特爲記之。想自北宋以後，椅几已普遍使用，行動之時，不必如往昔之自帶几座，而大駕鹵簿之中，尚保存舊制，行幸之時，使宦者抱一几作先驅，但不必即以之作坐具。故當時一般人，往往不明其爲何物。迨至最後，駕頭則完全儀式化，以之代表封建帝王，凡有行幸，百官道次班迎，惟望駕頭致敬。故《愛日齋叢鈔》又說：</p>
+<p>“參諸記載，疑渡江後杌子已非法座故物。乘興所至，百官道次班迎，惟望駕頭致敬而已。”</p>
+<p>大概南渡以後，正銜之上或已不用駕頭，而以椅爲法座。故《愛日齊叢鈔》疑爲“已非法座故物”，但大駕鹵簿之中，仍擁之以作先驅。</p>
+<p>言駕頭之制最詳者，莫過于《宋史》和《夢溪筆談》。《宋史》卷一百四十八《儀衛志》鹵簿儀服：</p>
+<p>“駕頭，一名寶床，正衛法座也。香本爲之，四足，琢山以龍卷之，坐面用藤織雲龍，四圍錯采繪走龍。形微曲，上加緋羅繡褥，裹以緋羅繡帕。每車駕出幸，則使老内臣馬上擁之爲前驅焉。不設，則以朱匣輞之。”</p>
+<p>《夢溪筆談》（卷一）：</p>
+<p>“正衛法座，香木爲之，加金飾，四足，墮角，其前小偃，織藤冒之。每車駕出幸，則使老内臣馬上抱之，日駕頭。”</p>
+<p>按駕頭亦稱爲“七寶床”。《太常因革禮》卷二十三（《廣雅叢書》本）《興服三》說：</p>
+<p>“七寶床一，覆以緋羅繡。曲蓋一，并内臣馬上執之，謂之扇食。鶥頭在細仗前，扇食在乘與後。大駕、法駕、鸛駕常出并用之。”</p>
+<p>《文獻通考》卷一百一十七《王禮考》：</p>
+<p>“七寶床一，覆以緋羅誘帕。國初，內臣馬上捧之，謂之駕頭。”</p>
+<p>宋王應麟《困學紀聞》（卷十五）：</p>
+<p>“按國史興服志：駕頭，七寶床也。覆以緋羅繡帕，內臣馬上捧之。[原注]：嘉祐六年，幸睦親宅，內侍墮馬，駕頭壞。遂以閣門祗候、內侍各二員，挟駕左右。次扇篤。又以皇城親從兵二十人從其後。”(5)</p>
+<p>綜上記載，頗有與王建造像所坐相合者。如駕頭爲四足之几，而王建所坐者，正爲一几。但因前一足爲雕像所掩，只見其三足。其上是否原繪有金飾，因埋于泥水之中過久，已全部脫落，不得而知。沈括所謂“墮角”，不知是否如王建坐凡之圓角內凹、略成四瓣形者。所謂“其前小偃”，想係前面稍爲凹入，而成偃月之狀。王建所坐之几，正是如此。故應稱其爲“駕頭”。[6]</p>
+<h1 id="_42">四、寶盈及諧寶</h1>
+<p>寶盈[7]置于王建像前約20厘米（圈版肆肆，2；圈版肆柒，1），發現時木質已完全朽腐，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图七四 财盈内、外层的银提理1. 内重盈上的银理 2. 外重盈上的银理</p>
+<p>惟金屬的镶邊及花紋裝飾與少數的漆痕尚存（圖版肆染，2、3）。盡分內外二重，形皆正方（圖七○、七一）。外重盒為67厘米正方，全高19.2、盒高9.2、蓋高10、底厚2.7、壁厚1.8厘米。全器作須彌座式（圖七○；圖版肆陸，1）。内重盒60.3厘米正方，高14、盒高9、蓋高5、底厚1.5、壁厚1.2厘米（圖七一，1～3；圖版肆陸，2）。以上的測量，因木質全朽，係自金屬镶邊及漆紋上所得，不能十分準確（圖版肆染，4）。</p>
+<p>外重盞蓋的兩旁，各釘一環。環閣11.7厘米（圖七四，2；圖版肆染，5下）。內重盞底盒上亦釘雙環，但較外重盞蓋的環稍小，闌約10.7厘米（圖七四，1；圖版肆染，5上）。環及釘均爲銀質。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图七二 内、外重盖盖上的花斑部（2/5）</p>
+<p>1.外重盖上中部的岛2.内重盖成盒上的平膜属岛3.内重盖盖上的平脱囊岛<br />
+4.外重盖上的毒 5.外重盖盖面四角花献之一6.内重盖四角之愿冬献</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图七三外重盖面正中的银平脱变黑围花（2/5）</p>
+<p>外重疊底盒四面各镶小鷺翹四，相對面飛（圖七二，4；圖版肆摺，2下）。蓋的四周近角處，嵌以惹草形的雲拐，中部镶二鳥比翼而飛，每邊各兩對（圖七二，1；圖版肆摺，2上、3)。蓋面正中嵌兩鳳上下飛翔相戲的圖案花紋（圖七三；圖版肆玖，1)；兩旁有銀片镌刻的金甲神各一，面相對，雙手執斧，甲胄皆貼金，其形制與十二神所擬者大體相同（圖七六，左；圖版肆摺，1左)；四角镶補角蝶形小花（圖七二，5；圖版肆摺，4)。</p>
+<p>盈身上下緣及合口處各镶銀質薄帶一匝，此大概即唐代所謂“帖白”。</p>
+<p>盈内的底面，鋪籬織六角紋席簾一層，席曾敷漆并貼金。</p>
+<p>内重疊底盒四面，各嵌飛鳳二，鳳尾作四重之蕉葉形（圖七二，2；圖版肆摺，6下）。蓋的四周亦各嵌二長尾鳥，相對面飛，尾已圖案化（圖七二，3；圖版肆摺，6上）。蓋面四角镶忍冬補角花紋（圖七二，6；圖版肆摺，5）；正中嵌團龍紋（圖七五；圖版肆玖，2）。團龍兩旁，各立金甲神一，雙手執斧作守護之狀（圖七六，右；圖版肆摺，1右）。蓋與盒的合口邊緣和盒身邊脚，各镶銀皮一周。盤底板稍爲外突。</p>
+<p>内、外重盈均鬃朱漆，銀飾部分，如團花中的龍、鳳、神的甲均鎏金。</p>
+<p>寶盈的制度，唐以前已不能詳，惟《宋會要輯稿》、《文獻通考》及《宋史·興服志》等書中曾略言之。此三書所記載的制度，均爲上尊號及冊后妃、太子所用，并非拿來作殉葬用者，但其所記載的制度頗有與王建墓內寶盈制度相合者。《宋會要輯稿·禮》四十九，尊號說：</p>
+<p>“其實，門下省造，用玉，篆文。廣四寸九分，厚一寸二分，填以金，盤龍鈕，繫以暈錦大緩，赤小緩。連玉環玉檢，高七寸，廣二寸四分。皆飾以金，裹以紅錦，加紅羅泥金夾钯，納于小盃，以金裝，內設金床，暈錦祅，飾以雜色玻璃，碧銅石，珊瑚，金精石，瑣瑣。又蚤二重，皆裝以金，覆以紅羅絳钯，載以腰興……”[8]</p>
+<p>又《文獻通考》卷一百一十五《王禮考》，言紹興三十二年孝宗（趙睿）受禪，上太上皇（高宗趙構）尊號寶盃之制說：</p>
+<p>“寶用玉，篆文，廣四寸九分，厚二寸二分，以皇祐黍尺爲度。填以金，盤龍鈕，繫以暈錦大綵，赤小綵。連玉環玉檢高七寸，廣二寸四分，皆飾以金，裹以紅錦，加紅羅泥金夾钯，納于小盞，尋以金飾之，內設金床，承以玻璃，碧銅石之屬。又尋二重，皆飾以金，覆以紅羅绣钯，載以腰興行馬。”</p>
+<p>《宋會要輯稿》所言者爲北宋的制度，《文獻通考》所載者，係南宋的制度，今以二者所載大體相似觀之，是知南宋上尊號的儀注，猶同于北朱之舊。其實盃之制，雖未言其大小樣式，但言“盃二重，皆裝以金”，此正與永陵的寶盃相合，可知宋代的寶盃之制，實本諸五代，面五代則又必本諸唐制了。</p>
+<p>諧寶[9]置子寶盈的正中，發現時鈕已裂脱，壺身亦裂而爲二（圖七七）。由裂開處觀之，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+七六内，外重盖面上平层之全甲式士像（2/5）<br />
+（左：外重盖面上武士像 右：内重盖蓝面上武士像）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图七五 内重置盖页之平脱重（2/5）</p>
+<p>質爲純潔溫潤的白玉，但表面已全部風化。</p>
+<p>諧寶長11.7、寬10.7、厚3.4厘米，中部略厚（3.7厘米），故稍呈隆起之狀。鈕雕龍形，頭有角，身腹均具鳞甲，尾則卷于右。鳞甲的上面，原有貼金，而嘴及腹則塗紅色。鈕高7.7、厚3.9、鈕徑4.2厘米（圖版伍拾）。</p>
+<p>諧寶的前方刻鳳，兩邊刻龍，後方刻獸形紋及雲紋（圖七八，1、2）。寶下正面刻諧號曰“高祖神武聖文孝德明惠皇帝諧寶”十四字（圖七八，3），陰刻。篆刻均貼金。</p>
+<p>按諧寶的制度，蓋仿生時所用的鑰印而來的。所謂諧寶，即是將諧號刻于預製的鑰印上，殉于墓中，以表示其歿後所得的稱號，故其起當在漢代恢復諧法以後。《續漢書·禮儀志》說：</p>
+<p>“諸侯王列侯始封貴人公主薨，皆令贈印鑿，玉押銀鑿……”</p>
+<p>此處所贈的鑾印，自係爲殉葬用者，故與“玉押銀鑰”并舉，其上所刻者當爲所贈的諧號。按封建天子死後，南郊請谥之說，本出自漢儒，禮既如此隆重，想必也刻諧鑰，不過漢志不載。但無論如何，至魏晋之時，谥鑰的制度，已極明了，如《晋書》卷二十《禮志》，記追加魏武帝（曹操）尊號時刻金鑰說：</p>
+<p>“及（文帝）受禪，刻金鑿，追加尊號，不敢開壊，乃爲石室，藏鑿塗首，以示陵中無金銀諸物也。”</p>
+<p>按堯即墓道，堯首即墓道之首。金置于堯首，蓋爲後來追加，不及納于墓中。但由此可見在魏晋之時追加谥號，已刻谥。但封建天子的，按漢制應以玉[10]，此以金者，或以其爲谥，或亦係本諸漢制。如《晋書·禮志》說：</p>
+<p>“古者，天子諸侯葬禮粗備，漢世又多變革，魏晋已下，世有改變，大體同漢之制。”是知所謂“國恤”之典，至漢世乃一大變革，雖後世因革各有所不同，則大體上皆本諸漢禮。</p>
+<p>唐代的諸陵中皆奠銘寶，其事詳于《通典》所引元陵儀注中，今王建墓中的銘寶，亦自係仿自唐制。</p>
+<h1 id="_43">五、其他出土物</h1>
+<h1 id="1_4">1. 組綴飾物</h1>
+<p>壺必有組綴，但因其爲絲織品，已完全在土中朽腐。現在所存者，只有組綴上的銀扣及玉飾面已。</p>
+<p>諧寶的前方靠右，有銀扣二，橫徑3、直徑3.7、厚0.2厘米。扣的後部各有銀套環一，縱0.7、横2.8厘米。環之後，則爲帶頭的玉飾，直徑4、橫徑2.1厘米。玉飾的背面有小孔三，爲釘于革帶之上用的。由扣環及玉飾的位置觀之，帶係穿過扣及環，而垂于外面的（圖七</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+七七 益器形</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图七八 链管拓片<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 经营正（上）、背（下）面 2. 经营左（上）、右（下）侧面 3. 经营第六拓片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图七九 道管带扣形图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图八一 王璞拓片（左：正面，右：背面）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图八0 玉绿基形图</p>
+<p>九；圈版伍壹，5）。</p>
+<p>又在上言各物的附近，有小銀管二。長8厘米，上細下粗，上端圓，下端作六棱形。上端徑1.3、下端徑2.1厘米。管之外面鎏金。此銀管以其形狀度之，或者爲組綴上的縫或流蘇上的飾物（圖版伍壹，6）。</p>
+<p>後室東面第一券與第二券缺口中也發現同樣的銀扣及玉飾頭三副，與寶盤內的樣式大小完全一致（圖版伍壹，4）。</p>
+<p>按宋制墨上須“繫以暈錦大绶，赤小绶”，其制今不詳。王建的谥寶上，想亦必有之，但除以上的殘餘外，其他均不可考。</p>
+<p>2.玉環</p>
+<p>1枚，位于訖寶之前稍偏東處。直徑9.5、好3.9、肉2.7、厚0.9厘米。正面刻龍一，背</p>
+<p>面刻雲紋（圖八〇、八一；圖版伍壹，1、2）。此當爲綴上的玉環。《宋書》卷六十一《江夏文獻王羲恭傳》說：</p>
+<p>“世祖即祚……以在藩所服玉環大緩賜之。”</p>
+<p>《北堂書鈔》卷一百三十一（光绪十四年南海孔氏三十三萬卷堂重刊本）引董巴《興服志》說：</p>
+<p>“緩者，古佩遂也。佩緩相迎受，故曰緩。縈緩縫之間，得施玉環。”</p>
+<p>此皆言綵上有玉環，但在紫綵以上方得施之。環之佩法在綵之間，故可與小銀管并觀。</p>
+<h1 id="3_3">3.玉飾</h1>
+<p>2件，位于益寶之前偏西處。每件共五節，通長9.5厘米。其最前一節略大，形如帶頭的玉飾。長2.3、寬1.4、厚0.35厘米。其上套有銀環一個，寬0.7厘米。以後的各節，每一節均較前一節略小，其上各刻鳞紋五道，兩邊又刻齒形紋五（圖版伍壹，3）。每節的背面各有三小孔，似用小釘釘于革帶上面的。五節互相銜接，但可以彎曲。此不知爲何物，或者亦爲緩上的玉飾。</p>
+<h1 id="4_2">4.鎏金鋼爐</h1>
+<p>位于王建像前玉册匣上，現已破損。爐上有蓋，下有足，足上有五孔。爐身與足用三銅釘釘連之。銅質極薄，厚0.1厘米，蓋厚不及0.1厘米。爐的外面全部鎏金。通高18.1、蓋最大徑17.8厘米（圖八二，左）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+襄八二 塞金钢疆及钢提梁盛复原（3/7）（左：套全钢疆，右：钢提梁）</p>
+<p>另有一小銅提梁，位于冊匣與寶盞的中間，銅質亦極薄（圖八二，右；圖版伍贰，2）。此小提梁盞可置于銅爐之中，再套上爐蓋，其大小亦恰爲相</p>
+<p>合，故二者可能为一套。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图八三 金银胎漆膜器形及花瓶展示图</p>
+<p>此種鎏金銅爐、小提梁盞等應是所謂“緣寶法物”一類的東西，《宋史》卷一五四《興服志》記寶盞的制度說：</p>
+<p>又有香爐寶子、香匙、灰匙、火著、爛臺、爛刀，皆以金爲之，是所謂綠寶法物也。</p>
+<p>上面所言的銅爐，自是“香爐寶子”之類，至于香匙、燭臺等在五代時是否有之，已無從詳考。</p>
+<h1 id="5_1">5.鎏金小銅片</h1>
+<p>在王建石造像的西面約2米許靠後墻處，有銅質鎏金片三塊，上有小泡釘，似爲一器物角上的镶嵌。又于像的東側0.5米處，亦發現同樣的一塊，及同樣寬的銅皮一條，均似案或器座上的嵌镶。</p>
+<p>像的東首前面有镶邊銀皮一條，寬約0.31、長約34厘米，此係殘段，中有鐵鎖一，環、鈞俱全，用途不明。</p>
+<h1 id="6_1">6.殘鐵器</h1>
+<p>衰冊匣上置有一殘鐵器，長37厘米，一端有環，一端似原裝有木柄，鐵質多已銹蝕（圖版伍贰，5），不知爲何器。</p>
+<h1 id="7_1">7. 金銀胎漆碟</h1>
+<p>發現于石床前稍偏東的地方，反轉覆置于地上，已破爲數片。碟爲五瓣形，圓底，圓足，最大徑14.5、深2、團足高1厘米。胎分二層，內層爲銀，外層爲鉛，共厚約0.1厘米。外層表面極爲粗糙，其上顆漆，但漆已脱落，僅餘痕迹。碟内面不顆漆，故銀胎露于外。銀胎上用極薄金皮一層，將花紋鑰于銀胎之上，鑰痕直透至鉛胎之上。空白處將金皮鑰空，故銀胎與金花相映。</p>
+<p>碟內底刻飛翔的雙鳳，而以卷草紋爲地。底邊和口緣刻蓮瓣，而用分瓣紋將其分爲五瓣，每瓣之中刻花草紋。空白處則刻極細的圓圈紋（圖八三；圖版伍參，1）。</p>
+<p>[1]《晋書》卷六十五（百神本）《王導傅》：“及帝登尊號，百官陪列，命導升御床共坐。”<br />
+[2]《舊唐書》卷五十七《劉文靜傳》：“高祖踐祚，拜納言。時高祖每引重臣共食（《白孔六佑》卷四十作“共榻”)。”又《新唐書》卷一百零一《薈瑩傳》：“武德元年遷内史令，帝委以樞笏，內外百務悉開决，或引升御榻，呼曰蕭郎。”又高祖于武德初往往引突厥使臣升御坐以宠之，見《新唐書·突厥傳》。<br />
+[3]蜀何光遠《鑒誠綠》（卷五，《知不足齊叢書》本），徐後事條下，記其游青城謁建像詩：順聖又題謁丈人觀先帝聖容云：“舜帝歸梧野，躬來謁聖顔。旋登三境路，似陟九疑山。日照堆岚迥，雲横積翠闊。期修封禪禮，方俟再踐攀。”翊聖繼曰：“共謁御容儀，還同在禁闋。笙簞喧寶殿，綵仗耀金徽。清泪沾羅袂，紅霞拂绣衣。九疑山水速，無路繼湘妃。”《舆地紀驛》（咸豐五年伍氏粵雅堂刊本）亦載成都城北保福莊（即保福寺）有王建塑像。<br />
+[4] 宋程大昌《演繁露》（卷十二，《學津貢原》本）唐時三品得服玉帶條言：“韓返之詩：不知官高卑，玉帶垂金魚。若從國朝言之，則極品有不得兼者，然唐制不爾也。唐制五品以上皆金帶，至三品則兼金玉帶。《通鑑》：明皇開元初，敕百官所服帶，三品以上聽飾以玉。是返之之客，皆三品以上，亦足詫矣。本朝玉帶，難出特賜，須得闔門關子許服，方敢用以朝謁，則體益以重。然唐裴晋公得特賜，乃于閩玉也，暨病亟，具表返諸上方；其自占辭曰：內府之珍，先朝所賜，既不合將歸地下，又不敢留在人間，謹以上進。不知故事當進如隨身魚符之類耶？抑晋公自以意創此舉也。本朝親王皆服玉帶，元豐中，創造玉魚，賜嘉、岐二王，易去金魚不用。自此遂爲親王故事，又前世所未有者。”</p>
+<p>[5] 宋李焘《續資治通鑑長編》（卷一百九十四，光緒七年浙江書局刊本）：“仁宗嘉祐六年，太常禮院及整肅禁衛所，并言請自今駕出，以闔門祗候并內臣各二人，披駕頭左右，次崢食，仍以駕從兵二十人從其後。先是幸睦親宅，內侍抱駕頭墮馬，駕頭壞。御史中丞韓絳，乞增兵輿出入儀衛之禁，事下大常禮院等處參議，而定此制。”<br />
+[6] 關于鷺頭的制度及坐卧風俗的改變，可參看拙著《鷺頭考》一文，戴四川大學史學系《史學論叢》，1950年。<br />
+[7]古以竹器實物，其方者曰筐、籠，其圓者謂之筈、籠。《說文》：“籠，竹高篋也”；或作築，從錄聲。《方言》十三（《四部備要》本）：“築，築也。……南楚謂之築。”按筈、籠、築、築，古并音同字通。唐宋時以之盛置，製不以竹，故從皿作盞。此字不見《廣韵》，但見《集韵》及《龍龜手鑑》。今從《宋會要齟稿》、《文獻通考》及《宋史》等書，定名爲盞。<br />
+[8]《宋史》卷一百五十四《舆服志》所载，與此大體相同，不具錄。<br />
+[9]秦以前重印爲通稱。秦漢以後，封建天子的印始獨稱豐。其稱為寶者，始于唐武后時。《新唐書》卷二十四《車服志》謂：“至武后改諸豐皆為寶，中宗即位，復為豐。開元六年復為寶。天寶初，改置書為寶書。”本報告依證寶之文稱之為寶。<br />
+[10] 漢衞宏《漢舊儀》（卷一，《平津館叢書》本）說：“秦以前民皆佩绶，以金、銀、銅、犀、象為方寸置，各服所好。漢以來天子獨稱瓊，又以玉，群臣莫敢用也。”（孫星衍韓本）蔡邕《獨斷》（日本影印宋淳熙刊本）亦說：“瓊者，印也；印者，信也。天子瓊以玉，璣虎紐。古者尊卑共之。”</p>
+<h1 id="_44">拾贰 玉册</h1>
+<h1 id="_45">一、册匣</h1>
+<p>衰冊和諧冊皆放置在冊匣中。兩匣相似，各長225、寬45、高21.5、底厚2.8、框厚2.1厘米。由冊匣角部殘存土紋，可看出匣底突出成三層臺級形（圖版伍贰，1）。在匣底近兩頭處每端各釘鐵條二。鐵條厚1.5、寬5厘米。鐵條的兩端突出起處有孔以受環。環爲鐵質，外包銀皮。鐵條的兩端顯露處，亦均包銀皮（圖版伍贰，4）。蓋與匣之間釘象鼻錙鍼二副（圖版伍肆，2），故必要時蓋可完全取下。匣的前面有鎖，鎖爲鐵質，扣環則爲銀質。匣蓋的兩端，各釘銀環一副（圖八四～八七；圖版伍贰，8）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图八四 桩顶横端复原圈（1/8）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图八五 册匝盖横端银提環</p>
+<p>匣全部漆深朱色，四周镶银皮五匹。合口處內外亦均镶銀皮。銀皮係用小銀釘釘上（圖版伍贰，3）。蓋面有椭圓形團花五，每團以忍冬紋爲地，而以雙鳳、雙鶴、雙孔雀等圖案花紋為主題（圖八七）。正中一團爲雙鳳，兩鳳各衛綏帶，上下相對飛翔（圖八八；圖版伍伍，1）；其左右有仙鶴各一團（圖八九；圖版伍伍，2）；再外爲孔雀各一團（圖九〇；圖版伍陸，2）。每團之間填以卷草形忍冬圖案花紋（圖九二；圖版伍陸，1、3）。蓋面的四邊有獵形獸二十四個（圖九一；圖版伍肆，1）。以上各種花紋，均爲銀質鏽空，雕繫成細紋，重要的地方鎏金，使花紋特別鮮明。此類銀皮花紋，均係平脫于漆面上（圖版伍叁，2），而非用釘釘上者，亦即唐代所謂“金銀平脫”器（圖版伍柒）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图八六 烟座正面（上）、背面及剖视（下）腹原圆（1/11）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图八七 蜀面银平脱花纹平面原（1/11）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图八八 猪里茎面雙風围花細部（2/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图八九 圆匝盖面雙鞘開花細部(2/5)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图九0 圈面面孔雀花部（2/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圆九一员匝盖面雙狮图案细部（2/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图九二 田里茎面围花之間（右）及雨端（左）的忍冬蛾（2/7）</p>
+<p>冊在匣中，按照宋制，須“藉以錦褥，覆以紅羅泥金夾帕”。匣上又須覆以“紅羅繡盤龍豐金钯”。永陵的制度，是否如此，不得而知。據《宋會要輯稿》及《文獻通考》所載的宋代冊匣之制，與永陵所發現者十分相似，此是極有可能的。</p>
+<h1 id="_46">二、玉册</h1>
+<p>玉冊有哀冊和諧冊兩副。哀冊五十一簡，前後折標各一（圖版伍），諧冊五十簡，冊前折標二，冊後折標一。哀冊標首、冊尾折標及諧冊標首、冊尾折標，均特別寬闊，較其他各簡約寬三倍半（10.6厘米），長相等而略薄（1.5厘米）。哀冊的標首繪一金甲神，雙手執斧，神背後繪一龍（彩色版；圖版任玖）；冊尾折標上則繪一金龍。諧冊的標首及冊尾折標，亦彩繪貼金，但所繪何物，已不可辨，僅餘紅綠顏色及少數的貼金而已。</p>
+<p>哀册文自第一簡起至五十一簡止（圖版陸拾～陸肆；圖版染拾～柒玖）；証冊文自第一簡起至五十簡止（圖版陸伍～陸玖；圖版剝拾～剝玖），文皆深刻數金。每簡長33、廣3.5、厚1.9厘米。在每簡的兩端約1.7厘米處，橫穿一小孔，銀絲貫之聯以成冊（圖九三；圖版伍贰，6、7）。</p>
+<p>古代的策書均用竹、木爲之，其有用玉者，大概開始于春秋戰國之際，如河南輝縣固圍村第一號戰國墓中即發現有玉冊一副[1]，其他尚未有較早的發現。玉冊之見于記載者頗晚，漢武帝（劉徽）封泰山，用玉牒而不用玉冊，其事詳《漢書·郊祀志》及《續漢書·祭祀志》。玉冊一詞首見于《後漢書》卷三十《郎顔傳》，有“書玉板之策”的話[2]。《文選》（商務印書館《國學基本叢書》簡編本）左思《魏都賦》亦言“闋玉策于金勝，案圖錄于石室”。想當時必有</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图九三 王册在匣中的位置及弹簧的银缘原圆</p>
+<p>玉策的制度。</p>
+<p>古代的玉策大概係用朱書或漆書而不刻，如固園村戰國墓中所出土的玉冊，其上今無字，大概係朱書或漆書，而在土中脱落，故《郎顔傳》稱“書玉板之策”。此種情況，至東漢初猶然。如《續漢書·祭祀志》[3]記光武封泰山刻玉牒說：</p>
+<p>“時以印工不能刻玉牒，欲用丹漆書之，會求得能刻玉者，遂書，書祕。”由此可見刻玉冊的工人，在東漢初時尚甚少。不只在東漢時如此，到三國時猶然，如《宋書》卷十八《禮志》說：</p>
+<p>“吳無刻玉工，以金爲瓊，孫皓造金瓊六枚是也。”</p>
+<p>是吴時連刻玉印的工人亦無之，只得求其次而刻金鑾。</p>
+<p>古代陵墓之中，均用竹策，而不用玉策，如《晋書》卷五十一《束皙傳》說：</p>
+<p>“……時有人于嵩高山下得竹簡一枚，上兩行科斗書，傳以相示，莫有知者。司空張華以問皙，皙曰：此漢明帝顯節陵中策也。檢驗果然，時人伏其博識。”</p>
+<p>由此可知東漢時陵中用竹策，到隋時亦尚如此，《隋書》卷九《禮儀志》說：</p>
+<p>“諸王、三公、儀同、尚書令、五等開國、太妃、妃、公主恭拜冊，軸一枚，長二尺，以白練衣之。用竹簡十二枚，六枚與軸等，六枚長尺二寸，文出集書，書皆篆字。哀冊、贈冊亦同。”</p>
+<p>“哀册、贈冊亦同”，是知隋時陵中的策書，尚用竹爲之。其簡一長一短，亦尚未變古代策書的制度。陵中用玉策，蓋始于唐初，《舊五代史》卷一百四十三（百衲本）《禮志》說：</p>
+<p>“周廣順三年冬十月，禮儀使奏，郊廟祝文禮例云：古者大事皆書于冊，而有長短之差。魏晋郊廟祝文，書于冊，唐初悉用祝版，惟陵廟用玉冊。玄宗親祭郊廟，用玉爲冊。德宗朝博士陸淳議，準禮用祝版，祭已燔之，可其議。”</p>
+<p>哀冊與諧冊之文，自魏晋而降，均極冗長，若全用純玉，實無從得到如這樣大及多的玉。兩宋時，所有的玉冊，均用珉玉[4]。以永陵的冊推之，唐代亦或係用珉玉。按永陵玉冊的質料，係現代所稱爲白色大理石質的，其來自何處，不得而知。不過四川的汶川（稱礆玉）、甘肅的階州，當時皆產之，此二地在王建時亦均屬蜀。</p>
+<p>永陵的玉冊，長33、廣3.5厘米。以古今尺度的不同，不能作直接的比較，但可以以其本身證本身。高宗登封的冊長一尺二寸、廣一寸二分，其長寬的比例爲 $10\%$ 。永陵的玉冊，長寬的比例爲 $10.6\%$ ，相差不過半單位稍强，故可猶謂之爲唐制之舊。</p>
+<p>此乃永陵玉冊之合于唐代封禪玉策的制度者。但與宋代上尊號玉策的制度，尤爲相合，不只冊制相合，其他如冊匣以及匣上的裝飾，幾完全一式。觀于《宋會要輯稿》、《文獻通考》及《宋史·輿服志》所載，即可明了。《宋會要輯稿·禮》四十九，關于宋上尊號玉冊之制說：</p>
+<p>“其冊中書省造，用珉玉，簡長尺二寸，闖一寸二分，厚五分，簡數從文之多少，聯以金繩，首尾結帶，前後四枚刻龍鍍金，若捧護之狀。藉以錦褥，覆以紅羅泥金夾帕。冊匣長廣取容冊，塗以朱漆金裝隱起突龍鳳金鏃幅錯。匣上又以紅羅絢盤龍蹙金帳覆之，承以金裝長竿床，金龍首，金魚鈞；藉匣以錦緣席錦褥。又紐紅絲爲條，以縛匣冊。案塗朱漆，覆以紅羅銷金衣。”</p>
+<p>《文獻通考》（卷一百一十五）載上高宗（趙構）太上皇尊號的玉冊以及《宋史·興服志》記玉冊、冊匣之制，均與《宋會要輯稿》同。《宋史·興服志》說：</p>
+<p>“冊制用珉玉，簡長一尺二寸，闊一寸二分，簡數從字之多少。聯以金繩，首尾結帶。前後標首四枚，二枚畫神，二枚刻龍鍍金，若奉護之狀……”</p>
+<p>此處舉出“標首”一名，是知冊前後特別寬大的數簡，其上繪神刻龍者，在宋代稱“標首”，本報告內亦襲用之。</p>
+<p>以上乃宋制上皇帝尊號的玉冊，至于宋代陵中的玉冊，亦與此全同。《宋會要輯稿·禮》二十九，歷代大行喪禮上，永昌陵中的玉冊說：</p>
+<p>“開寶九年十月二十日，太祖崩于萬歲殿……中書省言製造哀、諼冊二副，用階玉，從之。（每冊條六十，內一十條折標四片，五十條書冊文。冊匣二具，長七尺五寸，使金鍍銀，含棱，遍地合羅花，盤龍裝。紅錦托裹。揭搭象鼻銅鐵，銀鏽鏽各全。穿聯冊銀條，兩頭銀絲結花二朵，各一副。）”</p>
+<p>由此可見永陵中的玉冊與宋代陵中的玉冊幾乎完全相同，簡均長一尺二寸，廣一寸二分，質亦用珉玉（階玉）。其前後折禪“刻龍鍍金，若捧護之狀”亦爲相同。至于冊匣，尤爲相似。</p>
+<h1 id="_47">後記</h1>
+<p>王建墓的發掘原分兩個階段、前一階段（後室發掘）的報告由著者編寫；後一階段（前室和中室的發掘）的報告，則由吳金鼎先生編寫。吳先生的報告未編成即行離去，僅留下草稿，既未配圖，亦未對出土物進行復原和考訂。所以，吳先生的稿本僅係一種發掘經過的叙述（原稿現存四川省博物館檔案室）。吳先生在1948年去世後，編寫的任務則全部落到著者的身上了。但在編寫第二階段的報告時，吳先生的草稿，因體例不同，僅用作參考。不過，吳金鼎先生對王建墓的發掘，用力至多，報告內容之有今日者，亦全仗其發掘之科學與記錄之詳實。遺憾的是未能將其報告編竣，也不及親見此書之出版。</p>
+<p>關於建築和雕刻部分，原係由莫宗江教授測繪及整理。今莫教授任務繁忙，無暇及此，而著者亦無由得見其所測繪之資料。故本報告內的有關墓葬的各種建築圖案，均係著者與楊有潤同志所測繪。但我們二人對于古建築均係外行，所測繪的方法及使用的名稱，是否確當，自有可商之地。</p>
+<p>本報告內各種器物的復原工作，楊有潤同志用力甚深，各種復原圖亦大半爲其所繪製。其中的主要部分（如木門作、漆器中的寶盃和冊匣）已由其抽出另行發表了。其他有少數插圖如銀器、鏡盒等圖，則係劉瑛同志所繪。十二神像、伎樂的髻式等圖，原爲趙蘆玉同志所繪製，後又由徐君熙同志補充。以上各同志皆曾付出很大的勞力，均在此謹致謝忱。</p>
+<p>王建墓的發掘，已將近二十年了。解放以來，在黨的文物政策的光輝照耀下，在黨和領導上的大力支持和鼓勵下，全部資料方得以整理發表。王建墓又由政府撥巨資加以修復（圖版壹）。1961年，國務院公布王建墓爲第一批全國重點文物保护單位。這都是著者個人感到萬分欣慶的事。今值報告出版之時，特志無限歡怵之忱。</p>
+<p>馮漢驛 識</p>
+<p>1962年春節于四川省博物館</p>
+<h1 id="the-royal-tomb-of-wang-jian-of-the-former-shu_1">The Royal Tomb of Wang Jian of the Former Shu</h1>
+<p>(An Abstract)</p>
+<p>Yung Ling is the royal tomb of Wang Jian (died A. D. 918), the ruler of the kingdom of the Former Shu which was founded toward the end of the T'ang dynasty and survived into the period of the Five Dynasties. It lies about one half of a kilometre south of the old Western Gate of the old city of Chengtu. Its circular earthen mound measures about fifteen metres in height and eighty metres in diameter.</p>
+<p>Built of oblong red sandstone, its tomb chamber is formed by a series of fourteen double vaults. The space between these vaults is covered by slabs of stone. The whole tomb may be divided into three chambers with the largest located at the center, attaining a total length of 23.4 metres.</p>
+<p>The tomb was sealed up with long blocks of stone under the first vault of the antechamber. This was further strengthened on the outside with another sealing of large bricks. Behind the blocks of stone stands a pair of magnificent wooden gates, decorated with red paint and gilt bronze animal masks. The antechamber itself measures about 4.45 metres in length, 3.8 metres in width and 5.45 metres in height.</p>
+<p>The central chamber is seperated from the antechamber by another pair of wooden gates similar to that of the front chamber. Being the main chamber where the coffin is placed, the central chamber is more spacious, measuring about 12 metres in length, 6.1 metres in width and 6.4 meters in height. Near the center of the chamber is the platform for coffin, with a length of 7.45 metres, a width of 3.35 metres and a height of 0.84 metre. The latter is built in the shape of a hsu mi tso (須彌座) pedestal and covered with square pieces of jade-like stone called min yu (珉玉). The topmost frieze of the platform called fan se (方溢) has a width of 11.5 cm. It is dec</p>
+<p>orated on three sides—south, east and west—with carved designs of clouds and eight dragons playing with pearls. But its north side bears only the cloud design. The horizontal member called $ycn$ se（韆溢） serves as a kind of cornice for the central part of the platform and is decorated with carved lotus design.</p>
+<p>The central patr of the platform contains on its south, east and west sides a total of twenty four niches with carved figures of female musicians and dancers. The upper part of the platform base is decorated with designs of lotus petal, followed by a central frieze of flowering scrolls and a bottom member with designs of inverted lotus petals. The carved design as a whole is very rich and elaborate.</p>
+<p>Of the twenty four female musicians and dancers, ten are on the east side while another ten are on the west and the remaining four on the south side, all carved in high relief and averaging about $24\sim 25$ cm in height. Full but without being obese, these gracefully posed figures are represented playing their instruments in such a coordinated manner as to suggest a joint performance. Two of these figures are dancers while the other twenty two are musicians. The instruments used include one $p^{\prime}i p^{\prime}a$ (琵琶), one shu k'ung hou (竖箜篌), one cheng (筝), two pi li (器築), one ti (笛), one ch'ih (簞), one sheng (簞), one hsiao (簞), one cheng ku (正鼓) drum, one cho ku, (和鼓) drum, one mao yuan ku (毛貝鼓) drum, one ch'i ku (齊鼓) drum, one ta la ku (答臘鼓) drum, one chi lou ku (鷹婁鼓) drum, one t'ao lao (靴牢), two chieh ku (羯鼓) drums, one t'ung pa (銅鍍), one ts'ui yeh (吹葉), one conch shell and two p'ai pan (拍板) clappars, adding up to a total of twenty three pieces in nineteen different varieties. These have provided a very important group of data for the study of Chinese music around the end of the Tang dynasty and the Five Dynasties period.</p>
+<p>On the east and west sides of the coffin platform are twelve half-length stone statues of warrior gods about $60~\mathrm{cm}$ in height, buried in the ground from the waist on down. Fully armoured and wearing either a helmet or a hat, their hands are stuck under the platform as if they were about to lift it up.</p>
+<p>Stacked together on the coffin platform are three wooden platforms each made separately but on a diminishing scale from the bottom up to simulate steps. Their sides are mounted with railings bearing gilt bronze ring-handles and the corners are strengthened with gilt bronze clasps. The coffin and the outer coffin were placed on top of these step-like platforms.</p>
+<p>The upper parts of the coffin and outer coffin have both disintegrated, making it impossible</p>
+<p>to restore their original shapes. However, it appears that they were both broader toward the back. The two ends of both the coffin and outer coffin were built to simulate wooden gates, decorated with gilt bronze bosses, rings and other ornaments. The sides of both the coffin and outer coffin are provided near the bottom with gilt bronze ring-handles. The outer coffin is further decorated with simulated windows and bracketing systems called tou kung (斗拱). The outer coffin is painted in reddish black while its simulated gates are painted in vermilion. The coffin is painted in brownish red and its simulated gates are painted in vermilion.</p>
+<p>No traces of skeletons have been found in the coffin. The finds include a large jade belt composed of seven jade plaques carved with magnificent designs of dragon, two silver boxes, silver bowl, pig, po-basin, scratcher (搔手) and cane, a bronze mirror, lacquer boxes with inlaid silver designs and small jade ornaments. Many of these are exquisite works of art. In addition, an iron bull measuring about 74cm in length and an iron pig measuring about 66cm in length were found respectively off the southwest and southeast corners of the coffin platform.</p>
+<p>Immediately behind the coffin platform stands a large red sandstone basin which holds a circular stone stand. Placed on the latter is a large brown-glazed pottery basin which holds two green glazed pottery lamps. These were probably used to light up the central chamber.</p>
+<p>Behind the stone basin is the third door partitioning the central and back chambers, Its construction and ornamentation are similar to the other two doors. The back chamber measures about 5.7 metres in length, 4.4 metres in width and 5.5 metres in height. The rear wall of the chamber is formed by a sealing of stone blacks more than three metres in thickness. Toward the back of the back chamber is a stone platform with a height of 0.79 metre. Its cornice is carved with designs of dragons playing with pearls. At the center of its front is a carved dragon design. flanked by a pair of carved lion-like beasts. Placed end to end and extending across the whole width of the platform are two sets of tablets fashioned from jade-like stone called min yii, each consisting of fifty three pieces. The first and last pieces of each set are decorated with polychrome paintings of either a warrior clad in gold armour or dragon and clouds. The other tables are of uniform size, 33cm long, 32cm wide and 20cm thick. Each tablet is perforated transversely at both ends and silver threads put through these perforations bind the whole set. One set is inscribed with the royal eulogy and called ai ts'e (哀册) while the other set bears an eulogical essay offering the posthumous title to the departed ruler and is called shih ts'e (谥册)。The inscriptions cut deeply into the stone and are painted over with gold. Each of these two sets was placed in an exquisite red lacquer</p>
+<p>box inlaid in silver with designs of phoenix, crane, peacock and lion.</p>
+<p>At the rear of these two books and right at the center of the platform face is a double lacquer box called $pao \, lu$ inlaid with silver designs of dragon or phoenix flanked by warriors. The white jade seal bearing the posthumous title of the dead was found inside its inner box along with some jade ornaments and rings. Originally, the latter probably formed part of a decorative ribbon attached to the jade seal but the ribbon itself had already disappeared.</p>
+<p>Behing the pao lu is a seated red sandstone statue of Wang Jian measuring 0.86 metre in height. Although intended as a formal portrait, it is very lifelike and represents him in the costume commonly worn by the Tang emperors, namely, a type of hat called ché shang chin (折上巾), a red robe with belt and a pair of boots.</p>
+<p>The Yung Ling had been invaded by tomb robbers soon after its construction, and perhaps not just once, but the finds yielded through the excavation are still very impressive and offer some most valuable data for the study of the material culture of Szechwan area around the end of the Tang dynasty and the Five Dynasties period.</p>
+  </div>
+</div>
+
+<div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)"><a href="./唐长安城郊隋唐墓.html" style="color:var(--muted);text-decoration:none">← 唐长安城郊隋唐墓</a><a href="./满城汉墓.html" style="color:var(--muted);text-decoration:none">满城汉墓 →</a></div>
+</div>
+
+<div class="toc-float" id="tocPanel">
+  <h4>目录</h4>
+  <div id="tocContent">正在生成...</div>
+</div>
+</div>
+<footer class="site-footer">
+<div class="footer-inner">
+  <p>中国考古学专刊·丁种 实体标注知识库 &copy; 2026</p>
+  <p class="footer-links">
+    <a href="https://github.com/CrossTheOcean/archaeology-report-kb" target="_blank">GitHub</a> ·
+    <a href="../about.html">关于本站</a>
+  </p>
+</div>
+</footer>
+<script>
+
+// Generate TOC from headings
+setTimeout(function() {
+  const body = document.getElementById('reportBody');
+  const headings = body.querySelectorAll('h1, h2, h3');
+  const toc = document.getElementById('tocContent');
+  if (headings.length === 0) {
+    toc.innerHTML = '<span style="color:var(--muted)">无标题</span>';
+    return;
+  }
+  toc.innerHTML = '';
+  headings.forEach((h, i) => {
+    h.id = 'heading-' + i;
+    const a = document.createElement('a');
+    a.href = '#heading-' + i;
+    a.textContent = h.textContent;
+    a.style.paddingLeft = (h.tagName === 'H3' ? '12px' : '0');
+    toc.appendChild(a);
+  });
+}, 500);
+
+</script>
+</body>
+</html>

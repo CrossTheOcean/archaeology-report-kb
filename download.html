@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数据下载 — 中国考古学专刊·丁种 — 实体标注知识库</title>
+<meta name="description" content="基于70份考古学专刊·丁种发掘报告的实体标注与结构化知识库">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏺</text></svg>">
+<style>
+:root {
+  --bg: #0f1117;
+  --card: #1a1d27;
+  --border: #2a2d3a;
+  --text: #e4e4e7;
+  --muted: #8b8fa3;
+  --accent: #f59e0b;
+  --accent2: #ec4899;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* Navigation */
+.topnav {
+  background: rgba(15, 17, 23, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.nav-links a.active { color: var(--accent); background: rgba(245,158,11,0.08); }
+
+/* Layout */
+.container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+.hero {
+  text-align: center;
+  padding: 48px 20px 32px;
+}
+.hero h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.hero .subtitle { color: var(--muted); font-size: 1.05rem; }
+
+/* Stats */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin: 28px 0 36px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 28px;
+  text-align: center;
+  min-width: 150px;
+  flex: 1;
+  max-width: 200px;
+}
+.stat-card .num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.stat-card .label { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
+
+/* Grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+}
+.card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  background: var(--card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.82rem;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+thead th:hover { color: var(--text); }
+tbody td { padding: 10px 14px; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+tbody tr { transition: background 0.15s; }
+tbody tr:hover { background: rgba(245, 158, 11, 0.04); }
+
+/* Tags */
+.era-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.ebar {
+  display: inline-block;
+  height: 6px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Report detail page */
+.report-header {
+  margin-bottom: 28px;
+}
+.report-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.report-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.report-meta span {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+.report-body h2 { font-size: 1.3rem; margin: 32px 0 16px; color: var(--accent); }
+.report-body h3 { font-size: 1.1rem; margin: 24px 0 12px; }
+.report-body p { margin-bottom: 12px; }
+.report-body ul, .report-body ol { margin: 12px 0 12px 24px; }
+.report-body li { margin-bottom: 4px; }
+.report-body table { margin: 16px 0; }
+.report-body table th { background: var(--card); }
+.report-body table td, .report-body table th {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+}
+.report-body pre {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.report-body code {
+  background: rgba(245,158,11,0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* Image placeholder */
+.img-placeholder {
+  display: inline-block;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+/* Entity chips */
+.entity-section { margin: 20px 0; }
+.entity-section h4 { color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; }
+.echip {
+  display: inline-block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  margin: 2px 3px;
+}
+
+/* Report card (for list page) */
+.report-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.report-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.report-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.report-card .rc-meta { color: var(--muted); font-size: 0.84rem; }
+.report-card .rc-entities { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-top: 6px; }
+
+/* Search & filter */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+.search-input {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 260px;
+  outline: none;
+}
+.search-input:focus { border-color: var(--accent); }
+.filter-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(245,158,11,0.08);
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  margin-top: 60px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.footer-inner { text-align: center; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.footer-links { margin-top: 8px; }
+.footer-links a { color: var(--accent); text-decoration: none; }
+.footer-links a:hover { text-decoration: underline; }
+
+/* About page */
+.about-section { margin: 28px 0; }
+.about-section h2 { font-size: 1.3rem; margin-bottom: 12px; color: var(--accent); }
+.about-section p { margin-bottom: 12px; color: var(--muted); }
+.about-section ul { margin: 8px 0 8px 20px; color: var(--muted); }
+
+/* Download page */
+.dl-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.dl-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.dl-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; }
+.dl-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #000;
+  padding: 8px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.dl-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.dl-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.dl-btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Map page */
+.map-container {
+  text-align: center;
+  margin: 24px 0;
+}
+.map-container img {
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .stats-row { gap: 10px; }
+  .stat-card { min-width: 120px; padding: 14px 16px; }
+  .stat-card .num { font-size: 1.5rem; }
+  .nav-links a { padding: 6px 10px; font-size: 0.82rem; }
+  .search-input { width: 100%; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+}
+@media (max-width: 480px) {
+  .nav-links { gap: 0; }
+  .nav-links a { padding: 6px 8px; font-size: 0.78rem; }
+  .container { padding: 16px; }
+}
+
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<nav class="topnav">
+<div class="nav-inner">
+  <a href="./index.html" class="logo">🏺 考古知识库</a>
+  <div class="nav-links">
+<a href="./index.html">总览</a>
+<a href="./reports.html">报告列表</a>
+<a href="./map.html">遗址地图</a>
+<a href="./download.html" class="active">数据下载</a>
+<a href="./about.html">关于</a>
+  </div>
+</div>
+</nav>
+<div class="container">
+<div class="hero"><h1>📥 数据下载</h1><p class="subtitle">获取完整的实体标注数据和原始提取文本</p></div>
+
+<div class="dl-card">
+  <h3>📦 完整数据包 (v1.0)</h3>
+  <p>包含全部70份报告的结构化实体数据 (JSON)、提取的Markdown全文、实体标注HTML。不含原始PDF和图片（约4.6GB）。</p>
+  <p style="font-size:0.84rem;color:var(--muted)">预计大小: ~120MB | 格式: tar.gz</p>
+  <a href="https://github.com/CrossTheOcean/archaeology-report-kb/releases/latest" class="dl-btn" target="_blank">前往 GitHub Releases 下载</a>
+</div>
+
+<div class="grid-2">
+  <div class="dl-card">
+    <h3>🏷️ 实体数据 (JSON)</h3>
+    <p>全部70份报告的实体标注数据，按类别组织。可直接用于数据分析、知识图谱构建。</p>
+    <a href="https://github.com/CrossTheOcean/archaeology-report-kb/releases" class="dl-btn secondary" target="_blank">下载</a>
+  </div>
+  <div class="dl-card">
+    <h3>📖 Markdown 全文</h3>
+    <p>从PDF提取的纯文本Markdown，保留原始章节结构。可用于全文搜索和文本分析。</p>
+    <a href="https://github.com/CrossTheOcean/archaeology-report-kb/releases" class="dl-btn secondary" target="_blank">下载</a>
+  </div>
+  <div class="dl-card">
+    <h3>🌐 标注HTML</h3>
+    <p>带有实体高亮标注的HTML文件。在本地配合图片文件夹可完整查看标注效果。</p>
+    <a href="https://github.com/CrossTheOcean/archaeology-report-kb/releases" class="dl-btn secondary" target="_blank">下载</a>
+  </div>
+  <div class="dl-card">
+    <h3>🛠️ 标注脚本</h3>
+    <p>用于实体标注的Python脚本，支持26类实体自动识别与标注。可复用于其他考古报告。</p>
+    <a href="https://github.com/CrossTheOcean/archaeology-report-kb/tree/main/标注脚本" class="dl-btn secondary" target="_blank">查看源码</a>
+  </div>
+</div>
+
+<div class="card" style="margin-top:24px">
+  <h3>📋 数据说明</h3>
+  <ul style="margin:12px 0 0 20px;color:var(--muted);line-height:2">
+    <li><b>实体数据</b>：每份报告的 entities.json 包含26类实体（遗迹编号、器物编号、陶器、铜器、石器、骨器、玉器、蚌器、纹饰、材质、年代、地层、地理位置、建筑结构、遗存类型、保存状况、葬具葬式、制作工艺、发掘信息、测年方法、层位关系、测量数据、方向角度、土样特征、探方编号、发掘区）</li>
+    <li><b>Markdown全文</b>：使用 MinerU API 从PDF提取，保留标题层级和表格结构</li>
+    <li><b>图片</b>：原始PDF提取的图片（约63,170张，4.6GB）因体积限制不在下载包中，需自行从PDF提取</li>
+    <li><b>原始PDF</b>：考古学专刊·丁种的原始PDF可从 Internet Archive 等渠道获取，详见本站 <a href="./about.html" style="color:var(--accent)">关于页</a></li>
+  </ul>
+</div>
+</div>
+<footer class="site-footer">
+<div class="footer-inner">
+  <p>中国考古学专刊·丁种 实体标注知识库 &copy; 2026</p>
+  <p class="footer-links">
+    <a href="https://github.com/CrossTheOcean/archaeology-report-kb" target="_blank">GitHub</a> ·
+    <a href="./about.html">关于本站</a>
+  </p>
+</div>
+</footer>
+<script>
+
+</script>
+</body>
+</html>

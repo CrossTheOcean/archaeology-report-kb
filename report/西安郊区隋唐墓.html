@@ -1,0 +1,2472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>西安郊区隋唐墓 — 中国考古学专刊·丁种 — 实体标注知识库</title>
+<meta name="description" content="基于70份考古学专刊·丁种发掘报告的实体标注与结构化知识库">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏺</text></svg>">
+<style>
+:root {
+  --bg: #0f1117;
+  --card: #1a1d27;
+  --border: #2a2d3a;
+  --text: #e4e4e7;
+  --muted: #8b8fa3;
+  --accent: #f59e0b;
+  --accent2: #ec4899;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* Navigation */
+.topnav {
+  background: rgba(15, 17, 23, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.nav-links a.active { color: var(--accent); background: rgba(245,158,11,0.08); }
+
+/* Layout */
+.container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+.hero {
+  text-align: center;
+  padding: 48px 20px 32px;
+}
+.hero h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.hero .subtitle { color: var(--muted); font-size: 1.05rem; }
+
+/* Stats */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin: 28px 0 36px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 28px;
+  text-align: center;
+  min-width: 150px;
+  flex: 1;
+  max-width: 200px;
+}
+.stat-card .num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.stat-card .label { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
+
+/* Grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+}
+.card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  background: var(--card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.82rem;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+thead th:hover { color: var(--text); }
+tbody td { padding: 10px 14px; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+tbody tr { transition: background 0.15s; }
+tbody tr:hover { background: rgba(245, 158, 11, 0.04); }
+
+/* Tags */
+.era-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.ebar {
+  display: inline-block;
+  height: 6px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Report detail page */
+.report-header {
+  margin-bottom: 28px;
+}
+.report-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.report-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.report-meta span {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+.report-body h2 { font-size: 1.3rem; margin: 32px 0 16px; color: var(--accent); }
+.report-body h3 { font-size: 1.1rem; margin: 24px 0 12px; }
+.report-body p { margin-bottom: 12px; }
+.report-body ul, .report-body ol { margin: 12px 0 12px 24px; }
+.report-body li { margin-bottom: 4px; }
+.report-body table { margin: 16px 0; }
+.report-body table th { background: var(--card); }
+.report-body table td, .report-body table th {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+}
+.report-body pre {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.report-body code {
+  background: rgba(245,158,11,0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* Image placeholder */
+.img-placeholder {
+  display: inline-block;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+/* Entity chips */
+.entity-section { margin: 20px 0; }
+.entity-section h4 { color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; }
+.echip {
+  display: inline-block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  margin: 2px 3px;
+}
+
+/* Report card (for list page) */
+.report-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.report-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.report-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.report-card .rc-meta { color: var(--muted); font-size: 0.84rem; }
+.report-card .rc-entities { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-top: 6px; }
+
+/* Search & filter */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+.search-input {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 260px;
+  outline: none;
+}
+.search-input:focus { border-color: var(--accent); }
+.filter-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(245,158,11,0.08);
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  margin-top: 60px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.footer-inner { text-align: center; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.footer-links { margin-top: 8px; }
+.footer-links a { color: var(--accent); text-decoration: none; }
+.footer-links a:hover { text-decoration: underline; }
+
+/* About page */
+.about-section { margin: 28px 0; }
+.about-section h2 { font-size: 1.3rem; margin-bottom: 12px; color: var(--accent); }
+.about-section p { margin-bottom: 12px; color: var(--muted); }
+.about-section ul { margin: 8px 0 8px 20px; color: var(--muted); }
+
+/* Download page */
+.dl-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.dl-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.dl-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; }
+.dl-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #000;
+  padding: 8px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.dl-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.dl-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.dl-btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Map page */
+.map-container {
+  text-align: center;
+  margin: 24px 0;
+}
+.map-container img {
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .stats-row { gap: 10px; }
+  .stat-card { min-width: 120px; padding: 14px 16px; }
+  .stat-card .num { font-size: 1.5rem; }
+  .nav-links a { padding: 6px 10px; font-size: 0.82rem; }
+  .search-input { width: 100%; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+}
+@media (max-width: 480px) {
+  .nav-links { gap: 0; }
+  .nav-links a { padding: 6px 8px; font-size: 0.78rem; }
+  .container { padding: 16px; }
+}
+
+
+.toc-float {
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.8rem;
+  max-width: 220px;
+  z-index: 50;
+}
+.toc-float h4 { color: var(--muted); margin-bottom: 8px; }
+.toc-float a { color: var(--muted); text-decoration: none; display: block; padding: 2px 0; }
+.toc-float a:hover { color: var(--accent); }
+@media (max-width: 1024px) { .toc-float { display: none; } }
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<nav class="topnav">
+<div class="nav-inner">
+  <a href="../index.html" class="logo">🏺 考古知识库</a>
+  <div class="nav-links">
+<a href="../index.html">总览</a>
+<a href="../reports.html" class="active">报告列表</a>
+<a href="../map.html">遗址地图</a>
+<a href="../download.html">数据下载</a>
+<a href="../about.html">关于</a>
+  </div>
+</div>
+</nav>
+<div class="container" style="display:flex;gap:24px">
+<div style="flex:1;min-width:0">
+<div class="report-header">
+  <a href="../reports.html" style="color:var(--muted);font-size:0.88rem;text-decoration:none">← 返回报告列表</a>
+  <h1 style="margin-top:8px">西安郊区隋唐墓</h1>
+  <div class="report-meta">
+    <span class="era-tag" style="background:#ec489922;color:#ec4899">隋唐</span>
+    <span>113 页</span>
+    <span>15.9 MB</span>
+    <span>314 个实体</span>
+    <span>密度 2.8</span>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:24px">
+  <h3>🏷️ 实体标注</h3>
+  <div class="entity-section"><h4>遗迹编号 (160)</h4><div><span class="echip">M1</span><span class="echip">M122</span><span class="echip">M177</span><span class="echip">M2</span><span class="echip">M186</span><span class="echip">M178</span><span class="echip">M3</span><span class="echip">M262</span><span class="echip">M192</span><span class="echip">M5</span><span class="echip">M265</span><span class="echip">M209</span><span class="echip">M7</span><span class="echip">M303</span><span class="echip">M223</span><span class="echip">M23</span><span class="echip">M4</span><span class="echip">M304</span><span class="echip">M225</span><span class="echip">M32</span><span class="echip">M305</span><span class="echip">M229</span><span class="echip">M33</span><span class="echip">M307</span><span class="echip">M230</span><span class="echip">M38</span><span class="echip">M325</span><span class="echip">M236</span><span class="echip">M51</span><span class="echip">M402</span><span class="echip">M238</span><span class="echip">M55</span><span class="echip">M408</span><span class="echip">M243</span><span class="echip">M117</span><span class="echip">M461</span><span class="echip">M206</span><span class="echip">M12</span><span class="echip">M524</span><span class="echip">M269</span><span class="echip">M226</span><span class="echip">M526</span><span class="echip">M270</span><span class="echip">M227</span><span class="echip">M527</span><span class="echip">M280</span><span class="echip">M49</span><span class="echip">M534</span><span class="echip">M290</span><span class="echip">M144</span><span class="echip" style="color:var(--muted)">+110 更多</span></div></div>
+<div class="entity-section"><h4>测量数据 (137)</h4><div><span class="echip">16</span><span class="echip">46</span><span class="echip">87</span><span class="echip">66</span><span class="echip">1.24</span><span class="echip">94</span><span class="echip">10</span><span class="echip">50</span><span class="echip">40</span><span class="echip">58</span><span class="echip">60</span><span class="echip">44</span><span class="echip">2.10</span><span class="echip">36</span><span class="echip">15</span><span class="echip">42</span><span class="echip">73</span><span class="echip">05</span><span class="echip">56</span><span class="echip">4.90</span><span class="echip">14</span><span class="echip">75</span><span class="echip">0.48</span><span class="echip">1.60</span><span class="echip">1.25</span><span class="echip">45</span><span class="echip">43</span><span class="echip">22</span><span class="echip">0.22</span><span class="echip">07</span><span class="echip">30</span><span class="echip">0.80</span><span class="echip">2.60</span><span class="echip">20</span><span class="echip">48</span><span class="echip">11</span><span class="echip">1.10</span><span class="echip">70</span><span class="echip">0.50</span><span class="echip">0.74</span><span class="echip">52</span><span class="echip">62</span><span class="echip">2.75</span><span class="echip">35</span><span class="echip">1.90</span><span class="echip">80</span><span class="echip">95</span><span class="echip">2.70</span><span class="echip">90</span><span class="echip">5.40</span><span class="echip" style="color:var(--muted)">+87 更多</span></div></div>
+<div class="entity-section"><h4>陶器 (8)</h4><div><span class="echip">陶罐</span><span class="echip">陶盘</span><span class="echip">陶灶</span><span class="echip">罐</span><span class="echip">壶</span><span class="echip">盘</span><span class="echip">盆</span><span class="echip">鼎</span></div></div>
+<div class="entity-section"><h4>铜器 (3)</h4><div><span class="echip">铜镜</span><span class="echip">盘</span><span class="echip">鼎</span></div></div>
+<div class="entity-section"><h4>骨器 (2)</h4><div><span class="echip">骨梳</span><span class="echip">骨匕</span></div></div>
+<div class="entity-section"><h4>材质 (2)</h4><div><span class="echip">铁器</span><span class="echip">铅器</span></div></div>
+<div class="entity-section"><h4>石器 (1)</h4><div><span class="echip">石璜</span></div></div>
+<div class="entity-section"><h4>地理位置 (1)</h4><div><span class="echip">镇</span></div></div>
+
+</div>
+
+<div class="card">
+  <h3>📖 报告全文</h3>
+  <div class="report-body" id="reportBody">
+    <h1 id="_1">中国田野考古报告集</h1>
+<h1 id="_2">考古学专刊</h1>
+<h1 id="_3">丁种第十八号</h1>
+<h1 id="_4">西苗郊医随康英</h1>
+<p>中国科学院考古研究所编</p>
+<p>科学出版社出版</p>
+<h1 id="_5">中国田野考古报告集</h1>
+<h1 id="_6">考古学专刊</h1>
+<h1 id="_7">丁种第十八号</h1>
+<h1 id="_8">西郊庙随唐墓</h1>
+<p>中国科学院考古研究所編著</p>
+<p>科学出版社出版</p>
+<h1 id="_9">内容简介</h1>
+<p>本书报导了1955—1961年在西安郊区所发掘的175座隋、唐墓葬的资料。由于墓葬和随葬品的数量和种类较多，所以便于分类排比，找出其演变和发展的规律。这批资料的发表，给研究隋唐时代的生产水平、社会生活和意识形态等方面，提供了可靠的实物资料，对研究隋唐考古和隋唐历史具有一定的参考价值。</p>
+<p>内容包括：绪言；第一章，墓葬形制；第二章，陶俑；第三章，陶器及其他；第四章，分期与年代；结语诸部分。墓志录文及考释作为附录发表。</p>
+<p>根据陶俑的演变,并参考铜镜、钱币和墓型的差异,这批墓葬分为三期。第一期为隋至初唐,第二期为盛唐时期,第三期为中、晚唐时期。</p>
+<p>西安郊区隋唐墓</p>
+<p>中国田野考古报告集</p>
+<p>考古学专刊</p>
+<p>丁种第十八号</p>
+<p>中国科学院考古研究所编著</p>
+<p>率</p>
+<p>科学出版社出版</p>
+<p>北京朝阳门内大街137号</p>
+<p>北京市考刊用版业业开出字第061号</p>
+<p>中国科学院印刷厂印刷</p>
+<p>新华书店北京发行所发行 各地新华书店经售</p>
+<h1 id="_10"></h1>
+<p>1966年6月5日 本：787×1092 1/16</p>
+<p>1966年6月第一次印刷 印张：91/8</p>
+<p>微林韵木：1-910 结区：31</p>
+<p>报平本：1-460 字数：183,000</p>
+<p>读一书号：11031·63</p>
+<p>本社书号：3160·11</p>
+<p>定价：道林糖装本3.70元</p>
+<p>报纸半装本2.50元</p>
+<h1 id="_11">目 录</h1>
+<h1 id="_12">緒言</h1>
+<h1 id="_13">第壹章 墓葬形制</h1>
+<p>一、慕葬分型与举例<br />
+二、葬式、葬俗和葬具 20<br />
+三、随葬品的位置· 22</p>
+<h1 id="_14">第贰章 陶俑</h1>
+<p>一、镇墓俑 37<br />
+二、男俑 <br />
+三、女俑… 47<br />
+四、动物俑</p>
+<h1 id="_15">第叁章 陶器及其他</h1>
+<p>一、陶器<br />
+二、三彩器 64<br />
+三、釉陶和瓷器 64<br />
+四、铜器 71<br />
+五、铁器· 81<br />
+六、铅器 82<br />
+七、玉石器 82<br />
+八、骨蚌器 82<br />
+九、料器· 83</p>
+<h1 id="o-83">一O、漆器 83</h1>
+<h1 id="83">一、钱币 83</h1>
+<h1 id="85">一二、墓志· 85</h1>
+<h1 id="88">第肆章 分期与年代 88</h1>
+<p>一、分期· 88<br />
+二、年代 88</p>
+<h1 id="91">結語 91</h1>
+<p>附录 墓志录文及考释 93<br />
+后記 139</p>
+<h1 id="_16">插图目录</h1>
+<p>一 西安郊区隋唐墓地位置图<br />
+二墓113平、剖面图<br />
+三墓109平、剖面图<br />
+四墓418平、剖面图 6<br />
+五墓606平、剖面图 6<br />
+六墓586平面图<br />
+七墓604平、剖面及墓门结构图 9<br />
+八墓223平面图· 9 <br />
+九墓305石墓门结构示意图· 10</p>
+<p>一O墓305平、剖面图 10后<br />
+墓305石门楣花纹墓本 11<br />
+一二 蕨305石门限和石门额花纹墓本<br />
+一三墓305石门左边门框和门犀花纹墓本· 12<br />
+一四墓305石门右边门屏和门框花纹墓本· 13<br />
+一五 墓304平、剖面图 15<br />
+一六 蕲603平面图 16<br />
+一七墓547平面图 16<br />
+一八 墓609平面图 16<br />
+一九墓505平、剖面图<br />
+二〇 墓301平面图<br />
+二一 墓502平面图· 18<br />
+二二墓602平面图· 18<br />
+二三墓420平面图· 18<br />
+二四 墓220平面图<br />
+二五 董421平面图 19<br />
+二六 208平、剖面图<br />
+二七男俑模头式样<br />
+二八女俑发式<br />
+二九带座罐</p>
+<p>三O 陶罐 58<br />
+三一 陶器 61<br />
+三二 陶盘 62<br />
+三三 陶器座 62<br />
+三四 陶灶 63<br />
+三五 瓷器 69<br />
+三六 釉陶和瓷器 71<br />
+三七 铜镜花纹拓本 72<br />
+三八 I型四式铜镜 73<br />
+三九 铜器 77<br />
+四铜发饰 78<br />
+四一 铜带具 80<br />
+四二 I型铁刀 81<br />
+四三 铁、玉、骨器 81<br />
+四四 钱币拓本 84<br />
+四五 吕武墓志盖拓本 106<br />
+四六吕武墓志志文拓本 107<br />
+四七段元哲墓志志文拓本 108<br />
+四八 刘宝墓志盖拓本 109<br />
+四九 刘宝墓志志文拓本 110<br />
+五〇 郭嵩墓志盖拓本 111<br />
+五一 郭嵩墓志志文拓本 112<br />
+五二 郭恆墓志盖拓本 113<br />
+五三 郭恒墓志志文拓本 114<br />
+五四 李仁墓志盖拓本 115<br />
+五五 李仁墓志志文拓本 116<br />
+五六 慕容氏墓志盖拓本 117<br />
+五七 慕容氏墓志志文拓本 118<br />
+五八 韩氏墓志盖拓本 119<br />
+五九 韩氏墓志志文拓本 120<br />
+六O·曹景林墓志盖拓本 121<br />
+六一·曹景林墓志志文拓本 122<br />
+六二·查橙志益拓本 123<br />
+六三 董橙墓志志文拓本 124</p>
+<p>六四 杨氏墓志盖拓本 125<br />
+六五 杨氏墓志志文拓本 126<br />
+六六 张十八娘子墓志拓本 127<br />
+六七 董岌墓志盖拓本 128<br />
+六八 董岌墓志志文拓本 129<br />
+六九李文政墓志盖拓本 130<br />
+七○ 李文政墓志志文拓本 131<br />
+七一 董氏墓志盖拓本 132<br />
+七二 董氏墓志志文拓本 133<br />
+七三 郑德柔墓志志文拓本 134<br />
+七四 何溢墓志盖拓本 ………………………………………… 135<br />
+七五 何溢墓志志文拓本 ………………………………………… 136<br />
+七六路復源墓志蓋拓本 137<br />
+七七路复源墓志志文拓本 138</p>
+<h1 id="_17">图版目录</h1>
+<p>彩版壹 III型带座罐墓本</p>
+<p>彩版贰 带座罐基本</p>
+<p>壹 墓418墓室和墓576随葬器物出土情况</p>
+<p>贰 墓586随葬器物出土情况及墓604顶部结构</p>
+<p>参 葬413、536、414、585随葬器物的位置</p>
+<p>肆镇墓兽</p>
+<p>伍镇墓兽</p>
+<p>陆镇墓兽</p>
+<p>柴 镇墓兽、武士俑和十二时俑</p>
+<p>捌 武士俑和天王俑</p>
+<p>玖 武士俑和天王俑</p>
+<p>捡天王俑</p>
+<p>拾壹 武士俑和男俑</p>
+<p>拾贰 男俑</p>
+<p>拾叁 男俑</p>
+<p>拾肆 男俑</p>
+<p>拾伍 男俑</p>
+<p>拾陆 男俑</p>
+<p>拾染 男俑</p>
+<p>拾捌 披甲骑马卤簿俑</p>
+<p>拾玖 男、女俑</p>
+<p>贰拾 女俑</p>
+<p>贰壹 女俑</p>
+<p>贰贰 女俑</p>
+<p>贰叁 女俑和动物俑</p>
+<p>武肆 动物俑</p>
+<p>贰伍 马俑</p>
+<p>贰陆 马俑和骆驼俑</p>
+<p>贰结 牛俑和陶器</p>
+<p>贰捌陶器</p>
+<p>贰玖 陶器</p>
+<p>叁拾 三彩器和陶器</p>
+<p>叁壹 陶、瓷器</p>
+<p>叁贰，陶、瓷器</p>
+<p>叁叁 釉陶和瓷器</p>
+<p>卷肆 釉陶和瓷器</p>
+<p>叁伍 蜀陶和瓷器</p>
+<p>叁陆 瓷器</p>
+<p>参染 瓷器</p>
+<p>参捌 釉陶、瓷器和银币</p>
+<p>叁玖 釉陶、瓷器和石器</p>
+<p>肆拾 釉陶、瓷器和料器</p>
+<p>肆壹 铜镜</p>
+<p>肆贰 铜镜</p>
+<p>肆叁 铜镜</p>
+<p>肆肆 铜镜</p>
+<p>肆伍 铜镜</p>
+<p>肆陆 铜发饰</p>
+<p>肆柒 铜镜、铁器和石器</p>
+<p>肆捌 陶瓷器及其他</p>
+<h1 id="_18">緒言</h1>
+<p>西安是隋、唐两代都城的所在地。从公元六世纪八十年代到十世纪初，其地一直是全国政治、经济和文化的中心。因而，在西安及其近郊，不仅有规模很大的隋、唐遗址，而且有数量极多的墓葬，其中有平民的小墓，也有贵族官僚的大坟。发掘这些墓葬，对研究当时的生产水平、社会生活以及意识形态等方面，都将提供丰富的实物资料。</p>
+<p>这批隋、唐墓是在西安东郊和西郊发掘的，共175座。东郊136座：洪庆村5座，郭家滩22座，韩森寨109座；西郊39座：客省庄16座，张家坡23座（图一）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一 西安郊区隋唐墓地位置图</p>
+<h1 id="_19">（一）东郊墓地</h1>
+<p>西安东郊有沪、灞二河，源出终南山，北流汇合而注于渭。二河之间的台地称白鹿原，其东北过灞河为铜人原，西北与龙首原以沪河为界。三原鼎足而峙。</p>
+<p>洪庆村位于灞河之东。据墓志记载，此地唐属京兆府之铜人原；盖系原之南麓。铜人原东起骊山，西尽灞水，系骊山之麓西出者。《咸宁县志》（卷十，1936年10月重印）云：“自骊山脉迤西北入县境，与灞水俱尽者，为铜人原；渭、渭二水戒也。”</p>
+<p>郭家滩西临沪河，位处白鹿原北坡。白鹿原南接终南山，《雍录》（卷七）谓：“其地高，可以远眺。”原上垄冢叠，古墓甚多。所出唐墓志有“京兆府万年县操义乡白鹿原”的记</p>
+<p>载，故知原上在唐代有“崇义乡”的属地。</p>
+<p>韩森寨在沪河西岸，为龙首原之东南麓；隋、唐时所谓长乐坡，当在其地。此处离长安城较近，也是墓葬比较集中的地区。根据出土墓志记载，此处在隋代，有大兴县宁安乡的属地；在唐代，则分属于沪川、长乐、霸城、崇义等乡。</p>
+<p>自长安城出通化门或春明门，便是当时东西的交通大道；道经长乐坡，过灞上，出灞桥而东。今之韩森寨在长乐坡上，郭家滩属古灞上之地，洪庆村在灞桥东侧；这些地方不但地势优越，而且交通方便，是较为理想的墓地。唐人赵微明诗：“寒日蒿上明，凄凄郭东路；素车谁家子，丹旄引将去。原下荆棘丛，丛边有新墓。人间痛伤别，此是长别处。旷野何萧条，青松白杨树。”就是描写丧家出外郭城营新墓于东郊原下的情景。</p>
+<h1 id="_20">（二）西郊墓地</h1>
+<p>客省庄和张家坡皆在西安西郊沣河之西。</p>
+<p>客省庄紧临沣河，自该村往西南横亘一道黄土高地，俗称“郡鄂岭”。高地以北，地势低平。村北高地有断崖，高达6米以上；墓葬即分布在崖头之上。</p>
+<p>张家坡在客省庄西南三里左右，地处鄢岭的西北边缘。村东为一片高地，墓葬主要分布在村东南的第四发掘地点及村东的第一、二发掘地点。根据出土墓志记载，此地唐属豎（豐）邑乡，这片高地称马邬原。墓地北面四里许，今有马务村，“务”与“邬”音近，“马务村”之名与“马邬原”应有渊源关系。</p>
+<p>以上二墓地部分墓葬的分布情况，可参阅中国科学院考古研究所：《沣西发掘报告》图四、七一、七二（图中墓号系旧号）。</p>
+<p>这批墓是由中国科学院考古研究所西安研究室发掘清理的，参加发掘的有程守申、杨民州、郭世元、俞伟超、赵学谦、徐锡台、俱怀玺、张长源、何世武、洪填增、朱华志、曹继秀、冯振慧、赵信、杨国忠、刘观民、方酉生等同志。西郊各墓，发掘于1955—1961年。东郊各墓，则是在1956、1957两年中清理出来的，其中部分墓的原始资料不全，因而使编写报告的工作受到一定的影响。</p>
+<p>各墓原来的墓号较长，编排的体例也不一致，为了查阅和行文的方便，特按墓地重新编排墓号。客省庄为101—116，张家坡为201—223，洪庆村为301—305，郭家滩为401—422，韩森寨为501—609。文中所用，皆系新号（表一）。</p>
+<p>表一 西安郊区隋唐墓新、旧墓号对照表  </p>
+<table><tr><td>新</td><td colspan="2">旧</td><td>新</td><td colspan="2">旧</td><td>新</td><td colspan="2">旧</td><td>新</td><td colspan="2">旧</td></tr><tr><td>101</td><td>55SCK</td><td>M1</td><td>401</td><td>57013&lt;5&gt;2#</td><td>M1</td><td>523</td><td>56004·9#</td><td>M122</td><td>567</td><td>57004·3#</td><td>M177</td></tr><tr><td>102</td><td>&quot;</td><td>M2</td><td>402</td><td>&quot;</td><td>M2</td><td>524</td><td>&quot;</td><td>M186</td><td>568</td><td>&quot;</td><td>M178</td></tr><tr><td>103</td><td>&quot;</td><td>M3</td><td>403</td><td>&quot;</td><td>M3</td><td>525</td><td>&quot;</td><td>M262</td><td>569</td><td>&quot;</td><td>M192</td></tr><tr><td>104</td><td>&quot;</td><td>M5</td><td>404</td><td>57013(6)利</td><td>M3</td><td>526</td><td>&quot;</td><td>M265</td><td>570</td><td>&quot;</td><td>M209</td></tr><tr><td>105</td><td>&quot;</td><td>M7</td><td>405</td><td>57013(6)光</td><td>M3</td><td>527</td><td>&quot;</td><td>M303</td><td>571</td><td>&quot;</td><td>M223</td></tr><tr><td>106</td><td>&quot;</td><td>M23</td><td>406</td><td>&quot;</td><td>M4</td><td>528</td><td>&quot;</td><td>M304</td><td>572</td><td>&quot;</td><td>M225</td></tr><tr><td>107</td><td>&quot;</td><td>M32</td><td>407</td><td>&quot;</td><td>M5</td><td>529</td><td>&quot;</td><td>M305</td><td>573</td><td>&quot;</td><td>M229</td></tr><tr><td>108</td><td>&quot;</td><td>M33</td><td>408</td><td>57013&lt;六&gt;光1#</td><td>M3</td><td>530</td><td>&quot;</td><td>M307</td><td>574</td><td>&quot;</td><td>M230</td></tr><tr><td>109</td><td>&quot;</td><td>M38</td><td>409</td><td>57013&lt;六&gt;光9#</td><td>M1</td><td>531</td><td>&quot;</td><td>M325</td><td>575</td><td>&quot;</td><td>M236</td></tr><tr><td>110</td><td>&quot;</td><td>M51</td><td>410</td><td>57013&lt;5&gt;幸9#</td><td>M3</td><td>532</td><td>&quot;</td><td>M402</td><td>576</td><td>&quot;</td><td>M238</td></tr><tr><td>111</td><td>&quot;</td><td>M55</td><td>411</td><td>&quot;</td><td>M4</td><td>533</td><td>&quot;</td><td>M408</td><td>577</td><td>&quot;</td><td>M243</td></tr><tr><td>112</td><td>&quot;</td><td>M117</td><td>412</td><td>&quot;</td><td>M5</td><td>534</td><td>&quot;</td><td>M461</td><td>578</td><td>&quot;</td><td>M265</td></tr><tr><td>113</td><td>&quot;</td><td>M206</td><td>413</td><td>57013&lt;印&gt;9#</td><td>M12</td><td>535</td><td>&quot;</td><td>M524</td><td>579</td><td>&quot;</td><td>M269</td></tr><tr><td>114</td><td>&quot;</td><td>M226</td><td>414</td><td>57013生</td><td>M2</td><td>536</td><td>&quot;</td><td>M526</td><td>580</td><td>&quot;</td><td>M270</td></tr><tr><td>115</td><td>&quot;</td><td>M227</td><td>415</td><td>&quot;</td><td>M3</td><td>537</td><td>&quot;</td><td>M527</td><td>581</td><td>&quot;</td><td>M280</td></tr><tr><td>116</td><td>&quot;</td><td>M49</td><td>416</td><td>&quot;</td><td>M4</td><td>538</td><td>&quot;</td><td>M534</td><td>582</td><td>&quot;</td><td>M290</td></tr><tr><td>201</td><td>56SCC</td><td>M144</td><td>417</td><td>&quot;</td><td>M5</td><td>539</td><td>&quot;</td><td>M604</td><td>583</td><td>57004·8#</td><td>M1</td></tr><tr><td>202</td><td>&quot;</td><td>M205</td><td>418</td><td>&quot;</td><td>M6</td><td>540</td><td>&quot;</td><td>M608</td><td>584</td><td>&quot;</td><td>M2</td></tr><tr><td>203</td><td>&quot;</td><td>M214</td><td>419</td><td>&quot;</td><td>M7</td><td>541</td><td>&quot;</td><td>M614</td><td>585</td><td>&quot;</td><td>M4</td></tr><tr><td>204</td><td>57SCC</td><td>M172</td><td>420</td><td>&quot;</td><td>M12</td><td>542</td><td>&quot;</td><td>M615</td><td>586</td><td>&quot;</td><td>M5</td></tr><tr><td>205</td><td>&quot;</td><td>M190</td><td>421</td><td>57013&lt;印&gt;食</td><td>M1</td><td>543</td><td>&quot;</td><td>M627</td><td>587</td><td>&quot;</td><td>M11</td></tr><tr><td>206</td><td>&quot;</td><td>M194</td><td>422</td><td>57013&lt;印&gt;浴</td><td>M8</td><td>544</td><td>&quot;</td><td>M654</td><td>588</td><td>&quot;</td><td>M147</td></tr><tr><td>207</td><td>&quot;</td><td>M195</td><td>501</td><td>56001·14#</td><td>M136</td><td>545</td><td>57004·1#</td><td>M14</td><td>589</td><td>&quot;</td><td>M265</td></tr><tr><td>208</td><td>&quot;</td><td>M197</td><td>502</td><td>57001·2#</td><td>M7</td><td>546</td><td>&quot;</td><td>M15</td><td>590</td><td>&quot;</td><td>M286</td></tr><tr><td>209</td><td>&quot;</td><td>M401</td><td>503</td><td>&quot;</td><td>M272</td><td>547</td><td>&quot;</td><td>M429</td><td>591</td><td>&quot;</td><td>M654</td></tr><tr><td>210</td><td>&quot;</td><td>M407</td><td>504</td><td>57001·9#</td><td>M1</td><td>548</td><td>&quot;</td><td>M458</td><td>592</td><td>&quot;</td><td>M887</td></tr><tr><td>211</td><td>&quot;</td><td>M408</td><td>505</td><td>57001·14#</td><td>M3</td><td>549</td><td>57004·3#</td><td>M2</td><td>593</td><td>&quot;</td><td>M1021</td></tr><tr><td>212</td><td>&quot;</td><td>M409</td><td>506</td><td>&quot;</td><td>M4</td><td>550</td><td>&quot;</td><td>M10</td><td>594</td><td>57004·9#</td><td>M3</td></tr><tr><td>213</td><td>&quot;</td><td>M410</td><td>507</td><td>&quot;</td><td>M5</td><td>551</td><td>&quot;</td><td>M17</td><td>595</td><td>&quot;</td><td>M523</td></tr><tr><td>214</td><td>&quot;</td><td>M432</td><td>508</td><td>&quot;</td><td>M6</td><td>552</td><td>&quot;</td><td>M23</td><td>596</td><td>&quot;</td><td>M536</td></tr><tr><td>215</td><td>&quot;</td><td>M445</td><td>509</td><td>56004·1#</td><td>M130</td><td>553</td><td>&quot;</td><td>M37</td><td>597</td><td>57004·10#</td><td>M12</td></tr><tr><td>216</td><td>&quot;</td><td>M461</td><td>510</td><td>&quot;</td><td>M131</td><td>554</td><td>&quot;</td><td>M39</td><td>598</td><td>&quot;</td><td>M13</td></tr><tr><td>217</td><td>&quot;</td><td>M472</td><td>511</td><td>&quot;</td><td>M150</td><td>555</td><td>&quot;</td><td>M48</td><td>599</td><td>57004·11#</td><td>M75</td></tr><tr><td>218</td><td>&quot;</td><td>M481</td><td>512</td><td>&quot;</td><td>M190</td><td>556</td><td>&quot;</td><td>M57</td><td>600</td><td>&quot;</td><td>M129</td></tr><tr><td>219</td><td>&quot;</td><td>M483</td><td>513</td><td>&quot;</td><td>M238</td><td>557</td><td>&quot;</td><td>M67</td><td>601</td><td>57004·12#</td><td>M14</td></tr><tr><td>220</td><td>60SCC</td><td>M102</td><td>514</td><td>&quot;</td><td>M370</td><td>558</td><td>&quot;</td><td>M74</td><td>602</td><td>&quot;</td><td>M15</td></tr><tr><td>221</td><td>&quot;</td><td>M103</td><td>515</td><td>&quot;</td><td>M422</td><td>559</td><td>&quot;</td><td>M79</td><td>603</td><td>&quot;</td><td>M64</td></tr><tr><td>222</td><td>&quot;</td><td>M202</td><td>516</td><td>&quot;</td><td>M434</td><td>560</td><td>&quot;</td><td>M90</td><td>604</td><td>&quot;</td><td>M117</td></tr><tr><td>223</td><td>61SCC</td><td>M203</td><td>517</td><td>56004·1#</td><td>M435</td><td>561</td><td>&quot;</td><td>M108</td><td>605</td><td>57004·18#</td><td>M6</td></tr><tr><td>301</td><td>56003·1#</td><td>M045</td><td>518</td><td>&quot;</td><td>M473</td><td>562</td><td>57004·3#</td><td>M112</td><td>606</td><td>&quot;</td><td>M7</td></tr><tr><td>302</td><td>&quot;</td><td>M046</td><td>519</td><td>56004·9#</td><td>M3</td><td>563</td><td>&quot;</td><td>M123</td><td>607</td><td>&quot;</td><td>M9</td></tr><tr><td>303</td><td>&quot;</td><td>M047</td><td>520</td><td>&quot;</td><td>M96</td><td>564</td><td>&quot;</td><td>M156</td><td>608</td><td>&quot;</td><td>M10</td></tr><tr><td>304</td><td>57010·301-1 M1</td><td>M1</td><td>521</td><td>&quot;</td><td>M106</td><td>565</td><td>&quot;</td><td>M161</td><td>609</td><td>57韩影</td><td>M65</td></tr><tr><td>305</td><td>57010·801# M1</td><td>M1</td><td>522</td><td>&quot;</td><td>M109</td><td>566</td><td>&quot;</td><td>M170</td><td></td><td></td><td></td></tr></table>
+
+<h1 id="_21">第壹章 墓葬形制</h1>
+<h1 id="_22">一、墓葬分型与举例</h1>
+<p>这批墓葬，原始资料完备能够分型的共100座；其中东郊63座，西郊37座。所有墓葬都是洞室墓，皆有墓道和墓室，墓室在北，墓道在南。部分墓有甬道，少数大型墓还凿有天井、壁龛。除三座砖室墓外，余皆为土洞墓。砖室墓的形制与土洞墓基本一致，所以统一加以分型。现据各墓平面形状的差异，分为I一IV型，除IV型外，每型又可分为几式。依次叙述并举例说明于下（表二）。</p>
+<p>I型</p>
+<p>共6座，均为土洞墓。墓室为东西宽、南北窄的横室，平面作椭圆形、长方形或不规整长方形等。除少数墓发现以土坯封门外，其余封门痕迹不清，疑原系使用木板封门，因已腐朽，难于觉察。墓道在墓室南壁中部或略偏于西壁，多数为斜坡式，少数作竖井式或阶梯式。设有甬道者三座，其中一座凿有天井。此型墓可分三式：</p>
+<p>一式 1座。</p>
+<p>墓113（图二）方向为 $175^{\circ}$ （以墓道东壁为准，下同）。墓室平面呈椭圆形，墓道斜插在南壁中部。墓道作斜坡式，长2.28，南宽1.10，北宽0.98，南深1.90，北深3.16米。墓道北为甬道，长0.60，宽0.92，高0.46米，甬道口有土坯封门痕迹。墓室东西宽1.96，南北长1.16，高0.87米。室内有人架三具，头皆向西，一具较完整，另二具凌乱不堪，当系迁葬所致。根据出土器物（包括陪五铢三枚）考察，当为隋墓。</p>
+<p>二式 1座。</p>
+<p>墓109（图三）方向为 $145^{\circ}$ 。墓室平面为长方形的横室，二具人架横陈室内，头南足北。东面一具完整，西面一具凌乱，显系迁葬。墓道作竖井式，略偏于墓室西壁，长1.90，宽0.80，深2.66米。墓室东西宽2.28，南北长1.10—1.24米，室顶呈弧形，高0.94米。所出陶壶与墓113完全相同，可能亦为隋墓。</p>
+<p>三式 4座。</p>
+<p>墓室平面呈不规整长方形。向南或西南，在 $180^{\circ} - 196^{\circ}$ 之间。墓道较一式显著增长，除墓213作阶梯式外，其余三座皆为斜坡式。以墓418、586为例。</p>
+<p>墓418（图四；图版壹，1）方向为 $190^{\circ}$ 。墓室东西宽2.40—2.45，南北长2，高2.10米。内陈人架一具，头部朝西。墓室南接甬道，甬道长0.60，宽1.10，高1.50米。墓道作斜坡式，长10.7，宽1.10—1.12，南深3.15，北深7.40米，坡度为 $22^{\circ}$ 。顶部开凿长方形天井</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>两个，从南到北第一天井长1.40，宽0.58米；第二天井长1.80，宽0.60米。根据随葬器物和出土隋五铢五枚观察，此墓应为隋墓。</p>
+<p>墓586（图六；图版贰，1）方向为 $180^{\circ}$ 。斜坡墓道，宽1.40，长达19米，坡度为 $18^{\circ}-22^{\circ}$ 。墓道北端为甬道，长1.70，宽1.40，高1.60米。墓室东西宽2.86—2.95，南北长（以西壁为准）2.46，高2.50米。墓室东壁有一长方形土洞，长2.60—2.70，宽0.44米；顶部已塌，高度不明。甬道两壁和墓室四壁皆抹一层薄石灰面，其上原有壁画，惜已脱落殆尽，看不出所画内容。墓志记载，墓主为隋大都督左亲卫车骑将军吕武，葬于开皇十二年(592年)。</p>
+<p>图六 墓586平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.石墓志（一合）2、3.镇墓兽4、5.武士俑6—38.男立俑39—41.男骑俑42—57.女立俑58—61. 女坐俑62—64.狗俑65—67.猪俑68、69.羊俑70.骆驼俑71.铜镜72.料杯73.磨74.灶75. 碗76、77.屋78.陶鼓形器79—87.陶罐88、89.陶双耳罐90.陶瓶91.陶盆92.安唾壶93.安 唾壶盖94.青藤釉烛台95.瓷水盂</p>
+<h1 id="ii">Ⅱ型</h1>
+<p>共6座，其中土洞墓和砖室墓各三座，砖室墓中有一座系双室墓。墓室平面呈方形或长方形，墓道在墓室南壁的中部或稍偏东壁处，整个墓葬的平面图状似铲形。墓室内多数铺设棺床。封门用砖或土坯，双室砖墓另有石门装置。墓道多作斜坡式，个别凿有天井。此型墓可分为三式：</p>
+<p>一式.4座。</p>
+<p>土洞墓和砖室墓各二座。向南、东南或西南，在 $168^{\circ} - 210^{\circ}$ 之间。墓室平面为方形或近似方形，墓道多数略偏墓室东壁。以墓606、604为例。</p>
+<p>墓606（图五）为土洞墓。方向为 $175^{\circ}$ 。墓室平面近似方形，南北长1.70，东西宽1.88—2.10米；部分顶部已坍塌，高约1.60米。墓门已倒，附近有土坯残迹，当系用土坯封门。斜坡式墓道略偏墓室东壁，长2.88，宽1.14，南深3.24，北深4.36米。</p>
+<p>墓604（图七；图版贰，2）为砖室墓。方向为 $188^{\circ}$ 。墓室平面呈方形，系由双层长方砖砌筑而成。长4.10，宽4.17，高4.15米。四壁微向外张，下部为错缝平砌，上部系一平一竖相同砌筑，砌至高3米后，迭滤收成穹窿顶。地面以立砖错缝纵铺。室西铺设棺床，宽2，高0.42米，长同墓室；平面用方砖对缝铺砌，东侧使用雕砖砌出椭圆形壶门装饰。墓门砌成拱形，偏于墓室东壁，宽1.20，高1.73米。甬道长3.35，宽1.95，高2.05米，地面铺砖与墓室相同，口部用方砖平砌封闭。墓道宽1.25，深7.56米，未全部掘出，据钻探所知，长度约为18米。墓室顶部和南壁共有盗洞三处，估计被盗二次以上。</p>
+<p>二式 1座。</p>
+<p>墓223（图八）为土洞墓。方向为 $170^{\circ}$ 。墓室长方形。墓道位于南壁中部，作斜坡式，长4.40，宽1，深2.50—4.90米，底部不甚平整。墓道北端凿一天井，长2，宽1米。墓室长4.40，宽3.05，高3.14米；北壁东部开凿一长方形壁龛，长1.10，宽0.67，高0.75米。墓室西部有一砖砌棺床，长2.45，宽1.75，高0.34—0.48米，北高南低。床上置人架二具，头北足南。墓志记载，系唐东宫细引郭嵩和其妻王氏的合葬墓，营于武周证圣元年(695年）。</p>
+<p>三式 1座。</p>
+<p>墓305（图一〇）为双室砖墓。方向为 $193^{\circ}$ 。全墓由墓道，前、后甬道和前、后墓室五部分组成。此墓是这批墓中唯一的双室墓，也是规模最大的一座墓。前、后室皆为方形，四壁微向外张成弧形。前室甬道位于南壁中部，后室甬道偏于墓室东壁，二室之间以甬道相通。</p>
+<p>墓道作斜坡式，坡度为 $16^{\circ}$ 。宽1.50米，因未全部清理，长度不详，约在30米左右。顶部开凿长方形天井五个，长1.75—2.20，宽1.45—1.60米。东西两壁各有壁龛三个，宽0.80—1.15，高0.95—1.12，进深1—1.25米，龛口残存木门痕迹。墓道及天井两壁原皆涂有白灰，已脱落殆尽。墓已被盗，盗洞在自南往北第五天井内，长0.60，宽0.45米。</p>
+<p>前室甬道在墓道之北，长4，宽1.35，高2.40米。两壁用砖砌成，砌法是一平一竖相同砌筑，顶作拱形，底错缝横铺长方砖。甬道南端用砖封门，其北0.60米处设有一道石墓门（图九）。甬道封门和石墓门均已倒塌，盖系盗掘时所破坏。石墓门除门限和东西二门框还在原来位置外，其他部分则散置于甬道和前室内。石门楣、门额、门框、门扉和门限均刻有花纹。</p>
+<p>门楣1件。作劣弓形。宽1.09，高0.43米。上刻双凤对舞，周边衬以卷草花纹。刻法系剔地阴刻（图一一）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图七 墓604平、剖面及墓门结构图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图八 基223平面图</p>
+<p>1.石墓志（一合）2、3.陶堰4-9.陶俑 10.骆驼俑 11-15.开元通宝</p>
+<p>门额1件。长1.50，宽0.22米。两端各有一椭圆形孔，为安繁门轴之处。中部刻对称卷草花纹，刻法同门楣（图一二，2）。</p>
+<p>图九 墓305石墓门结构示意图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.门框 2.门额 3、4.门框 5、6.门群 7.门限 8、9.门钻</p>
+<p>门框1对。高1.15，宽0.20—0.22米。上刻卷草纹，刻法亦与门楣相同（图一三，1；图一四，2）。</p>
+<p>门扉2扇。高1.20，宽0.56，厚0.07米。右扇刻戴冠执笏文臣；左扇已残破，上刻双手握剑武士，人物周绿衬以花草。纹饰皆以阴线刻出。中部靠近合扇处均有一圆孔，直径3厘米，原或有铺首门环装置，已无痕迹可寻（图一三，2；图一四，1）。</p>
+<p>门限1件。长0.88，宽0.18米上刺阴线流云纹（图一二，1）。</p>
+<p>前室长3.15，宽3.30米；顶部坍塌，高度不明。四壁结构与甬道砖壁相同，底部对缝横铺长方砖。前室北壁与后室甬道相通，甬道长4.70，宽1.35，高2.15米。底部铺砖与前室同。</p>
+<p>后室长、宽皆为4.50米，顶部亦已坍塌，高度、结构不详。室底东部铺砖，同于前室；西部以长方形石板铺设棺床，长3.95，宽2.50，高0.30米。石</p>
+<p>板共八块，长1.20—1.65，宽0.70—0.80米，未加雕饰。</p>
+<p>根据墓志记载，此墓营于景云元年（710年），墓主系唐成王李仁；至开元十四年（726年），其妃慕容氏又葬入此墓。</p>
+<h1 id="iii">III型</h1>
+<p>共85座，皆为土洞墓。墓室平面多数作长方形，少数作方形。墓道位于墓室南壁偏东处。墓道东壁有的与墓室东壁连成一条直线或折线，有的较墓室东壁略为外突。整个墓葬的墓室和墓道平面状似带把之刀，墓室状刀身，墓道似刀把。少数墓铺设棺床，部分墓发现用砖或土坯封门痕迹。墓道以斜坡式居多，竖井式欠之，阶梯式最少。少数墓设有甬道和天井。此型墓可分四式：</p>
+<p>一式21座。</p>
+<p>向南、东南或西南，在 $171^{\circ} - 189^{\circ}$ 之间者12座， $155^{\circ} - 170^{\circ}$ 者5座， $190^{\circ} - 225^{\circ}$ 者</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图一O 墓305平、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1-4.石墓志（二合）5-7.石门屏8.石门栅9.石门额10.右门限11、12.右门框13.石人头14.石罐顶</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一一 墓305石门楣花纹墓本(1/6)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+和石门额花纹 1/8)<br />
+图一二 墓305石门限和石门额花纹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图一四 墓305石门右边门扉和门框花纹墓本(1/6)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 门屏花纹 2. 门框花纹</p>
+<p>4座。墓道偏于墓室东壁，墓道东壁与墓室东壁尚不在一条线上。墓道多数作斜坡式，少数为竖井式。以墓304、603、547为例。</p>
+<p>墓304（图一五）方向为 $187^{\circ}$ 。墓室平面呈长方形，长3.18，宽2.30—2.60米；顶部已塌陷，高度不明。墓室西部以长方砖铺砌棺床，高0.30，宽1.20米，长同墓室。棺床表面铺砖不甚规整，东侧北端砌出壶门装饰。甬道偏于墓室东壁，长4.40，宽1—1.06，高1.48米；南端用砖封门，上部已倒塌。砖长方形，长30，宽14，厚5厘米。墓道为斜坡式，长2.56，宽0.90—1.20，南深6.22，北深7.45米，坡度为 $30^{\circ}$ 。</p>
+<p>甬道及墓室原均绘有壁画,然多已脱落不显。甬道西壁残存一幅, 绘马夫牵马状, 马首朝南, 前立一马夫, 头部已残, 长衫束带, 左手作牵马状, 似在行走之中; 上方绘流云一朵。甬道东壁脱落殆尽, 仅存一马蹄痕迹。墓室内仅西壁北部残存四幅。从北端起, 第一幅, 只存部分上身, 似为男侍, 头巾两脚飘垂脑后, 手持一杖, 状如月牙铲。这种杖在敦煌壁画和其他唐墓壁画中亦曾发现1), 皆为男女侍仆所持。第二幅, 上身已剁落, 似为一女侍。第三幅, 长衫束腰, 双手拱于胸前, 面目不清。第四幅, 系一女侍, 双手捧物, 长裙垂地。各幅之间, 画有红色粗线, 应为影作立柱。第三幅上方残存弧形线条, 似为斗拱。这种在人物之间画出仿木结构的梁柱斗拱的画面, 在唐墓壁画中是屡见不鲜的。</p>
+<p>根据墓志记载，墓主系唐扬州大都督府司马吴贲之妻韩氏，葬于永泰元年（765年）。</p>
+<p>墓603（图一六）方向为 $186^{\circ}$ 。系较大型的土洞墓，全长20.11米。墓室平面呈长方形，长2.75，南宽2.30，北宽2.10，高2.30米。西部用长方砖和方砖铺砌一棺床，宽0.90—1.10米，长与墓室齐。甬道斜接墓室南壁，长2.30，宽1.12，高1.70米；南端用长方砖封门，砖长35，宽15，厚5厘米。墓道作斜坡式，长达15.06，北深7.70米，宽同甬道。顶开长方形天井四个，长1.30—1.48，宽0.48—0.50米。墓道、天井及墓室周壁皆涂白灰，然多已剥落。依墓志所载，此墓葬于元和二年(807年)，墓主是唐苏州长史董楹。</p>
+<p>墓547(图一七）方向正南 $(180^{\circ})$ 。墓室平面呈长方形，长2.30，南宽1.90，北宽1.96，高1.60米。墓室西部用长方形砖铺设一棺床，宽1.05，高0.22米，长与室齐。砖长0.32，宽0.15，厚0.05米。墓道和甬道南窄北宽。甬道长0.50，宽0.70—0.74米。甬道南端用砖封门，砖大小与棺床铺砖同。墓道为斜坡式，北端宽0.70米，南端已被破坏，长度不明。</p>
+<p>二式 25座。</p>
+<p>向南、东南或西南，在 $172^{\circ} - 188^{\circ}$ 之间者16座， $142^{\circ} - 170^{\circ}$ 者7座， $190^{\circ}, 197^{\circ}$ 各1座。墓道东壁与墓室东壁连成一条直线。墓道作斜坡式者较多，作竖井式或阶梯式者欠之。以墓505、609、301为例。</p>
+<p>1)山西省文物管理委员会：《山西文物介绍》135页，图版四，图七；《太原市金胜村第六号唐代壁画墓》，《文物》1959年8期20页图11；《太原南郊金胜村唐墓》，《考古》1959年9期图版舞，1。潘絮兹：《敦煌壁画服饰资料》图53。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>304</p>
+<p>（）</p>
+<p>H 1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1</p>
+<p>309</p>
+<p>2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>墓505（图一九）方向为 $174^{\circ}$ 。墓室平面作规整长方形，长3.45，宽3.05，高1.45米。墓室西部用砖砌成棺床，长3.45，宽1.53，高0.30米。棺床平面对缝平铺六十块方砖，东侧用长方砖和花砖砌出壶门装饰。墓室南设甬道，宽1.52米，高同墓室；因未全部发掘，长度不明。墓志记载，此墓营于建中三年（782年），系唐赠扬州大都督曹景林及其妻张氏的合葬墓。</p>
+<p>图一九 墓505平、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、2.石墓志及盖 3-5.力士俑 6-8.男俑 9-13.女俑</p>
+<p>墓609（图一八）方向为 $179^{\circ}$ 。墓室平面长方形，长2.58，宽1.62米；顶部坍塌，高度不明。墓道宽1.14，北深5米；因未全掘，长度不得而知。此墓出土砖墓志一方，志文记载，墓主系张十八娘子，葬于元和十三年(818年)。</p>
+<p>墓301（图二〇）方向正南 $(180^{\circ})$ 。墓室及墓道平面皆为规整长方形，墓室东壁与墓道东壁连成一条直线。墓室长2.06，宽1.44米，高度不详。墓道作斜坡式，长1.90，宽0.80，北深4.20米。</p>
+<p>三式 32座。</p>
+<p>绝大多数向南或西南,少数向东南,在 $180^{\circ} - 220^{\circ}$ 之间者27座， $140^{\circ} - 174^{\circ}$ 者5座。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1] <br />
+120 <br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+$\left| {x - 1}\right|  = \left| {x + 3}\right|  - \left| {x - 2}\right|$ <br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1 <br />
+502本</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1 1 1 1 1 1 1 1 1</p>
+<p>墓道东壁与墓室东壁连成折线。墓道多数作斜坡式, 少数为竖井式, 呈阶梯式者只有 1 座 (墓 215)。以墓 502、602、420 为例。</p>
+<p>墓502（图二一）方向正南 $(180^{\circ})$ 。墓道作竖井式,长2.42,宽0.93,深4.50米。墓室在墓道北,长2.25,宽1.43米;室顶倒塌,高度不明。墓志记载,此墓埋葬于大和四年(830年),墓主是唐左金吾卫大将军员外置同正员上柱国赐紫金鱼袋李文政。</p>
+<p>墓602（图二二）方向为 $210^{\circ}$ 。墓室南宽北窄，长3.55，宽2.15—2.75米；室顶坍塌，墓壁残高1.35米。甬道长1，宽1.70—1.90米，高度不明。甬道南端用砖封门，砖长29，宽13，厚5厘米，砌法是错缝横铺，上部已倒塌，残高1.20米，封门中部微向外张成弧形。墓道南窄北宽，底作斜坡式，北宽1.75，深6.80米，长度不详。墓志记载，墓主为唐赠陇西郡夫人董氏，葬于开成二年(837年)。</p>
+<p>墓420（图二三）方向 $195^{\circ}$ 。墓室平面略呈长方形，长2.50，南宽1.98，北宽1.70，高1.60米。甬道长0.80，宽1.40，高1.45米；南端以土坯封门，已倒塌。甬道南接竖井式斜坡墓道，墓道长2.70，南宽0.95，北宽1.35，南深6.50，北深7.20米。从墓志得知，墓主</p>
+<p>图二四 墓220平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1—3、6. 开元通宝 4、5. 陶罐 A、B. 人架口中各含一枚开元通宝</p>
+<p>图二五 墓421平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、2.陶罐 3.安唾壶 4.陶罐座 5.开元通宝 6、7.陶俑</p>
+<p>路復源系唐河南府仓曹參军，大中十二年(858年)耐先墮葬此。</p>
+<p>四式 7座。</p>
+<p>方向向南、东南或西南，在 $168^{\circ} - 173^{\circ}$ 之间者3座， $190^{\circ} - 206^{\circ}$ 者4座。墓道东壁较墓室东壁略为外突。墓道都较短促，多数作斜坡式，少数作竖井式。以墓220、421为例。</p>
+<p>墓220（图二四）方向为 $173^{\circ}$ 。墓室略成长方形，长2.70，宽1.05，高1.95米。封门使用土坯。墓道为斜坡式，长2.75，宽0.90，深1.90—2.70米。此墓为合葬墓，墓室内有人架二具，上下迭压，皆系头北足南。</p>
+<p>墓421（图二五）方向为 $190^{\circ}$ 。墓室近似方形，长2.60，宽2.15，高1.90米。墓门用长方砖横砌封闭，砖长35，宽15，厚6厘米，因被淤水冲荡，上部略向内斜。墓道平面呈梯形，底部作斜坡状，长2.65，南宽0.85，北宽1.45，深4.10—5.40米。</p>
+<p>IV型</p>
+<p>共3座，皆为小型的土洞墓。向南或东南，在 $135^{\circ} - 178^{\circ}$ 之间。墓室平面呈狭长的长方形，宽度几同墓道，底部多数不平整。个别墓有土坯封门痕迹。墓道多为斜坡式。以墓208为例。</p>
+<p>墓208（图二六）方向为 $177^{\circ}$ 。墓道长2.17，宽0.50米，底部呈不平整斜坡状，深0.58—1.74米。墓室略成长方形，长1.14，宽0.52—0.64，高0.82米。此墓墓室短小，似为未成年人的墓葬。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二六 墓208平、剖面图1-3.开元通宝</p>
+<h1 id="_23">二、葬式、葬俗和葬具</h1>
+<h1 id="_24">（一）葬式</h1>
+<p>多数墓葬的骨架保存不好, 不是腐朽殆尽, 便是凌乱不堪, 仅有 43 座墓中的 62 具人</p>
+<p>架, 尚能辨别其头向。</p>
+<p>62具人架中,头向北者31具,向南者23具,向西者8具。除I型墓绝大多数为头向西外,其余II一IV型尚难找出规律,但从仅有的材料观察,似有较明显的地区性特点。I型墓除外,东郊各墓均为头北足南;西郊张家坡各墓,多数作头北足南,少数为头南足北;客省庄则除个别墓外,其余皆系头南足北。</p>
+<p>墓形的演变,同人架的位置和头向的变化,似有密切的联系。头西足东的人架皆放置墓室中部或北部,墓室为东西宽南北窄的横室,墓道在南壁中部或略偏于西壁,这些正是I型墓的特点。头北足南或头南足北的人架,多置于墓室西侧,因而墓室的形状也随着由横室改变为方形或长方形,同时墓道的位置也逐渐东移,直至墓道东壁与墓室东壁连成一条线,或较墓室东壁更为突出,出现了II、III型墓。由此观之,墓形的演变或系取决于葬式的变化。</p>
+<h1 id="_25">（二）葬俗</h1>
+<p>在能看出人架数目的43座墓中，单身葬的墓占27座，二人合葬墓14座（加上墓志记载的合葬墓应为18座），三人和四人合葬墓各一座。</p>
+<p>合葬墓中的骨架,往往是一具保存较好,其余一具或数具较凌乱。保存较好者当为原葬,凌乱者应系迁葬。从骨架排列的状况和棺木的痕迹考察,二人合葬墓多系双棺并列,头向一致,但亦有合葬一棺,尸骨上下相迭者。</p>
+<p>二人以上的合葬墓共20座，其中分布于客省庄和张家坡者16座，占二地墓葬总数（39座）三分之一以上，故疑合葬的习惯在离长安城较远的乡间或更为盛行。</p>
+<p>根据墓志记载，耐葬先墳的习俗也相当流行。就是死于遥远的他乡，也往往远越关河，归葬故里或祔于先墳。墓304韩氏墓志载：“他乡漂泊，谅非吾士；冤殍匪安，灵辄归故。”典型地反映了这种思想。当然，这种习俗也只能行于财力雄厚的官僚士族之间，对于一般贫苦的劳动人民来说，那是不易办到的事！</p>
+<h1 id="_26">（三）葬具</h1>
+<p>从残存的朽木、板灰和铁棺钉推知，绝大部分的墓葬原均有木棺；部分墓只发现木灰痕迹，而无棺钉出土，当系使用衽木约束的棺木。从棺灰的痕迹观察，木棺一般是头部大足部小。如墓201,人架是头北足南,木棺长1.90,北宽0.58,南宽0.28米,南端宽度仅及北端之半。有些木棺加饰鎏金铜帽钉,个别棺木还有加漆的现象。此外,少数墓葬未有棺钉出土,也不见棺灰痕迹。其中一部分墓可能是由于枉约木棺已经朽尽难寻,另一部则可能是不具棺木,直接陈尸墓穴者。</p>
+<p>少数设有棺床的墓, 木棺置于棺床之上; 没有棺床者, 则直接放置墓室地面上。个别墓的棺木底下垫以石条或炭灰, 似均为防潮而设。</p>
+<p>人架头部发现枕具的只有三座墓，墓585出土石灰质菱形枕具（图版套，4），墓101、110头部皆枕以土坯。其余墓葬原或有其他质料的枕具，但已腐朽无存。</p>
+<h1 id="_27">三、随葬品的位置</h1>
+<p>随着墓主身份的高低和贫富的差别,随葬品的种类和数量大不相同,而且多数随葬品较多的墓已被盗掘,器物失去了原来的位置。现只根据少数未经动乱的墓葬,分类叙述主要随葬品的位置于下。</p>
+<h1 id="_28">（一）陶俑</h1>
+<p>陶俑中比较有固定位置的是镇墓俑。镇墓俑一般是四件或两件。四件者，包括两件镇墓兽（人面、兽面各一）和两件武士俑或天王俑；两件者，系镇墓兽和天王俑各一件。镇墓俑多数位于墓室内靠近墓门处，面朝墓门。四件者，东西并列，前后各两件。有的是二武士俑或天王俑在前，如墓549；有的则是二镇墓兽在前，如墓547（图一七）。两件者，亦系东西排列；镇墓兽在东，天王俑在西，如墓411、413。</p>
+<p>其他男俑、女俑和动物俑等，多数放置墓室东部，皆在镇墓俑之后，似无固定的排列方式。</p>
+<h1 id="_29">（二）陶、瓷器</h1>
+<p>陶器是最普遍的随葬品，其位置不甚固定。多数置于墓室东侧，有的放在陶俑之后，如墓547（图一七）；有的和陶俑杂置一起，如墓586（图六）。少数墓葬的陶器放置人架头部附近，如墓585（图版叁，4）；有的陶罐从其位置观察，原当系放置棺内，如墓107。</p>
+<p>釉陶和瓷器出土较少。有些墓葬的釉陶和瓷器,同陶器、陶俑一样,散置于墓室东部,如墓216和墓586(图六);多数墓葬的釉陶和瓷器,放置棺内人架头部两侧,如墓201、563,这说明釉陶和瓷器在当时还是较为贵重的器物。</p>
+<h1 id="_30">（三）金属品及其他</h1>
+<p>金属器多系随身装带的饰品和用具，皆放置棺内，如墓414（图版叁，3）。铜镜的位置一般在棺内人架头部附近，如墓563、414；但亦有放在棺外的现象，如墓586（图六）。铜钱皆置棺内，有的还能看出原系握在手里或含于口中，如墓563。</p>
+<p>墓志的位置比较固定,不是放在甬道北端(如墓304,图一五),便是置于墓室南部靠近墓门处(如墓223,图八),双室墓(墓305,图一〇)则置于前室;皆位于甬道封门之内。墓601有男、女墓志二合,东西并列于墓门之北,男志在西,女志在东。《新唐书·札乐志十》载:“施铭旌志石于墙门之内。”《通典》卷一百三十九引《开元札》云:“旌铭志石于墙门之内置设讫,掩户,设关簞。”所谓“墙门”,当即指甬道封门,墓志出土位置与文献记载相符。</p>
+<p>这批墓葬因原始资料不全，在部分举例的墓葬平面图上，随葬品未能全部绘出。</p>
+<p>出土的随葬品计有：陶俑、陶器、三彩器、釉陶和瓷器、铜器、铁器、铅器、玉器、石器、骨器、蚌器、料器、漆器、钱币、墓志诸类(表三)。下文分两章加以叙述。</p>
+<p>（）  </p>
+<table><tr><td rowspan="2">型别</td><td rowspan="2">式别</td><td rowspan="2">直角号</td><td rowspan="2">方向(度)</td><td rowspan="2">直道长</td><td rowspan="2">直道宽深</td><td rowspan="2">天井数</td><td rowspan="2">甬道长</td><td rowspan="2">甬道宽高</td><td rowspan="2">基室长</td><td rowspan="2">墓室高</td><td colspan="3">葬式</td><td rowspan="2">备注</td></tr><tr><td>人架头向</td><td>身肢</td><td></td></tr><tr><td rowspan="6">I</td><td>1</td><td>113</td><td>175</td><td>2.28×1.10-3.16</td><td></td><td>0.60×0.92+0.46</td><td></td><td>1.16×1.96+0.87</td><td>3</td><td>四</td><td>1仰身直段2零乱</td><td>墓道斜坡式,甬道土坯封门</td><td></td><td></td></tr><tr><td>2</td><td>109</td><td>145</td><td>1.90×0.80-2.66</td><td></td><td></td><td></td><td>1.24×2.28+0.94</td><td>2</td><td>四</td><td>1仰身直段1零乱</td><td>墓道竖井式</td><td></td><td></td></tr><tr><td rowspan="4">3</td><td>418</td><td>190</td><td>10.70×1.12-7.40</td><td>2</td><td>0.60×1.10+1.50</td><td></td><td>2×2.45+2.10</td><td>1</td><td>四</td><td>侧身</td><td>墓道斜坡式</td><td></td><td></td></tr><tr><td>586</td><td>180</td><td>19×1.40-?</td><td></td><td>1.70×1.40+1.60</td><td></td><td>2.46×2.95+2.50</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式,墓室东壁有一长方形土洞</td><td></td><td></td></tr><tr><td>213</td><td>195</td><td>7.40×1.30-3.85</td><td></td><td></td><td></td><td>1.25×2.20+1.90</td><td>1</td><td>四</td><td>直肢</td><td>墓室土坯封门</td><td></td><td></td></tr><tr><td>597</td><td>196</td><td>19.07×1.40-9.40</td><td></td><td></td><td></td><td>2.40×2.85+约1.60</td><td>1</td><td>四</td><td>?</td><td>墓室土坯封门</td><td></td><td></td></tr><tr><td rowspan="6">II</td><td rowspan="4">1</td><td>606</td><td>175</td><td>2.88×1.14-4.36</td><td></td><td></td><td></td><td>1.70×2.10+约1.60</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式,墓室土坯封门</td><td></td><td></td></tr><tr><td>604</td><td>188</td><td>约18×1.25-7.56</td><td></td><td>3.35×1.95+2.05</td><td></td><td>4.10×4.17+4.15</td><td>?</td><td>?</td><td>?</td><td>砖室墓,墓室西部设棺床,甬道、墓室砖封门</td><td></td><td></td></tr><tr><td>211</td><td>168</td><td>?×0.90-?</td><td></td><td></td><td></td><td>2.44×2.32+?</td><td>?</td><td>?</td><td>?</td><td>砖室墓</td><td></td><td></td></tr><tr><td>583</td><td>210</td><td>?×1-?</td><td></td><td></td><td></td><td>2.40×2.85+?</td><td>?</td><td>?</td><td>?</td><td>墓室西部设棺床</td><td></td><td></td></tr><tr><td>2</td><td>223</td><td>170</td><td>4.40×1-4.90</td><td>1</td><td></td><td></td><td>4.40×3.05+3.14</td><td>2</td><td>北</td><td>仰身</td><td>墓道斜坡式,墓室西部设棺床,北壁东部开一小龛</td><td></td><td></td></tr><tr><td>3</td><td>305</td><td>193</td><td>约30×1.50-?</td><td>5</td><td>(前)×1.35+2.40(后)4.70×1.35+2.15</td><td></td><td>3.15×3.30+?4.50×4.50+?</td><td>?</td><td>?</td><td>?</td><td>双室砖墓,墓道斜坡式,东、西壁开凿壁龛三对,前室甬道砖封门,其后设墓门;后至西部铺砌石棺床</td><td></td><td></td></tr><tr><td rowspan="7">III</td><td rowspan="7">1</td><td>304</td><td>187</td><td>2.56×1.20-7.45</td><td></td><td>4.40×1.06+1.48</td><td></td><td>3.18×2.60+?</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式,甬道砖封门,甬道、墓室会有壁画,墓室西部设棺床</td><td></td><td></td></tr><tr><td>603</td><td>186</td><td>15.06×1.12-7.70</td><td>4</td><td>2.30×1.12+1.70</td><td></td><td>2.75×2.30+2.30</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式,甬道砖封门,墓室西部砖砌棺床</td><td></td><td></td></tr><tr><td>547</td><td>180</td><td>?×0.70-?</td><td></td><td>0.50×0.74+?</td><td></td><td>2.30×1.96+1.60</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式,墓室西部设棺床</td><td></td><td></td></tr><tr><td>102</td><td>225</td><td>5.46×1.06-4.50</td><td></td><td></td><td></td><td>2.56×2.05+1.70</td><td>1</td><td>南</td><td>直肢</td><td>墓道斜坡式</td><td></td><td></td></tr><tr><td>183</td><td>155</td><td>9.12×1.16-5.88</td><td>1</td><td></td><td></td><td>2.70×1.77+?</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式</td><td></td><td></td></tr><tr><td>114</td><td>166</td><td>1.04×0.80-?</td><td></td><td>0.30×0.84+?</td><td></td><td>2.30×1.34+1</td><td>1</td><td>北</td><td>直肢</td><td>墓道竖井式,甬道土坯封门</td><td></td><td></td></tr><tr><td>203</td><td>171</td><td>-</td><td></td><td></td><td></td><td>1.58×1.56+?</td><td>2</td><td>南</td><td>仰身直肢</td><td>墓室西部设棺床,土坯封门</td><td></td><td></td></tr></table>
+
+<p>续表 二<br />
+（单位：米）  </p>
+<table><tr><td rowspan="2">型别</td><td rowspan="2">式别</td><td rowspan="2">基号</td><td rowspan="2">方向(度)</td><td rowspan="2">墓道长宽深</td><td rowspan="2">天井数</td><td rowspan="2">甬道长宽高</td><td rowspan="2">墓室长宽高</td><td colspan="3">葬式</td><td rowspan="2">备 注</td></tr><tr><td>人架</td><td>头向</td><td>身肢</td></tr><tr><td rowspan="19">III</td><td rowspan="14">1</td><td>206</td><td>165</td><td>6×1-3.10</td><td></td><td>0.30×0.94+1.44</td><td>约2.40×1.79+约1.26</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式</td></tr><tr><td>212</td><td>170</td><td>2.95×0.95-2.70</td><td></td><td></td><td>2.30×1.50+1</td><td>2</td><td>北</td><td>直肢</td><td>墓道斜坡式</td></tr><tr><td>408</td><td>189</td><td>?×1.25-5.89</td><td></td><td></td><td>2.56×2.18+?</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式</td></tr><tr><td>409</td><td>174</td><td>1×1-2.90</td><td></td><td></td><td>2.10×1.60+?</td><td>1</td><td>?</td><td>?</td><td>墓道竖井式</td></tr><tr><td>417</td><td>194</td><td>7.80×1.08-7.10</td><td></td><td>1.50×1+1.60</td><td>3.20×3.05+?</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式</td></tr><tr><td>526</td><td>185</td><td>3.80×1.04-7.80</td><td></td><td></td><td>3.50×2.30+?</td><td>1</td><td>?</td><td>?</td><td>墓道竖井式</td></tr><tr><td>536</td><td>192</td><td>?×0.96-9.45</td><td></td><td></td><td>3.34×2.30+?</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式</td></tr><tr><td>538</td><td>180</td><td>3.70×0.90-8.10</td><td></td><td></td><td>2.75×2.15+2</td><td>?</td><td>?</td><td>?</td><td>墓道竖井式,墓室砖封门,西部设棺床</td></tr><tr><td>576</td><td>180</td><td>5.60×1.80-6</td><td></td><td></td><td>3.24×2.44+?</td><td>?</td><td>?</td><td>?</td><td></td></tr><tr><td>585</td><td>186</td><td>?×1-?</td><td></td><td></td><td>2.54×1.53+?</td><td>1</td><td>南</td><td>仰身直肢</td><td></td></tr><tr><td>594</td><td>170</td><td>2.80×1.20-6.40</td><td></td><td></td><td>2.40×1.54+1.80</td><td>?</td><td>?</td><td>?</td><td>墓道竖井式</td></tr><tr><td>598</td><td>188</td><td>约9×0.9-4.30</td><td></td><td></td><td>3.90×2.50+?</td><td>1</td><td>?</td><td>?</td><td></td></tr><tr><td>601</td><td>180</td><td>约6×1.20-5.40</td><td></td><td></td><td>2.90×2.20+?</td><td>2</td><td>?</td><td>?</td><td>墓道斜坡式,墓室砖封门</td></tr><tr><td>605</td><td>190</td><td>6.90×1.10-7.20</td><td>2</td><td></td><td>2.65×2.20+2.10</td><td>1</td><td>北</td><td>?</td><td>墓道斜坡式</td></tr><tr><td rowspan="5">2</td><td>505</td><td>174</td><td>—</td><td></td><td>?×1.52+1.45</td><td>3.34×3.05+1.45</td><td>2</td><td>?</td><td>?</td><td>墓室西部设棺床</td></tr><tr><td>609</td><td>179</td><td>?×1.14-5</td><td></td><td></td><td>2.58×1.62+?</td><td>1</td><td>?</td><td>?</td><td></td></tr><tr><td>301</td><td>180</td><td>1.90×0.80-4.20</td><td></td><td></td><td>2.06×1.44+?</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式</td></tr><tr><td>104</td><td>142</td><td>—</td><td></td><td></td><td>2.28×1.84+?</td><td>2</td><td>南</td><td>仰身</td><td></td></tr><tr><td>108</td><td>155</td><td>4.80×1.15-3.85</td><td></td><td></td><td>2.45×约2+约1.90</td><td>2</td><td>南</td><td>?</td><td>墓道斜坡式</td></tr></table>
+
+<p>墓道斜坡式  </p>
+<table><tr><td rowspan="20">2</td><td>110</td><td>197</td><td>?×0.80-?</td><td></td><td></td><td>2.58×1.55+?</td><td>2</td><td>南</td><td>?</td><td>墓道斜坡式</td></tr><tr><td>115</td><td>160</td><td>?×1.04-2.90</td><td></td><td></td><td>2.40×1.54+?</td><td>2</td><td>南</td><td>1仰身直肢1零乱</td><td></td></tr><tr><td>202</td><td>177</td><td>5.85×约1-2.60</td><td></td><td></td><td>2.14×1.55+?</td><td>?</td><td>?</td><td>?</td><td>墓道阶梯式</td></tr><tr><td>204</td><td>178</td><td>2.50×0.70-2.20</td><td></td><td></td><td>2.14×0.94+1.10</td><td>1</td><td>北</td><td>?</td><td>墓道竖井式,墓室土坯封门</td></tr><tr><td>207</td><td>165</td><td>-</td><td></td><td></td><td>2.30×约1.30+1.38</td><td>4</td><td>北</td><td>零乱</td><td></td></tr><tr><td>209</td><td>170</td><td>3.70×1-2.25</td><td></td><td></td><td>1.75×2.15+?</td><td>?</td><td>?</td><td>?</td><td>墓道竖井式,墓室土坯封门</td></tr><tr><td>210</td><td>175</td><td>4.15×0.85-4.40</td><td>1</td><td>0.60×0.85+1.60</td><td>2.50×1.45+?</td><td>2</td><td>1南1北</td><td>?</td><td>墓道阶梯式</td></tr><tr><td>214</td><td>160</td><td>4.45×0.90-2.40</td><td></td><td></td><td>2.50×1.35+约1.85</td><td>?</td><td>?</td><td>?</td><td>墓道阶梯式</td></tr><tr><td>216</td><td>165</td><td>6.50×1.40-4.80</td><td>2</td><td></td><td>2.40×1.90+1.25</td><td>2</td><td>北</td><td>?</td><td>墓道斜坡式,墓室土坯封门,西部设棺床</td></tr><tr><td>217</td><td>175</td><td>5×0.75-3.65</td><td>1</td><td>1.65×0.95+1.15</td><td>2.35×1.78+1.35</td><td>1</td><td>北</td><td>仰身直肢</td><td>墓道阶梯式</td></tr><tr><td>303</td><td>183</td><td>2.06×0.86-?</td><td></td><td></td><td>2.28×1.56+?</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式,墓室砖封门</td></tr><tr><td>402</td><td>188</td><td>2.50×0.80-4.40</td><td></td><td></td><td>2.30×1.40+1.50</td><td>?</td><td>?</td><td>?</td><td>墓道竖井式</td></tr><tr><td>405</td><td>190</td><td>-</td><td></td><td></td><td>3×2.50+?</td><td>?</td><td>?</td><td>?</td><td>墓室西部设棺床</td></tr><tr><td>422</td><td>184</td><td>1.94×0.60-3.50</td><td></td><td></td><td>1.86×2.73+1.20</td><td>?</td><td>?</td><td>?</td><td>墓道竖井式,墓室土坯封门</td></tr><tr><td>506</td><td>172</td><td>?×1.23-7.50</td><td></td><td></td><td>3.13×2.37+?</td><td>?</td><td>?</td><td>?</td><td></td></tr><tr><td>558</td><td>186</td><td>约3.50×0.76-3.70</td><td></td><td></td><td>1.94×1.24+?</td><td>?</td><td>?</td><td>?</td><td></td></tr><tr><td>562</td><td>182</td><td>约3×1.20-4.70</td><td></td><td></td><td>5.50×0.96+?</td><td>?</td><td>?</td><td>?</td><td></td></tr><tr><td>579</td><td>185</td><td>约13.5×0.90-8.3</td><td></td><td></td><td>3.05×2.73+?</td><td>?</td><td>?</td><td>?</td><td></td></tr><tr><td>590</td><td>178</td><td>约9×1-?</td><td></td><td></td><td>3.20×2+?</td><td>1</td><td>北</td><td>仰身直肢</td><td></td></tr><tr><td>608</td><td>187</td><td>6.55×1-5</td><td></td><td></td><td>2.95×1.90+1.60</td><td>1</td><td>?</td><td>?</td><td>墓道斜坡式,墓室土坯封门</td></tr><tr><td rowspan="3">3</td><td>502</td><td>180</td><td>2.42×0.93-4.50</td><td></td><td></td><td>2.25×1.43+?</td><td>?</td><td>?</td><td>?</td><td>墓道竖井式</td></tr><tr><td>602</td><td>210</td><td>3.30×1.75-6.80</td><td></td><td>1×1.90+?</td><td>3.55×2.75+?</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式,甬道砖封门</td></tr><tr><td>420</td><td>195</td><td>2.70×1.35-7.20</td><td></td><td>0.80×1.40+1.45</td><td>2.50×1.98+1.60</td><td>1</td><td>?</td><td>?</td><td>墓道斜坡式,甬道土坯封门</td></tr></table>
+
+<p>续表二<br />
+（单位：米）  </p>
+<table><tr><td rowspan="2">型别</td><td rowspan="2">式别</td><td rowspan="2">基号</td><td rowspan="2">方向(度)</td><td rowspan="2">墓道长宽深</td><td rowspan="2">天井数</td><td rowspan="2">甬道长宽高</td><td rowspan="2">墓室长宽高</td><td colspan="3">葬式</td><td rowspan="2">备 注</td></tr><tr><td>人架</td><td>头向</td><td>身肢</td></tr><tr><td rowspan="19">III</td><td rowspan="19">3</td><td>101</td><td>140</td><td>3.04×0.58-?</td><td></td><td></td><td>2 ×1.40+?</td><td>1</td><td>南</td><td>仰身直肢</td><td>墓道斜坡式</td></tr><tr><td>105</td><td>212</td><td>3.60×1-3.80</td><td></td><td></td><td>2.66×2.20+2.70</td><td>1</td><td>南</td><td>直肢</td><td></td></tr><tr><td>106</td><td>220</td><td>3.30×0.80-3.20</td><td></td><td></td><td>2.40×1.80+?</td><td>2</td><td>南</td><td>直肢</td><td></td></tr><tr><td>107</td><td>186</td><td>?×0.94-?</td><td></td><td></td><td>2.60×1.86+?</td><td>1</td><td>南</td><td>仰身直肢</td><td>墓道斜坡式</td></tr><tr><td>112</td><td>210</td><td>?×0.94-?</td><td></td><td></td><td>2.40×2+?</td><td>2</td><td>南</td><td>直肢</td><td>墓室土坯封门,西部设棺床</td></tr><tr><td>201</td><td>180</td><td>?×0.78-2.40</td><td></td><td></td><td>2.75×1.28+?</td><td>1</td><td>北</td><td>仰身直肢</td><td>墓道斜坡式,墓室土坯封门</td></tr><tr><td>205</td><td>150</td><td>1.30×0.88-?</td><td></td><td></td><td>1.90×1.20+约1.60</td><td>1</td><td>北</td><td>?</td><td>墓道斜坡式</td></tr><tr><td>215</td><td>173</td><td>8.25×0.85-3.80</td><td></td><td></td><td>2.60×1.70+1.20</td><td>?</td><td>?</td><td>?</td><td></td></tr><tr><td>222</td><td>172</td><td>3.85×0.65-3.40</td><td></td><td></td><td>2.35×1.25+1.18</td><td>1</td><td>南</td><td>仰身直肢</td><td>墓道斜坡式</td></tr><tr><td>302</td><td>186</td><td>2.06×0.90-?</td><td></td><td></td><td>2.24×1.80+?</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式</td></tr><tr><td>401</td><td>190</td><td>4.60×0.80-5.25</td><td></td><td></td><td>2.60×1.65+1.60</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式</td></tr><tr><td>403</td><td>190</td><td>2.80×1.10-5.70</td><td></td><td></td><td>2.30×1.45+?</td><td>1</td><td>北</td><td>?</td><td>墓道竖井式</td></tr><tr><td>411</td><td>180</td><td>-</td><td></td><td></td><td>2.20×1.50+?</td><td>?</td><td>?</td><td>?</td><td></td></tr><tr><td>413</td><td>200</td><td>?×0.90-3.30</td><td></td><td></td><td>2.60×1.80+1.80</td><td>?</td><td>?</td><td>?</td><td>墓道竖井式,墓室西部设棺床</td></tr><tr><td>414</td><td>182</td><td>?×0.78-2.90</td><td></td><td></td><td>1.70×1.10+1.80</td><td>?</td><td>?</td><td>?</td><td>墓道竖井式</td></tr><tr><td>503</td><td>194</td><td>2.76×1.44-?</td><td></td><td></td><td>2.98×2.20+?</td><td>1</td><td>北</td><td>?</td><td>墓道斜坡式,墓室土坯封门</td></tr><tr><td>504</td><td>182</td><td>3.25×1.60-7</td><td></td><td></td><td>2.80×1.95+1.50</td><td>?</td><td>?</td><td>?</td><td>墓道竖井式</td></tr><tr><td>507</td><td>180</td><td>?×1.50-7.30</td><td></td><td></td><td>3 ×2.20+?</td><td>1</td><td>北</td><td>?</td><td>墓道斜坡式</td></tr><tr><td>508</td><td>180</td><td>?×1.40-8.20</td><td></td><td></td><td>2.75×2.18+1.60</td><td>1</td><td>北</td><td>?</td><td>墓道斜坡式,墓室砖封门</td></tr></table>
+
+<table><tr><td rowspan="17">III</td><td rowspan="10">3</td><td>549</td><td>184</td><td>?×0.80-5.80</td><td></td><td></td><td>2.70×1.92+1.70</td><td>?</td><td>?</td><td>?</td><td></td></tr><tr><td>561</td><td>180</td><td>?×1.30-5.40</td><td></td><td></td><td>2.42×1.84+?</td><td>?</td><td>?</td><td>?</td><td></td></tr><tr><td>563</td><td>184</td><td>约7×0.93-5:40</td><td></td><td></td><td>2.72×1.92+?</td><td>1</td><td>北</td><td>仰身直肢</td><td></td></tr><tr><td>570</td><td>191</td><td>?×0.94-4.20</td><td></td><td></td><td>2.12×1.72+?</td><td>1</td><td>北</td><td>直肢</td><td></td></tr><tr><td>578</td><td>184</td><td>19×1-8.20</td><td></td><td>3.50×1.35+?</td><td>3.70×2.30+?</td><td>?</td><td>?</td><td>?</td><td>甬道以砖封门,墓室西部设棺床</td></tr><tr><td>581</td><td>196</td><td>2.20×1.30-5.10</td><td></td><td></td><td>2.10×1.55+1.70</td><td>?</td><td>?</td><td>?</td><td>墓道竖井式</td></tr><tr><td>584</td><td>182</td><td>?×0.80-3</td><td></td><td></td><td>2.50×1.20+?</td><td>1</td><td>北</td><td>直肢</td><td>墓道竖井式</td></tr><tr><td>587</td><td>188</td><td>?×1.05-7.60</td><td></td><td></td><td>3 ×2.05+?</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式,墓室土坯封门,西部设棺床</td></tr><tr><td>595</td><td>174</td><td>?×0.88-5.20</td><td></td><td></td><td>2.40×1.62+1.80</td><td>1</td><td>?</td><td>?</td><td>墓道斜坡式,墓室西部设棺床</td></tr><tr><td>607</td><td>190</td><td>4.60×0.92-2</td><td></td><td></td><td>2.60×1.52+?</td><td>1</td><td>北</td><td>仰身直肢</td><td>墓道斜坡式,墓室土坯封门</td></tr><tr><td rowspan="7">4</td><td>220</td><td>173</td><td>2.75×0.90-2.70</td><td></td><td></td><td>2.70×1.05+1.95</td><td>2</td><td>北</td><td>仰身直肢</td><td>墓道斜坡式,墓室土坯封门</td></tr><tr><td>421</td><td>190</td><td>2.65×1.45-5.40</td><td>·</td><td></td><td>2.60×2.15+1.90</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式,墓室砖封门</td></tr><tr><td>218</td><td>168</td><td>3×1.20-3</td><td></td><td></td><td>约2.50×约1.65+1.70</td><td>2</td><td>北</td><td>?</td><td>墓道斜坡式</td></tr><tr><td>410</td><td>192</td><td>1.70×0.78-?</td><td></td><td></td><td>2.10×1+?</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式</td></tr><tr><td>415</td><td>171</td><td>2×1.52-4.80</td><td></td><td>0.65×1.45+?</td><td>2.37×1.75+?</td><td>?</td><td>?</td><td>?</td><td>墓道竖井式</td></tr><tr><td>416</td><td>206</td><td>?×1.30-?</td><td></td><td></td><td>3.10×2.10+约1.70</td><td>1</td><td>北</td><td>?</td><td>墓道竖井式</td></tr><tr><td>419</td><td>190</td><td>2.55×1.10-5.30</td><td></td><td>0.40×1.10+1.30</td><td>2.80×1.85+5.30</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式</td></tr><tr><td rowspan="3" colspan="2">IV</td><td>208</td><td>177</td><td>2.17×0.50-1.74</td><td></td><td></td><td>1.14×0.64+0.82</td><td>?</td><td>?</td><td>?</td><td>墓道斜坡式</td></tr><tr><td>111</td><td>135</td><td>-</td><td></td><td></td><td>2.20×0.62+?</td><td>1</td><td>南</td><td>直肢</td><td></td></tr><tr><td>221</td><td>178</td><td>2.80×0.60-2.20</td><td></td><td></td><td>1.75×0.65+0.85</td><td>1</td><td>南</td><td>零乱</td><td>墓道斜坡式,墓室土坯封门</td></tr></table>
+
+<p>表三 墓葬器物登記表  </p>
+<table><tr><td rowspan="2">基号</td><td rowspan="2">期别</td><td rowspan="2">型式</td><td colspan="5">随葬品</td><td rowspan="2">备注</td></tr><tr><td>陶俑</td><td>陶 器</td><td>釉陶和瓷器</td><td>其他</td><td>钱 币</td></tr><tr><td>101</td><td></td><td>III3</td><td></td><td>罐(III1)</td><td></td><td></td><td>开元通宝(I1)2</td><td></td></tr><tr><td>102</td><td></td><td>III1</td><td></td><td>罐(III1)</td><td></td><td></td><td>开元通宝(I2)3</td><td></td></tr><tr><td>103</td><td></td><td>III1</td><td></td><td>罐(III2)</td><td></td><td>铁剪</td><td></td><td></td></tr><tr><td>104</td><td></td><td>III2</td><td></td><td>罐(III1)</td><td></td><td></td><td>开元通宝(I1)3</td><td></td></tr><tr><td>105</td><td></td><td>III3</td><td></td><td>罐(IV3)2</td><td></td><td></td><td></td><td></td></tr><tr><td>106</td><td></td><td>III3</td><td></td><td>罐(III1), (III2)</td><td></td><td></td><td>开元通宝(I1)3、(I2)</td><td></td></tr><tr><td>107</td><td></td><td>III3</td><td></td><td>罐(III1)</td><td>水盂(II)</td><td>蚌壳</td><td>开元通宝(I1), (I2)</td><td></td></tr><tr><td>108</td><td></td><td>III2</td><td></td><td>罐(III1)2,灯盏</td><td></td><td></td><td></td><td></td></tr><tr><td>109</td><td>-</td><td>I2</td><td>.</td><td>壶(I1)2</td><td></td><td>蚌壳</td><td></td><td></td></tr><tr><td>110</td><td></td><td>III2</td><td></td><td>带座罐(I2)</td><td></td><td></td><td></td><td></td></tr><tr><td>111</td><td></td><td>IV</td><td></td><td>罐(III2)</td><td></td><td></td><td></td><td></td></tr><tr><td>112</td><td></td><td>III3</td><td></td><td>带座罐(II2)</td><td></td><td></td><td></td><td></td></tr><tr><td>113</td><td>-</td><td>I1</td><td></td><td>壶(I1),灯盏</td><td></td><td>铁镰</td><td>五铢3</td><td></td></tr><tr><td>114</td><td></td><td>III1</td><td></td><td>带座罐(I2)2</td><td></td><td>铁镰</td><td>开元通宝(I1)</td><td></td></tr><tr><td>115</td><td></td><td>III2</td><td></td><td>罐(III1)</td><td></td><td></td><td></td><td></td></tr><tr><td>116</td><td></td><td></td><td></td><td></td><td></td><td>铜带具(II)</td><td></td><td></td></tr><tr><td>201</td><td>三</td><td>III3</td><td></td><td></td><td>罐(II)</td><td>铜钗(II)2, 铜簪(I)2、(II)2,铜蝶形发饰</td><td></td><td></td></tr><tr><td>202</td><td></td><td>III2</td><td></td><td>瓶(I2)</td><td></td><td></td><td></td><td></td></tr><tr><td>203</td><td>二</td><td>III1</td><td>镇墓兽(IV)2,天王俑(I)2,风帽男俑(VII)3,风帽男骑俑(II)4,蝶头男俑(III)4,蝶头男骑俑(II)2,蝶头胡俑(I)4,高冠文吏俑(I),辫发男俑(II)2,武官俑,鸡(I),马(I)4、(II)4,驼(II)2、(III)2,牛(III)</td><td>壶(II)</td><td></td><td>玉钗,石墓志</td><td>开元通宝(I1)7,(I2)6</td><td>景龙二年</td></tr></table>
+
+<table><tr><td>204</td><td></td><td>III2</td><td></td><td>双耳罐(I2)</td><td>灯盏</td><td></td><td></td><td></td></tr><tr><td>205</td><td></td><td>III3</td><td></td><td>罐(I1)</td><td></td><td></td><td></td><td></td></tr><tr><td>206</td><td></td><td>III1</td><td></td><td>罐(III1)</td><td></td><td></td><td></td><td></td></tr><tr><td>207</td><td></td><td>III2</td><td></td><td></td><td>罐(I1)</td><td></td><td>开元通宝(I1)、(II)</td><td></td></tr><tr><td>208</td><td></td><td>IV</td><td></td><td></td><td></td><td></td><td>开元通宝(I1)2、(I2)</td><td></td></tr><tr><td>209</td><td></td><td>III2</td><td></td><td></td><td></td><td></td><td>开元通宝(I1)3</td><td></td></tr><tr><td>210</td><td>二</td><td>III2</td><td>镇墓兽(V),天王俑(II),模头男俑(III)2,高髻女俑(III)4,博髯抱鬓女俑(I)2,马(I),驼(II)</td><td></td><td></td><td></td><td>开元通宝(II)2</td><td></td></tr><tr><td>211</td><td>三</td><td>III1</td><td>镇墓兽(V),天王俑(III),高髻女俑(III),鸡(II),猪(III),羊(II),鸵(II)</td><td>带座罐(I2)</td><td></td><td>铅泡</td><td>开元通宝(I1)4、(I2)</td><td></td></tr><tr><td>212</td><td></td><td>III1</td><td></td><td></td><td>双耳罐</td><td></td><td></td><td></td></tr><tr><td>213</td><td>-</td><td>I3</td><td></td><td>瓶(I1)</td><td></td><td>铜带具(I)</td><td>波斯银币</td><td></td></tr><tr><td>214</td><td></td><td>III2</td><td></td><td>罐(III1)</td><td></td><td></td><td></td><td></td></tr><tr><td>215</td><td></td><td>III3</td><td></td><td>罐(III1)2</td><td></td><td>铜带具(II),玉钗</td><td></td><td></td></tr><tr><td>216</td><td>=</td><td>III2</td><td></td><td>带座罐(I2)2,罐(III2)2,(VI)灯盏</td><td>碗(I)4,碟6,带耳杯,三足盘2</td><td>三彩罐,铜镜(III1),铜钗(I),铁剪</td><td>开元通宝(I1)4、(I2)</td><td></td></tr><tr><td>217</td><td>=</td><td>III2</td><td></td><td></td><td></td><td>三彩罐</td><td></td><td></td></tr><tr><td>218</td><td>三</td><td>III4</td><td></td><td>罐(III1)</td><td></td><td>铜镜(I1)、(II2),铜钗(I)</td><td>开元通宝(I1)2、(I2)2、(II)2</td><td></td></tr><tr><td>219</td><td></td><td></td><td></td><td></td><td>灯盏</td><td></td><td></td><td></td></tr><tr><td>220</td><td></td><td>III4</td><td></td><td>罐(I3),(III2)</td><td></td><td></td><td>开元通宝(I1)2、(I2)2、(II)2</td><td></td></tr><tr><td>221</td><td>IV</td><td></td><td></td><td>罐(III2)</td><td></td><td></td><td></td><td></td></tr><tr><td>222</td><td></td><td>III3</td><td></td><td>罐(III2)</td><td></td><td></td><td></td><td></td></tr><tr><td>223</td><td>=</td><td>III3</td><td>镇墓兽(IV)2,天王俑(II)2,风帽男俑(VII)5,狗(III)4,搭(III),鸵(II)</td><td>罐(III1)2,灯盏2</td><td></td><td>石墓志</td><td>开元通宝(I1)3、(I2)3</td><td>证圣元年</td></tr><tr><td>301</td><td></td><td>III2</td><td></td><td>罐(IV2)</td><td></td><td>铁镰</td><td>开元通宝(I2)</td><td></td></tr><tr><td>302</td><td>三</td><td>III3</td><td></td><td>罐(III2)</td><td></td><td></td><td>开元通宝(I1)、(I2),乾元重宝</td><td></td></tr><tr><td>303</td><td></td><td>III2</td><td></td><td>罐(II1)</td><td></td><td></td><td>开元通宝(I2)3</td><td></td></tr></table>
+
+<p>续表 三  </p>
+<table><tr><td rowspan="2">墓号</td><td rowspan="2">期别</td><td rowspan="2">型式</td><td colspan="5">随葬品</td><td rowspan="2">备注</td></tr><tr><td>陶俑</td><td>陶器</td><td>釉陶和瓷器</td><td>其他</td><td>钱币</td></tr><tr><td>304</td><td>三</td><td>III1</td><td></td><td></td><td></td><td>石墓志</td><td></td><td>永泰元年</td></tr><tr><td>305</td><td>二</td><td>II3</td><td>笼冠男俑(II)2,风帽男俑(VIII)5,风帽男骑俑(II)2,撬头男骑俑(II)6,高髻女俑(IV)2,马(II)</td><td>器座,砚(I)</td><td></td><td>铜刀,石璜,石舞戚2,石人头,石幢顶,石墓志2</td><td></td><td>景云元年开元十四年</td></tr><tr><td>401</td><td></td><td>III3</td><td></td><td>罐(IV3)</td><td></td><td></td><td></td><td></td></tr><tr><td>402</td><td></td><td>III2</td><td></td><td>罐(III2)</td><td></td><td></td><td></td><td></td></tr><tr><td>403</td><td></td><td>III3</td><td></td><td>罐(III1)</td><td></td><td></td><td>开元通宝(I2)</td><td></td></tr><tr><td>404</td><td>二</td><td></td><td>天王俑(II)</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>405</td><td>三</td><td>III2</td><td>镇墓兽(V),撬头男俑(V)2,垂发梳簪女俑(I)、(II),狗(IV),羊(I),马(I)、(II),驼(II)</td><td></td><td></td><td>铅马蹬3</td><td>开元通宝(I1)2、(I2)</td><td></td></tr><tr><td>406</td><td>二</td><td></td><td>天王俑(II),十二时俑(I)8,博鬓抛鬓女俑(II)、(IV),狗(IV)2</td><td>带座罐(I1)</td><td></td><td></td><td>开元通宝(I1)</td><td></td></tr><tr><td>407</td><td></td><td></td><td></td><td>罐(III2)2</td><td></td><td></td><td></td><td></td></tr><tr><td>408</td><td>一</td><td>III1</td><td>小冠男俑(I)6、(II)4,笼冠男俑(I)3,风帽男俑(IV)4</td><td></td><td>四系罐(II2)</td><td></td><td></td><td></td></tr><tr><td>409</td><td>三</td><td>III1</td><td></td><td></td><td></td><td>石墓志(缺盖)</td><td></td><td>大中二年</td></tr><tr><td>410</td><td></td><td>III4</td><td></td><td>带座罐(I1)2</td><td></td><td>铜镜(III3)</td><td>开元通宝(II)</td><td></td></tr><tr><td>411</td><td>三</td><td>III3</td><td>镇墓兽(V),天王俑(IV),十二时俑(II)10,撬头男俑(IV)3,高髻女俑(V),双鬟女俑,马(I)、(II)2</td><td></td><td>唾壶(II2)</td><td></td><td>--</td><td></td></tr><tr><td>412</td><td></td><td></td><td></td><td>罐(IV2)</td><td></td><td>铜带具(II)</td><td></td><td></td></tr><tr><td>413</td><td>二</td><td>III3</td><td>镇墓兽(V),天王俑(II),撬头男俑(III)2,博鬓抛鬓女俑(II),双鬟女俑,马(II)</td><td>带座罐(I1)2、(III)</td><td></td><td></td><td></td><td></td></tr><tr><td>414</td><td>二</td><td>III3</td><td>撬头男俑(III),博鬓抛鬓女俑(I)</td><td></td><td>罐(I1)2,水盂(IV),三足盘</td><td>铜镜(II1),铜洗(I),漆盒</td><td></td><td></td></tr><tr><td>415</td><td></td><td>III4</td><td></td><td>砚(II)</td><td></td><td>铜镜(I12),铜罐子</td><td></td><td></td></tr><tr><td>416</td><td></td><td>III4</td><td></td><td>罐(II1),砚(II)</td><td></td><td>铜带具(III)</td><td></td><td></td></tr><tr><td>417</td><td>一</td><td>III1</td><td>镇墓兽(II)2,武士俑(III),风帽男俑(VII),小髻女俑(II)2,牛(I)</td><td></td><td>四系罐(I1)、(I2)</td><td>铜镜(I8)</td><td>开元通宝(I1)</td><td></td></tr><tr><td>418</td><td>一</td><td>I3</td><td></td><td>碗(I)</td><td>四系罐(II3),六系罐</td><td>蚌壳,漆盒</td><td>五铢5</td><td></td></tr></table>
+
+<table><tr><td>419</td><td>III.</td><td>罐(II2)</td><td></td><td></td><td></td><td></td></tr><tr><td>420</td><td>三 III3</td><td>罐(II2),茶托</td><td>铜镜(IV2),铁刀(II),骨梳,石墓志</td><td>开元通宝(I2)2</td><td></td><td>大中十二年</td></tr><tr><td>421</td><td>三 III4</td><td>天王俑(III)2,馒头男俑(IV)2,男坐俑,高髻女俑(V)</td><td>唾壶(II2)</td><td>铜剑格,铜帽钉(I)28,铁帽钉3</td><td>开元通宝(I)</td><td></td></tr><tr><td>422</td><td>III2</td><td>罐(III2)</td><td></td><td></td><td></td><td></td></tr><tr><td>501</td><td>二</td><td>镇嵩兽(V),天王俑(II)2,博鬓抛鬟女俑(III),马(I)</td><td>罐(V)</td><td>三彩扣盒2</td><td></td><td></td></tr><tr><td>502</td><td>三 III3</td><td>带座罐(II2),罐(II2)</td><td>石墓志</td><td></td><td></td><td>大和四年</td></tr><tr><td>503</td><td>III3</td><td>带座罐(II2),罐(II2)</td><td></td><td></td><td></td><td></td></tr><tr><td>504</td><td>三 III3</td><td>罐(II2),(I3)</td><td>铜镜(V),铜钗(I)2,紫石砚,料圆形器2</td><td>开元通宝(I)2</td><td></td><td></td></tr><tr><td>505</td><td>三 III3</td><td>馒头男俑(IV)3,力士俑6,垂发梳簪女俑(I)2,博鬓抛鬟女俑(II)2,双鬓女俑2</td><td>石墓志</td><td></td><td></td><td>建中三年</td></tr><tr><td>506</td><td>三 III2</td><td>天王俑(III),馒头男俑(III),博鬓抛鬟女俑(II),马(III),驼(II)</td><td>带座罐(II1)</td><td></td><td></td><td></td></tr><tr><td>507</td><td>III3</td><td>罐(II2)</td><td></td><td></td><td></td><td></td></tr><tr><td>508</td><td>三 III3</td><td>馒头男俑(IV)4,(V),博鬓抛鬟女俑(III)</td><td></td><td></td><td></td><td></td></tr><tr><td>509</td><td>一</td><td>风帽男俑(VII)4,小髻女俑(II)</td><td></td><td></td><td></td><td></td></tr><tr><td>510</td><td></td><td>罐(II1)</td><td></td><td></td><td></td><td></td></tr><tr><td>511</td><td></td><td>罐(II2)</td><td></td><td></td><td>开元通宝(I)</td><td></td></tr><tr><td>512</td><td></td><td>罐(III2)</td><td></td><td></td><td></td><td></td></tr><tr><td>513</td><td></td><td>罐(III2)</td><td></td><td></td><td></td><td></td></tr><tr><td>514</td><td>二</td><td>天王俑(II),馒头男俑(III)</td><td></td><td></td><td></td><td></td></tr><tr><td>515</td><td>三</td><td>馒头男俑(V)4,马(II),驼(II)</td><td>器盖</td><td>铜洗(II),石墓志</td><td></td><td>大中四年</td></tr><tr><td>516</td><td>一</td><td>镇嵩兽(II),笼冠男俑(III),风帽男俑(VII)7,馒头男俑(I)2,高髻女俑(II),狗(III),猪(III)2,马(1)2</td><td>四系罐(II1)2,器盖2</td><td></td><td></td><td></td></tr><tr><td>517</td><td>一</td><td>笼冠男俑(III)2,风帽男俑(VII)24,馒头男俑(II)2,馒头男俑(I),狗(III),猪(III),马(1)</td><td>磨</td><td>铜帽钉(I)6</td><td></td><td></td></tr><tr><td>518</td><td>二</td><td>馒头男俑(III),博鬓抛鬟女俑(I)</td><td></td><td></td><td></td><td></td></tr><tr><td>519</td><td></td><td></td><td>蚌壳</td><td>开元通宝(I)</td><td></td><td></td></tr></table>
+
+<p>续表三  </p>
+<table><tr><td rowspan="2">墓号</td><td rowspan="2">期别</td><td rowspan="2">型式</td><td colspan="5">随葬品</td><td rowspan="2">备注</td></tr><tr><td>陶俑</td><td>陶器</td><td>釉陶和瓷器</td><td>其他</td><td>钱币</td></tr><tr><td>520</td><td>-</td><td></td><td>镇嘉兽(II)2,武士俑(III)2,风帽男俑(VII)3,辫发男俑(I)2,高髻女俑(II),鸡(I),狗(III),猪(III),羊(I)2,马(I)2,牛(I)</td><td>罐(II1)</td><td>四系罐(I1),(I2),水盂(III)2</td><td>蚌壳</td><td>开元通宝(I1)3</td><td></td></tr><tr><td>521</td><td></td><td></td><td></td><td>罐(II2)</td><td></td><td>铜钗(III)5</td><td></td><td></td></tr><tr><td>522</td><td></td><td></td><td></td><td>罐(IV3)2</td><td></td><td></td><td>开元通宝(I2)2</td><td></td></tr><tr><td>523</td><td></td><td></td><td></td><td>罐(I1)</td><td></td><td></td><td></td><td></td></tr><tr><td>524</td><td></td><td></td><td></td><td>带座罐(II2)</td><td></td><td></td><td></td><td></td></tr><tr><td>525</td><td></td><td></td><td></td><td>罐(III1)2</td><td></td><td></td><td></td><td></td></tr><tr><td>526</td><td>二</td><td>III1</td><td>镇嘉兽(V),天王俑(II),十二时俑(I),模头男俑(III)5,垂发梳髻女俑(I),马(II),牛(III)</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>527</td><td></td><td></td><td></td><td>罐(II2)</td><td>扣盒盖</td><td></td><td></td><td></td></tr><tr><td>528</td><td>-</td><td></td><td></td><td>盘</td><td>罐(I2)2,唾壶(I1),杯4</td><td></td><td></td><td></td></tr><tr><td>529</td><td></td><td></td><td></td><td>罐(II2)</td><td></td><td></td><td></td><td></td></tr><tr><td>530</td><td></td><td></td><td></td><td>罐(IV4)</td><td></td><td></td><td></td><td></td></tr><tr><td>531</td><td></td><td></td><td></td><td>罐(II2)</td><td></td><td>铁剪</td><td>开元通宝(I2)</td><td></td></tr><tr><td>532</td><td>-</td><td></td><td>武士俑(II)2,小冠男俑(III)2,笼冠男俑(II)8、(III)2,笼冠男骑俑(I)9,风帽男俑(VII)5,风帽男骑俑(I)4,模头男俑(I)3,卤藩俑(III)9,跪童俑,低髻女俑(I)5,高髻女俑(I)9、(II)5,狗(II),猪(II),羊(I),驼(II)</td><td>带座罐(I1),罐(II1),鼓形器</td><td>四系罐(I1),唾壶(II1)</td><td>铁刀(I),石墓志</td><td></td><td>贞观十三年</td></tr><tr><td>533</td><td>三</td><td></td><td></td><td>带座罐(II2)</td><td>注子(I)</td><td></td><td>开元通宝(I2)2</td><td></td></tr><tr><td>534</td><td>三</td><td></td><td>模头男俑(IV),双鬟女俑3</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>535</td><td></td><td></td><td></td><td></td><td>带耳杯</td><td></td><td></td><td></td></tr><tr><td>536</td><td>三</td><td>III1</td><td>镇嘉兽(IV)2,天王俑(III)</td><td>罐(III1)2</td><td></td><td></td><td>开元通宝(I1)</td><td></td></tr><tr><td>537</td><td></td><td></td><td></td><td>带座罐(III)</td><td></td><td></td><td></td><td></td></tr></table>
+
+<table><tr><td>538</td><td>三</td><td>III1</td><td></td><td></td><td></td><td>铜帽钉(I)4,铅泡5,水晶珠</td><td>开元通宝(I)5、(I)4、(II)4、(III),乾元重宝</td><td></td></tr><tr><td>539</td><td>一</td><td></td><td></td><td>罐(III1)</td><td>四系罐(I3),罐(I1)</td><td></td><td></td><td></td></tr><tr><td>540</td><td>三</td><td></td><td></td><td>罐(II1)</td><td></td><td>铜镜(IV3)</td><td></td><td></td></tr><tr><td>541</td><td></td><td>撬头男俑(III)</td><td></td><td>罐(IV4)</td><td></td><td></td><td></td><td></td></tr><tr><td>542</td><td>一</td><td></td><td>风帽男俑(VII),辫发男俑(I),高髻女俑(II)</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>543</td><td>一</td><td></td><td>风帽男俑(VII),撬头男骑俑(I)4,高髻女俑(II)</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>544</td><td>一</td><td></td><td></td><td>瓶(II)</td><td></td><td></td><td></td><td></td></tr><tr><td>545</td><td></td><td></td><td></td><td>罐(II1)</td><td></td><td>铁剪</td><td></td><td></td></tr><tr><td>546</td><td>二</td><td></td><td></td><td>带座罐(II1)</td><td></td><td>铜镜(I7)</td><td></td><td></td></tr><tr><td>547</td><td>二</td><td>III1</td><td>镇墓兽(IV)2,天王俑(I)2</td><td>罐(III2)2</td><td></td><td></td><td>开元通宝(I)3</td><td></td></tr><tr><td>548</td><td></td><td></td><td></td><td>罐(III1),(III2)</td><td></td><td></td><td></td><td></td></tr><tr><td>549</td><td>一</td><td>III3</td><td>镇墓兽(II)2,武士俑(II)2</td><td>罐(III1)2</td><td></td><td></td><td></td><td></td></tr><tr><td>550</td><td></td><td></td><td></td><td>罐(II2),双耳罐(I2)</td><td></td><td></td><td></td><td></td></tr><tr><td>551</td><td>一</td><td></td><td>撬头男俑(I),高髻女俑(II)</td><td>罐(I1),(IV3)3</td><td>四系罐(I2)</td><td>铜镜(I6),蚌壳</td><td>开元通宝(I)4、(I2)</td><td></td></tr><tr><td>552</td><td>三</td><td></td><td>撬头男俑(V)4,垂发梳髻女俑(I)</td><td>罐(I3)</td><td></td><td></td><td></td><td></td></tr><tr><td>553</td><td></td><td></td><td>高髻女俑(IV)</td><td>罐(II1)</td><td></td><td></td><td>开元通宝(I)2、(I2)2</td><td></td></tr><tr><td>554</td><td>二</td><td></td><td>镇墓兽(V),博箕抛鬟女俑(I)2</td><td>罐(III1)</td><td></td><td></td><td></td><td></td></tr><tr><td>555</td><td>三</td><td></td><td></td><td>罐(II1)</td><td></td><td>铜镜(IV1),铁剪</td><td></td><td></td></tr><tr><td>556</td><td></td><td></td><td></td><td></td><td>唾壶(I4)</td><td>铁镜</td><td></td><td></td></tr><tr><td>557</td><td>二</td><td></td><td>十二时俑(I)2</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>558</td><td>三</td><td>III1</td><td>撬头男俑(V)2,猪(II),羊(I),马(I),牛(II)</td><td>带座罐(I1)</td><td></td><td></td><td></td><td></td></tr><tr><td>559</td><td></td><td></td><td></td><td>罐(III1),双耳罐(II2)</td><td></td><td></td><td></td><td></td></tr><tr><td>560</td><td></td><td></td><td></td><td>罐(IV3)2</td><td></td><td>铁镜</td><td></td><td></td></tr></table>
+
+<p>续表 三  </p>
+<table><tr><td rowspan="2">基号</td><td rowspan="2">期别</td><td rowspan="2">型式</td><td colspan="5">随葬品</td><td rowspan="2">备注</td></tr><tr><td>陶俑</td><td>陶器</td><td>釉陶和瓷器</td><td>其他</td><td>钱币</td></tr><tr><td>561</td><td></td><td>III3</td><td></td><td>罐(II2)</td><td></td><td>铜镜(I11)</td><td></td><td></td></tr><tr><td>562</td><td>=</td><td>III3</td><td>镇惠兽(IV),高髻女俑(IV)2,垂发梳髻女俑(I)、(II)</td><td>带座罐(I1)2</td><td></td><td></td><td>开元通宝(I1)</td><td></td></tr><tr><td>563</td><td>三</td><td>III3</td><td>馒头男俑(IV)4,博鬓抛髻女俑(II)2、(III)2,鸡(II)</td><td></td><td>罐(I1),注子(II)</td><td>铜镜(IV2),铜勺,铜子2,铜帽钉(I)23,铜钏,铁镜,骨笄2</td><td>开元通宝(I2)3,乾元重宝</td><td></td></tr><tr><td>564</td><td></td><td></td><td></td><td>罐(III1)4</td><td></td><td></td><td></td><td></td></tr><tr><td>565</td><td></td><td></td><td>镇惠兽(V)</td><td>带座罐(I2)</td><td></td><td></td><td></td><td></td></tr><tr><td>566</td><td></td><td></td><td></td><td></td><td>罐(I1)2</td><td></td><td></td><td></td></tr><tr><td>567</td><td></td><td></td><td></td><td>罐(III1)2</td><td></td><td></td><td></td><td></td></tr><tr><td>568</td><td>-</td><td></td><td>镇惠兽(II)2,笼冠男俑(III)3,风帽男俑(VII)7,馒头男骑俑(I)2,高髻女俑(II)2,狗(III),猪(III),牛(I)</td><td>罐(III1)2</td><td>唾壶(I2)</td><td>铜镜(I3),铁剪,石墓志</td><td></td><td>麟德二年</td></tr><tr><td>569</td><td>-</td><td></td><td>小冠男俑(III),小髻女俑(I)2</td><td>罐(IV3)2</td><td></td><td>蚌壳</td><td></td><td></td></tr><tr><td>570</td><td></td><td>III3</td><td></td><td>罐(II2)</td><td></td><td>骨匕</td><td>开元通宝(I1)2、(II)2</td><td></td></tr><tr><td>571</td><td>-</td><td></td><td></td><td>瓶(II)2</td><td></td><td></td><td>永通万国</td><td></td></tr><tr><td>572</td><td>=</td><td></td><td>天王俑(II)2,十二时俑(I)3,博鬓抛髻女俑(I)</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>573</td><td></td><td></td><td></td><td>带座罐(I2),罐(IV3)2</td><td></td><td></td><td></td><td></td></tr><tr><td>574</td><td></td><td></td><td></td><td>罐(III2)2</td><td></td><td></td><td></td><td></td></tr><tr><td>575</td><td>-</td><td></td><td>馒头男俑(II)</td><td>罐(II2)</td><td></td><td></td><td></td><td></td></tr><tr><td>576</td><td>-</td><td>III1</td><td>镇惠兽(II)2,风帽男俑(VI),馒头男俑(II)14,馒头男骑俑(I)3,高髻女骑俑2,牛(I)</td><td></td><td>四系罐(II4),壶,瓶,水盂(II)</td><td>铜镜(I3),铜洗(I)</td><td>开元通宝(I1)4</td><td></td></tr><tr><td>577</td><td>-</td><td></td><td>武士俑(III),馒头男俑(II),高髻女俑(II)2</td><td>罐(III1)2</td><td></td><td>铜镜(I2),铁镰</td><td>开元通宝(I1)2</td><td></td></tr><tr><td>578</td><td></td><td>III3</td><td>博鬓抛髻女俑(III)</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>579</td><td>-</td><td>III2</td><td>武士俑(II),馒头男骑俑(I),低髻女俑(I),马(I)</td><td></td><td>四系壶</td><td></td><td></td><td></td></tr></table>
+
+<table><tr><td>580</td><td></td><td></td><td></td><td>罐(III1)</td><td></td><td></td><td>开元通宝(I1)3、(I2)</td><td></td></tr><tr><td>581</td><td>三</td><td>III3</td><td>馒头男俑(IV)2,双鬟女俑</td><td>罐(II1)</td><td>注子(I)</td><td></td><td></td><td></td></tr><tr><td>582</td><td>-</td><td></td><td></td><td>罐(III1)2</td><td>唾壶(I2)</td><td>铜镜(I10)</td><td>开元通宝(I1)</td><td></td></tr><tr><td>583</td><td></td><td>II1</td><td></td><td>带座罐(III)</td><td></td><td></td><td></td><td></td></tr><tr><td>584</td><td></td><td>III3</td><td></td><td></td><td></td><td>铁刀(II),铁镜</td><td></td><td></td></tr><tr><td>585</td><td>-</td><td>III1</td><td></td><td>罐(IV1)6,双耳罐(I1)</td><td>壶</td><td></td><td></td><td></td></tr><tr><td>586</td><td>-</td><td>I3</td><td>镇墓兽(I)2,武士俑(I)2,小冠男俑(I)22、(II)13,笼冠男俑(I)10,风帽男俑(I)、(II)11、(III)12、(IV)10,卤薄俑(I)2、(II)2,低鬟女俑(I)5、(II)15,低鬟持筷女俑4,狗(I)3,猪(I)3,羊(I)2,鸵(I)</td><td>罐(I1)8、(I2),双耳罐(I1)、(II1),瓶(I1),盆,屋2,磨,碓,灶,井栏,鼓形器5</td><td>唾壶(I1),水盂(I),烛台</td><td>铜镜(I1),天然水晶柱45,蚌壳,料杯,石墓志</td><td>五铢3</td><td>开皇十二年</td></tr><tr><td>587</td><td></td><td>III3</td><td></td><td>带座罐(II2)</td><td></td><td></td><td></td><td></td></tr><tr><td>588</td><td>-</td><td></td><td></td><td>瓶(II),碗(I)3、(II)3</td><td>罐(I1),杯,高足壶</td><td></td><td>五铢</td><td></td></tr><tr><td>589</td><td>二</td><td></td><td>镇墓兽(V)2,天王俑(II),双鬟女俑,鸡(II),羊(I),牛(II)</td><td></td><td></td><td></td><td>开元通宝(I1)</td><td></td></tr><tr><td>590</td><td>-</td><td>III2</td><td>镇墓兽(III)2,武士俑(IV)2,笼冠男俑(II)2,风帽男俑(VII)8,馒头男骑俑(I),高髻女俑(II)2,高髻女骑俑2,鸡(II),狗(III),猪(III),羊(I)2,牛(I)</td><td></td><td>四系罐(I1)2</td><td></td><td></td><td></td></tr><tr><td>591</td><td>-</td><td></td><td>武士俑(IV),风帽男俑(VII)15,辫发男俑(II),高髻女俑(II),鸡(II),猪(III),羊(I)</td><td>罐(III1)</td><td>唾壶(I3)</td><td>铜镜(I2),铜钗(I)3</td><td></td><td></td></tr><tr><td>592</td><td>三</td><td></td><td>天王俑(III),马(I)3</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>593</td><td>三</td><td></td><td>鸡(II)2,狗(IV)3,猪(III)3,马(IV),牛(III)3</td><td></td><td></td><td>铁刀(II)</td><td></td><td></td></tr><tr><td>594</td><td>三</td><td>III1</td><td>镇墓兽(V),天王俑(III),垂发梳髻女俑(II),双鬟女俑2,马(III),蛇(II)</td><td>罐(I2)、(II1)、(IV2)</td><td></td><td>铜镜(III2)</td><td></td><td></td></tr><tr><td>595</td><td>三</td><td>III3</td><td>馒头男俑(III)2,博鬓抛髮女俑(II)</td><td>罐(IV2)</td><td></td><td></td><td></td><td></td></tr><tr><td>596</td><td>三</td><td></td><td></td><td>罐(II2),壶(I2)</td><td>碗(II)</td><td></td><td></td><td></td></tr><tr><td>597</td><td></td><td>I3</td><td></td><td>罐(I1)2</td><td></td><td></td><td></td><td></td></tr><tr><td>598</td><td></td><td>III1</td><td></td><td>罐(III1)4</td><td></td><td></td><td></td><td></td></tr><tr><td>599</td><td></td><td></td><td></td><td></td><td></td><td>铜镜(I10)</td><td></td><td></td></tr><tr><td>600</td><td>-</td><td></td><td>镇墓兽(II)2,小冠男俑(III)2,笼冠男俑(II)3,风帽男俑(V)2、(VII)2,馒头男骑俑(I)4,低髻女俑(II)2,羊(I)</td><td>轮形器6,珠14</td><td>四系罐(II4),罐(I1)</td><td>铜镜(I4)</td><td></td><td></td></tr></table>
+
+<p>续表 三  </p>
+<table><tr><td rowspan="2">号</td><td rowspan="2">期别</td><td rowspan="2">型式</td><td colspan="5">随葬品</td><td rowspan="2">备注</td></tr><tr><td>陶俑</td><td>陶器</td><td>釉陶和瓷器</td><td>其他</td><td>钱币</td></tr><tr><td>601</td><td>三</td><td>III1</td><td></td><td>罐(II1)</td><td></td><td>石墓志2</td><td></td><td>元和七年宝屠元年</td></tr><tr><td>602</td><td>三</td><td>III3</td><td></td><td></td><td></td><td>石墓志</td><td></td><td>开成二年</td></tr><tr><td>603</td><td>三</td><td>III1</td><td>馒头男俑(IV),博鬓抛鬓女俑(II)3,双鬓女俑4</td><td>带座罐(II2),罐(II2)</td><td></td><td>铜帽钉(II)2,铁镜,石墓志</td><td></td><td>元和二年</td></tr><tr><td>604</td><td>二</td><td>II1</td><td>天王俑(II),风帽男俑(VIII)17,馒头男俑(III)6,馒头胡俑(II)3,高冠吏俑(II)7,辫发男俑(II)2,垂发梳髻女俑(I)2,博鬓抛鬓女俑(II)2,猪(II),马(II)8、(IV),驼(II),牛(II)</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>605</td><td>三</td><td>III1</td><td>馒头男俑(V)4,垂发梳髻女俑(II)3,博鬓抛鬓女俑(II),鸡(II),狗(IV),猪(II),羊(II)</td><td>带座罐(I2)2</td><td></td><td>铜镜(I9)</td><td>开元通宝(I1)2</td><td></td></tr><tr><td>606</td><td>一</td><td>II1</td><td></td><td>罐(IV3)2</td><td>罐(I1)</td><td></td><td></td><td></td></tr><tr><td>607</td><td></td><td>III3</td><td></td><td></td><td></td><td>铜镜(I8)</td><td></td><td></td></tr><tr><td>608</td><td></td><td>III2</td><td>博鬓抛鬓女俑(II)</td><td>带座罐(II1)</td><td></td><td></td><td></td><td></td></tr><tr><td>609</td><td>三</td><td>III2</td><td></td><td>罐(II1)</td><td></td><td>蚌壳,砖墓志(无盖)</td><td></td><td>元和十三年</td></tr></table>
+
+<p>注：括号内罗马字为型，阿剌伯字为式，括号后数字为件数，凡未注明件数的均为一件。</p>
+<h1 id="_31">第贰章 陶俑</h1>
+<p>俑者,本来是指具有“面目机发,似于生人”的明器1。本文依照现在考古著作的通例,亦将《旧唐书·舆服志》所谓“偶人像马”之类的人形和动物形明器,通称为俑。这些俑皆系陶质,但因数量众多,又自成一类,故专章加以介绍。</p>
+<p>陶俑出于65座墓中，共775件。</p>
+<p>陶质一般较松软, 质地坚硬的为数不多。由于火候高低和烧制方法的差异, 颜色颇有不同, 红色和黄色者居多, 灰褐色者次之, 黑色者最少。</p>
+<p>制法分模制和手制两种, 模制者占绝大多数, 有单模和合模之分。少数男俑和动物俑系用单模印出, 多数陶俑则为合模制成。人俑系前后合模, 龙俑为左右合模。至于骑马俑之人与马、部分武士俑之头部与身躯、上身与下身、人俑曲举的手臂以及部分镇墓兽的头部和竖毛等, 又往往是分别制出后粘合而成的, 故较易残断或脱落。手制者极少, 只有少数小型的动物俑系手制而成, 形状甚为粗陋。</p>
+<p>陶俑制成后, 往往外施白粉, 并加彩画, 或称“白衣彩绘”。一般人俑面施红粉, 唇点大红, 眉、眼、鬓、发及巾帽、靴鞋则以黑墨描画。衣著彩绘, 有红、黄、绿、蓝、赭等色; 大型的镇墓俑还有泥金装饰, 更显华丽。可惜由于年代长久, 和受其他一些因素的影响, 多数陶俑的彩绘已脱落不显, 有的仅残存白衣。</p>
+<h1 id="_32">一、鎮墓俑</h1>
+<p>镇墓俑包括镇墓兽、武士俑、天王俑和十二时俑, 当即《唐会要》(卷三八)所称的“四神十二时”, 应为墓中压胜之物。所谓“四神”, 即指两件镇墓兽和两件武士俑或天王俑。武士俑和天王俑虽为同类之俑, 但具有不同的形象, 前者右手原执有物, 左手或持方盾; 后者手不持盾, 脚下践踏怪兽或小鬼。</p>
+<p>（一）镇墓兽共38件，有人面和兽面之分。一墓有二件者，皆系人面、兽面各一。按其形状不同，统一分为五型：</p>
+<p>I型 2件。上身前倾，尾部贴身上翘，作蹲坐状。</p>
+<p>586:135兽身人面。头戴黑色尖顶盔胄；脸涂粉红，兽身着红、黄及金黄色彩，但多已脱落不显。高22.9厘米(图版肆，1)。</p>
+<p>586:134兽身兽面。眉间长二竖角，角尖卷曲，头部着黄色，口鼻涂红，兽身彩绘同</p>
+<p>上件, 亦多已剥落。高20.6厘米(图版肆, 2)。</p>
+<p>II型13件。皆作躑坐状，下具牛圆形薄托板。人面者头戴圆锥形或螺旋形盔胃，面容渐趋凶恶；兽面者接近狮形。尾部宽扁，紧贴背部上翘。通高25.8—33厘米。</p>
+<p>568:10 人面, 头戴螺旋形盔帽, 盔帽前沿正中饰一乳钉。唇留“八”字鬓, 竖眉怒目。脸涂红粉, 盔帽着黄色, 兽身涂黄、红、黑色彩, 均已脱落殆尽。通高30.6厘米(图版肆, 3)。</p>
+<p>568:11 作狮子形,两耳上竖,露牙瞠目。彩绘多已脱落,仅头部残存黄彩,唇、眼、耳部微见涂红痕迹。通高25.8厘米(图版肆,4)。</p>
+<p>III型 2件。作蹲坐状。兽身微向后仰,头、肩部加饰竖毛。桃形束腰底座,涂以黑色。</p>
+<p>590:4 人面, 头戴圆锥形盔帽, 前沿贴额上翻, 肩部似原有竖毛, 现已脱落。彩绘剥落几尽, 仅头部及上身残留黄彩。通高36.5厘米(图版伍, 1)。</p>
+<p>590:2 狮形, 两耳上竖, 头、项两侧饰以锯齿状竖毛。口、鼻、眼、耳涂红, 竖毛有绿彩痕迹, 其他部分的彩绘皆已脱落不显。通高33.5厘米(图版伍, 2)。</p>
+<p>IV型9件。作蹲坐状。身躯直挺，体型较瘦长。竖毛较III型增多，底座亦显著增高，两侧各有一圆孔。通高31—69厘米。</p>
+<p>203:1 青面獠牙, 头顶和肩部竖毛密布, 头顶竖毛多已脱落。口、耳和眼珠涂红色; 胸、腹以红、蓝、绿色画出精致的花纹, 并有贴金装饰; 周身墨绘弯曲长毛。四足作爪状, 尾贴身上翘。底座已残。残高 68.5 厘米(图版陆, 1)。</p>
+<p>203:2 人面兽身。面、耳涂红色，墨画头发、鬓、眉，兽身彩绘与上件相类。足作蹄形。头顶竖发及底座皆残。残高53厘米（图版陆，2）。</p>
+<p>547:6 人面兽身。蹲坐挺胸, 面目狰狞, 头发高竖, 两耳甚大, 双肩各有竖毛三束, 前肢塑作蹄形。脸部残存白粉, 竖毛有绿彩痕迹, 底座涂以黑色, 兽身彩绘皆已脱落。通高 53.7 厘米 (图版伍, 3)。</p>
+<p>547:5 作狮子形。头、肩部各有竖毛两束，体型与上件相同。口、鼻和眼涂以红色，兽身彩绘剥落殆尽，仅部分残存红彩。通高47.6厘米(图版伍,4)。</p>
+<p>V型 12 件。体形肥壮，两腿成弓形，作拳击之势。足下踏一怪兽，形象颇为凶猛。通高 25.5—52 厘米。</p>
+<p>589:8 人面狰狞,头发上竖,成螺旋状,右手高举,左手曲置腰部,两肩各有竖毛三束。脸部及右臂残存红彩,身体两侧饰以黑色斑点,多年已模糊不显。通高39.2厘米(图版染,2)。</p>
+<p>554:5 作兽面, 顶毛上竖, 张口怒目, 左臂下垂, 右臂已残。彩绘皆已脱落, 仅存白衣。通高36厘米(图版染, 1)。</p>
+<p>各型镇墓兽，I型出于隋开皇十二年墓（下称“开皇墓”）；Ⅱ、Ⅲ型属初唐时期，Ⅱ型</p>
+<p>有麟德二年墓(下称“麟德墓”)出土的; IV型属盛唐时期, 有武周证圣元年墓(下称“证圣墓”)和景龙二年墓(下称“景龙墓”)出土的; V型则自盛唐至晚唐皆有之。</p>
+<p>从上述五型镇墓兽观察,其演变规律如下:(1)从隋到盛唐,时代越晚,恐怖的气氛越强烈;从III型开始,头、肩部加饰竖毛,竖毛越来越多、越来越长。盛唐时期,形象凶猛,彩绘华丽,在造型艺术上,也具有较高的水平。中唐以后,形象虽然可怖,但气派已大不如前。(2)由于越来越凶恶,因而人面和兽面之间的差异,越来越不明显。从I型到III型,兽面者基本上作狮形,和人面者显然有别;IV型亦略有不同,V型则难于区别。(3)底座变化的规律大致是由无到有,由低到高;IV型最高,V型则改为踏一怪兽。</p>
+<h1 id="14">（二）武士俑 共14件，分为四型：</h1>
+<p>I型2件。造型呆板。头戴红色平顶盔帽，顶、额、两鬓勒以黄带，身穿铠甲，腰部束带。左手持一方盾，盾中部起棱，饰以兽面；右手贴身下垂，手中有一小孔，原当插有所持之物。</p>
+<p>586:132 面施粉红色彩,方盾涂红,腰带着黑色,铠甲饰以红、白、黄色彩绘。高 34.5 厘米(图版染,3)。</p>
+<p>II型5件。身躯较I型粗大，造型亦笨拙。右手贴身下垂，作持物状；左手执方盾，盾平素无纹饰。脚下有不规则形的薄底座。</p>
+<p>549:2 头戴尖顶盔胄; 身穿铠甲, 下缘以阴线刻出流苏。脸部、上身和方盾涂红, 下裳黄彩, 腰带着黑色, 皆已模糊不显。通高 42.7 厘米(图版拾壹, 1)。</p>
+<p>III型4件。服饰与Ⅱ型相似,但不持盾。左手贴身下垂;右手曲举于前,作持物状。底座方形。通高在36.5—52.8厘米之间。</p>
+<p>520:10 盎背顶部作螺旋状, 面目凶恶。内衫长出铠甲, 下缘三层重迭。彩绘脱落殆尽, 口唇、手臂残留红色, 下裳有黄彩痕迹。通高 52.8 厘米(图版捌, 1)。</p>
+<p>IV型3件。体型高大。身穿铠甲，下着战裙。双手皆离身前举，侧面直立于底座上。底座束腰，分为上下两层。只有一件(590:1)较为完整。</p>
+<p>590:1 右手曲举于前，左手已残。唇点硃红，铠甲有绿彩和贴金痕迹，战裙残存黄彩，底座涂以黑色。通高75.8厘米(图版玖，1)。</p>
+<p>各型武士俑，I型出于隋开皇十二年墓。II一IV型皆属初唐时期，但依次似有早晚之别。II型之中有2件(532:32、33)，系贞观十三年墓（下称“贞观墓”）所出。演变的规律是：由持盾到不持盾，由矮小到高大，由笨拙呆板到比较生动威武。</p>
+<h1 id="26">（三）天王俑 共26件。分为四型：</h1>
+<p>I型4件。头戴盔背或束发，身穿铠甲。一手叉腰，另一手握拳前举或上举，手中有一小孔，原当持有器物。两足分开，下踏一兽。底座较高，前后或左右两侧各有一圆孔。通高80—123厘米。</p>
+<p>203:3 竖眉怒目, 横肉满面; 神态威武, 装饰十分华丽。头戴尖顶翻沿盔背, 饰以彩</p>
+<p>绘贴金。脸部涂红色，以黑墨画出鬓发鬓眉。矿衣、战裙以红、绿、蓝、黑等色绘出秀丽的花纹图案，双臂雕饰龙首。右手置于腰部；左手握拳前举，作持物状。脚下践踏一队牛。底座椭圆形，前后各有一孔。通高123厘米（图版拾，2）。</p>
+<p>203:4 束发上指, 张口作怒号状, 神态、服饰与上件相似。左手叉腰; 右手握拳上举, 挣亦中空, 似原持有物。面向左侧, 脚踏臥鹿。通高122.5厘米(图版拾, 1)。</p>
+<p>II型14件。头戴盔帽，上或饰以开屏孔雀。身穿铠甲，两臂雕饰龙首。双手握拳侧举，脚下踏一小鬼，底座略成圆柱形。全身肌肉发达，姿态威武生动。通高在51.6—86厘米之间。</p>
+<p>501:3 盏顶饰以孔雀。左足直立，右足踏在小鬼右臂上。彩绘皆已脱落，仅脸部及手臂残存红粉痕迹，底座涂以黑色。通高86厘米（图版玖，2）。</p>
+<p>III型7件。身躯较II型矮小。头顶束发或戴半圆形出缘盔帽，铠甲华丽，足下踏一小鬼，底座略成圆形。通高33—43.5厘米。</p>
+<p>594:10 体型矮胖，比例不甚匀称。盔帽后缘高起，呈半圆形。双耳饰以珥环。口唇、手臂涂红，腰带著黑色，铠甲涂饰红、绿色彩，并有泥金装饰，彩绘颇为华丽。右足踏一小鬼，小鬼竖发愁眉，若不胜其苦者。底座束腰。通高33厘米（图版捌，3）。</p>
+<p>592:11 体型较瘦长。头顶束发,右手置于腰部,左手曲举胸前,左足踏在小鬼肩部。面施白粉,唇着红色,其余彩绘脱落殆尽。通高43.5厘米(图版捌,2)。</p>
+<p>IV型1件(411:5)。身躯矮小。头戴半圆形盔帽，后缘突出呈扇形。服饰与III型相似，腰带装饰更为繁杂。脚下有二小鬼，一跪坐，一臥伏。左足直立，踏在小鬼背上；右足翘起，踏在另一小鬼肩上。脸部、手臂涂以大红，服饰彩绘多已脱落不显，仅铠甲残留绿彩痕迹。通高34厘米（图版捌，4）。</p>
+<p>各型天王俑, I、II 型均属盛唐时期。I 型有出于景龙墓者, II 型之中却有证圣墓出土者, 但在一般情况下, I 型较 II 型为早, 可能出现在初、盛唐之际 (高宗时期)。III、IV 型属于中、晚唐。</p>
+<p>由武士俑发展到天王俑, 可能是受佛教造型艺术影响的结果。盛唐时期的天王俑, 形象威武生动, 装饰华丽鲜艳, 和敦煌石窟中的天王塑象极为相似。中唐以后, 装饰虽亦艳丽, 姿态也颇生动, 但体型矮小, 气魄不大。所踏之物, I型为动物, II型以下为小鬼, 至有践踏二小鬼者。</p>
+<p>（四）十二时俑 共24件，皆为兽首人身，分为二型。</p>
+<p>I型 14件。头、颈粗短，双手拱于胸前。身穿交领宽袖衣，胸间束带，下裳长垂至地，衣、裳下绿，皆饰以流苏。底座圆形。通高23—27厘米。</p>
+<p>557:5 已蛇。彩绘皆已脱落, 残存白衣。通高 27 厘米(图版柒, 4)。</p>
+<p>II型10件。头、颈细长，双手拱于胸前。身著交领宽袖衫，腰间束以宽带，底座甚矮。通高18.9—22厘米。</p>
+<p>411:28 已蛇。蛇首弯曲高昂；彩绘已剥落不显，颈部及衣领残存金黄色彩。通高22厘米(图版柒,5)。</p>
+<p>十二时俑，I型往往与II型天王俑共出，当属盛唐时期；II型较I型为晚，似为中唐以后之物。</p>
+<h1 id="_33">二、男 偏</h1>
+<p>男俑的种类较多, 包括侍从俑、晋声俑、卤簿俑、牵马俑、力士俑、文吏俑和武官俑等。造型和服饰方面, 亦多种多样; 所戴冠帽, 变化较大, 而且具有一定的时代意义, 也是服饰演变中最为明显的特征。故以冠帽为纲, 加以分类; 每类之中, 又依其性质不同, 予以分型。</p>
+<p>（一）小冠男侍俑 共50件。分为三型：</p>
+<p>I型28件。头戴黑色小冠, 冠顶低平, 后部略高。身材修长, 面容清秀。上身内穿圆领衣, 外著宽袖敞领衫; 下着裳, 长垂至于脚背; 腰系博带, 脚穿黑鞋。双手拱举胸前, 手中有一圆孔, 原应持有器物。体型分大小两种, 大者高约20.5, 小者高18.5厘米左右。</p>
+<p>586:68 面施粉彩,唇点硃红,上衣涂桔红色彩,下裳著黄色,眉、眼、鬓、发俱以黑墨画出。高20.4厘米(图版拾贰,1)。</p>
+<p>586:70 较为矮小, 内衣涂红, 外衫彩色已脱落。高 18.5 厘米(图版拾贰, 2)。</p>
+<p>II型17件。小冠低平,服饰与I型基本相同,唯外衫长过膝部,双手拱于胸前,双袖合拢,手隐袖中,上有小孔,原当插有所持器物。高在17.2-25厘米之间。</p>
+<p>586:59头、颈施粉红色彩，唇点大红，冠、鞋着黑色，衣服彩绘脱落几尽，仅下裳残存黄彩。高19.8厘米(图版拾贰，3)。</p>
+<p>III型5件。小冠顶部前低后高，倾斜度大。上衣交领宽袖，胸间束带，下裳长垂至地。双手合拱胸前，插物小孔或位于中部或偏于右臂。高22—24厘米。</p>
+<p>532:40 首薇俯视, 作虔敬貌。两手合拱处有一小孔, 原当持有器物。彩绘多已脱落, 头、颈残存粉红色彩, 上衣黄、绿色彩尚依稀可辨。高22.4厘米(图版拾贰, 4)。</p>
+<h1 id="_34">（二）笼冠男俑</h1>
+<ol>
+<li>笕冠持物男侍俑 共34件。分为三型：</li>
+</ol>
+<p>I型13件。笼冠高扁，小帽低平，姿态、服饰与I式小冠男侍俑基本相同，唯上衣下缘加饰流苏，正中下垂绶带二条。双手合拢处有一圆孔，原当作持物状。高度皆在19.5厘米左右。</p>
+<p>586:31 笼冠小帽涂黑色, 脸部及外衣着红色, 内衣、下裳施黄彩, 绥带长著著红色, 短者涂黄色, 双脚著黑色圆头鞋, 露出裳外。高 19.5 厘米(图版拾贰, 5)。</p>
+<p>II型13件。笼冠宽扁,小帽低斜。身穿交领右桩宽袖衫,下垂至膝,腰部束以博带;下着裳,长垂至地。右手曲举于前,中有小孔,作持物状;左手下垂,长袖贴身后抛。高</p>
+<p>23—24厘米。</p>
+<p>532:7 面施红粉, 衣涂硃红, 惜已剥落殆尽。高 24 厘米 (图版拾贰, 6)。</p>
+<p>III型8件。身材较Ⅱ型略为修长,小帽增高,外著敞领宽袖衫,露出圆领内衣;胸间束带,双手拱于胸前;右手有一圆孔,原应插有器物。高度在20.9-24.7厘米之间。</p>
+<p>517:27 拱手直立, 状甚恭敬。彩绘已脱落不显。高 24.7 厘米(图版拾叁, 1)。</p>
+<ol>
+<li>笕冠骑马男俑 共11件。分为二型：</li>
+</ol>
+<p>I型9件。笼冠小帽与Ⅱ型男侍俑相同。上身穿交领窄袖衫，腰部束带，下著袴靴，端骑马上。服饰相同，手势则互有差异，惜皆已残缺不全。</p>
+<p>532:37 右手曲置胸前, 左手上举至嘴边, 作吹奏状, 当系辔声俑之属。马首及四足皆残, 马背鞍、繡俱全。彩绘多已剥落, 脸、手残留粉红色彩, 衣著有硃红痕迹, 马身着棕红色, 鞍施以黄彩。残高25厘米(图版拾叁, 2)。</p>
+<p>II型 2件, 墓305出土。笼冠宽而扁, 戴于头顶中部, 露出前额及后脑, 头部似裹有巾子, 小帽不显。身穿交领右袒衣, 腰间束带。双手、下身及所骑马皆已残破, 故其身份不明, 彩绘亦皆已脱落。</p>
+<h1 id="_35">（三）风帽男俑</h1>
+<p>1.凤帽男侍俑 共149件。分为八型：</p>
+<p>I型 1件(586:96)。头戴风帽, 面目模糊不清。身穿交领窄袖衫, 下缘过膝, 腰间束带。两臂贴身下垂, 两手微向前曲于腰带下; 右手有一小孔, 原当持有器物。彩色多已剥落, 脸部残留粉红色, 外衫有红彩痕迹。高15.2厘米(图版拾叁, 3)。</p>
+<p>II型 11件。墓586出土。姿态与I型相似。风帽宽耸，帽缘甚厚，内穿圆领长衫，腰部系带，外披敞领窄袖外衣。双手曲置胸前，右手有一小孔，原当作持物状。高16—16.5厘米。</p>
+<p>586:107 彩绘皆已脱落,仅脸部微见粉红色彩。高16厘米(图版拾叁,4)。</p>
+<p>III型 12件,亦出于墓586。姿态谨敬,风帽低平。内衣窄袖,外著翻领短袖上衣,长及膝部,腰部紧束一带。左手贴身下垂;右手曲置腹部,作执物状。高度皆在16厘米左右。</p>
+<p>586:94 墨画眉、眼、胡鬓,口唇涂红,衣、帽施以红彩。高16厘米(图版拾叁,5)。</p>
+<p>IV型14件。风帽顶部较低平。衣著与Ⅱ型基本相同，唯外衣与内衫并长。左手隐于衣内，右手曲置胸前，作持物状。高18.2—18.7厘米。</p>
+<p>586:75 脸涂粉红，内衫有黄彩痕迹，外衣彩绘已全脱落。高18.7厘米（图版拾肆，1）。</p>
+<p>V型 2件, 董600出土。风帽低平, 后缘垂于屑际。姿态、服饰略同IV型, 唯内衫交领, 长垂至地。左手隐于外衣外, 右手稍露衣外, 作执物状。高度皆为23.5厘米。</p>
+<p>600:14 彩绘皆已剥落, 仅颈部残存红彩痕迹 (图版拾肆, 2)。</p>
+<p>VI型 1件(576:32)。身材修长, 面容秀丽。外衣圆领, 扣于右侧, 下部微敞, 露出腰带、内衣。左手隐于外衣内, 右手曲露衣外。彩色大部已脱落, 脸部、衣著有黄彩残迹。高24.5厘米(图版拾肆, 3)。</p>
+<p>VII型 86件。风帽较高,下缘垂于肩背。身穿翻领窄袖衫,腰部系带。双手拱于胸前或左手下垂、右手曲置胸前作执物状。高度在20—25.5厘米之间。</p>
+<p>516:4 身材修长,眉目清秀,腹部微鼓。彩绘脱落殆尽,仅脸、手残存粉红色彩。高25.5厘米(图版拾肆,4)。</p>
+<p>509:3 面目、衣纹模糊不清。双手拱于胸前, 中有一孔, 原当插有所持之物。高 21 厘米 (图版拾肆, 5)。</p>
+<p>VIII型 22件。风帽高耸,帽缘不显。身穿圆领宽袖衫,长过膝部,腰间束带,双手拱于胸前。大小、样式完全相同。</p>
+<p>604:27 彩绘已脱落无遗。高17.7厘米（图版拾肆，6）。</p>
+<p>2.凤帽骑马音声俑 共10件。分为二型：</p>
+<p>I型 4件。出于墓532。姿态、服饰基本相同。风帽宽厚,下缘披垂肩、背。身穿翻领窄袖衣。右手曲置腹前,左手上举至肩部,下身及马皆已残破。彩绘多已脱落,脸部残存粉红色彩,风帽有涂红痕迹。残高11—12厘米。</p>
+<p>II型 6件。风帽高耸,下缘长垂肩背。上穿交领宽袖衣,下著袴靴。服饰相同,姿态有异,双手前举,作吹奏状,惜手部多已残断,乐器亦已不存。马首高昂,背施鞍、罐,身躯肥壮,四足已残。彩绘多已脱落,马身残存棕红色或土黄色彩。</p>
+<p>203:15、16、17 残高22-23,马身长27厘米(图版拾伍，1-3)。</p>
+<h1 id="_36">（四）幢头男俑</h1>
+<ol>
+<li>棒头男侍俑 共85件(其中包括头象、胸象12件)。分为五型：</li>
+</ol>
+<p>I型 4件(其中头象、胸象各1件)。横头顶部宽扁，两脚系于脑后，另两脚反结于头顶上。</p>
+<p>532:71 楔头后脚细长, 分垂肩上。身穿圆领右褂衣, 腰部束带。左手曲举胸前, 右手置于腹侧。彩色脱落几尽, 仅脸部和双手残留粉红色彩。足部已残。残高17厘米(图版拾壹, 4、5)。</p>
+<p>532:14 为老人头象。皱纹满面,眉目不清。颈部以下成一长柄,原当配有其他质料的躯体,现已朽尽。长13.1厘米(图二七,1)。</p>
+<p>551:5 胸象。横头顶部略向前倾,后脚长垂脑后。高额深目,颈部筋肌显露,为老人象。脸涂粉红色彩,唇点大红,犹依稀可见。两肩透穿一圆洞,原或装有活动的手臂,并配有其他质料的身躯,但皆已腐朽无遗。高11.5厘米(图二七,2)。</p>
+<p>II型18件。模头低宽, 微向前倾, 仅露两脚, 或系于脑后, 或反结于头顶。服饰、姿势不尽一致。身穿翻领窄袖胡服, 腰间束带, 少数加披外衣。双手拱于胸前; 或一手曲举,</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二七 男俑头式样</p>
+<p>1、2.Ⅰ型侍俑(532:14、551:5) 3.Ⅱ型侍俑(576:24) 4.Ⅱ型侍俑(305:21) 5.Ⅲ型侍俑(414:9)</p>
+<p>一手下垂。多数带有底座。通高20.4—26.4厘米。</p>
+<p>577:7 冫头两脚系于脑后。唇留“八”字。衣衫翻领窄袖，腰系一带。右手下垂，左手曲置腹部，作持物状。馒头涂以黑色，其余彩绘皆已脱落。脚下有圆形底座。通高26.4厘米（图版拾柒，1）。</p>
+<p>576:24 面容醜陋,唇留有鬚。身披圆领长袖外衣,扣领开襟。右手置于胸前,左手藏于外衣内,犹隐约可见。彩绘脱落殆尽,幌头涂黑色,外衣有黄彩痕迹。高25.6厘米(图二七,3;图版拾玖,1)。</p>
+<p>III型 26件(其中6件为胸象)。旗头内裹二并列圆髻,状甚丰满。面容肥腴。身穿圆领宽袖长袍,腰系博带,腰带垂头下插于背后,当即所谓“铠尾”①;脚下皆有薄底座。体型大小不一,大者通高40-60,小者23-27厘米。</p>
+<p>518:2 双手拱于胸前, 手隐袖内; 脚著尖头鞋, 露在袍外。彩绘剁落殆尽, 仅脸部残存粉红色彩。通高40厘米(图版拾柒, 4)。</p>
+<p>414:9 双手斜拱胸前, 左脚略向外伸, 露出长、尖头鞋, 身体稍向右后倾斜。通高 23 厘米 (图二七, 5)。</p>
+<p>526:8 胸象。高9.5厘米(图版拾陆，1)。</p>
+<p>1)《新磨书·车服志》：“履带者，攒蚕头于下，名曰钝尾；取顺下之义。”</p>
+<p>IV型20件(其中胸象4件)。馒头平直,顶部方尖,似为硬裹馒头。身穿圆领窄袖长袍,腰间系带,姿态不一。脚下有底座。通高7.7—19厘米。</p>
+<p>505:4 右手举于胸前, 窄袖蔽手; 左手握拳, 置于腹部。脸、颈残存红彩, 其余彩绘皆已脱落。底座作半圆形。通高13.7厘米(图版拾陆, 2)。</p>
+<p>508:3 长袍前襟撩起,束于腰带下。右手下垂隐于袖内;左手高举齐肩,作招手状。彩色已脱落无遗。通高19厘米(图版拾陆,3)。</p>
+<p>V型 17件。撬头低垂,似一圆髻。服饰与IV型相同。可分大小二类,大者高19—23.5,小者仅6.8—9.5厘米。</p>
+<p>515:3 面容臃肿, 腹部微挺, 右手曲举胸前, 左手置于腹部。制作粗陋, 衣纹不显, 彩绘全已脱落。底座方形。通高 23.5 厘米(图版拾陆, 4)。</p>
+<ol>
+<li>幅头骑马侍从俑 共26件。分为二型：</li>
+</ol>
+<p>I型18件。牒头与II型侍俑相同。上穿翻领窄袖胡服，下著袴靴。两手曲置胸腹间，作牵韞状。马头低垂，背施鞍、韆，浮雕辔饰，墨画鞅、鞅。耳部或有二孔，原当另插有马耳。四足皆已残断。</p>
+<p>543:9. 骑俑唇留有鬓, 衣涂暗红色彩。马身彩绘已脱落不显。残高 26 厘米 (图版拾陆, 5)。</p>
+<p>II型8件。幌头顶部呈扇形,略向前倾,有的两脚系于脑后,另两脚反结头上;有的仅见头顶两脚,脑后两脚不显。身穿翻领或圆领窄袖衣,下著长袴。两手前举,作控髋状。马首微昂,鞍、辅俱全。</p>
+<p>203:14 榫头两脚系于头顶。面貌醜陋，衣施绿彩，左手前举，右手已残。马着棕红色，四足皆残。残高20.5厘米(图版拾伍，4)。305:21 榫头显露四脚，亦已残破（图二七，4）。</p>
+<ol>
+<li>楔头牵马胡俑 共7件。分为二型：</li>
+</ol>
+<p>I型4件。墓203出土。幢头与Ⅱ型骑俑相似，仅见两脚系于头顶。探目高鼻，作胡人状。身穿翻领或圆领窄袖衣，腰部束带，双手作牵马状。身躯皆已残破，高度不明。</p>
+<p>II型3件，出于葛604。椽头与III型侍俑相同，两鬓及后脑以阴线刻出头发。深目高鼻象胡人。身穿圆领窄袖衣，束以腰带。双手及下身皆残，彩绘全已脱落。</p>
+<p>（五）高冠文吏俑 共8件。分为二型：</p>
+<p>I型1件(203:5)。头戴黑色高冠。面施白粉,墨画眉眼发。内穿绿色圆领窄袖衣,外著红色敞领宽袖短衫,腰系宽带,下裳长垂至脚,脚穿如意头鞋,露出裳外。腰带、下裳皆涂白色。双手拱于胸前,中有一孔,似原插有物。高80厘米(图版拾壹,2)。</p>
+<p>II型 7件。墓604出土。面容丰腴,裹衣博带。高冠前低后高,与《王机图》(卷三,</p>
+<p>4页)所绘之第四种“委貌冠”颇为相似<sup>1)</sup>。内着圆领中单, 外穿交领宽袖长袍, 束以博带。双手拱于胸前, 手隐袖内。彩绘剥落几尽, 袖口残存黑色, 长袍有红彩痕迹。604:7高41厘米(图版拾染, 5)。余同此。</p>
+<h1 id="8">（六）辫发男俑 共8件。分为二型：</h1>
+<p>I型4件。头发上梳，于头顶编成发辫垂至脑后。身穿圆领偏襟窄袖衫，腰间系带。双手拱于胸前，两脚并立于方形底座上。通高21—23.2厘米。</p>
+<p>520:5 头部微俯, 状甚恭谨。发辫、腰带、双鞋及底座皆涂黑色, 衣衫原施蓝彩, 皆已脱落不显。通高23.2厘米（图版拾柒，2、3）。</p>
+<p>II型 4件,皆为牵马俑。头发左右分梳,编成二辫盘结于脑后。身穿翻领或圆领窄袖衣。</p>
+<p>203:12 圆眼髭髯, 状类胡人。外衣翻领窄袖, 相右肩, 露出短袖内衣, 腰部束带, 外衣前襟后扬, 显露长袴、尖头鞋。两腿分开, 立于长方形底座之上。翻领涂以绿色, 内衣亦有彩绘痕迹, 皆已模糊不显。左手微弯下垂, 右手曲举腹前, 作紧执鞭绳状。通高46.5厘米(图版拾壹, 3)。</p>
+<h1 id="13">（七）披甲骑马卤簿俑 共13件。分为三型：</h1>
+<p>I型 2件,墓586出土。人俑上身扁平,系单模制成。头戴尖顶盔胄,肩披掩膊,身穿铠甲,甲片纵列,隐约可见。两手垂于身侧,下著袴靴,两足踏鐙。马背施以鞍、繡。</p>
+<p>586:139 马身前部及四足已残，彩绘亦全已脱落。残高16.8厘米（图版拾捌，3）。另一件(586:110)残破更甚。</p>
+<p>Ⅱ型 2件, 亦出于墓586。头戴卷沿平顶帽, 两侧下垂蔽耳。颈项围以高领, 肩披掩膊, 内著窄袖戎衣。双肩及背部有椭圆形凸起, 似为护身的装备。下著袴靴。双手曲置腹部, 右手隐于袖内, 左手有一孔, 原当执有器物。马首低垂, 微显簪饰衔镳; 马背设有鞍、羁, 四足皆残。</p>
+<p>586:138 人脸涂红，马辖沿边亦施红彩，马身着黄色，鞅、鞘画以黑墨，皆已模糊不显。残高21，马长20厘米(图版拾捌，1、2)。</p>
+<p>III型 9件, 蓬532出土。盔帽尖顶, 仅露脸部。上身肩甲戎衣, 与Ⅱ型同; 下著战裙, 长靴踏铿。左手举至胸前, 作牵鞭状; 右手曲置腹部, 手中有小孔, 原当插有所持之器物。马亦披甲, 与宋之马甲相比, 首甲状类“面帘”, 项甲则与“鸡项”有异<sup>2</sup>。马背设鞍, 四足皆已残断。</p>
+<p>532:36 彩绘脱落几尽,脸、手残留红色,马身有黄彩痕迹。残高22.2,马长23厘米(图版拾捌,4)。</p>
+<h1 id="_37">（八）其他</h1>
+<p>1.力士俑 6件(505:5-10)。头裹软巾,状似IV型犊头。上身赤裸,下身仅穿三角形短裤。肥头大脑,肌肉发达,显得强壮有力。两手握拳,手势互有不同。皆已残缺。505:7左手侧举,右手及两腿皆残。全身原涂粉红色彩,大部已脱落不显。残高11厘米(图版拾玖,2)。505:6左手握拳下垂(图版拾玖,3)。余相类。<br />
+2. 跪童俑(532:16) 身穿圆领窄袖衣, 下着窄袴。颈下有泥金红彩一圈, 似系象征项饰。袖口及鞋残存红色, 其余彩绘皆已脱落。双手下垂, 右足屈膝, 左足已残, 原应作下跪状。残高9.4厘米（图版拾玖，4）。<br />
+3. 男坐俑(421:9) 头戴黑色尖帽, 盘坐地上, 左腿已残。右手举至胸前, 左手置于腹部。脸颈涂红, 腰带以黑墨画出。制作粗陋, 面目不清。高12厘米。<br />
+4. 武官俑(203:6) 面施白粉, 头戴道冠。竖眉怒目, 张口露牙, 状颇狰狞。内穿绿色圆领衣, 外着敞领宽袖红色短衫。身躯已殘碎, 头部尚完整, 似系武官俑, 与203:5文吏俑当为一对。头部连冠长25厘米。</p>
+<p>上述男俑之中, 小冠俑和披甲骑马俑只见于隋和初唐墓; 笃冠俑和凤帽俑主要出于隋和初唐墓, 盛唐墓有时亦有之, 但数量已不多, 特别是笼冠俑更少; 候头俑从初唐到晚唐墓一直都有, 是男俑中种类最多也最普遍的一种俑; 辨发俑见于初唐和盛唐墓; 高冠俑数量很少, 皆出于盛唐墓中。</p>
+<p>小寇俑，I、II型皆有出于开皇墓的，III型有贞观墓出土的。</p>
+<p>披甲骑马俑，I、II型皆系开皇墓所出，III型出于贞观墓。</p>
+<p>笼冠侍俑，I型有开皇墓所出者，II型有出于贞观墓者，III型有贞观、麟德二墓所出者。笼冠骑俑，I型出于贞观墓，II型出于景云元年——开元十四年墓(下称“景云墓”)。</p>
+<p>风帽侍俑，I—IV型皆有开皇墓出土者，V、VI型属初唐时期，VII型有贞观、麟德、证圣、景龙四墓出土者，VIII型有出于景云墓者。风帽骑俑，I型出于贞观墓，II型出于景龙和景云墓。</p>
+<p>候头侍俑, I、II型属初唐时期, I型有贞观墓出土者; III型多数属盛唐时期, 有出于景龙墓者; IV、V型属中、晚唐时期, IV型有建中三年墓(下称“建中墓”)和元和二年墓所出的, V型有出于大中四年墓者。候头骑俑, I型属初唐时期, 有麟德墓出土者; II型出于景龙和景云墓。候头胡俑, 皆属盛唐时期, I型出于景龙墓。候头早晚演变的规律是: 由宽扁低平到丰满高耸, 由软裹到硬裹, 由露巾脚到不露巾脚; 这些变化可能同当时裘巾的方法和技术的不断改进有关系。</p>
+<p>辨发俑，I型属初唐时期，II型属盛唐时期，有景龙墓出土者。</p>
+<p>高冠俑,皆属盛唐时期,I型出于景龙墓。</p>
+<h1 id="_38">三、女 偏</h1>
+<p>女俑的形象和服饰, 虽然丰富多彩; 但按其性质而旨, 则皆为侍从俑或值仆俑。发髻</p>
+<p>是女俑最为显著的特征，式样既多，又具有一定的时代特点。兹按发髻的不同，分女俑为低髻、高髻、小髻、垂发梳髻、博鬓抛髻和双鬓六类，每类之中，再为分型。</p>
+<h1 id="_39">（一）低馨女俑</h1>
+<ol>
+<li>低髻女侍俑 共28件。分为二型：</li>
+</ol>
+<p>I型 11件。头发上梳，于头顶盘成宽而低的发髻。身穿圆领窄袖褶衫，胸间束带，带尾垂于身前，下著多襞长裙，身披帔子。高17.5—20.2厘米。</p>
+<p>586:8 身材修长, 体态瘦弱。双手拱于胸前, 似捧有物。发髻涂黑, 褶衫着黄色, 束带红彩, 长裙饰以红、黄色相间条纹。金黄色帔子斜披肩背, 帖子两端长垂身侧。高17.7厘米(图版拾玖, 5)。</p>
+<p>Ⅱ型17件。发髻形状与I型相似，但分成左右两半。服饰亦和I型基本相同，唯褶衫宽袖，披帛较为宽博。原皆持有器物，现已消失无存。高度在18.4—19.4厘米之间。</p>
+<p>586:17 身穿圆领宽袖襦,下裙长垂至地,肩背覆以披帛,两端前垂身侧。双手曲举身前,握拳相迭,手中有孔,作持物状。衣著彩绘与586:8完全相同。高18.7厘米(图版拾玖,6)。</p>
+<ol>
+<li>低髻持箕女俑 共4件。皆系墓586出土。发髻与Ⅱ型侍俑相同。上穿窄袖襕，下著红、黄色相间裙。持箕端坐。高9.2—9.8厘米。586:16高9.2厘米（图版拾玖，7）。</li>
+</ol>
+<h1 id="_40">（二）高髻女俑</h1>
+<ol>
+<li>高髻女侍俑 共38件(其中有头象5件、胸象2件)。分为五型：</li>
+</ol>
+<p>I型 9件。头部和身躯系分别制出后接合而成。头发左右分梳成并列高髻，髻分上下两层，上层向前突出。面容清秀，而身材比例不甚匀称。长裙高束胸部，两足作下跪势。双肩有对穿圆孔，似原安有其他质料的手臂，现已无存。除唇部有涂红痕迹外，其余彩绘皆已脱落。高度均在18.5厘米左右。532:13高18.6厘米(图版拾玖，8、9)。</p>
+<p>II型17件(其中头象5件)。头发上梳旋成双层偏右高髻。身穿袒胸窄袖襦衫，长裙高束胸部，裙带飘垂，裙裾宽舒，长垂曳地。双手曲置腹前，手隐袖内。高29—31.5厘米。</p>
+<p>568:23 彩绘剥落殆尽, 衣、裙残存红彩。高 30.4 厘米 (图版贰拾, 1)。532:15 为头象, 长 13 厘米 (图二八, 5)。</p>
+<p>III型 5件。头发总束头顶，成一圆形或花状高髻。身穿交领宽袖襦，下裙长垂至脚。双手拱举胸前，手隐袖内。体型有大小二种，大者高32.8，小者高7.7厘米。<br />
+211:3 头梳圆形高髻。口涂硃红, 长裙着金黄色, 褶衫彩绘已脱落不显。高 32.8 厘米 (图版贰拾, 6)。<br />
+210:25 体型甚小,眉目不清,高髻作花状。衣裙之外,似披有外衣及鞍子,细部已模糊不显。高7.7厘米(图版贰拾,2)。</p>
+<p>IV型 5件(其中胸象2件)。头发总束于头顶，梳成二并列鬓。褶衫宽袖，长裙垂地，双手拱于胸前。</p>
+<p>553:10 体型小巧, 衣纹不甚清晰, 彩绘皆已脱落。高仅8.5厘米(图版贰拾, 3)。<br />
+562:16 胸象。二并列鬓略作长方形。高10厘米(图版贰拾,4、5)。</p>
+<p>V型，2件。头发前后分梳，后面为一圆髻，两鬓及额顶头发则上梳成三角形尖髻，后贴在圆髻之上，形状颇为奇特。身穿大袖褶衫，下著宽裙，披帛自两臂下垂身侧。双手斜拱胸前，手插袖内。</p>
+<p>411:15 发髻涂黑色, 脸部瘞存红粉, 其余彩色皆已脱落。脚下有一低座。通高 32.6 厘米(图版貳拾, 7、8)。另一件(421:10), 姿态、服饰完全相同, 体型很小, 高仅 10 厘米。<br />
+2. 高髻骑马女俑 共4件，墓576和590各出二件。发髻与Ⅱ型侍俑相同。身穿袒胸窄袖襦，肩、背披饰帔子；下裙高束胸部，裙内露出长袴；脚着尖头鞋，插在鐙内。马头下垂，背施鞍、韆，四足皆已残断。<br />
+576:10 俑身苗条, 面目清秀。左手下垂, 隐于帔子内; 右手曲置胸前。帔子涂以绿色, 裙、袴皆施黄彩。马俑垂头张嘴, 作嘶鸣状。马身黄彩, 马嘴及眼、鼻有涂红痕迹, 鞍、繒皆着黑色。瘞高25厘米(图版贰壹, 1)。</p>
+<h1 id="5">（三）小髻女侍俑 共5件。分为二型：</h1>
+<p>I型 2件。头发左右分梳，于脑后总束成小髻。身穿交领窄袖衫，腰部束带，双手拱置胸前。</p>
+<p>569:7 彩绘皆已脱落,高21厘米(图版贰壹,3、4)。另一件(569:5)完全相同。<br />
+II型 3件。头发上梳,于头顶束成一圆形小髻。身穿窄袖襕衫,圆领袒胸;下著长裙,裙带结于胸前,裙裾长垂曳地。帔子披于肩背,下端长垂身前。双手交置腹部。高22.5—26厘米。<br />
+417:8 彩绘多已脱落, 长裙涂饰黄、赭相间条纹, 亦已模糊不显。高26厘米(图版贰壹, 5、6)。<br />
+（四）垂发梳髻女侍俑 共14件(其中胸象4件)。头发自两鬓及后脑下垂，披至肩际，头顶梳出髻鬓。依髻鬓位置不同，分为二型：</p>
+<p>I型 8件(其中胸象2件)。鬓鬓自后脑前倾,偏于头顶左侧。褶衫窄袖,长裙高束胸间。双手拱举胸前。体型大小不一,大者仅为50,小者仅7.8厘米。</p>
+<p>604:20 胸象, 髓鬓左偏, 面容丰腴, 高 10.8 厘米 (图二八, 1; 图版贰壹, 2)。</p>
+<p>II型6件(其中胸象2件)。鬓位于头顶正中,微向前倾。双手拱于胸前,或置于腹部。上穿宽袖或窄袖褶衫,下着长裙,衣纹不甚清晰,彩绘多已剥落。体型皆甚小,高度在7.9—10.3厘米之间。</p>
+<p>594:7 鬓髪高耸, 双手拱置胸前。褶衫宽袖, 下裙长垂至地。面目模糊不清, 彩绘皆已脱落。高10.3厘米(图二八, 8)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二八 女俑发式</p>
+<ol>
+<li>I 型垂发梳髻 (604:20) 2-4、6. III、I、IV、II 型博鬓抛髮 (501:2、554:6、406:6、406:18)  </li>
+<li>II型高臀(532:15) 7. 双鬓(581:3) 8. II型垂发梳髻女俑发式(594:7)(8. 为 $1/2$ , 余均 $1/4$ )</li>
+</ol>
+<p>（五）博鬓抛鬓女侍俑 共28件(其中胸象1件)。两鬓蓬松，薄如蝉翅；头发上梳，于头顶束成鬓。依鬓式样、数目的差异，分为四型：</p>
+<p>I型7件。髻鬓低平，抛向左侧。身躯肥胖，面容丰腴。上穿敞领半宽袖襕衫，下著长裙、圆头鞋。脚下皆有薄座。体型大小不一，通高在21.6—40厘米之间。</p>
+<p>554:6 脸部微向左侧, 拱手玉立。长裙高束胸部, 以阴线刻出裙腰及披帛, 披帛两端自两臂下垂身侧。彩色脱落殆尽, 仅衣袖残存金黄色、裙腰有红彩痕迹而已。通高40厘米(图二八, 3; 图版贰贰, 1)。</p>
+<p>Ⅱ型 15 件。髻鬓细长, 自后脑向左侧斜抛, 伸出鬓外。衣著、姿态与 I 型相似, 唯无披帛。脚下亦有薄座。体型有大小二种: 大型通高 39.5-41.5; 小型 8.5-9.5 厘米。</p>
+<p>406:18 拱手直立。彩绘脱落殆尽，仅长裙镂存金黄色彩。通高40厘米（图二八，6；图版贰贰，2）。<br />
+563:20 右手抱一婴孩;左手曲置胸前,作摸抚状。女俑头发着黑色,婴孩废留黄彩,其余彩绘皆已脱落不显。体型甚小,通高仅8.5厘米。</p>
+<p>III型 5件（其中胸俑1件）。髻鬓扁平，自后脑抛向额前，微偏左侧。服饰与Ⅱ型相同。脚下亦有薄座。体型大小不一，通高在7.6—32厘米之间。</p>
+<p>501:2 面容丰腴，稍嫌臃肿。发髻涂以黑色，脸施红粉，长裙残存金黄色彩。通高</p>
+<p>32厘米(图二八，2；图版贰贰，3)。</p>
+<p>IV型·1件(406:6)。头顶梳出二鬓，分抛左右。身躯已残，仅存头部。骸长10厘米（图二八，4）。</p>
+<p>（六）双鬟女侍俑 共15件(其中胸俑8件)。头发左右分梳, 双鬓紧贴两耳, 应是当时年青侍女的发式。此类女俑体型很小, 制作亦粗陋, 面目、衣纹皆模糊不清。高度在8—9厘米之间。</p>
+<p>581:3 脸面修长, 双鬓高梳。面施红粉, 发、鬓涂以黑色, 眉、目亦以黑墨画出。高 8.9 厘米 (图二八, 7; 图版贰叁, 5)。<br />
+603:16 头发分梳, 双鬓蔽耳。脸部殘存紅彩, 发、鬚涂以黑色。高7.3厘米（图版贰參，6）。</p>
+<p>上述女俑之中, 低髻俑皆出于隋和初唐墓; 小髻俑只见于初唐墓中; 高髻盛于初唐和盛唐, 中唐以后墓偶亦有之; 垂发梳髻、博鬓抛鬟和双鬟俑皆起自盛唐, 中唐以后墓亦有之。</p>
+<p>低髻侍俑，I型有出于开皇和贞观墓者，II型亦有开皇墓出土的。低髻持箕俑均为开皇墓所出。</p>
+<p>小髻俑，I、II型皆出于初唐墓。</p>
+<p>高髻侍俑，I、II型属初唐时期，I型为贞观墓所出，II型有贞观和麟德墓出土者；III、IV型多数出于盛唐墓，少数为中、晚唐墓所出，IV型有景云墓出土者；V型出于中、晚唐墓。高髻骑俑皆出于初唐墓。</p>
+<p>垂发梳髻俑，I型多数出于盛唐墓，少数出于中、晚唐墓，其中有建中墓出土者；II型则反之。</p>
+<p>博鬓抛鬓俑, I 型出于盛唐墓; II、III 型少数出于盛唐墓, 多数出于中、晚唐墓, II 型有建中墓和元和二年墓出土者; IV 型见于盛唐墓, 与 II 型共出。</p>
+<p>双鬟俑,少数出于盛唐墓,多数出于中、晚唐墓,有建中墓和元和二年墓出土者。</p>
+<h1 id="_41">四、动物俑</h1>
+<p>（一）鸡俑 共9件。分为二型：</p>
+<p>I型 2件。昂首细颈, 鸡身瘦长, 作躑伏状。</p>
+<p>520:17 尾毛涂以黑色,其余彩绘皆已脱落。高6.4厘米(图版贰叁，1)。</p>
+<p>II型 7件。鸡身粗笨,制作简陋;皆作站立状,足下有圆形或方形小座。</p>
+<p>589:2. 彩色脱落, 仅存白衣。底座圆形空心。通高7.8厘米(图版贰叁, 2)。</p>
+<p>（二）狗俑 共20件。分为四型：</p>
+<p>I型 3件。均出于墓586。昂首挺胸，作蹲坐状，尾部贴身上翘。</p>
+<p>586:124 颈部饰以红色项圈，身躯有黄彩痕迹。体型瘦小，状颇伶俐。高7.3厘米</p>
+<p>（图版贰叁，3）。</p>
+<p>II型 1件(532:30)。狗身跑曲, 首尾相接呈圆形, 作臥伏状。高3.5厘米(图版贰叁, 4)。</p>
+<p>III型 9件。狗身略为跨曲，伏臥于椭圆形底座上。</p>
+<p>520:18 狗身涂以黑色。通高4.7厘米(图版贰叁, 7)。</p>
+<p>IV型 7件。亦作臥伏状，但狗身不甚蹠曲。体型较III型为小。</p>
+<p>605:16 狗身黄彩,多已脱落。长9厘米(图版贰叁,8)。</p>
+<h1 id="19">（三）猪俑 共19件。分为三型：</h1>
+<p>I型 3件。系子母猪。母猪侧卧，腹下乳哺小猪一排。</p>
+<p>586:144 母猪腹下有小猪七只，排成一列，作哺乳状。造型虽简朴，却十分生动有趣。母猪身长10.1厘米(图版贰肆，1)。</p>
+<p>II型 4件。头、嘴着地，作伏臥状。</p>
+<p>532:24 猪身原涂黑色,现已剥落大半。长12.5厘米(图版贰肆，2)。</p>
+<p>III型 12件。跪臥于地,头部微仰。</p>
+<p>520:16 满身涂以黑色。长12.2厘米(图版贰肆，3)。</p>
+<h1 id="14_1">（四）羊俑 共14件。分为二型：</h1>
+<p>I型 12件。羊角卷曲,作跪臥状。当为卷角绵羊。</p>
+<p>586:129 身涂黄彩, 并间绘黑色斑纹, 惜已脱落不显。高 7.7, 长 10.8 厘米 (图版贰肆, 4)。</p>
+<p>II型 2件。头部无角,状似羊羔;体型较I型为小。</p>
+<p>605:15 彩绘已脱落，仅存白衣。跪臥于空心底座上，造型颇为生动。通高 5.2，长 7.2 厘米（图版贰肆，5）。</p>
+<h1 id="37">（五）马俑 共37件。分为四型：</h1>
+<p>I型18件。皆系站立于长方形座板上。身躯肥壮，头小颈长，是典型的骏马形象。马背施以鞍、轡、障泥，装饰颇为华丽。马鬣长短不一，长者披于颈部左侧。少数张口垂头，作嘶鸣状。</p>
+<p>203:28 马首昂举,斜向左侧。鞍上披以障泥,上施彩绘。马身涂白色,尻部有一孔,应为原插马尾之处。体形高大,神态奕奕。通高70,长52厘米(图版贰伍,1)。</p>
+<p>203:30 马身涂红色,神态与 203:28 相类。背施鞍穗。鞍上裹一花巾,两端打结,垂于马腹两侧。穗作椭圆形,上施彩绘,惜已剥落殆尽。通高 65,长 56.5 厘米(图版贰伍,2)。</p>
+<p>592:4 马头稍向左偏, 繁毛细长, 披于左侧。周身黄彩, 鞍涂金黄色, 糟着黑色; 造型颇为生动。马尾已残。通高29.3, 长29.5厘米(图版贰肆, 6)。</p>
+<p>Ⅱ型 19件。马首高昂,直立于方形或长方形座板上,为不施鞍辔之骡马。</p>
+<p>413:12 马首微向左侧昂举; 从颈上有一道凹槽和尾部有一圆孔可以推知, 原当插有</p>
+<p>其他质料的鬃毛和马尾。全身涂棕红色，然多已脱落。通高39.5，长32.5厘米（图版贰肆，8）。</p>
+<p>III型 2件。马首微向下垂，背施鞍、罐。底座中部镂空，尾部或下垂与底座相连，或系另外插附。造型较为呆板。</p>
+<p>506:4，彩绘皆已剥落。颈上有一道小槽，尻部有一圆孔，当系原插縈毛与马尾之处，情形与413:12相同。四足直立于镂空底座上。通高28.3,长27.1厘米(图版贰肆，7)。</p>
+<p>IV型 2件。头颈下垂,作跪卧状。制作简单,体型很小。</p>
+<p>593:5 马嘴及双耳有涂红痕迹，其余彩色皆已脱落。高4.6，长10.3厘米（图版贰陆，1）。</p>
+<h1 id="14_2">（六）骆驼俑 共14件。分为三型：</h1>
+<p>I型 1件(586:140)。驼首高昂, 张嘴作长鸣状。背部以红彩画出椭圆形垫毯, 其上驮有货物两袋, 分垂背部两侧。未露驼峯, 似为单峯骆驼。四腿已残, 残高29.5厘米(图版贰陆, 2)。</p>
+<p>II型11件。昂首站立于长方形座板上。背有二峯，少数加施垫毯或驮负有物。体型较I型高大。</p>
+<p>405:3 驼首高扬,全身黄彩。通高42厘米(图版贰陆,3)。</p>
+<p>203:40 昂首直立。背覆椭圆形厚毯，周边饰以流苏，双峯露出毯外。全身涂黄色，长毛及垫毯着红色，但多已脱落。通高80厘米(图版贰陆，5)。</p>
+<p>III型 2件。驼首昂举,作跪臥状;亦为双銮驼。制作粗陋,体型很小。</p>
+<p>203:42 周身涂黄褐色,多已模糊不显。高6.5,长8.5厘米(图版贰陆,4)。</p>
+<h1 id="13_1">（七）牛俑 共13件。分为三型：</h1>
+<p>I型5件。身躯肥壮。颈部凸起，与头部之间形成一凹槽。头部两侧各有小孔一对，原当插有其他质料的耳和角，现已脱落。昂首站立于长方形座板上。从其造形观察，似为驾车之牛，领部凹槽，当即置辕焉之处。车或为木质，已腐朽无存。</p>
+<p>590:28 周身涂棕红色。通高19.4,长27.5厘米(图版贰柒，1)。</p>
+<p>II型3件。站立于椭圆形空心底座上,尾部下垂与底座相连,体型较I型为小。</p>
+<p>558:8 涂饰黄彩, 但已脱落殆尽。通高11.3, 长14.8厘米(图版贰柒, 2)。</p>
+<p>III型 5件。作跪臥状。制作粗陋,体积比II型更小。</p>
+<p>593:6 嘴部及双耳残存硃红痕迹, 其余彩色皆已脱落。高 4.3, 长 9.4 厘米 (图版贰染, 3)。</p>
+<p>动物俑, 从初唐到晚唐变化较小。一种形式, 往往延续很长的时间, 与其他陶俑相比, 时代特征较不明显。</p>
+<p>鸿俑，I型出于初唐墓和景龙墓；II型少数出于初、盛唐墓，多数出于中、晚唐墓中。</p>
+<p>狗俑, I 型为开皇墓所出, II 型为贞观墓所出, III 型少数出于盛唐墓, 多数为初唐墓</p>
+<p>所出,其中有麟德蔓出土者。IV型除个别出于盛唐墓外,余皆为中、晚唐墓所出。除I型为蹲坐外,其余均作臥伏状;狗身由跨曲而逐渐伸舒。</p>
+<p>猪俑, I 型出于开皇墓; II、III 型从初唐到中、晚唐墓皆有之, II 型有贞观墓出土者, III 型有出于麟德和证圣墓者。</p>
+<p>羊俑, I 型除少数为盛唐和中、晚唐墓所出外, 多数出于隋和初唐墓, 有开皇和贞观墓所出者; II 型出于中、晚唐墓。</p>
+<p>马俑, I型从初唐到中、晚唐墓都有之, 其中有景龙墓出土者; II型出于盛唐和中、晚唐墓, 有景龙、景云和大中四年墓出土者; III型皆出于中、晚唐墓; IV型出于盛唐和中、晚唐墓。</p>
+<p>骆驼俑, I 型为开皇墓所出; II 型除一件为贞观墓所出外, 余皆出于盛唐和中、晚唐墓, 其中有证圣、景龙和大中四年墓所出者; III 型皆出于景龙墓。</p>
+<p>牛俑, I 型出于初唐墓, 有麟德墓出土者; II、III 型皆出于盛唐和中、晚唐墓, III 型有景龙墓出土者。</p>
+<h1 id="_42">第叁章 陶器及其他</h1>
+<h1 id="_43">一、陶 器</h1>
+<p>出土陶器的墓葬共119座，所出陶器总数为240件（残破过甚无法复原者不计在内）。共有带座罐、罐、双耳罐、壶、瓶、碗、灯盏、盘、盆、器座、砚、屋、磨、碓、灶、井栏、鼓形器、轮形器和珠等十九种器物。</p>
+<p>陶质可分为泥质灰陶、泥质红陶和细泥黄灰陶三种。</p>
+<p>泥质灰陶的数量最多, 一般火候较高, 质地较硬, 呈青灰色, 大部分为实用器物。泥质红陶数量较少, 质较松软, 一般为桔红色, 少数呈暗红色。细泥黄灰陶只有3件, 皆为砚台; 陶土系经淘洗, 质地细密, 不易吸水。</p>
+<p>制法以轮制为主,少数器物系手制而成,个别器物的部分亦有应用模制者。</p>
+<p>带座罐、罐、I型壶、瓶、碗、碟、盘、盆以及双耳罐、双耳壶、器座的器身部分皆为轮制。II型壶、磨、碓、灶、井栏、鼓形器、轮形器、珠以及屋之四壁为手制。双耳罐和双耳壶的耳部系手制成后安上；砚系手制后经过磨光而成；屋之顶部和器座周边的附饰则系用单模制成后粘附。</p>
+<p>纹饰方面, 以素面者居多, 表面施加彩绘者次之。部分器物则饰以暗纹或压纹。</p>
+<p>带座罐以及部分陶罐施有彩绘。画法系在烧成的器物表面先施一层粉状白衣，然后绘上彩色纹饰。因埋藏年久，多数器物的彩绘已经脱落或褪色，少数保存尚完好。从现存的彩绘观察，所用颜料计有红、黄、褐、黑、绿、棕、蓝等色。所绘纹样有宝相花、云日纹、莲瓣纹、流云纹、卷草纹和锯齿纹等。</p>
+<p>宝相花是唐代流行的花纹,也是这批彩绘中主要的题材,配色鲜艳,形式多样,多绘于器腹的中部作为主要的纹饰。云日纹亦被绘作器物的主纹,位置与宝相花相同。莲瓣纹多画在器盖、器座及器身的肩颈部和下腹部,形成仰莲或覆莲的纹饰。流云纹则多绘制于主纹的周围,起着陪衬的作用。卷草纹绘制的位置与莲瓣纹基本相同,未绘莲瓣纹的多代之以卷草纹。锯齿纹则只出现于个别大口长腹罐的肩腹部分。暗纹系在陶坯半干时加以压划,经烧成后显出的纹样。部分壶、瓶和小口鼓腹罐的腹部出现弦状暗纹。墓586出土的双耳壶(586:148)的腹部则划饰一道以 $\mathcal{Q}$ 状为单位组成的暗纹(图三一,7)。压纹系在轮制陶坯时,用工具在坯壁压刻出的平行纹带。细线条的称弦状压纹,粗而宽的凹带称瓦状压纹;前者多施于罐、壶的肩、腹部分,后者往往出现于大口长腹罐和带座罐的座部。</p>
+<p>（一）带座罐共32件(缺盖、座难以分型的不计在内)。此类罐多数带盖和座。</p>
+<p>少数有座无盖。罐和盖、座皆施白衣彩绘，是其显著特点。可分为三型：</p>
+<p>I型19件。盖上有竹节形实心高钮，钮顶作笠帽状。罐为圆唇，微向外卷。座呈喇叭形，腰部细长。依罐腹形状的差异分为二式：</p>
+<p>一式 10 件。罐上腹鼓圆, 下腹较瘦长, 最大径约在罐身高度的三分之二处。562:4 罐身彩绘皆已剥落, 仅存部分白衣, 座部残留黑色卷云纹。盖高 9.6, 径 9.6; 罐高 26.8, 口径 8.2, 腹径 22, 底径 11.5; 座高 18.8, 上径 12.3, 下径 18.7 厘米(图二九, 1)。</p>
+<p>二式 9 件。罐腹圆鼓, 最大径在罐身中部, 罐座与一式相似而稍粗。605:20 彩绘已模糊不清, 白衣保存尚好。盖高 10, 径 10.2; 罐高 27, 口径 9.2, 腹径 26, 底径 11.5; 座高 17.8, 上径 11.6, 下径 19.4 厘米 (图二九, 2)。216:18 罐盖残存橙黄色彩, 纹饰不清; 罐身以黑色绘出宝相花四朵, 着白、褐和橙黄色彩, 肩部和下腹部各有莲瓣一周; 座上部亦饰莲瓣, 下部绘橙黄色卷草花纹。大小与 605:20 相类 (彩版贰, 1; 图版贰柒, 4)。</p>
+<p>II型10件。盖钮作空心塔状，有粗细长短之别。罐直领方唇或圆唇，腹下部稍瘦长。座细腰，而下径特大，较I型为矮。依罐盖和底座的差异分为二式：</p>
+<p>一式 3件。塔状盖钮中有圆孔，钮作平顶或宝珠形顶。罐直领方唇，上腹圆鼓，下腹逐渐内收。底座细腰而矮。608:1罐身彩绘宝相花，但已脱落殆尽。盖残高8.2，径10.8；罐高27，口径10.2，腹径23.7，底径12.3；座高15.8，上径11.4，下径20.7厘米（图二九，4）。</p>
+<p>二式 7 件。盖钮作空心尖塔状,有高低粗细的不同。盖身较厚,周缘略向上卷。罐直领圆唇,形状与一式相似而较瘦小。座较一式稍高,座底周绿亦微向上卷。503:1 盖面绘褐色莲瓣纹;罐腹中部以红、褐色绘出桃状云日纹带,其上下以黑褐色画出类似云纹的饰带。座下部亦残存褐色纹样,惜已模糊不显。盖高9.8,径10.3;罐高25.3,口径8,腹径20.7,底径9.9;座高16.7,上径9.4,下径18.9厘米(图二九,3;彩版贰,2;图版贰染,5)。</p>
+<p>III型 3件。此型无盖。罐有短颈,圆唇外卷,腹部圆鼓,最大径约在罐身中部。底座粗壮,周绿微向上卷,状如覆盆。器形高大,风格与I、II型迥然不同。413:9白衣彩绘,保存尚好。罐腹以红、绿、蓝、黑四色绘出宝相花四朵,红花绿叶,鲜艳可爱。颈肩部绘有红色复瓣覆莲,下腹部则以棕褐色画出仰莲一圈。座上部亦绘有红色莲瓣,下部画宝相花三朵,形状与罐腹所绘者相似而稍简。罐高32.3,口径8.1,腹径26,底径12.5;座高18.8,上径12,下径27.4厘米(图二九,6;彩版壹;图版叁壹,2)。583:1 给宝相花和卷云纹,器形较小(图二九,5)。</p>
+<p>（二）罐共139件。数量既多，器形也较复杂，可分六型：</p>
+<p>I型17件。大口（口径大于底径），短颈，上腹圆鼓，下腹内收为平底。依口沿和腹部的差异，分为三式：</p>
+<p>一式 13件。外卷圆口沿, 短颈, 下腹逐渐内收。586:154高14, 口径10, 腹径14.4, 底径7.4厘米(图三○, 1; 图版叁贰, 2)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二九 带座罐</p>
+<ol>
+<li>
+<p>I型一式(562:4) 2. I型二式(605:20) 3. II型二式(503:1) 4. II型一式(608:1)</p>
+</li>
+<li>
+<p>III型(583:1) 6. III型(413:9)</p>
+</li>
+</ol>
+<p>二式 2 件。外折平口沿, 颈比一式稍高, 下腹内收较急速。586:153 高 15.1, 口径 10.9, 腹径 15.7, 底径 8.3 厘米 (图三○, 2; 图版卷贰, 3)。</p>
+<p>三式 2件。圆唇外翻, 短颈, 下腹急剧内收成扁圆腹。552:1高15.7, 口径13.4, 腹径22.4, 底径8.8厘米(图三〇, 9)。</p>
+<p>II型27件。大口,瘦长腹,小平底。器身施白衣彩绘,纹饰简陋,且多已脱落不显。依口沿和腹部的不同,分为二式:</p>
+<p>一式13件。圆唇微向外卷，腹壁逐渐内收成长腹。腹部多有平行的瓦状压纹。532:9器身残存白衣，高18.6,口径10,腹径13.7,底径7.1厘米(图三O,7)。</p>
+<p>二式 14 件。外卷圆唇或方唇, 上腹微鼓, 下腹瘦长。腹部亦有瓦状压纹。521:2 外</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图三O 陶罐</p>
+<ol>
+<li>I 型一式(586:154)</li>
+</ol>
+<p>2.1型二式(586:153)</p>
+<ol>
+<li>IV 型一式(585:8)</li>
+</ol>
+<p>4.VI型(216:11)</p>
+<ol>
+<li>
+<p>IV 型三式(569:1)</p>
+</li>
+<li>
+<p>III型二式(222:1)</p>
+</li>
+<li>
+<p>II型一式(532:9)</p>
+</li>
+<li>
+<p>IV型四式(530:1)</p>
+</li>
+<li>
+<p>I型三式(552:1)</p>
+</li>
+</ol>
+<p>10.v型(501:9)</p>
+<ol>
+<li>
+<p>II型二式(521:2)</p>
+</li>
+<li>
+<p>IV 型二式(412:2)</p>
+</li>
+<li>
+<p>III 型一式(568:5)</p>
+</li>
+</ol>
+<p>卷圆唇, 白衣黑彩。肩部画流云纹, 腹部饰以锯齿纹带, 下腹并绘有朵花纹饰, 惜已剥落殆尽。高 17.5, 口径 10.5, 腹径 10.6, 底径 5.1 厘米 (图三〇, 11)。</p>
+<p>III型64件。小口(口径小于底径), 短颈, 鼓腹, 平底。多数有盖, 盖作浅碟形, 中有宝珠形或圆锥形小钮。依口沿和腹部不同, 分为二式:</p>
+<p>一式，44件。外折平口沿，短颈，腹鼓而略扁。腹部多有弦状暗纹。568:5盖钮很小，作圆锥形。盖高3,径11.4;罐高24.1,口径12.7,腹径23.6,底径14.6厘米（图三O，13）。</p>
+<p>二式 20 件。圆唇外卷, 短颈, 腹圆鼓而稍长。除素面和弦状暗纹两种外, 部分施饰白衣彩绘, 纹饰题材与带座罐相同, 惜多已脱落不显。222:1 腹部以红、绿色彩绘出宝相花四朵, 形状与 413:9 所绘基本相同, 但已模糊不清。盖钮亦作小圆锥形, 盖高 0.8, 径 9.2; 罐高 22.7, 口径 8.9, 腹径 19.5, 底径 9.8 厘米 (图三〇, 6)。216:16 肩部饰以莲瓣, 腹部亦绘宝相花; 大小与上器相类 (图版肆捌, 8)。</p>
+<p>IV型 29件。小口,长腹,平底。除二式施白衣彩绘和四式有弦状暗纹外,余皆素面无纹饰。依口沿和颈的长短不同分为四式:</p>
+<p>一式 6 件。器形很小, 当为特制之明器。圆沿外敞, 颈短。585:8 高 9.7, 口径 4, 腹径 7.5, 底径 4.1 厘米 (图三〇, 3)。</p>
+<p>二式 5 件。圆唇微向外卷, 短颈, 下腹逐渐内收成长腹。器身施白衣彩绘, 但皆已脱落几尽。412:2 口沿及颈部残留红彩痕迹, 其余部分仅存白衣。高 18.6, 口径 8.3, 腹径 15.4, 底径 8.6 厘米 (图三〇, 12)。</p>
+<p>三式 16 件。外卷圆口沿，颈比二式稍长，部分罐颈肩界限不清。器身大小相差较大，高度从 12.5 至 23.3 厘米；部分小型罐显系特制之明器。569:1 高 23.3, 口径 8.5, 腹径 17.5, 底径 9.4 厘米（图三○，5）。</p>
+<p>四式 2 件。外折平口沿, 颈稍长, 颈肩界限清楚。530:1 器身施弦状暗纹, 肩腹间有凹弦纹两道。高 22.7, 口径 8.7, 腹径 16.9, 底径 8.7 厘米(图三〇, 8)。</p>
+<p>V型 1件(501:9)。口沿低平,无颈,上腹圆鼓,下腹内收为平底。高22,口径10.5,腹径21.5,底径10厘米(图三〇,10)。</p>
+<p>VI型 1件(216:11)。圆唇外卷, 短颈, 扁圆腹, 假圈足。高7.2, 口径6.4, 腹径10.2, 足径5.6厘米(图三O, 4)。</p>
+<p>（三）双耳罐 共6件。分为二型：</p>
+<p>I型 4件。大口,瘦长腹,平底,双耳置于肩部。根据口部的不同,分为二式:</p>
+<p>一式 2 件。皆为大盘状口, 素面无纹饰。585:2 高 23, 口径 12, 腹径 15,4, 底径 9 厘米 (图三一, 1)。586:149 内存放粗细不同的天然水晶柱 45 根, 用途不明。</p>
+<p>二式 2件。口沿外敞, 大口短颈, 器身与Ⅱ型罐相同, 腹部有瓦状压纹。550:1高 19.2, 口径 13.2, 腹径 14, 底径 7 厘米 (图三一, 4)。</p>
+<p>II型2件。小口，颈稍长，腹上部较圆鼓，下部逐渐内收为平底，双耳置于腹部或肩腹之间。依口沿的差异分为二式：</p>
+<p>一式 1件(586:148)。外折平口沿, 双耳置于腹部, 器身和IV型四式罐相同。肩腹之间有一道凹弦纹, 其下划刻一圈连环 $\mathcal{Q}$ 状暗纹。此器与白鹿原隋大业十一年刘世恭墓所出陶罐(42:12)极为相似。高31, 口径12.3, 腹径23.1, 底径11.8厘米（图三一, 7; 图版贰捌, 4）。</p>
+<p>二式 1件(559:2)。圆唇外卷,直颈,下腹内收较一式缓慢。双耳位于肩腹间,已残断。高21,口径9.8,腹径15.9,底径9.8厘米(图三一,6)。</p>
+<p>（四）壶 共5件。分为二型：</p>
+<p>I型 4件。盘口,短颈,平底。器形皆很小。依腹部不同分为二式:</p>
+<p>一式 3件。腹部圆鼓。109:2高9.5,口径4.6,腹径7.2,底径4厘米(图三一,10)。其余二件,大小类此。</p>
+<p>二式 1件(596:3)。颈比一式短, 腹部似圆筒形而下部稍瘦。高10, 口径4.2, 腹径7.6, 底径5.1厘米(图三一, 11)。</p>
+<p>II型 1件(203:15)。形状特殊, 制作粗陋, 系手制而成。外折平口沿, 直长颈, 圆腹, 喇叭形空心假圈足; 盖作覆碟状, 上有圆锥形钮。腹部浮雕莲花四瓣, 花瓣之间有小叶伸出。周身白衣彩绘, 莲瓣中用黑色绘出宝相花各一, 小叶涂以绿彩, 盖及圈足亦画有莲瓣纹饰, 然皆已脱落不显。通高33, 口径10.3, 腹径18.1, 底径16.2厘米 (图三一, 8; 图版贰捌, 5)。</p>
+<p>（五）瓶共7件。分作二型：</p>
+<p>I型 3件。盘口,细长颈,长腹,平底。依腹部不同分为二式:</p>
+<p>一式 2件。腹部状似圆筒形，而下部稍削，颈部有凸弦纹2—3道。此式与白鹿原20号隋墓所出陶瓶相类②。586:150高26.9,口径8.4,腹径15.2,底径8.8厘米（图三一，3；图版贰捌，1）。</p>
+<p>二式 1件(202:2)。腹部比一式瘦长,上有弦状暗纹。高21.5,口径6.8,腹径11.3,底径6.7厘米(图三一,2)。</p>
+<p>II型4件。圆唇外敞,细长颈,腹部较短,平底。544:1颈肩间有弦纹一道。高16.3,口径5.2,腹径10.6,底径6.4厘米(图三一,9)。其余3件皆为素面,口部已残。</p>
+<p>（六）碗共7件。分为二型：</p>
+<p>I型4件。大口，深腹，假圈足。418:9高8，口径13.5,底径6.5厘米。另3件(588:8、9、10)器形较小，588:9高5.5,口径8.5,底径4厘米(图三一，13)。</p>
+<p>II型 3件。口更大,腹较I型为浅,低假圈足。588:7高7,口径14.5,底径6.5厘</p>
+<p>图三一 陶器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型一式双耳罐(585:2) 2、3. I型二、一式瓶(202:2、586:150) 4. I型二式双耳罐(550:1) 5. 盒, (586:147) 6. II型二式双耳罐(559:2) 7. II型一式双耳罐(586:148) 8. II型壶(203:15) 9. II型瓶(544:1) 10、11. I型一、二式壶(109:2、596:3) 12. 灯盏(113:2) 13、14.I、II型碗(588:9、7)</p>
+<p>米(图三一, 14)。</p>
+<p>（七）灯盏 5件。口沿有燃火熏黑痕迹。圆沿，浅腹，小平底。216:29高3.4，口径10.2，底径3.8厘米(图版贰捌，3)。其余四件，器形相同而稍小。113:2高3.2，口径9,底径3.4厘米(图三一，12)。<br />
+（八）盘1件(528:9)。圆唇，平顶，中部稍向内凹。高5.5,口径43,底径37.5厘米(图三二;图版贰捌,2)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图三二 陶盘(528:9)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图三三 陶器座（305：30）</p>
+<p>（九）盆 1件(586:147)。外折平沿, 深腹平底。制作粗糙, 口沿不甚平整。高 8.5, 口径 25.2, 底径 11.9 厘米 (图三一, 5; 图版贰玖, 1)。<br />
+（一〇）器座 1件(305:30)。状似覆盆,周边分为八格,附饰模制象首和蹲兽各四。原有彩绘,但已脱落殆尽,仅残留红、绿、蓝彩痕迹。用途不明,推测应为器座。高13.5,上径32,下径46厘米(图三三;图版贰玖,5)。</p>
+<h1 id="3">（一一）砚共3件。分为二型：</h1>
+<p>I型 1件(305:31)。为动物形砚。前部已残，后足作爪形，短尾贴身，似为龟形。砚面向残留墨迹。通足高5,残长15.5,宽14.5厘米(图版贰玖,3)。<br />
+II型 2件。为风字形砚。416:6底有二长方形足。通足高4, 长21.3, 最宽处15.6厘米(图版贰玖, 4)。另一件(415:5)已残。<br />
+（一二）屋2件。皆为悬山顶瓦房，平面为长方形。屋顶纵列瓦瓴八条，两端并加排山。四壁用红彩画出梁、柱，栏额之间并绘饰补间人字形拱，其余部分涂以黄色。586:144高11.5,长7.4,宽5.2;顶长10.3,宽6.3厘米(图版贰玖,6)。另一件(586:115),稍矮而宽。<br />
+（一三）磨 2件。上下磨盘连在一起，上盘小，下盘大。586:122上盘周绿高</p>
+<p>起, 中有一条直道, 其两侧各有一圆孔。上下两盘上部皆涂红色, 下部皆涂黄色。高 4.9, 上盘径 7.5, 下盘径 10 厘米 (图版贰玖, 2)。另一件 (517:42), 制作粗陋, 形体略小。</p>
+<p>（一四）碓 1件(586:121)。座板长方形, 中部架一活动长柄, 柄端系杵, 其下为臼。座板边缘及臼部涂红色, 座板中部着黄色, 其他部分仅存白衣。通高 6.5, 长 20.3, 宽 7.75 厘米 (图版贰玖, 7)。</p>
+<p>（一五）灶1件 $(586:120)$ 灶台方形，上置有锅；前壁高出灶台，绿边作锯齿状，下部有一椭圆形灶口。灶台和前壁的缘边部分涂红色，其他部分则涂黄色。台高4.9，长7.6，宽6.3；前壁高12.8，宽12.5厘米(图三四；图版叁拾，7)。</p>
+<p>（一六）井栏1件(586:123)。方形，口部作出仿木结构的形象。高4.3，径4.1厘米(图版叁拾，3)。<br />
+（一七）鼓形器 6件。扁圆形, 边缘有一圆孔, 原当插有物。586:112涂饰红彩, 径4.6, 厚2厘米(图版叁拾, 4)。其余类此。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图三四 陶灶(586:120)</p>
+<p>（一八）轮形器 6件。圆形有孔，状如车轮，用途不明。径2—2.5，厚0.5—0.7厘米。<br />
+（一九）珠 14粒，墓600出土。带孔，涂以白粉，其中六颗还加涂朱红色彩。径1厘米左右。</p>
+<p>从陶器的型式与其出土的所在墓葬，可以看出下列情况：</p>
+<p>带座罐从初唐到晚唐墓皆有之。I型一式有出于贞观墓者，但也有盛唐和中、晚唐墓所出的；二式皆出于盛唐和中、晚唐墓。II型一式出于盛唐和中、晚唐墓；二式系中、晚唐墓所出，有元和二年墓所出者。III型有出于盛唐墓者。</p>
+<p>罐I型一式出于隋和初唐墓,有开皇墓出土者;二式为开皇墓和中、晚唐墓所出;三式出于中、晚唐墓。II型一式从初唐到中、晚唐墓皆有之,有出于贞观墓、元和七年一宝厝元年墓和元和十三年墓者;二式有初唐和元和二年墓所出者。III型一式多数出于初、盛唐墓,少数出于中、晚唐墓,有麟德墓和证圣墓出土者;二式有出于盛唐墓和中、晚唐墓者。IV型一式出于隋一初唐墓中;二式出于中、晚唐墓;三式有隋一初唐墓所出者。V、VI型皆出于盛唐墓中。</p>
+<p>双耳罐I型一式出于隋一初唐墓，有开皇墓出土者。II型一式出于开皇墓中。</p>
+<p>壶I型一式出于隋墓；二式为中、晚唐墓所出。II型出在景龙墓中。</p>
+<p>瓶I型一式和Ⅱ型皆出于隋一初唐墓中，I型一式的一件为开皇墓所出。</p>
+<p>碗I、II型皆出于隋墓。灯盏出于隋和盛唐墓，有证圣墓所出者。盘出在隋一初唐墓中。器座出于景云墓。砚I型出于景云墓。磨出于隋一初唐墓，其一为开皇墓所出。鼓形器出在开皇墓和贞观墓中。盆、屋、碓、灶、井栏皆出于开皇墓。珠和轮形器为隋一初唐墓所出。</p>
+<h1 id="_44">二、三彩器</h1>
+<p>三彩器共4件,出于三座墓中。釉彩有黄、绿、乳白和蓝等色。胎质有松硬不同,胎色有红、粉红和黄灰三种。为了增加胎骨的美观和加强釉色的透明性,红胎的表面在上釉之前掛上了一层白色的化桩土,乍看之,酷似白色瓷土胎。</p>
+<p>（一）罐2件。小口圆唇，短颈鼓腹，假圈足。217:1胎红色，质较松软，表面涂挂一薄层化桩土，其上施浓黄、乳白和绿色三彩釉，釉开极细纹片。三色釉组成朵朵心形纹样，以浓黄釉为地，纹样虽不甚齐整，但却自然生动。可惜彩釉已剥落大半，露出红色胎骨。高29,口径11.7,腹径29,足径13.8厘米(图版叁拾,1)。216:21亦系红胎，但质较坚硬，白色化桩土亦较厚。口部涂黄褐色釉，肩及上腹部由黄、绿、乳白三彩釉组成相错三角形纹带。釉厚处开小纹片，有光泽，局部釉面出现气泡和砂眼。下腹及足部无釉。高21.3,口径10.1,腹径21.3,足径11.1厘米(图版叁拾,2)。</p>
+<p>（二）扣盒 2件。器盖皆缺。501:1黄灰色胎,质较硬。外壁挂蓝色釉,内壁施黄釉,开细纹片,口和底部无釉。高1.8,口径4.1,底径3.8厘米(图版叁拾,5)。501:2口部已残。胎粉红色,质较松软。外施黄、绿相间釉,内涂淡黄色釉,皆开小纹片。器比501:1略小。</p>
+<p>上述三彩器，皆出于盛唐墓中。</p>
+<h1 id="_45">三、釉陶和瓷器</h1>
+<p>釉陶同瓷器之间的界线, 有时很难划分; 同时在器型上也往往有共同之处; 为了便于叙述和比较, 故将二者合为一类。</p>
+<p>釉陶和瓷器共86件，出于41座墓中。计有四系罐、六系罐、双耳罐、罐、四系壶、壶、瓶、注子、唾壶、水盂、碗、碟、杯、带耳杯、茶托、扣盒盖、高足盏、三足盘、灯盏、烛台、器盖等二十一类器物。这些器物，依其釉色不同，可分为下列八种：</p>
+<ol>
+<li>
+<p>绿釉器分为两类。第一类为红色泥质陶胎，上施绿色铅釉，色彩不甚均匀，开细纹片。火候较低。由于埋藏地下日久，有的釉面已土化而出现银光，即所谓釉的“银化”。第二类为黄灰色胎，质较纯净。绿釉有深浅之分，色调类三彩器绿彩釉，开鱼子纹片，部分亦有“银化”现象。</p>
+</li>
+<li>
+<p>黄绿釉器 胎质和绿釉器相同, 黄绿色釉亦不纯净, 开小纹片, 亦有微弱“银化”现象。</p>
+</li>
+</ol>
+<p>第一类绿釉器和黄绿釉器同汉代的釉陶颇为相似, 在陶瓷器中只占很小的比例, 应为汉陶延续的残迹。</p>
+<ol>
+<li>
+<p>青绿釉器 胎骨多数为红色, 少数作黄灰色或青灰色, 质较坚硬, 火候一般较高。釉作青绿色, 不甚匀净, 色调亦有浓淡之别, 部分开有纹片。有的器物上部为深绿色, 下部则作青绿色; 有的在青绿色中杂有黄色斑点; 有的则微泛黄色。釉面光泽亦不相同, 有的较为明亮, 有的则粗糙无光, 亦有因出现气泡而成桔皮釉者。</p>
+</li>
+<li>
+<p>青釉器 黄灰色或青灰色胎, 有的略带红色, 多夹砂, 亦较坚硬。青釉多数粗糙无光泽, 少数较光亮, 开有纹片。从釉的色调来看, 有些已接近后来南方的青瓷。</p>
+</li>
+<li>
+<p>褐釉器 胎亦作黄灰色或青灰色, 有的含少量细砂, 质坚硬。釉呈褐色, 色调不甚相同, 皆粗糙无光泽, 个别器物的釉面呈现密集的白色小斑点。</p>
+</li>
+<li>
+<p>黑釉器 胎骨与褐釉器基本相同, 唯少数夹杂有褐色斑点。釉作黑色, 有光泽, 有的釉厚处呈黑色, 稀薄处则作酱黄色; 有的在器内中心还出现类似油滴天目釉的银灰色小圆点。</p>
+</li>
+<li>
+<p>白瓷器 白色瓷土胎, 质甚坚致。外施白釉, 粘厚处略呈青色。</p>
+</li>
+<li>
+<p>搅胎器 胎色黄、赤相间, 质坚硬, 含有少量细砂。釉明亮有光泽, 呈黄绿色或酱黄色, 开细纹片。</p>
+</li>
+</ol>
+<p>此外，还有一件单耳杯(535:1)，秦烧成后未施釉料，自成一格。</p>
+<p>制法上, 器身皆为轮制, 一些器物的耳、流和足则系手制成后安上, 茶托子和唾壶的荷叶形口沿亦系用手加工而成。纹饰方面, 除了凸凹弦纹外, 还使用了釉下划花、贴花和釉下彩的技法。在陶瓷制作技术上, 已经达到了相当成熟的地步。</p>
+<p>（一）四系罐 15件。其中青釉器10件，占最大多数；青绿釉器3件，次之；褐釉器和白瓷器各1件。分为二型：</p>
+<p>I型9件。短颈,腹微鼓,下部内收为平底,除个别外,一般腹部较瘦长。肩部横置四拱形器耳。除两件带盖外,余皆无盖;盖作覆碟形,钮同器耳。由于口沿的不同,可以分为三式:</p>
+<p>一式 5件。圆唇微向外卷。除520:23带盖外，余四件无盖。皆为青釉器。胎作黄灰色，个别略呈红色，夹砂。釉色青，多数带暗绿色，粗糙无光泽；下腹及底部无釉。532:26肩部饰阴弦纹一道，腹部较矮。高18.5,口径12.3,腹径19.1,底径13.6厘米(图版叁拾，6)。520:23腹较瘦长。通高22.2,腹径19.7,盖径11.9厘米(图版叁肆，1)。</p>
+<p>二式 3件。直领平口沿。亦皆青釉器, 其中一件 (520:22) 有盖。胎青灰或灰色带红, 夹少量砂。内外皆施青釉, 颇有光泽, 粘厚处微泛绿色, 器底及近底处无釉。二件有纹片, 一件纹片不显。从胎质和釉料观察, 颇类南方之青瓷。551:3器身高大, 颈肩间有弦</p>
+<p>纹二道, 釉开纹片, 一耳已残。高28.4, 口径10.8, 腹径25, 底径9.8厘米(图版叁叁, 1)。520:22通高22, 口径10.8, 腹径20.8, 底径8.5, 盖径13.7厘米(图版叁肆, 2)。</p>
+<p>三式 1件(539:1)。外折平口沿。褐釉器。胎色黄灰, 带红色斑纹。釉褐色, 薄处略呈暗黄色, 无光泽, 下腹、底部及内壁皆无釉。二耳及口沿已残。高17, 口径8.2, 腹径18.2, 底径9.5厘米(图版叁叁, 2)。</p>
+<p>II型 6件。小口直领, 鼓腹, 假圈足或小平底, 肩部安置四竖耳。除墓408所出一件带盖外, 余皆无盖。依口沿、器耳和底部的差异, 分为四式:</p>
+<p>一式 2件。墓516出土,皆为青绿釉器。口沿有一道凹槽,四竖耳置于肩部或肩领之际,皆由双泥条组成,泥条相连成环形处贴一小泥饼,底系假圈足,足心微向内凹,残留支烧痕迹三个。泥质红土胎。青绿色釉不很均匀,釉厚处呈暗绿色。516:19釉略有光泽,开细纹片,有气泡,领、肩、腹及足底皆饰有阴弦纹。高22,口径8.2;腹径20,底径9.5厘米(图版叁叁,3)。另一件(516:18)釉面粗糙,无光泽,亦无纹片,器体略大。</p>
+<p>二式 1件(408:20)。亦系青绿釉器。直领平沿, 圆腹, 假圈足, 肩部置四宽条竖耳; 盖作深碟形, 中有一宝珠形钮。胎红色, 质坚硬。釉青绿色, 带黄色斑点, 有光泽, 开纹片。领、肩及上腹部饰有阴弦纹, 腹中部有一道凸纹。高20.6, 口径7.8, 腹径20.6, 底径8.8, 盖径8.5厘米(图版叁叁, 4)。</p>
+<p>三式 1件(418:7)。系青釉器。口沿和器耳同于一式, 唯耳部泥条相连处未贴小泥饼。腹部圆鼓, 下收为平底。黄灰色胎, 局部略呈红色, 含有少量细砂。青釉带黄色, 有纹片。釉施至下腹部, 下沿呈乳白色, 部分釉料自上往下垂流。高26.7, 口径9.7, 腹径26, 底径12.2厘米(图版叁肆, 3)。</p>
+<p>四式 2件。600:2为青釉器，576:5为白瓷器。口沿与二式相同，底为假圈足，肩部安置双泥条竖耳四个。600:2器耳与一式相同，一耳已残；肩、腹部有凸弦纹三道。胎青灰色，质较纯净。釉淡青色，开小纹片，部分已脱落。足底留有支烧痕迹三处（图版叁肆，4）。576:5器耳同三式，二耳已残，腹部较瘦长。胎灰白坚致，釉白色泛青，开小纹片，颇有光泽，釉施至下腹近足处。高28.3,口径8.3,腹径23,底径10.1厘米（图版叁陆，4）。</p>
+<p>（二）六系罐 1件(418:8)。为青釉器。直领圆唇,鼓腹平底,底中心略向内凹。肩部安置单泥条竖耳六个,其一已残。胎黄灰色,含少量细砂,质不坚致。青釉略带黄绿色,粗糙无光泽,纹片不显。高23.8,口径10.5,腹径24,底径10.8厘米(图版叁贰,4)。</p>
+<p>（三）双耳罐 1件(212:1)。系褐釉器。圆唇外卷,大口短颈,长腹,矮实足,足心微向内凹,颈屑间竖置二耳,耳为双泥条形。黄灰色胎,质较纯净。褐色釉施至下腹近足处。高15.6,口径10.3,腹径13.7,底径8.9厘米(图版肆拾,4)。</p>
+<p>（四）罐共17件。计有褐釉器6件，黑釉器和青釉器各3件，青绿釉器和白瓷器各2件，第二类绿釉器1件。分为二型：</p>
+<p>I型14件。圆唇外卷,小口短颈,鼓腹,唇有厚薄之差,腹亦有圆扁之异。根据底</p>
+<p>部的不同, 分为三式:</p>
+<p>一式 10 件。底为矮实足, 足心或稍内凹。其中褐釉器 4 件, 青釉器 3 件, 黑釉器 2 件, 白瓷器 1 件, 各举一例说明: 588:2 为褐釉器。黄灰色胎, 含少量砂粒, 并有褐色斑点。褐釉厚薄不匀, 厚处呈黑色, 釉排至下腹近足处, 下缘作垂流状。高 19.7, 口径 8.2, 腹径 20, 底径 11 厘米 (图版叁贰, 5)。566:1 系黑釉器。胎作黄灰色。釉光亮, 颇有色泽, 假圈足及近足处无釉。大小类 588:2。600:3 为青釉器。腹下部较瘦削, 实足中部稍向内凹, 类似圈足。胎青灰色。釉略有光泽, 开小纹片, 有垂流现象, 下腹及足部无釉。腹部有一疤痕, 应系在焙烧时与邻器相触所致。形体比 588:2 略大 (图版肆捌, 9)。207:1 为白瓷器。白色瓷土胎。釉白泛青, 近足部微带黄色, 开细纹片, 很有光泽, 足底无釉。形体特小, 高 12.5, 口径 6, 腹径 13.2, 底径 6.6 厘米 (图版肆拾, 1)。</p>
+<p>二式 1件(504:6)。为白瓷器。薄唇外卷, 腹部圆扁, 底为矮圈足。胎白色坚致, 耦白微带黄色, 略有光泽, 开极细纹片, 耦施至下腹近足处。口沿和部分肩部釉已剥落。高19.8, 口径8.9, 腹径22.5, 底径11.4厘米(图版叁捌, 1)。</p>
+<p>三式 3件。圆唇亦较薄, 小平底。两件(528:6、7)为青绿釉器, 器上部呈暗绿色, 下部作青绿色, 开细纹片, 釉面粗糙有气泡, 状似桔皮。528:7肩部和腹部各有阴弦纹二道, 底部残留米粒形支钉三个。高13.5, 口径5.2, 腹径11.9, 底径6厘米(图版肆拾, 7)。另一件(504:7)为第二类绿釉器。胎黄灰色。内壁施满釉, 外壁当系用浇釉法掛釉, 釉自上腹部往下垂流, 下腹及底部无釉。釉呈浅绿色, 开鱼子纹片, 部分已有银化现象。形体略大(图版肆拾, 8)。</p>
+<p>II型3件。小口圆唇，短颈，长筒形腹，下部稍瘦削，矮假圈足，足心微向内凹。201:3为黑釉器。青灰色胎，带有褐色斑点。内掛黄褐色釉，外施黑釉，釉薄处呈酱黄色。黑釉颇有光泽，施掛至近足处，下缘特厚，盖系釉料下流之故。420:9系褐釉器。胎青灰色，内壁无釉，外壁掛釉至近足处。褐色釉面呈现密集的白色小斑点。高16,口径6.5,腹径13.2,底径9厘米(图版肆拾,5)。另一件(420:10)黄灰色胎，釉同420:9,形态特大,腹部已残破,高27.2厘米。</p>
+<p>（五）四系壶 1件(579:2)。为青绿釉器。口部已残, 高颈, 长腹, 平底, 肩部横置四个方耳。胎青灰色, 部分带红色, 夹砂。釉青绿色, 部分呈土黄色, 无光泽, 釉排至下腹部, 下缘成垂幔形。颈、肩和上腹皆有阴弦纹, 肩部釉下以阴线划刻莲花五瓣。残高45.6, 腹径30.5, 底径12.9厘米(图版叁玖, 2)。</p>
+<p>（六）壶2件。盘口，细短颈，椭圆形腹，假圈足。576:7口沿微残，为白瓷器。胎白色，釉白泛青，开小纹片，略有光泽，釉排至下腹近足处。足底留有垫烧痕迹一圈，腹部残留一疤，应系烧制时与他器相触而形成的。高17.5，口径6，腹径12.3，底径7.5厘米（图版叁染，4）。另一件（585:3）为青绿釉器。红色陶胎，外施青绿色釉，开细纹片，稍有光泽。肩、腹部有阴弦纹六道，口部已残。</p>
+<p>（七）瓶1件(576:8)。为第二类绿釉器。外折平口沿,细长颈,圆腹,假圈足。颈肩间饰凸弦纹一道,足底有米粒形支钉三个。黄灰色胎,内外皆施翠绿色釉,鲜艳有光泽,开鱼子纹片,足底中部无釉。高20.1,口径6,腹径11.7,底径7.4厘米(图版叁玖,1)。</p>
+<p>（八）注子 3件。青绿釉器、黑釉器和白瓷器各一件。分为二型：</p>
+<p>I型2件。圆唇微向外卷, 短颈, 长筒形腹, 下腹稍瘦, 假圈足底, 中部微向内凹。肩部一边有流, 另一边与口沿相连有一把, 把为双泥条形, 连口沿处安贴小泥饼三个, 连肩处贴一个, 起装饰和加固的作用。533:2胎黄灰色, 青绿釉略带黄色, 粗糙无光泽。高25.4, 口径10, 腹径16.5, 底径11.1厘米(图版叁陆, 3)。另一件(581:1)为黑釉器。青灰色胎, 釉黑亮有光泽。器体特小, 应为特制之明器, 把和口部已残。</p>
+<p>II型 1件(563:12)。为白瓷器。圆唇外卷,颈比I型更短,腹较圆鼓,下收为平底,把的结构与I型相同,流已残断。胎白色,釉白透青,开细纹片,略有光泽。高15.8,口径8.7,腹径14,底径8厘米(图版叁伍,1)。</p>
+<p>（九）唾壶1)9件。其中白瓷器4件，青釉器2件，第一类绿釉器、黄绿釉器和青绿釉器各1件。分为二型：</p>
+<p>I型 6件。盘口, 短颈, 扁圆腹, 圈足或假圈足底。分为四式:</p>
+<p>一式 2件。口沿微向外敞,浅盘口,盖呈碟状,中有一宝珠形钮。586:4为白瓷器。矮圈足底。白色瓷土胎,质坚致。釉白微泛青色,厚处呈浅绿色,开纹片,明亮有光泽,足部和盖底无釉。通高15.5,口径10,腹径14.2,足径11.1,盖径10.1厘米(图三六,5;图版叁伍,2)。528:8为青绿釉器,假圈足底,缺盖,形体较小。</p>
+<p>二式 2件。外折平口沿, 深盘口, 矮圈足。568:3为黄绿釉器。红色陶胎, 老多剥落, 局部有银化现象。颈肩间有阴弦纹二道, 足底留有支烧痕迹三处。高12.7, 口径8.5, 腹径11.9, 底径9厘米(图版叁伍, 3)。另一件(582:5)为绿釉器, 银化更甚, 比上器略小。从胎质和釉料上看, 此二器颇类汉代釉陶。</p>
+<p>三式 1件(591:5)。为白瓷器。圆唇外卷, 盘口较二式稍浅, 假圈足底。胎白色, 质纯净。白釉微带黄色, 厚处呈浅绿色, 略有光泽, 下腹和足部无釉。高11.7, 口径7.1, 腹径11.7, 底径8.5厘米(图版叁伍, 4)。</p>
+<p>四式 1件(556:3)。为青釉器。直口浅盘, 牛球形腹, 假圈足, 足底有阴弦纹一道。胎青灰色。青釉光润有色泽, 开冰裂纹, 厚处呈绿色玻璃状, 釉施至下腹近足处。高17.3, 口径8.4, 腹径14.5, 足径12.6厘米(图版叁陆, 2)。</p>
+<p>II型 3件。碟状口, 短颈, 小圆腹或扁圆腹, 矮圈足或矮假圈足。分为二式:</p>
+<p>一式1件(532:95)。为青釉器。浅碟形大口，小圆腹，矮圈足。器身满施暗青色釉，纯净无光泽。高9.5,口径15.6,腹径7.4,底径6.7厘米(图版叁捌,2)。</p>
+<p>二式 2件。荷叶形碟状口，扁圆腹，矮假圈足。411:1为白瓷器。白色瓷土胎。釉白色，厚处泛青，有小纹片，釉面出现细密的刷纹，应系用刷或笔排釉的，足底无釉。器形小巧玲珑，应为专做的明器。高6.4,口径9.7,腹径6.9,底径5厘米（图版肆捌,7）。另一件(421:5)亦为白瓷器，形体较大，口部已残。</p>
+<p>（一〇）水盂 6件。其中白瓷器3件，褐釉器、黑釉器和第二类绿釉器各1件。除一件(586:5)带盖外，余皆无盖。分为四型：</p>
+<p>I型 1件(586:5)。为白瓷器。敛口，扁圆腹，弧形底；盖扁平，中有一圆球形钮。胎、釉皆白色，釉厚处开纹片，器底和盖底无釉。通高4.2，口径2.4，腹径5.1，底径4，盖径3.5厘米（图三六，4；图版叁柒，1）。</p>
+<p>II型 2件。皆为白瓷器。内敛小口, 圆腹, 小平底。胎白色, 褶白泛黄, 开小纹片, 有光泽, 底部无釉。576:6高3.7, 口径2.1, 腹径5, 底径1.7厘米(图版叁染, 2)。另一件(107:4)形体稍大。</p>
+<p>III型 2件。口比Ⅱ型略大,扁腹,假圈足底,足心微向内凹。520:24黄灰色胎,仅上腹部施以褐色釉。高2.7,口径2.9,腹径5.8,底径3.4厘米(图版叁壹,1)。另一件(520:25)釉绿色,大部已剥落,大小相类。</p>
+<p>IV型 1件(414:4)。内敛大口，深腹圜底。外壁口部以下涂黑釉，釉颇光亮；内壁施白釉，开细纹片。胎骨白色。高2.7,口径4.4,腹径5厘米(图版叁玖，4)。</p>
+<p>（一一）碗 5件。其中白瓷器3件，第二类绿釉器2件。分为二型：</p>
+<p>I型4件。圆唇外卷,大口浅腹,矮圈足。216:30、1为第二类绿釉器。黄灰色胎,</p>
+<p>质纯净。釉作浅绿色, 开极细纹片, 部分釉已银化, 闪金属光泽。釉下涂挂白色化桩土, 耶和化桩土皆挂至上腹部, 下腹及足部无釉。器体大小不同。216:30高6.2, 口径15.8, 足径9.4厘米(图版叁壹, 6)。216:1形体略小。216:6、13系白瓷器。胎白色, 耽白泛黄, 开鱼子纹, 有光泽。216:6高3.8, 口径10.7, 足径5.3厘米(图三五, 1; 图版叁壹, 5)。216:13大小类此。</p>
+<p>II型 1件(596:1)。为白瓷器。外敞大口，浅腹，圈足比I型更矮。白色瓷土薄胎。釉白透青，滋润有光泽，圈足及近足部无釉。高3.2，口径10.7，底径4厘米（图三五，2；图版叁壹，4）。</p>
+<p>（一二）碟 6件。皆为白瓷器。圆唇外卷，浅腹平底。釉白色，个别微泛青色或蓝色，</p>
+<p>多数开纹片,有光泽,底部无釉。胎白色,个别略带灰色。大小不相同,最大者(216:3)高</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>3 <br />
+图三五 瓷器(1/2)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.2.I、II型碗（216:6、596:1），3.三足盘(414:3)</p>
+<p>2.4,口径16.3,底径12.5厘米(图版叁玖,6)。最小者(216:10)高1.9,口径13.5,底径10.5厘米。<br />
+（一三）杯5件。除墓5881件为青釉器外，墓528所出4件皆为青绿釉器。直口深腹，假圈足，足心向内凹入。588:4胎骨洁白。青釉滋润有光泽，开冰裂纹，厚处呈玻璃状，釉排至下腹近足部，足底有支烧痕迹三处。高9.1，口径11.4，足径5.2厘米(图版叁陆，1)。528:5青灰色胎，部分呈红色。内外满施青绿色釉，开细纹片，粗糙无光泽。器体特小，高6.3，口径7.5，足径2.9厘米(图版肆拾，6)。其他3件，胎、釉与此器相同，大小类588:4。<br />
+（一四）带耳杯 2件。535:1圆唇,短颈,折肩,圈足,颈腹间安置一耳,耳作宽条形。胎青灰色,未排釉。高7.2,口径5.8厘米(图版叁贰,1)。216:4为搅胎器。圆唇微向外卷,大口,深腹,矮圈足,耳部已残。釉色酱黄,开细纹片,有光泽,底部无釉,露出黄、赤色搅胎。高5,口径7.5厘米(图版肆拾,3)。<br />
+（一五）茶托 1件(420:6)。为白瓷器。缘边作荷叶形, 中有圆形凸棱, 用以承碗, 底为圈足。胎骨甚薄, 洁白坚致。白釉微泛青色, 滑润有光泽。高2.7, 外缘径10, 足径3.3厘米(图版叁柒, 5、6)。<br />
+（一六）扣盒盖 1件(527:1)。黄灰色胎, 上施青釉, 开纹片。盖顶釉下贴一蝴蝶, 以阴线刻二触鬃, 形象颇为生动。在蝴蝶周围及器盖缘边, 烧出褐斑数处。盖高1.7, 径5厘米(图版叁染, 3)。<br />
+（一七）高足盏 1件(588:3)。为青釉器。上作浅盘形,口沿微向外敞;下为喇叭形细把高圈足,足内残留支钉痕迹三处。胎青灰色,青釉晶莹滋润,釉厚处呈暗绿色,有冰裂纹,足下部无釉。高12.1,口径14.6,足径9.9厘米(图版叁捌,5)。<br />
+（一八）三足盘 3件。折沿浅腹，底有三足。414:3系白瓷器。胎、釉皆为白色，釉开鱼子片，口沿、底部和三足皆无釉，口部残留覆烧痕迹。高2.7,盘径11.4厘米（图三五，3;图版叁壹，3)。216:5、8两件为搅胎器。胎用黄、赤色土搅成。釉黄绿色，明亮有光泽，开细纹片，底部及三足无釉。高2.6,盘径13.3厘米(图版叁玖，5)。<br />
+（一九）灯盏 2件。大口，浅腹，小平底。口沿有被火熏黑的痕迹，当为入葬时燃点长明灯之用。204:2胎青灰色，内壁口沿以下施黑釉，中心出现银灰色小圆点，类似油滴天目釉；外壁及底无釉。高3.5，口径10，底径4.5厘米（图版叁捌，7）。另一件(219:1)内壁施褐色釉，体形略大。<br />
+（二〇）烛台 1件(586:6)。为青绿釉器。整器分为上下两部分，上部为烛盘，盘中有一空心圆筒，以备插烛之用；盘底为圈足，恰好套在台座的长颈上。下部为带长颈之台座，颈中空，上有凸弦纹二十道；座为覆盆形，肩部贴饰莲花十二瓣。胎青灰色，部分呈红色。施青绿色釉，开细纹片，底座内壁无釉。通高30，烛盘径14.3，底座径15.4厘米（图三六，3；图版参捌，6）。</p>
+<p>（二一）器盖3件。盖钮皆作宝珠形。516:18、19两件盖面下凹，作浅碟形。红色陶胎，质松软。釉作深绿色，开细纹片，部分有银化现象。516:18高2.1，径9厘米(图三</p>
+<p>六, 1)。515:2 盖面鼓起, 作覆碟形。胎白色, 耦白泛黄, 部分开纹片, 有光泽。高 5.1, 径 10 厘米 (图三六, 2)。</p>
+<p>上述各釉陶和瓷器出土墓葬的时期是：</p>
+<p>四系罐皆出于隋一初唐墓，I型一式有贞观墓出土者。六系罐出于隋墓。</p>
+<p>罐I型一式多数出于隋一初唐墓，少数出于中、晚唐墓中；三式有出于隋一初唐墓者。II型皆出于中、晚唐墓。</p>
+<p>四系壶、壶和瓶皆为隋一初唐墓所出。注子出于中、晚唐墓。</p>
+<p>唾壶I型一式出于隋一初唐墓，其一为开皇墓所出；二、三式皆出于初唐墓中，有麟德墓所出者。II型一式为贞观墓所出，二式出于中、晚唐墓中。</p>
+<p>图三六 釉陶和瓷器(1/4)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、2.器盖(516:18、515:2)3.烛台(586:6)4.I型水盂<br />
+(586:5) 5. I 型一式唾壶(586:4)</p>
+<p>水孟I型为开皇墓所出，II型有初唐墓所出者，III型出于初唐墓中，IV型为盛唐墓所出。</p>
+<p>碗I型为盛唐墓所出，II型出于中、晚唐墓。碟出于盛唐墓。杯为隋一初唐墓所出。带耳杯有盛唐墓所出者。茶托出于大中十二年墓。高足盏出于隋墓。三足盘皆为盛唐墓所出。烛台出于开皇墓。器盖为隋一初唐墓和大中四年墓所出。</p>
+<h1 id="_46">四、銅 器</h1>
+<p>铜器共123件，出于38座墓中。计有镜、洗、刀、勺、镊、剑格（腊）、帽钉、钗、簪、蝶形发饰、钏、带具和其他等十三种器物。从铜镜的纹饰和各种花式镜的出现，以及钗、簪和发饰的雕镂细工和鎏金、银技法的使用，可以窥见具有高度水平的唐代手工业艺术的一斑。</p>
+<p>（一）镜 26面。依造型的不同，分为五型：</p>
+<p>I型共16件。为圆形镜。按照镜背纹饰的差异，分为十二式：</p>
+<p>一式1件(586:3)。为四兽四菱镜。薄胎圆钮。主要花纹为四兽；四兽之间，隔以四菱形纹；外圈饰锯齿纹和栉齿纹各一道，素缘。锈蚀严重，纹饰模糊不清，且已残破。径</p>
+<p>8, 厚 0.2, 缘高 0.3 厘米 (图版肆壹, 2)。</p>
+<p>二式2件。为四兽镜。圆钮圆座，镜背以锯齿纹带分出内外两区，花纹主要是四兽。577:1内区四兽之间，加饰流云纹；外区为一圈铭文，铭辞是“仙山仗照，智水齐名；花朝艳采，月夜流明；龙盘五瑞，鸾舞双情；传闻仁寿，始验销兵。”或称刻有这种铭文的镜为“仙山镜”或“仁寿镜”。镜缘饰锯齿纹和卷云纹各一道。径18.6，厚0.2—0.4，缘高0.7</p>
+<p>图三七 铜镜花纹拓本<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、3. I型二式(577:1、591:15) 2. III型一式(216:32) 4. I型三式(576:17)</p>
+<p>厘米（图三七，1；图版肆壹，1）。另一件（591:15）外区无铭文，代之以卷草纹带，径10.5厘米（图三七，3）。</p>
+<p>三式1件(576:17)。为六兽镜，亦有因铭文而称之为“莹质镜”或“当眉镜”者。圆钮连珠纹座。内区花纹是两两相对的六兽，以锯齿纹与外区铭文带隔开，铭文是“练形神冶，莹质良工；如珠出匣，似月停空；当眉写翠，对脸传红；绮衾繡幌，俱含影中。”缘饰锯齿纹和几何纹带。径17.3厘米（图三七，4）。</p>
+<p>四式 1件(600:7)。为四神镜。镜面特大，制作精美。圆钮双龙方座。内区花纹是青龙、白虎、朱雀、玄武各据一方，四神之间饰以四规，规内有兽首或兽面各一。外区内圈</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图三八 I型四式铜镜(600:7)</p>
+<p>为铭文带, 铭辞是“美哉圆鉴, 览物称奇; 雕耦合矩, 铭铣应规; 仙人累莹, 玉女时窥; 恒娥是坪, 服御牧(攸)宜。”外圈为花纹带, 有鸟、兽、鱼、龙、羽人等花纹。内外区隔以二道锯齿纹, 花纹之间皆加饰点状流云纹。锯齿纹及变形卷云纹缘。径24.6, 厚0.4, 缘高1厘米。此镜纹饰的风格与布局同《博古图录》卷廿九所录唐武德五年纪年镜颇为相似, 当亦为初唐之物（图三八; 图版肆贰, 1）。</p>
+<p>五式 1 件 (568:1)。为鸾兽葡萄镜。高缘薄胎，钮及内区已残。内区残存二兽，外区为鸾鸟葡萄纹带。二区之间及镜缘皆饰锯齿纹。径 10.6, 厚 0.15, 缘高 1 厘米（图版肆壹，3）。</p>
+<p>六式 1件(551:14)。为宝相花镜,或称玉匣镜。镜呈银白色,钮部已残。内区花纹为六宝相花,以两道锯齿纹与外区相隔;外区为一圈铭文,铭辞是“玉匣初看镜,轻灰整(甃)去尘;光如一片水,影照两边人。”此铭文显系采用北周庾信咏镜诗的前半首,而稍加修改<sup>1)</sup>。镜缘为锯齿纹。径12.7,厚0.1-0.3,缘高0.9厘米(图版肆贰,2)。</p>
+<p>七式1件(546:1)。为鹊绕花枝镜。镜银灰色,圆钮圆座。内外区以二道凸弦纹隔开,花纹主要是飞鹊花草,并有蜂蝶飞舞其间,画面生动活泼。镜缘饰流云纹。径9.3,厚0.2,缘高0.8厘米(图版肆贰,3)。此镜与西安东郊郭家滩第92号唐开元二年墓所出铜镜相同2)。唐刘元淑《妾薄命》诗:“飞鹊镜前妆梳断”3),所谓“飞鹊镜”,可能就是指这种镜而言。</p>
+<p>八式 2 件。为四叶纹小镜。薄胎弓形钮。主要花纹是四叶纹，四叶之间加饰四菱形纹。417:1 四叶纹外有一道栉齿纹，外缘无纹饰。径 7.3, 厚 0.1, 缘高 0.2 厘米（图版肆叁，1）。607:1 外缘有连珠纹带。锈蚀较甚，花纹多已不显。镜面很小，径仅 3.7 厘米（图版肆叁，2）。</p>
+<p>九式2件。为连珠纹小镜。薄胎圆钮，镜缘稍高起。605:1钮外饰锯齿纹、连珠纹、栉齿纹各一道。径4.3,厚0.1,缘高0.3厘米(图版肆叁,3)。218:8锈蚀严重,纹饰不清,仅见连珠纹一圈。径5厘米(图版肆叁,4)。</p>
+<p>十式 2 件。为素面小镜。582:1 薄胎, 弓钮, 平素无纹饰。径 5.5, 厚 0.05 厘米 (图版肆叁, 5)。599:1 圆钮, 高缘, 素面。径 4.6, 厚 0.15 厘米 (图版肆叁, 6)。</p>
+<p>十一式 1件(561:1)。为仿汉式规矩镜。弓钮, 四叶纹座。除规矩形图案外, 尚有乳钉纹; 因磨损厉害, 花纹已模糊不清。纹饰题材, 颇类汉镜; 但从花纹风格以及缘、钮的形状等观察, 却与汉镜迥异, 显系仿汉的制品。径16.9, 厚0.15, 缘高0.25厘米(图版肆染, 1)。</p>
+<p>十二式 1件(415:1)。为仿汉式鸟兽七乳镜。圆钮,动物形座。主要花纹是七个以乳钉为中心的圆形纹样,其间加饰以鸟兽花纹。缘饰复线锯齿纹。径14.6,厚0.2,缘高5厘米(图版肆染,2)。此镜纹饰的题材和布局,同《长沙发掘报告》中第245号墓所出汉镜(245:5)和《洛阳西郊汉墓发掘报告》中第3079号墓出土的两个汉镜(3079:5、6)颇为相似;但花纹的线条较粗,镜缘不如汉镜平直,钮和钮座的形状、纹饰也不相同,应为模仿汉镜而造的。</p>
+<p>II型 2件。为菱花形镜。分为二式：</p>
+<p>一式1件(414:10)。蟾蜍钮,鸟兽花枝纹,素缘。小巧玲珑。径5.4,厚0.1,缘高0.3厘米(图版肆伍,1)。此镜出土时系置于漆盒内。</p>
+<p>二式 1件(218:9)。圆钮,素面。径10.6,厚0.2,缘高0.8厘米(图版肆伍,2)。</p>
+<p>III型3件。为葵花形镜。分为三式：</p>
+<p>一式 1件(216:32)。为三乐镜，或称荣启奇镜。厚胎圆钮。镜背纹饰系描写孔子在郊之野与荣启期问答的故事<sup>3)</sup>。上方有铭文九字，分三行书，自左至右为“孔夫子问曰答荣启奇”，荣启奇即荣启期，或作荣声期、荣盆期。左侧着宽袖长袍执杖者为孔夫子，右边“鹿裘带索”携琴（或瑟）者是荣启期。下方有一树，象征着郊野。镜径13，厚0.3，缘高0.5厘米（图三七，2；图版肆肆，2）。</p>
+<p>二式 1 件 (594:1)。为八花镜。圆钮圆座, 座外有含苞未放的莲花八朵。主要花纹是八株花叶茂盛的株花, 莲花与株花之间有一道连珠纹。径 18.5, 厚 0.3, 缘高 0.6 厘米 (图版肆肆, 1)。</p>
+<p>三式1件(410:1)。为双鸾镜。圆钮厚胎。主要花纹是双鸾系绶和鹊踏花枝，缘饰流云、花枝相间纹。径12.2,厚0.2-0.3,缘高0.5厘米（图版肆肆，3)。这种镜子，可能是唐人诗文中所称“鸾镜”的一种<sup>①</sup>。</p>
+<p>IV型4件。为亚字形镜,或称四方委角镜。可分三式:</p>
+<p>一式1件(555:1)。为剔地纹蝶花镜。圆钮,钮外有莲瓣一圈。主要花纹是四只蝴蝶,其外有花纹带,磨损较甚。素缘。径14,厚0.2,缘高0.4厘米(图版肆伍,3)。</p>
+<p>二式 1件(563:2)。为历字镜。圆钮素缘。径14.3,厚0.2,缘高0.4厘米（图版肆伍，4）。</p>
+<p>三式2件。为素镜。420:1小圆钮,薄胎,素平缘。背有龟裂纹,镜面明亮可鉴。径11.3,厚0.1,缘高0.2厘米(图版肆伍,5)。540:1略大,已残破。</p>
+<p>V型1件(504:1)。为方形八卦镜。圆钮方座,素高缘。径12.9,厚0.3,缘高0.6厘米(图版肆伍,6)。</p>
+<h1 id="3_1">（二）洗3件。分为二型：</h1>
+<p>I型2件。浅腹, 平底。414:1口沿微向外卷。高3, 口径10.2厘米(图三九, 9)。576:4口沿加厚, 底部已残, 大小相类。</p>
+<p>II型1件(515:1)。折沿，腹壁外侈。已残破，残高3.8，口径24.8厘米（图三九，10）。</p>
+<p>（三）刀1件 $(305:1)$ 。刀身较细长，直背斜刃；柄部窄小，原当安有木质刀把。通长19.8，刀身长14.9，最宽处2，刀背厚0.3厘米(图三九，8)。<br />
+（四）勺1件(563:6)。椭圆形。柄残长5.4,勺身长3.8,宽2.1厘米(图三九，2)。<br />
+（五）镊3件。415:2一端为夹形的镊子，一端为小勺形的耳扒(挖耳)，柄上刻有简单的纹饰，通长16.2厘米(图三九，7)。另二件(563:5、6)皆残。<br />
+（六）剑格(腊）1件(421:3)。菱形，含剑茎孔作长方形。此腊原或安置于铁剑上，因剑已锈朽无存，故仅存腊。长5.2,中部宽1.6厘米(图三九，6)。<br />
+（七）帽钉 63枚。多数发现于木棺附近，有的还带有木头残块，应系钉在棺木或其他木质器物上的附饰。依钉帽不同，分为二型：</p>
+<p>I型 61枚。帽呈球面形, 素面, 盥金。帽径1.4—1.75, 钉长1.9—2.5厘米。421:2帽较低平。径1.6, 长1.9厘米。517:2帽呈半球形。径1.5, 长2.4厘米(图三九, 3)。</p>
+<p>Ⅱ型2枚。钉帽以模压出花形纹饰。603:1帽径1.7,钉长2厘米(图三九，4)。另一枚(603:2)相同。</p>
+<h1 id="14_3">（八）钗 14件。依钗首结构、纹饰的差异，分为三型：</h1>
+<p>I型7件。为素钗。钗首无纹饰。双股等长，断面呈圆形或近似圆形。长16.3—23.6厘米。591:1长23.6厘米(图版肆陆，2)。</p>
+<p>Ⅱ型2件。为葫芦形钗。钗首鎏金，作葫芦形，上刻花朵及圆点纹。双股扁平，上部亦刻有圆点纹。201:4长26.1厘米(图四〇,4;图版肆陆,6)。另一件(201:5)同此。</p>
+<p>III型5件。为花钗。钗首鎏金，纹饰皆以模压、雕镂而成。521:1、2、3首部作双朵菊花形纹饰。柄扁平，下分两股。521:1残长15.9厘米（图四〇，2；图版肆陆，4）。521:4、5为鸳鸯花枝纹饰，优美生动，惜已残碎(图三九，5)。唐韦应物《长安道》诗“头上鸳钗双翠翘”（《圣唐诗》卷十八），可能就是这种钗的写照。按《新唐书·车服志》记载，不但所谓“内、外命妇”的贵族妇女插饰花钗，而且“庶人女嫁有花钗，以金银瑠璃涂饰之”。这些花钗皆系鎏金，与所载相符。</p>
+<p>图三九 铜 器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.蝶形发饰(201:10) 2.勺(563:6) 3.I型帽钉(517:2) 4.II型帽钉(603:1) 5.III型钗(521:4) <br />
+6.剑格(421:3) 7.（415:2）8.刀(305:1) 9.I型洗(414:1) 10.II型洗(515:1)</p>
+<h1 id="4">（九）第4件。第首作扇形，单股扇长柄。依造形和纹饰不同，分为二型：</h1>
+<p>I型2件。箸首中部镂刻一花朵,其周围为鱼鳞状镂空纹饰;缘为圆点纹地花朵纹带。中央朵花及周缘部分花朵鎏金,色泽未变,其余部分皆鎏银,惜已锈成黑色。201:6长23.2厘米(图四O,3;图版肆陆,5)。另一件(201:7)相同。</p>
+<p>Ⅱ型2件。箐首作花边扇形，透雕飞鹊缠枝花纹，缘饰与I型相同。飞鹊和周缘花朵皆鎏金，其余部分鎏银。雕镂精美，画面生动活泼。201:9长26.3厘米（图四O,1;图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四铜发饰</p>
+<p>1.II型管(201:9) 2.III型权(521:1) 3.I型管(201:6) 4.II型权(201:4)</p>
+<p>版肆陆, 3)。另一件(201:8)已残。</p>
+<p>（一〇）蝶形发饰 1件(201:10)。亦系透雕细工。中部镂刻二展翅对舞的凤凰,上下衬以缠枝花叶。凤凰、花朵鎏金,余鎏银。全形似展翅蝴蝶,造型十分优美。长17,宽7.2厘米(图三九,1;图版肆陆,1)。广州皇帝岗唐木樨墓曾出土一件类似的花牌,唯纹饰较为简单<sup>1</sup>。《远东古物馆馆刊》第29期(1957年)图五一所录一件银质饰物,透雕纹饰亦相类似,当亦此类饰品之一种<sup>2</sup>。这件器物出土于人架头部上方,应系发饰无疑,或即唐人诗文中所谓金钿、花钿或宝钿之类的饰物<sup>3</sup>。</p>
+<p>（一一）铆1件(563:3)。单条铜线制成, 交接处团出圆形装饰, 简单朴质。出土时在人架左臂上, 已残断。<br />
+（一二）带具 共5付。皆由带扣、带铐和铠尾三部分组成，个别加带环。鞑(亦作)，已腐朽无存，从附着于带扣及铠尾的残迹观察，当为革质。根据带扣和带铐的形式和构造的不同，分为三型：</p>
+<p>I型1付(213:3)。带扣已残。带铐有圆形和近似椭圆形两种，前者有4个，中有圆孔；后者有大小两种，大者4个，小者6个，中皆有椭圆形长孔。皆由形状相同之二铜片构成，其间有小钉3—4个，以便合钉于鞋上。铑尾一端方形，一端作弧形。带扣残长4，宽2.3；圆形带铐径1.6；椭圆形带铐小者长径2.7，大者长径3.5；铑尾长3.9，宽2.5厘米（图四一，1—5）。</p>
+<p>Ⅱ型3付。带扣为椭圆形环,中有一顶针,环、针皆能活动。带铐作方形或长方形,中皆有长方形小孔,结构与I型相同。钝尾为长方形,末端或呈弧形。116:5带扣通长5,环长径3.2;带铐长1.5-2.3,宽2-2.5;钝尾长4,宽2.5厘米(图四一,6-9)。另二付(412:1、215:2)带扣皆残。</p>
+<p>III型1付(416:1)。带扣结构与Ⅱ型相同,唯环作弓形。带铐系由有孔之花形铜饰和长方形套环组成。铠尾为一状似龟背之铜片。另有一带环,圆角长方形。此器表面皆鎏金,造形亦较别致。带扣通长2.4,环长径2.1;带铐长3.3,宽2.8,通扣高1.4;铠尾长2,宽1.7;带环长1.9,宽1.1厘米(图四一,10-13)。</p>
+<p>（一三）其他饰物 多用很薄的铜片制成, 表面鎏金, 有的还刻有简单的纹饰, 有圆形、花瓣形和树叶形等不同式样, 然多已残碎。推测这些饰物, 多数原应为漆、木器上的零件或附饰, 原器已腐朽不存。此外, 董203和墓223还出土穿着料珠和花瓣形鎏金铜片的螺旋状铜丝。这种铜丝有的还插在料制小管中, 似为步摇之类的饰物, 惜已残断过甚,</p>
+<p>图四一 铜 带 具<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1—5.I型带具(213:3) <br />
+6-9. II型带具(116:5) <br />
+10—13. III型带具(416:1)</p>
+<p>无法看出原形。</p>
+<p>上述铜器的出土情况是：</p>
+<p>镜I型一式为开皇墓所出；二式至六式出于隋一初唐墓中；五式为麟德墓所出；七式出于盛唐墓；八、十式有出于初唐墓者；九式出于中、晚唐墓。II型一式和III型一式出于盛唐墓。II型二式和III型二式出于中、晚唐墓。IV型皆为中、晚唐墓所出，其中三式有出于大中十二年墓者。V型出于中、晚唐墓。</p>
+<p>洗I型出于初唐和盛唐墓中，II型为大中四年墓所出。刀出于景云墓。勺和剑格为中、晚唐墓所出。镶有出于中、晚唐墓者。帽钉I型多数出于中、晚唐墓，少数出于初唐</p>
+<p>墓；II型为元和二年墓所出。钗I型出于初唐、盛唐和中、晚唐墓中；II型为中、晚唐墓所出。簪、钏和蝶形发饰皆出于中、晚唐墓。带具I型为隋一初唐墓所出。其他饰物出于盛唐和中、晚唐墓中，有证圣墓、景龙墓和大中十二年墓所出者。</p>
+<h1 id="_47">五、铁器</h1>
+<p>铁器共22件(不包括铁棺钉),出于19座墓中。计有刀、镰、剪、镜、帽钉等五种。</p>
+<p>（一）刀 4件。分为二型：</p>
+<p>I型1件(532:17)。为环首刀。刀身修长, 环首与刀身之间包饰铜片, 并以铜环加固。刀上尚残留加漆木鞘痕迹, 环首及刃端已残。残长79, 身宽3厘米(图四二)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四二 I型铁刀（532:17, 1/8）</p>
+<p>Ⅱ型3件。为直柄小刀。刀身前窄后宽，原或安有木质把柄。584:1出土时位于头骨左侧，通长19，刃长15厘米(图版肆染，4)。其余二件，皆已残断。</p>
+<p>（二）镰4件。301:2镰身稍弯曲，前端较窄，后端略宽。长24.7，宽3.7—4.5厘米（图版肆染，6）。其余三件已残。<br />
+（三）剪6件。均为交股式，柄部曲成环形。568:2通长19.8，刃长8.4厘米(图版肆柒，3)。545:1特大，通长34，刃长15厘米（图四三，1）。<br />
+（四）镜 5件。形状与I型铜镜相同，然均已锈蚀不堪或碎成破片。556:1镜背有朽木残迹，原或置于木质镜（匣）中。直径12.3厘米。<br />
+（五）帽钉 3枚。墓221出土。器形同I型铜帽钉，唯体积较大。421:2帽径5.4厘米，钉部已残(图四三，5)。</p>
+<p>此外，多数墓都出土铁棺钉，长4—17厘米。</p>
+<p>上述铁器，刀I型出于贞观墓，II型有大中十二年墓所出者。镰有隋一初唐墓所出者。剪出于初唐、盛唐和中、晚唐墓中，有麟德墓所出者。锁唐墓。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四三 铁、玉、骨器</p>
+<ol>
+<li>铁剪(545:1, 1/4) 2. 骨七(570:3, 1/2) <br />
+3.玉钗(203:31,1/2) 4.骨笄(563:9,1/2)<br />
+5.铁帽钉(421:2,1/4) 6.骨梳(420:7,1/2)</li>
+</ol>
+<h1 id="_48">六、铅器</h1>
+<p>铅器共9件，有马镒和铅泡两种。</p>
+<p>（一）马鐙 3件。器形很小，可能是马俑的附件。405:18长3.6，宽2.2厘米（图版肆挪，5）。另二件大小相同。<br />
+（二）铅泡 6 件。圆形，中部略向内凹，素面或加饰连珠纹。538:2 周缘饰连珠纹二道，径 2.9 厘米（图版肆捌，6）。其余大小类此。</p>
+<p>铅器皆出于中、晚唐墓中。</p>
+<h1 id="_49">七、玉石器</h1>
+<p>（一）玉钗 2件。皆双股素钗，钗股断面呈椭圆形。203:31玉白色，有斑纹，一股已残，长7.5厘米(图四三，3；图版肆捌，3)。215:3玉色洁白温润，双股皆残。<br />
+（二）石璜 1件(305:33)。石质,呈乳白色。有二小孔,当为珮璜。长3.5,宽1.1,厚0.2厘米(图版肆捌,1)。<br />
+（三）石舞戚 2件。状如斧钺，背部有一孔，应为安柄之用。305:2石白色，长4.7，刃宽5.7，厚0.3—0.6厘米(图版肆捌，2)。另一件稍大，石色灰白，已残。<br />
+（四）石人头 1件(305:9)。头戴小冠,脸部残损颇甚。通高48厘米(图版肆染，5)。<br />
+（五）石幢顶 1件(305:10)。宝珠形顶，上座圆形，下座八角形，底部有一圆孔，当系接插幢身的榫眼。通高50,座径30.5,榫眼径12.5,深8厘米(图版肆柒,7)。<br />
+（六）紫石砚 1件(504:11)。为风字形小砚, 底部一端有二长方形足。石色紫红, 或即李肇《国史补》所谓“端溪紫石砚”<sup>1)</sup>。长11.4, 最宽处7.5厘米(图版叁玖, 3)。<br />
+（七）水晶珠 1件(538:4)。纯净透明，穿丁字形孔。径1.45厘米(图版肆捌,4)。<br />
+（八）天然水晶柱 共45件。出土时在双耳罐内，为天然结晶体，未曾加工。大小不等，长0.8—3.2厘米。</p>
+<p>上述这些器物，钗有景龙墓所出者。璜、舞咸、人头、幢顶皆出于景云墓。紫石砚和水晶珠出于中、晚唐墓。天然水晶柱为开皇墓所出。</p>
+<h1 id="_50">八、骨蚌器</h1>
+<p>（一）骨笋 2件。笋帽椭圆形；笋身扁圆，上粗下细。出土时在人骨架头部两侧。笋身皆已残断，563:9残长9.3厘米(图四三，4)。</p>
+<p>（二）骨梳 1件(420:7)。略呈梯形。一面以阴线刻出栉齿形，另一面平素。制作简单，器形很小，显系特制的明器。高1.85，最宽处3.15厘米(图四三，6)。<br />
+（三）骨匕 1件(570:3)。扁平长条形。下端稍宽, 略成弧形; 上端较窄, 已残断。残长13.9厘米(图四三, 2)。<br />
+（四）蚌壳 9件。系天然蚌壳，大小不同。586:7背面有褐色斑纹。微残，长5.4，宽4.6厘米。609:3较大，长8.6，宽7.2厘米。从107:8壳内残存朱红色痕迹推测，此类蚌壳或系当时妇女用以装盛脂粉之器。</p>
+<p>以上器物, 箍出于中、晚唐墓。梳为大中十二年墓所出。蚌壳出于隋一初唐墓和中、晚唐墓中, 有开皇墓和元和十三年墓所出者。</p>
+<h1 id="_51">九、料 器</h1>
+<p>（一）杯 1件(586:113)。呈青绿色玻璃状，含有大量气泡，半透明。大口深腹，下有喇叭形足，器形不甚规整。通高6,口径5.1,足径2.7厘米(图版肆拾，2)。<br />
+（二）圆形器 2件。504:9黄色玻璃质。外壁有一层白衣，内壁残留朱红色颜料。器上有一圆孔，残破过甚，全形已不可知。504:10绿色玻璃质，残破更甚，只剩一些碎片。</p>
+<p>上述料杯出于开皇墓中。圆形器出于中、晚唐墓。</p>
+<h1 id="_52">一〇、漆 器</h1>
+<p>盒2件,出于隋和盛唐墓。全已腐朽,残存一些朱红色漆皮,出土时尚能看出是圆形漆盒。414:11 内置一菱花形小镜(414:10)。</p>
+<h1 id="_53">一一、錢 币</h1>
+<p>出土钱币的墓有54座，共出185枚。其中波斯银币1枚、永通万国钱1枚、五铢钱9枚、开元通宝168枚、乾元重宝3枚。</p>
+<p>（一）波斯银币 1枚(213:1)。作不规整圆形，径约2.7厘米。据夏鼎同志考证，系波斯萨珊朝卑路斯(Pirouz，457—483年)时所铸的<sup>1)</sup>(图版叁捌，3、4)。<br />
+（二）永通万国 1枚(571:12)。径2.9,郭宽0.15,穿径0.85厘米(图四四,1)。西安白鹿原隋墓(墓2)也出过1枚2),此钱铸于北周宣帝大象元年3)。《隋书·食货志》载:“诏行新钱(指隋五铢)已后,前代旧钱有五行大布、永通万国及齐常平,所在用以贸易不止。四年,诏仍旧不禁者,县令夺半年祫;然百姓习用既久,尚犹不绝。五年正月诏又严其</p>
+<p>制, 自是钱货始一, 所在流布, 百姓便之。”可见开皇之初, 永通万国钱尚犹流通, 隋墓出土此钱, 完全可以理解。</p>
+<p>（三）五铢 12 枚。“背面肉好皆有周郭”，郭宽平；“五”字交叉二笔较直，左边傍好处有一豎划；“铢”字“金”首三角内斜。系隋铸五铢，或称“开皇五铢”，始行于开皇元年九月<sup>1)</sup>。钱大小相同，径 2.3，郭宽 0.25，穿径 0.9 厘米（图四四，2）。</p>
+<p>（四）开元通宝 共142枚，出于47座墓中。可分为三型：</p>
+<p>I型 128枚。皆光背，“元”字首划短小，次划左挑。依钱的大小和质量的差异，分为二式：</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四四 钱币拓本(2/3)</p>
+<p>1.永通万国(M571) 2.隋五铢(M586) 3.乾元重宝(M302)</p>
+<ol>
+<li>
+<p>I型一式开元通宝(M551) 5. I型二式开元通宝(M538)</p>
+</li>
+<li>
+<p>II型开元通宝(M570) 7. III型开元通宝(M538)</p>
+</li>
+</ol>
+<p>说殆不可信。</p>
+<p>III型 1枚。墓538出土。制作质量接近I型二式，“元”字首划较长。钱背穿上有一“洞”字，当为武宗会昌年间江南道润州所铸。径2.3,郭宽0.2,穿径0.65厘米（图四四,7)。这种铸有州名的开元通宝，由于在宣宗即位后被销毁铸为佛象，所以出土很少 $^{2)}$ 。</p>
+<p>1)《隋书·高祖纪上》：“（开皇元年九月）是月行五铢钱。”<br />
+2)《新唐书·食货志四》：“及武宗废浮屠法，永平监官李郁彦请以铜象、鰓、磬、铲、铎皆归巡院，州县铜盏多矣。盐铁使以工有常力，不足以加铸，许诸道观察使皆得置钱坊。淮南节度使李绅请天下以州名铸钱，京师为京钱。大小径寸，如开元通宝。交易禁用旧钱。会宣宗即位，尽黜会昌之政；新钱以字可辨，复铸为象。”</p>
+<p>（五）乾元重宝 3枚。大小形制互有不同，钱径2.35—2.65厘米。墓302一枚字体端庄，制作较为精良，钱背穿下有一新月纹。径2.5，郭宽0.2，穿径0.7厘米(图四四，3)。墓538一枚钱径最大，外郭亦特宽，钱文则较小；背面锈蚀较甚。墓563一枚最小，制作不甚规整，钱背穿下亦有新月纹。以上二钱穿孔皆成八角形，似为二次凿穿所致；这两种钱一大一小，或即《旧唐书》所称“重棱（《新唐书》或作‘重轮’）大钱”和“重棱小钱”。史载，代宗改变重棱大、小钱与“开元通宝”的比值为“以一当一”之后，民间将乾元、重陵二钱销铸为铜器，所以出土的“乾元重宝”远比“开元通宝”为少<sup>2</sup>。</p>
+<p>出土钱币的墓共有53座,只占墓葬总数的三分之一弱;而且每墓所出的数量都不多,除了墓203和538各出十三、十五枚外,其余皆在十枚以下。《封氏闻见记》卷六纸钱条记载:“纸钱,今代送葬为凿纸钱,积钱为山,盛加雕饰,异以引柩……其纸钱,魏晋以来始有其事,今自王公逮于匹庶,通行之矣。凡鬼神之物,其象似,亦犹涂车刍灵之类。古埋帛(一本“埋帛”下有“金钱”二字),今纸钱则皆烧之,所以示不知神之所为也。”《新唐书·王玮传》载:“汉以来葬丧皆有瘞钱,后世里俗稍以纸寓钱为鬼事。”由此推之,隋唐墓葬所出钱币远比汉墓为少的原因,可能是由于当时流行焚烧纸钱的习俗,而埋瘞大量铜钱的现象已经不再出现了。</p>
+<h1 id="_54">一二、墓志</h1>
+<p>墓志共十八方(图四五一七七), 除墓609所出一方为砖质外, 余皆系石质。所属年代从隋文帝开皇十二年到唐宣宗大中十二年。志皆为方形。砖志无盖, 石志皆有盌顶式盖 (墓409一方盖缺)。盌顶高度与志盖全高之比数, 基本上是逐渐增大, 说明盖之盌顶部分, 从隋代到晚唐似有渐次相对增高的现象(见表四“盌顶高与盖高之比数”栏)。</p>
+<p>各志大小不一。庶人张十八娘子的砖志,宽广35,高5厘米,与唐代一般的方砖大小相若。石志之中,以“成王”(正一品)李仁墓志为最大,宽广约89.5,合高26厘米;以“上护军”(勋官正三品)妻刘宝墓志为最小,宽广32,合高16厘米。墓志的大小,基本上和墓主身份的高低成正比。例如,宽广在60厘米以上的墓志共五方,其墓主除一方为“正四品下”外,余皆系一品或二品;宽广在50厘米以下的墓志共十一方,墓主职事官的级别皆在三品以下。但是,二者之间的关系并不是绝对的,有许多例外的现象。例如,“正七品下”的“河南府仓曹参军”路复源志(宽广为58厘米)比“从五品上”的“朝散大夫守润州长史”董岌志(宽广47厘米)还大;并且属于同一品级的墓志(如杨氏志和郑德柔志),大小也有差异。由此可见,墓志尺寸的大小,除了和墓主身份高低有关外,同墓主的经济状况也有</p>
+<p>1)《旧唐书·食货志上》：“宝应元年四月，改行乾元钱一以当三，乾元重陵小钱亦以一当二，重陵大钱一以当三；寻又改行乾元大小钱并以一当一，其私铸重陵大钱不在行用之限。”<br />
+2)《新唐书·食货志四》：“代宗即位，乾元重宝钱以一当二，重轮钱以一当三；凡三日而大小钱皆以一当一。自第五琦更铸，犯法者日数百，州县不能禁止，至是人甚便之。其后民间乾元、重陵二钱铸为器，不复出矣。”</p>
+<p>表四 墓·志 尺 寸、 矩 餘 表 (单位：厘米)  </p>
+<table><tr><td rowspan="2">基号</td><td rowspan="2">年代</td><td rowspan="2">基主</td><td rowspan="2">身份(官职)</td><td rowspan="2">合高</td><td rowspan="2">宽广</td><td rowspan="2">盖高</td><td rowspan="2">盖顶高</td><td rowspan="2">盖与之顶盖比高高数</td><td colspan="4">纹饰</td><td rowspan="2">图号</td><td rowspan="2">备注</td></tr><tr><td>盖顶</td><td>四杀</td><td>盖边</td><td>志边</td></tr><tr><td>586</td><td>开皇十二年(592年)</td><td>吕武</td><td>大都督左亲卫车骑将军</td><td>19</td><td>45</td><td>9</td><td>4.5</td><td>1/2</td><td></td><td></td><td></td><td></td><td>四五,四六</td><td>无花纹</td></tr><tr><td>532</td><td>贞观十三年(639年)</td><td>段元哲</td><td>太子左卫副率</td><td>18</td><td>43</td><td>8</td><td>3.5</td><td>1/2-</td><td></td><td></td><td></td><td></td><td>四七</td><td>无花纹</td></tr><tr><td>568</td><td>麟德二年(665年)</td><td>刘宝</td><td>上护军妻</td><td>16</td><td>32</td><td>8</td><td>2</td><td>1/4</td><td></td><td>卷草纹</td><td>卷云纹流云纹</td><td>卷云纹</td><td>四八,四九</td><td></td></tr><tr><td>223</td><td>证圣元年(695年)</td><td>郭禹</td><td>东官细引</td><td>27</td><td>约44.5</td><td>14</td><td>8</td><td>1/2+</td><td></td><td>缠枝宝相花、海石榴纹</td><td></td><td>缠枝卷叶纹</td><td>五○,五一</td><td></td></tr><tr><td>203</td><td>景龙二年(708年)</td><td>郭恒</td><td>龙州刺史</td><td>26.5</td><td>67</td><td>13.5</td><td>8</td><td>1/2+</td><td>卷草纹</td><td>缠枝卷叶花纹</td><td></td><td>缠枝卷叶纹</td><td>五二,五三</td><td></td></tr><tr><td>305</td><td>景云元年(710年)</td><td>李仁</td><td>成王</td><td>26</td><td>约89.5</td><td>13</td><td>8.5</td><td>2/3-</td><td>宝相花</td><td>缠枝卷叶怪兽纹</td><td></td><td>缠枝卷叶纹</td><td>五四,五五</td><td></td></tr><tr><td>(同上)</td><td>开元十四年(726年)</td><td>慕容氏</td><td>成王妃</td><td>18.5</td><td>约72</td><td>8.5</td><td>4.5</td><td>1/2+</td><td></td><td>卷草纹</td><td></td><td>缠枝忍冬花纹</td><td>五六,五七</td><td></td></tr><tr><td>304</td><td>永泰元年(765年)</td><td>韩氏</td><td>扬州大都(督)府司马妻</td><td>21</td><td>49</td><td>11</td><td>7</td><td>2/3-</td><td></td><td>卷草纹</td><td></td><td>缠枝卷叶纹</td><td>五八,五九</td><td></td></tr><tr><td>505</td><td>建中三年(782年)</td><td>曹景林</td><td>赠扬州大都督</td><td>17</td><td>62.5</td><td>7.5</td><td>5</td><td>2/3</td><td>莲花(四角)宝相花(四边)</td><td>四神流云纹</td><td></td><td>十二辰象云气纹</td><td>六○,六一</td><td></td></tr><tr><td>603</td><td>元和二年(807年)</td><td>董植</td><td>苏州长史</td><td>14</td><td>约61</td><td>6.5</td><td>4.5</td><td>2/3+</td><td>几何纹(四角)海石榴、宝相花(四边)</td><td>四神流云纹</td><td></td><td>十二辰象云气纹</td><td>六二,六三</td><td></td></tr><tr><td>601</td><td>元和七年(812年)</td><td>杨氏</td><td>润州司马妻</td><td>20.4</td><td>47.5</td><td>8.4</td><td>6</td><td>3/4-</td><td>几何纹(四角)牡丹花(四边)</td><td>四神流云纹</td><td></td><td>十二辰象云气纹</td><td>六四,六五</td><td></td></tr><tr><td>609</td><td>元和十三年(818年)</td><td>张十八娘子</td><td>庶人</td><td>5</td><td>35</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>六六</td><td>无盖,无纹饰</td></tr><tr><td>601</td><td>宝曆元年(825年)</td><td>董岌</td><td>润州长史</td><td>18</td><td>47</td><td>8</td><td>5</td><td>2/3+</td><td>莲花(四角)宝相花(四边)</td><td>变形卷草纹</td><td></td><td>卷草纹</td><td>六七,六八</td><td></td></tr><tr><td>502</td><td>大和四年(830年)</td><td>李文政</td><td>左金吾卫大将军员外置同正员</td><td>14</td><td>约40</td><td>7</td><td>5</td><td>3/4-</td><td></td><td>宝相花、流云纹</td><td></td><td>流云纹</td><td>六九,七○</td><td></td></tr><tr><td>602</td><td>开成二年(837年)</td><td>董氏</td><td>赠陇西郡夫人</td><td>15.5</td><td>约45</td><td>8</td><td>5.5</td><td>2/3+</td><td>宝相花</td><td>宝相花</td><td></td><td>卷云纹</td><td>七一,七二</td><td></td></tr><tr><td>409</td><td>大中二年(848年)</td><td>郑德柔</td><td>齐州司马妻</td><td>10</td><td>52</td><td></td><td></td><td></td><td></td><td></td><td></td><td>十二辰象云气纹</td><td>七三</td><td>缺 盖</td></tr><tr><td>515</td><td>大中四年(850年)</td><td>何溢</td><td>茂州刺史充剑南四川西山中北路兵马使</td><td>16</td><td>47.5</td><td>8</td><td>6</td><td>3/4</td><td>几何纹(四角)宝相花、石榴(四边)</td><td>四神流云纹</td><td></td><td>十二辰象</td><td>七四,七五</td><td></td></tr><tr><td>420</td><td>大中十二年(858年)</td><td>路復源</td><td>河南府仓曹参军</td><td>15.5</td><td>58</td><td>7.5</td><td>4.5</td><td>2/3-</td><td></td><td></td><td></td><td></td><td>七六,七七</td><td>无花纹</td></tr></table>
+
+<p>关系, 在制度上似无严格的规定。</p>
+<p>多数墓志,除文字部分外,还刻有不同题材的花纹;少数墓志则平素无纹饰。</p>
+<p>元和十三年张十八娘子砖志，只在砖面以阴线划成十行，志文写刻行中，而无纹饰。石志之中，未刻纹饰的有三方，即开皇十二年吕武志、贞观十三年段元皙志和大中十二年路復源志。吕志盖顶分格阳刻篆文：“大隋大都督左亲卫车骑将军吕君墓志”十六字；路志盖顶阴刻正书：“大唐故路府君墓志铭”九字；段志除志文外，别无其他刻饰。</p>
+<p>刻有纹饰的石志共十四方。花纹主要刻在志盖的顶部和四杀, 以及志石的四边, 盖边刻饰花纹的很少。盖顶纹饰以宝相花为最常见, 此外还有海石榴、牡丹花和卷草纹等纹样, 四角常刻莲花或几何纹。四杀纹饰以卷草纹和四神流云纹为主, 间亦刻有宝相花、海石榴等花纹; 景云元年李仁志刻缠枝卷叶怪兽纹, 最为特殊。盖边刻有纹饰的只有两方, 麟德二年刘宝志刻卷云纹, 证圣元年郭嵩志刻流云纹。志边纹饰的题材主要有卷草纹、缠枝卷叶花纹和十二辰象云气纹三种, 个别刻流云纹、卷云纹或缠枝忍冬花纹。</p>
+<p>从纹饰的题材和风格观察, 似可分为前、后两期, 永泰元年之前为前期, 建中三年之后为后期。前期遒劲大方, 后期渐趋纤细繁縟。盖顶方面, 前期多数无纹饰, 个别大型墓志才刻有宝相花或卷草纹; 后期则多数刻饰相当繁縟的花纹, 题材亦较多样化。四杀的纹饰, 前期以卷草纹和缠枝卷叶花纹为主, 后期则四神流云纹占多数。志边的纹饰, 前期主要是缠枝卷叶花纹, 后期则以十二辰象云气纹为主。参阅以往出土的墓志, 得知四神十二辰象的题材在盛唐以前即有之, 但在中、晚唐时较为流行, 应该是可以肯定的(表四)。</p>
+<p>花纹的刻法有剔地阴线和单纯阴线浅刻两种，后期以单纯阴线浅刻法为主。</p>
+<h1 id="_55">第肆章 分期与年代</h1>
+<h1 id="_56">一、分期</h1>
+<p>在随葬器物中, 除钱币和纪年的墓志外, 时代特征较为明显的是陶俑; 陶俑之中, 又以镇墓俑和男、女俑的演变最具规律性。同时由于墓志的共出, 使我们对不同类型的陶俑的制作时代, 有了较为准确的认识。兹以主要陶俑的演变为纲, 再参考铜镜、钱币和墓型的差异, 将这批墓葬分为三期, 列表说明于下(表五)。</p>
+<p>第一期墓葬的出土器物，在种类和造型风格方面都具有显著的特征。这期独有的器物，除表中所列的武士俑、小冠男俑、披甲骑马俑、低髻女俑、小髻女俑、永通万国钱、隋五铢外，在女俑方面，还有低髻持箕俑和高髻骑马俑；陶器方面，有屋、磨、碓、灶、井栏等模型器；釉陶和瓷器方面，有四系罐、六系罐、四系壶、壶、瓶等器物；钱币方面，还出过一枚波斯萨珊朝银币。其他同第二、三期共有的器物，多数在型式上也有显著的差异。在墓型方面，横室墓是这期特有的。属于这一期的墓葬共33座，可以墓532、586为代表。</p>
+<p>第二期墓葬的陶俑和器物，部分系承袭第一期而来，只在型式和风格上有所区别，如镇墓兽、笼冠男骑俑、风帽男俑、幢头男俑、高髻女俑等；另一部分则是新出现的类型，如天王俑、十二时俑、幢头胡俑、高冠文吏俑、垂发梳髻女俑、博鬓抛髪女俑、菱花形和葵花形铜镜以及Ⅱ型开元通宝等。在造型艺术上也较前多样化了，一方面塑造出彩绘华丽的大型陶俑，另一方面又开始出现小型俑和仅有头、胸部的胸象。三彩器在这期出现。可以定为这一期的墓葬共22座，墓203、604是其代表。</p>
+<p>第三期墓葬所出的器物, 多数为第二期的延续, 仅在型式或数量上有所不同, 而气派则大不如前。小型陶俑和胸象俑显著增多。新出现的器物有注子、亚字形镜、方形八卦镜、III型开元通宝和乾元重宝等。这一期的墓葬共36座, 墓505、563、594可为本期代表。</p>
+<p>属于上述三期的墓葬共91座，占墓葬总数的 $52\%$ ；其余85座，因随葬品很少，缺乏足够的分期根据，不予分期。</p>
+<h1 id="_57">二、年代</h1>
+<p>第一期墓葬出土的陶俑,造型呆板,有些倘具有北朝的遗风。所出钱币除I型开元通宝外,还有隋五铢和北周永通万国钱。这一期的墓葬出土开皇、贞观、麟德年间的墓志,应属于隋一初唐时期,即公元六世纪晚期到七世纪晚期。</p>
+<p>五  </p>
+<table><tr><td rowspan="3">项目期别</td><td rowspan="3">墓号</td><td rowspan="3">镇 墓兽</td><td rowspan="3">武 土俑</td><td colspan="8">男俑</td><td colspan="5">女俑</td><td rowspan="3">铜镜</td><td rowspan="3">钱币</td><td rowspan="3">墓型</td><td rowspan="3">备注</td></tr><tr><td rowspan="2">小冠</td><td colspan="2">笼冠</td><td>风帽</td><td colspan="2">蛱蝶头</td><td colspan="2">按甲骑俑</td><td rowspan="2">低帽</td><td rowspan="2">高帽</td><td rowspan="2">小帽</td><td rowspan="2">垂梳发簪</td><td rowspan="2">薄地鞍戴</td></tr><tr><td>立</td><td>骑</td><td>立</td><td>骑</td><td>胡</td><td>立</td><td>骑</td></tr><tr><td>第一期</td><td>109 417 517 539 549 551 568 571 579 582 585 588 588 590 600 606</td><td>213 509 528 543 544 551 575 576 582 585 600</td><td>408 411 Ⅱ Ⅲ Ⅳ</td><td>I II III IV</td><td>I I II III</td><td>I I III IV V VI VII</td><td>I I II</td><td>I I II</td><td>I I</td><td>I II</td><td>I I</td><td>I II</td><td>I I</td><td>I</td><td>I</td><td>I-III-VII</td><td>永通万国(南)五珠开元通宝(1-1-)</td><td>I II,III-3</td><td>出土开皇十二年、贞观十三年、麟德二年墓志</td><td></td></tr><tr><td>第二期</td><td>203 223 413 518 554 557 562 572 589 604</td><td>210 216 217 V</td><td>216 217 V</td><td>I II</td><td>I</td><td>II</td><td>VII VIII</td><td>II</td><td>II</td><td>II</td><td>I II</td><td>III IV</td><td>I</td><td>I</td><td>I</td><td>I</td><td>I-III-IV</td><td>开元通宝(1-2,II)</td><td>II-3 III-3</td><td>出土证圣元年、景龙三年、景云元年、开元十四年墓志</td></tr><tr><td>第三期</td><td>201 304 405 409 411 420 505 506 508 515 533 534 536 538 540 552 555 558 563 581 592 593 594 595 596 601 602 603 605 609</td><td>211 218 302 V</td><td>218 302 V</td><td>I I IV</td><td>I I</td><td>I I V</td><td>I I V</td><td>I I V</td><td>I I V</td><td>I I V</td><td>I I V</td><td>I I V</td><td>I I V</td><td>I I V</td><td>I I V</td><td>I-III-IV</td><td>开元通宝(1-2,II,III)</td><td>II-3 III-4</td><td>出土永泰元年、建中三年、元和二年、元和十年、宝昌元年、大和四年、开成二年、大中四年、大中十二年墓志</td><td></td></tr></table>
+
+<p>第二期的陶俑, 形象生动, 装饰华丽。镇墓俑威武凶猛, 气派很大; 女俑端庄丰腴, 一反前期清瘦羸弱之态, 具有显著的盛唐风格。这期出土证圣、景龙、景云、开元年间的墓志, 可以推定系属盛唐时期, 即公元七世纪晚期到八世纪中叶。</p>
+<p>第三期陶俑的造型风格，趋于纤小繁縟，与盛唐气派迥然不同。女俑虽亦丰满肥胖，但显得臃肿。钱币方面，出现乾元重宝和III型开元通宝(铸于会昌年间)。这期出土永泰、建中、元和、宝曆、大和、开成、大中年间的墓志，应属中、晚唐时期，即公元八世纪中叶至十世纪初。</p>
+<h1 id="_58">粘 語</h1>
+<p>这批资料出于175座隋、唐墓中。由于墓葬和器物的数量和种类较多，便于分类排队，进行比较研究，以找出其发展演变的规律。同时，十八方纪年墓志的出土，又给墓葬分期和器物断代提供了可靠的依据。这批资料的发表，对研究隋唐考古和隋唐历史来说，都将是有意义的。</p>
+<p>从墓葬规模的大小和随葬器物的多寡, 可以看出墓主阶级成分的不同和贫富的差别。这批墓中, 地位最高的是被封为成王的宗室贵族李仁和其妃慕容氏的合葬墓。该墓为双室的砖墓, 设有雕饰花纹的石墓门, 墓志也最大, 随葬品则因被盗, 所以剩下不多。所有随葬石刻墓志的墓主, 皆为不同等级的贵族和官僚。墓609张十八娘子砖志, 不叙世系、官爵, 随葬品亦仅有陶罐和蚌壳各一, 墓主应为平民。出土陶俑的六十五座墓葬, 除有墓志的九座外, 其余墓主的具体身份虽不得而知, 但皆属官僚地主或富商大贾等剥削阶级, 当无疑义。有些墓虽然没有陶俑, 但出土精美的装饰品（如墓201）或大量的瓷器（如墓216）等, 似亦非一般平民之墓。另外, 占墓葬总数将近三分之一的小墓, 每墓仅出一、二件陶器或少许铜钱, 与规模宏大、随葬品丰富的大墓形成鲜明的对比, 这些应是劳动人民或长安城内贫民的墓葬。可见存在阶级压迫的隋唐封建社会, 在墓葬之中亦有其充分的反映。</p>
+<p>东郊墓地大型的墓葬较多，十六座出土墓志的墓中，有十四座位于东郊。墓志中记载墓主生前所居里坊者有五，其中住光宅里者二人（董、杨氏），住永昌里、兴宁里和常乐坊者各一人（张十八娘子、郑德柔和李文政）。这些里坊皆位于长安城的东北部。当时长安城的人口，集中于东、西市及北部诸坊，南部较为荒凉。高宗之后，皇帝常居大明宫听政，贵族官僚为了朝贺的方便，亦多寓居东北诸坊。上述墓志资料，也证明了这种史实。可以推知，东郊墓葬的墓主，除当地居民外，当以家住长安城东部的贵族官僚和城市平民居多。西郊墓地离长安城较远，交通状况亦不如东郊方便，大型的墓葬很少；从墓葬规模和出土器物观察，除少数系官僚士族（如郭恆兄弟）等剥削阶级的墜墓外，多数似为附近平民的墓葬。</p>
+<p>唐代统治阶级厚葬之风甚盛。当时“王公百官，竞为厚葬；偶人像马，雕饰如生”。而且“风俗流行，下兼士庶。”（按所谓“士庶”，当指地主阶级或富有的封建商贾。）从墓532、203、604、411等随葬器物的众多和陶俑雕饰彩绘的华丽，亦能窥见当时厚葬的一斑。《唐会要》卷三八载：“(开元)二十九年正月十五日敕：古之送终，所尚乎俭；其明器、</p>
+<p>墓田等，令于旧数内递减。…（明器)皆以素瓦为之，不得用木及金银铜锡，其衣不得用罗锦繡画。”这里所谓“明器”，主要应指陶俑而言。在这批墓葬出土的陶俑中，除全身象外，还有一些头象和仅有头部及胸部的胸象。这些头象和胸象推测原当安有木质的身躯，或更著有“罗锦繡画”的衣服，身躯、衣著因埋藏日久，已腐朽无存。动物俑中，牛的耳、角，马的鬃毛和尾部，有的亦系另外插饰的。这种在明器上“帖毛发装饰”的做法，也曾下令禁止。自贞观以来，统治阶级为了自身的利益，曾屡颁戒禁厚葬或“禁丧葬踰札”的诏令，但并不产生效果，在剥削阶级中厚葬成俗，诏合成为具文2。</p>
+<p>这批墓的随葬品, 虽然精美的东西不多, 但有些器物也具有一定的艺术价值和历史价值, 给研究隋唐时代手工业生产水平和工艺美术的造诣提供了可靠的资料。例如墓203出土的一对天王俑(203:3、4), 形象生动, 装饰华丽, 无论在造型艺术和纹饰彩绘方面都达到相当高的水平, 可算是盛唐时期优秀的艺术品。不少女俑的造型颇为优美, 并使人形象地看到当时一些妇女的服饰和神态。动物俑中, 马俑的塑造最为精美。墓203所出两匹马(203:28、30), 马首昂举, 神态奕奕, 是典型的骏马形象, 马背施鞍、糖、障泥, 装饰彩绘颇为华丽; 墓592所出一匹(592:4), 体型较小, 周身彩绘, 造型亦颇生动。釉陶和瓷器丰富多彩, 是比较重要的资料。有些瓷器不论在胎质和釉色方面, 都已达到了相当高的水平。如墓586所出唾壶(586:4), 胎土洁白坚致, 粢色明亮有光泽。墓420所出荷叶形茶托(420:6), 不但器形美观, 而且胎骨很薄, 白釉微泛青色, 滑润有光泽。墓527所出扣盒盖(527:1), 施青釉, 并烧出褐斑数处, 釉下贴一蝴蝶。这种青釉褐斑贴花的瓷器, 较之单纯的青釉器已前进了一步。这些瓷器的出土, 对研究我国瓷器的形成和发展提供了宝贵的材料。铜镜之中, 有不少纹饰生动、制作精美的作品, 如墓577出土的四兽镜(577:1)、墓600出土的四神镜(600:7)、墓568出土的鸾兽葡萄镜(568:1)、墓546出土的鹊绕花枝镜(546:1)等都是。盛唐时期, 铜镜的造型较前多样化了, 出现了菱花形和葵花形铜镜; 墓414所出的一个菱花形小镜(414:10), 为鸟兽花枝纹, 璁瓒别致。墓201出土的鎏金、银铜簪(201:6、9)和蝶形发饰(201:10), 系透雕细工, 雕镂精美, 画面生动活泼, 也是优秀的唐代手工艺品。这些当时劳动人民创造出来的优秀工艺品, 却被统治阶级所佔有, 他们不但生前享用, 而且死后还把它带进自己的墳墓。</p>
+<h1 id="_59">附录 墓志录文及考释</h1>
+<h1 id="_60">（一）隔大都督左亲卫车骑将军吕武墓志（图四五、四六）</h1>
+<h1 id="_61">大隋大都督左亲卫车骑将军吕君墓志（志益）</h1>
+<p>大隋大都督左亲卫车骑将军吕使君之墓志</p>
+<p>公讳武，字仲乱；天水人也。九州启土，世著衣冠；百郡开基，家传轩冕；师倚秉，专征不韦；脩书制礼，尤文允武；其在兹乎。曾祖纥，征西将军、安阳镇将、墩煌太守、凉州刺史。祖智，天水、南安二郡太守。父真，名溢丘园，声高乡国；使持节骠骑大将军开府仪同三司房子县开国公，洮阳、博陵等防诸军事，巴、渠、通、兆四州刺史，赠少司空；三公坐而论道，六卿阴阳燮理。惟公童汪之岁，抗节戎行；贾谊之年，明经高第；解褐晋荡公内亲信。建德之初，周武皇帝知公上毗赞之能，遣辅代王；后敕已不尽公才，令入勋胄，迁右侍、承(承)御二上士。于时三方鼎峙，四海犹分。公陷城野阵，韩原之战推轮；破敌摧凶，垓下之兵举施；但不遇朱门，未封青土。大象之末，周道沦亡。大相簿图，官依雪瑞。文伎则敷扬礼乐，武用复拔山扛鼎。公夙藏智略，久畜雄心；慷慨遇申于一时，壮节逢展于明世。任右亲卫帅都督，功绩有彰，俄迁大都督。开皇之始，复转直斋。三年，河间王奉辞伐罪，受律专征。公尔日蒙副委三军，音(管)辖师旅；兼复擒校候正仪同。四年，褒绩赏劳，转车骑将军，领右卫右一开府右仪同兵。十年，复授左卫左亲卫骠骑府内车骑将军。爪牙之寄，实委腹心；御侮之资，亲之口耳。位始分珪，荣同受服。开皇十二年，奉诏使外。谁知遘疾于途，忽加瘳疹。从神仙和昧，不解桑田之徵；术法调汤，焉除坚子之祸。春秋世有四，薨于行所。奋戈侠戟，鱼鳞之阵无期；披裘寻蒿，垂帷之志何日？然夫人宇文氏，大将军东光之第二女，先亡。粤以其年岁女壬子十一月癸卯朔十九日辛酉，遂乃合葬大兴县宁安乡。人啼马(震)，痛切心肝；鸟喙(噪)松枝，悲鸣哀断。年来岁往，忽变四时；谷转陵移，俄销天地。故乃镌石镂功，庶使传之不朽。明德惟馨，乃为铭曰：</p>
+<p>大哉至德，乘越升平；地封七百，门传六庁。辅匡帝室，翼赞皇京；世多雄略，代足豪英。庙藏盛美，鼎镂深荣；如何一旦，无复逢迎。惟公天挺，幼著神童。父传」竹简，武衷金；荷戈逐北，抱帙游东。谁知夏叶，影落秋萧。孤坟露染，独毓霜」封；寒冰空矣，醉酒虚逢。洛阳五隐，侠客西周；高阳罢宴，金谷无游。低雪如盖，腾气成楼；泉分陇下，风起松头。昔时多叹，今日无愁。昏昏百岁，寂寂千秋。</p>
+<p>世子乾符 女子乾通 女子乾宗</p>
+<h1 id="_62">考 释</h1>
+<p>志称吕武“解褐晋荡公内亲信”，晋荡公是宇文護，北周孝闵帝时封晋国公，天和七年为武帝所杀（见《周书·晋荡公護传》）。吕武任宇文護内亲信，当在天和七年之前。《隋书·豆卢勤传》附其兄通传曰：“(周)大冢宰宇文護引之，令督亲信兵。”《隋书·宇文述传》曰：“周大冢宰宇文護甚爱之，以本官領護亲信。”《隋书·百官志》下载：“王公已下，三品已上，又并有亲信、帐内，各随品高低而制员。”隠置亲信，系袭北周旧制。</p>
+<p>志称建德初“遣辅代王”，代王是字文达，初封代国公，建德三年进爵为王，出为盐州总管（见《周书》卷十三）。吕武辅代王，当在建德三年或稍后。“右侍上士”或郎天官府属官“右中侍上士”（见《通典》卷三十九后周官品条）。“承御上士”，史籍所未见，《隋书·刘行本传》载北周有“承御大夫”，似为御前佩刀侍官，“承御上士”或亦此类。</p>
+<p>志称开皇三年“河间王奉辞伐罪”，指击破突厥事（见《隋书·河间王弘传》）。吕武参与斯役，因功转车骑将军。</p>
+<p>志称“开皇十二年，奉诏使外。”是年刑部尚书宇文弼出使吐谷浑（见《隋书·吐谷浑传》）。</p>
+<h1 id="_63">（二）唐太子左卫副率段元哲墓志（图四七）</h1>
+<h1 id="_64">唐故壮武将军行太子左卫副率段府君墓志铭井序</h1>
+<p>公讳元哲，字善明；辽西令支人也。柱史居周，偃息藩魏；道德被于今古，」胤縶详诸简册；胥辽西公厓之十三世孙。曾祖粹，魏恆州刺史金紫光大廷尉卿华阴县开国伯、齐通直散骑常侍领国子博士。祖仲德，」魏齐州刺史肥如县开国公、齐领军将军蔚州刺史食邑四百月。父荣，」齐直閤将军润州刺史、随右监门郎将；致身徇主，节亮功宣；遗爱在民，飞声曜实；迟謐未歇，故老犹传。公辰象降精，河岳膳气；识度沉远，权略」纷纶。孝友表于天凝，仁义由乎门训；廉平著于历职，忠愍闻乎摺绅。黄金之诺廊怨，白珪之玷尤滅。仕随，任夔杨郾将、朝请大夫。躬解属门之」围，岂谢平城之策；谏幸江都之议，翻怒委转之言。既而炎运道销，鹰飞海岳；李密毒深封豕，摇荡伊、瀉(）。诏遣庞玉为行军元帅(帅)，授公行军长史；军中指搢，取公节度；以功授金紫光禄大夫，俄加桂国。而起望夷，越王承统平密，授上桂国荡寇大将军。王世充窃器淫名，私假署置，抑授」横野大将军。孟达权受备官，终非备客；王遵初非汉用，还作汉臣。望古」言今，差多连类。武德四年，自东都归国；今上犹居藩邸，特加礼瞻，其」年召补右库，真左右。九年，授秦王府别将。贞观六年，授左武卫翊卫府右郎将。九年，授太子右卫率翊卫府中郎将。十年，授壮武将军行太」子左卫副率。裴康以名士首选，刘卞以忠义垂芳；比德侍庸，彼多懿德。」徒闻与善，未始籍谦；舟迢递迁，人世饿顷。以贞观十三年五月十六日，遭疾终于私第，春秋六十有一。储皇轸虑，优令便繁，赠物一百一」十迟(匹)，乱也。以其月廿八日葬于雍州万年县长乐乡之纯化里。惟公气」蕴风云，心贞松桂；清规莫测，雅量难寻。历事数君，弥怀一志。虽音仪已隧，兢兢无迫；庶芬馥其逾彰，与终古而无泯。式雕沉石以作铭云：</p>
+<p>指树遥绪，干木攀姓；其原既清，共流逾镜。其一圣贤之后，髦彦挺生；忠贤」孝立，勇实仁成。其二炀皇巡朔，躬参戎施；阵解平城，翳公是赖。其三南征不」反，伊川僭虐；志竭鸾鹤，情非赏爵。其四夏亡殷起，项灭归刘；爪牙凤阙，掌」禁龙楼。其五寒由暑往，哀为乐极；人之云亡，珍庠邦国。其六雪昏素盖，风嘶」白马；日落桑榆，烟凝松栖。其七陵谷迁改，朝市沦亡；金石斯固，兰菊犹园。</p>
+<h1 id="_65">考 释</h1>
+<p>志盖未刻铭文。</p>
+<p>志称段元哲“仕隋(志作随)任鸾扬(志作杨)郎将、朝请大夫”，二职皆系正五品。大业三年，改骠骑为鸾扬郎将，置朝请大夫(见《隋书·百官志》下、《资治通鉴·隋纪四》)。元哲任此二职当在大业三年之后。志称“躬解雁门之围”，当指大业十一年事；是年八月突厥围雁门，九月解围（见《资治通鉴·隋纪六》）。</p>
+<p>志称“李密毒深封豕，摇荡伊、渥”，是对大业十三年农民武装瓦罔军进围东都的诬蔑；该年五月，隋炀帝派监门将军庞玉等将关内兵拨东都(事见《新唐书·庞坚传》及《资治通鉴·隋纪七》)。</p>
+<p>志称“越王承统平密”及“王世充窃器淫名”，系指义宁二年五月越王杨侗即皇帝位于东都、武德二年四月王世充废侗自立（俱详《资治通鉴·唐纪一、三》）。元哲先后任职于此二朝。武德四年五月李世民围降王世充于洛阳（见《新唐书·高祖本纪》，元哲遂归唐。</p>
+<h1 id="_66">（三）唐上护军赵宗夔刘宝墓志（图四八、四九）</h1>
+<h1 id="_67">夫人志（志盖）</h1>
+<h1 id="_68">大唐故上护军赵君夫人刘氏墓志铭</h1>
+<p>夫人讳宝，字令金；彭城人也。发紜墓尧，御龙光夏；秦晋隆其鸿伐，叠汉振其长源。龟轩与麒麟相辉，英华与功名齐茂。着乎前史，可得详焉。祖献，周荆州刺史。父海，隋广通郡守。功崇且爽(愧)，化行江汉；业著文张，誉流巴蜀。弃叶载德，其在兹乎。夫人淑令贞仪，承芳特秀；幼挺吴姬之异，早摄卫后之奇。笋于赵宗，寻执箕筹。不谓匣唯一剑，奄丧所天；鸾乃孤飞，成哀恭室。自悲不贰，二纪于兹。抚育孩童，冰清玉洁。遵疾弥留，至于大渐。麟德二年正月六日，终于私第，春秋六十有六。即以年岁欠乙丑正月甲辰朔十八日辛酉，归葬于长乐乡，礼也。虽知地久天长，</p>
+<p>恐或陵移谷徙。式刊金石，纪绩泉门。呜呼！哀哉，乃为铭曰：</p>
+<p>御龙光夏，斩她(蛇)华胤；玉质既彰，金声亦振。淑德贞」仪，亭亭千刃；族茂庆余，人擦令问。其一邦国珍悴，哲」妇云亡；徒嗟颡岳，空怆摧梁。歼我令德，如何彼仓；道存运谢，空振余芳。其二寇穷冥昧，寒泉惨切；涂车已陈，翦灵虚设；无复贞淑，空余暐烈。菊馥兰芳，千秋露绝。呜呼哀哉！呜呼哀哉！</p>
+<h1 id="o">（四）唐东宫细引郭嵩塞志（图五O、五一）</h1>
+<h1 id="_69">大周故郭府君墓志铭（志盖）</h1>
+<p>唐故东宫细引太原郭府君墓志铭并序</p>
+<p>君讳嚣，太原人也。河朔英灵，衣冠茂族。丹以道存清缶，」位列台司；躬以代守宽平，家传理职。曾祖孝恭，隋长安」县开国男安州安陆县令。祖敬玄，唐井州都督府司马。」父大玮(宝)，唐上轻车都尉卫州长史。井金浑玉璞，武库文」房；累彰勤恪之行，无替仁明之德。千龄不绝，犹参刑马」之封；百里非才，频纾展骥之任。君芝兰继馥，桥梓重规；」幼挺聪颖，夙资忠孝。其仁也，见表于中牟；其信也，无亏」于美稷。盛宪之逢文举，便知不凡；陆机之遇仲宣，即称」王佐。起家东宫细引，随门调也。方期光显曾撑，必复高门；命也如何，苗而不秀。以永淳二季六十一终于杨府。夫人太原王氏，唐幽州三水令惠举之女。备婉淑」于言容，峻贞闲于节行。兰房桂户，始悦同欢；芝焚蕙歌，」忽焉共尽。以咸亨三率二十七终于京邑。粤以大」周臻隆元年岁次乙未缶辛巳朔十三壬寅，合葬于]长安县丰邑乡之礼也。周原肮脏，唯见惨云愁；佳城鬱，自此千秋万古。仁兄定王府掾颍，痛矣姜仲，哀深潘岳。思有旌于幽穷，谅无愧于斯文。铭曰：</p>
+<p>邈彼全骨，诞兹茂族。英贤继踵，公侯必须。显租显考，令」问令望。矫矫逸霏，滔滔巨量。积善余庆，君乎挺生。凝脂点染，玉色金声。降龄不永，哲人其逝。零落青松，销亡丹桂。前临豹岭，斜枕鲸池。百銮同穴，双棺在斯。</p>
+<h1 id="_70">考释</h1>
+<p>志称“起家东宫细引，隋门调也。”按《新唐书·百官志》四上曰：“太子左右清道率府，掌昼夜巡警。亲卫、勋卫、翊卫三府中郎将以下如卫率府”。注云“细引押仗五十人。”《旧唐书·职官志》一曰：“若以门资入仕，则先投亲、勋、翊卫六番，随文武简入选例。”嵩之授“东宫细引”，可能即所谓“以门资入仕”者。</p>
+<p>志载高与其妻王氏，“大周证圣元年岁次乙未正（缺“月”字）辛巳朔廿二日壬寅合葬于长安县丰邑乡”。按武则天自载初元年至久视元年用周正，建子月(十一月)为正月，故“证圣元年正月”即“长寿三年十一月”。</p>
+<p>志文使用武则天所行新字，计有“缶”（正）、“暐”（年）、“㉑”（月）、“〇”（日）、“讎”（证）、“踵”（圣）诸字。</p>
+<h1 id="_71">（五）唐龙州刺史郭恒墓志（图五二、五三）</h1>
+<h1 id="_72">大唐故郭府君墓志铭（志盖）</h1>
+<p>大唐故中大夫使持节龙州诸军事龙州刺史郭府君墓志铭并序</p>
+<p>君讳恆，字知常；太原介休人也。介山北峙，汾水东流。祥麒(盘)变武之奇，瓊(？)断(鼎)成龙之气；所以自天降德，唯岳诞灵。于家则令誉孝恭，于国则芳声忠道。甘泉碧海，未足广深；华盖蓬嶇，拒齐高峻。器苞瑚琏，材光杞桦者，君让以得之矣。曾祖孝恭，隋襄封长安县开国男翊军将军大都督安州安陆县令，改封崇义县开国男。祖敬玄，井州大都督府司马，勋官大将军。父大琼(宝)，卫州长史。唯祖及父，既明且哲。口六条于上佐，韬三略于下车。泉智逸于赭羽霜锋光于错节。君夙口其敏，握第甲科；解褐授绛州参军，除原府法曹、始州司士、宣州司法。清愁居心，公平在职。朋察钦其问望，朝野挽其徽默；迁梁州城固县令。驯雉中卒，何独鲁恭之令范；鸣琴单父，岂唯密贱之高风。非昔昔时，亦美今日。勃授集州司马，迁朝散大夫、定王府掾；又除魏王府谘议参军。兰嘉石室，是所治闻；白马飞狐，逾高词气；除昭陵令。时应龙兴，数归凤唇；复子明辟，中建皇图。德泽唯新，衣冠任旧；迁中大夫使持</p>
+<p>节龙州诸军事龙州刺史。虽守政藩邸，然心」逸丘园；二疏之志既坚，千秋之年斯迈。表请致仕，皇恩允许。可谓极贵于国，极荣于家。既而五将星亡，三台岳裂；气厉弗戒，奄然终极。以景」龙二年十月四日遂捐馆舍，春秋七十九。夫人京兆韦氏，桂州都督玄泰」之妹。合葬之乱，先自三王；同穴之仪，首从六义。珠中双鹤(鹤)，同萃乔松；匣内」二龙，共沉延水。以其年十一月十四日合葬于丰邑乡马郎原，乱也。呜呼！孔明之宅，无复琴臺；公理之园，唯余古树。嗣子谦等，哀伤尽礼，摧毁过人。」歎风树之难停，三年泣血；痛白驹之易往，五日绝浆。恐谷徙为陵，田变成海；思道德而将没，遂刊石而传芳。呜呼哀哉！乃为铭曰：</p>
+<p>鼎气龙跃，翘(盘)形武蹲；地唯物贵，人以道尊。信依竹马，舟泛龙门；是俊是义，乃子乃孙。其一子孙伊何，德行者多；文该经籍，武偃干戈。鸣镭列鼎，玉叶金]柯；车荣朱，马振红珂。其二降此门章，生兹秉德；忠孝天挺，礼义人则。广幕]参谋，雄藩典职；贞称柱石，名光辅翊。其三辞荣罢妖()，乐道安居；宅鸣绿绮，楼开素书。归田作赋，临洺观鱼；霜剑斯在，黄金尚余。其四倚伏何窥，祸福难知；良木斯坏，泰山是亏。人闻事已，陇上风悲；唯余铭石，空传代奇。其五</p>
+<h1 id="_73">考 释</h1>
+<p>志称“迁朝散大夫、定王府掾；又除魏王府谘议参军”。定王，应是武攸。《旧唐书·武承嗣传》附攸暨传曰：“天授中，攸蹙封千乘郡王。尚太平公主，授驸马都尉，累迁右卫将军，进封定王”。志文所叙世系与郭嵩墓志相同，恆与嵩当为兄弟。嵩志载：“仁兄定王府掾烦，痛矣姜仲，哀深潘岳。”“可能为恆之别名。嵩与其妻王氏合葬于证圣元年，则恆为“定王府掾”，当在证圣前后。魏王，应系武承嗣。《旧唐书·武承嗣传》曰：“天投元年于东都创置武氏七庙。于是封承嗣为魏王”。圣曇元年八月，承嗣病死。恆任魏王府谘议参军事，当在证圣元年之后，圣曇元年八月之前。</p>
+<p>郭恆先后在定王府和魏王府任职，当是依附武周的人物。中宗复位之后，武氏的势力依旧不衰。志文所云：“时应龙兴，数归凤屠；复子明辟，中建皇图。德泽惟新，衣冠任旧。”正是反映了当时的情况。所以郭恆亦由昭陵令迁中大夫使持节龙州诸军事龙州刺史。</p>
+<h1 id="_74">（六）唐成王李仁墓志（图五四、五五）</h1>
+<h1 id="_75">大唐故李府君墓志铭（志盖）</h1>
+<p>大唐故左金吾卫大将军广盆二州大都督上柱国成王墓志铭并序</p>
+<p>王沛千里，字仁；陇西戍纪人也。神尧皇帝之曾孙，高宗天皇之犹子；实长吴嗣，别封鬬林。尔乃导灵源于圣仙，格神功于天地。彤弓旅矢，受旨藏之；青社白，宠章纷若。固已图分石室，事鬬金板矣。王总气冲和，责灵峻极；酣散音行，鸾龙符。年在总角，职委荒隅；巫环星纪，载康夷落。终能乱蟠于地，声闻于天；中朝嘉焉，征为岳州别驾。伯舆应海岱之召，子春受荆河之辟；昔唯人表，今特宗英。黑帻既临，彤澹无协。俄而 高宗晏驾，太后循机； 天子居房陵之宫，奸臣纵崑山之火。王隐若敌国，虑深属垣；畏涂叱驭，焦原跟趾。怀祉稷之长策，挫风云之逸气；通变不匮，轮辕适用。乃授使持节襄、庐二州诸军事二州刺史。沉碑着绩，捧檄征才；汉池凝化，江浔偃德。累迁许、卫二州刺史。入夷仪而按部，临浚水而凭轼；韩崇之缮化，卫文之和人，不之能倚。初， 孝和之在桐宫也，且廿年，鼎命将迁者数矣。王稍见亲近，永怀兴复；献纳之际，愚至尤深。丕业之未渝，繁王是赖。终能协谋宰辅，升闻禁掖；开鹤钥之严阙，展龙楼之旧乱。鬼神动植，于是获安；改牧藩坂，用加恆授。长安晚岁，孽坚弄权；阴兴篡夺之心，将肆虔刘之虐。王傅会平勃，竟兴明命；圣期千载，功业一匡。大建士宇，为唐室辅；允霄典册，光启于成。仍授左金吾卫大将军兼广盆二州大都督兼五府大使上桂国，王如故。若乃金吾戒道，玉节临藩；洒时雨于西蜀，播仁风于南海。统兼要害，秋冠衣霓；贪亮一人，声华万里。呜呼！履霜有渐，赴火不息；汉威崇奢，曲阳增怒。督人冒反，庚氏犹存。武三思因后族之亲，叨天人之位。罪浮于梁冀，谋深于霍禹。忠良铎口，道路以目。王志协青宫精贯白日；虑彼烤毒，断兹条镜。而萧墙伺隆（隙），椒拔迥天；翻阅戾园之祸，更甚长沙之酷。神龙四年七月五日遇害，春秋六十有二。呜呼哀哉！唯王位秉文武，器隆栋干。鹏激谈津，爰吟射圜。驾驷马而敛（敷）藻，入三雍而献乐。全于危疑之际，非为身也；赴于宗稷之急，由安上也。存非苟合，故昌运以之兴；勇非虚殉，故逆节由其沮。允所谓立功立事、远而不朽者欲？皇上入纂绝业，艾夷醜正；体国经野，庸勋昨亲。 制复旧班，用加新宠；仍使腊一部鄙中</p>
+<p>李敏监护丧事。荣哀所加，幽明知惑。以 大唐景云元年岁欠庚戊十日月戊申廿五日壬申，葬于京兆郡之铜人原，礼也。孙瓊，业绪文昭，墓深王父；易苴经于锦带，备刍灵于醜裂。凄凄薤露，光掩润于朝曦；朕朕蒸原，永墳芬于厚芗。旌节仍旧，忠贞不泯；俾甄实录，用纪泉庭。铭曰：</p>
+<p>赫赫宗凉，巍巍 巨唐；贲英诞秀，烛代舞梁。象贤吴国，镇俗蛮方；别乘伊赖，分符尤臧。夷庚复辟，司隶归章；寄深中尉，锡重南阳。后戚方侈，天衢未康；权倾吕禄，势溢梁商。誓旅诛逆，提戈耀芒；白沙流畔，青纸贻殃。帝猷玄感，宝屑重光；棣萼增感，芝泥考群。宠优麟口，乱备龙慌；燧接银海，川临玉潢。铭开见日，气静冤！霜；未集玄翊，先悲白杨。图芳琬琰，以助旗常。</p>
+<h1 id="_76">考 释</h1>
+<p>志称“王讳千里，字仁。”《新唐书·宗室世系表十下》作：“咸王千里，初名仁。”《册府元龟》卷二六五、二八一、二九五皆云：“初名仁”或“本名仁”。《新唐书·郁林王恪传》（下称《新传》）载仁“尝使江左，州人遵以金，拒不内；武后遣使劳曰：‘儿，吾家千里驹！’更名千里。”《旧唐书·吴王恪传》（下称《旧传》）称：“永昌元年，(仁)授夔州刺史，不知州事；后改名千里。”由此可知，“仁”应系初名，永昌元年之后更名“千里”。</p>
+<p>志载仁系“神尧皇帝之曾孙，高宗天皇之犹子；实长吴嗣，别封懿林。”据两《唐书·高宗本纪》及新、旧两传，李仁系吴王恪的长子，恪乃太宗之第三子；所以仁为高祖的曾孙、高宗的侄儿。永徽四年，恪因房遗爱等谋反事赐死，四子(仁、玮、琨、瓌)井流岭表；显庆五年，追封恪为懿林王。恪之赐死及仁等流于岭表事，志文讳而不书。但云：“年在总角，职委荒隅；亟环星纪，载康夷落。”</p>
+<p>《新传》载：“光宅中，仁遇赦还。袭鬬林县男(《旧传》作：“懿林县侯”)。历岳州别驾，爵郡公。”志文未叙遇赦事，但谓仁被征为岳州别驾系在“高宗晏驾”之前，与《新传》所载似有矛盾。《新唐书·高宗本纪》载永淳二年“十二月丁巳（《旧纪》作“已酉”，按是月甲寅朔无己酉日，恐误）改元大赦，是夕皇帝崩于贞观殿。”《全唐文》卷十三《改元宏道大赦诏》曰：“可改永淳二年为宏道元年，大赦天下，前后贵情流入井放还。”仁之遇赦及征为岳州别驾，或在此时。诏书自长安传至岭南，仁自岭南回长安，往返亦需数月。高宗改元“弘道”之次年九月，武后改元“光宅”，其间相距不过十月。《新传》所云：“光宅中，仁遇赦还”者，或系就李仁还京之时而言。</p>
+<p>志称“高宗晏驾，太后循机。乃授使持节襄、庐二州诸军事二州刺史。累迁许、卫二州刺史。改牧蒲坂1)，用加恆投。”《旧传》则曰：“永昌元年，授襄州刺史，不知州事。天投后，历唐、庐、许、卫、蒲五州刺史。”（《册府元龟·宗室部·领镇门》同）《通典·职官十五》郡太守条注云：“永昌中，成王李千里历迁襄州员外刺史。不领州务。”据此，授使持节襄州诸军事襄州刺史，当在永昌元年，且系丞领其职；天投后，历庐、许、卫、蒲四州刺史。史籍所列“唐州”，志文所未载，疑系误列。志载：“初，孝和之在桐宫也，且廿年，鼎命将迁者数矣。改牧蒲坂，用加恆投。”“孝和”为中宗的谥号。按中宗于圣曆元年三月，自房陵召还神都(即“东都”；九月，立为皇太子。故改投蒲州刺史，或系在圣曆元年之后。</p>
+<p>《旧传》称：“长安三年，(仁)充岭南安抚讨击使2)，历迁右金吾将军。”志文失载。</p>
+<p>据新、旧两传及《资治通鉴·唐纪二十四》，自天授后，李唐宗室多被诛戮，唯李仁因“诡躁不情”、“榻躁无才”、“数进符瑞诸异物”得免3)。志文则云：“王隐若敌国，虑深属垣；畏涂叱驭，焦原跟趾。怀社稷之长策，挫风云之逸气；通变不羁，轮辕适用。”武后好祯祥，进献符瑞事，可能是免于祸的原因之一；而表面上依附武氏，小心谨慎，则应是取得武后信任的主要原因。</p>
+<p>志所谓“长安晚岁，孽竖弄权”，当系指张易之、昌宗兄弟的专权。依志所云，李仁在长安末年，曾参与反对二张专权的政治活动，对中宗的复位起了一定的作用；因此，中宗即位之后，仁的政治地位迅速上</p>
+<p>升。《旧唐书·中宗本纪》载：“(神龙元年二月)已未，封堂兄左金吾将军鬬林郡公千里为成纪郡王、左金吾卫大将军，实封五百户。(五月)壬辰，封成纪郡王千里为成王。”（《唐会要》卷五诸王条作：“神龙初，…成王七百户。”）《旧传》称：“中兴初，进封成王，拜左金吾卫大将军兼盆州大都督，又追赠其父司空；（神龙）三年又颁广州大都督五府经略安抚大使。”（《册府元龟·宗室部·镇门》同）。史籍所载，与志文基本相符。仁兼盆州大都督和广州大都督五府大使二职，在时间上应有先后之别，疑皆丞其职1)。</p>
+<p>志载：“武三思因后族之亲，叨天人之位；罪浮于梁冀，谋深于霍禹。閤良钤口，道路以目。”可见中宗复位之后，武氏的势力仍然不衰，统治集团之间的矛盾日趋尖锐，以至于爆发了宫廷政变。志云：“王志协青宫，精贯白日；虑彼鸩毒，斩兹枭镜（应作“掩”）。而萧墙伺隙，椒掖迥天；翻闻夙园之祸，更甚长沙之酷。神龙四年七月五日遇害，春秋六十有二。”依史籍记载，神龙三年七月，皇太子重俊率左羽林大将军李多祚等，以羽林、千骑兵杀死武三思及其子崇训等十余人；李仁与其子天水郡王禮2），分兵为太子守宫城诸门。政变以失败告终，李仁父子亦在当日被杀（事见《新、旧传》及《新、旧唐书·节愍太子重俊传》）。按《新、旧唐书》、《册府元龟》、《资治通鉴》皆载政变发生在神龙三年，且该年九月，即改元“景龙”；志文作：“神龙四年”，当系误刻。至于政变的日期，《旧唐书·中宗本纪》作：“七月庚子”，《新唐书·中宗本纪》及《资治通鉴·唐纪二十四》皆作：“七月辛丑”，志文谓为：“七月五日”（《唐会要》卷四储君条同）。按神龙三年七月丙申朔，五日庚子，与《旧唐书》所载正合，《新唐书》及《资治通鉴》皆误。</p>
+<p>志称：“皇上入纂绝业，芰夷醜正；体国经野，庸勋昨亲。制复旧班，用加新宠。”“皇上”，指睿宗李旦。史载，景云元年七月，诏雪成王千里等罪，复其官爵<sup>3</sup>。志云：“景云元年岁次庚戌十口月戊申廿五日壬申葬于京兆郡之铜人原。”“十”字下，志石剥砺，以干支推之，当为“十一月”，“戊申”下漏刻“朔”字。</p>
+<p>志称“孙瓘，业绪文昭，薨深王父。”瓘，当系禮之长子；《新唐书·宗室世系表》十下作“蔡国公灌”，应以志文为正。</p>
+<p>成王李仁和其子天水郡王僖的墓碑，早在北宋时代已见著录。欧阳乘所作《集古录目》（缪荃孙校本）卷五(亦见《宝刻丛编》卷第八)有“赠广州大都督成王仁碑”，欧阳乘记云“唐侍郎岑羲撰，岐王府参军魏思札书。仁字千里，后改以字为名。唐太宗之孙，吴王恪之子，官至益、广二州都督，封成王。神龙三年与节愍太子同诛武三思败死。先天二年纪慕容氏为立此碑。”李仁葬于景云元年(710年)，至先天二年(713年)慕容氏为之立碑。欧阳乘所述“仁字千里，后改以字为名”或是本之碑文，既以字为名，或即以名为字，所以志文称“王讳千里，字仁。”田概所禀《京兆金石录》（见《宝刻丛编》卷第八)有“唐太仆少卿天水郡王僖碑”，田概记云“唐苏晋撰，魏思钰正书，先天二年。”此碑当亦慕容氏所立。</p>
+<h1 id="_77">（七）唐成王妃慕容氏墓志（图五六、五七）</h1>
+<p>大唐故慕容妃墓志铭（志盖）</p>
+<p>大唐故成王妃墓容氏墓志铭井序</p>
+<p>银青光禄大夫守吏部尚书上桂国正平县开国子裴淄撰</p>
+<p>妃讳真如海，字淑；赵郡象城人也。开国建侯，晋有河山之锡；徂南自北，燕为赵魏之雄。固以勋贤弈世，乱乐载德；启迪后昆，寅亮当代；公侯必复，蝉不及增辟矣。父，皇朝十二卫大将军。威总五戎，早拜登坛之宠；赠加八座，终光曳履之荣。义荡时谥，声溢拜史；是以德流后胤，庆属阴明。夫人则府君之季女也。兰妾明秀，蕙性柔婉。生而知乱，动必合仪；庸组纠而识训，奉箴图先觉。往属皇运中垢，亲贤路塞。贾生投币，屡有长沙之悲；赵王既虏，非无厚陵之</p>
+<p>恨。王以隕居荒隅，空伤赋鸟；妃以族行炎海，遂托乘龙。荔浦来归，桂宫成兆；有符天，终庆宜家。德我齐姜，早识四方之志；叶彼秦偶，复见三从之仪。中兴昌，天飞在御；成王则盘石崇贵，元妃乃衡勋赐册。暮雨朝云，不接荆臺之梦；流风迥雪，宁追洛水之游。宜家以蠡斯成咏，主馈以鹊巢是德。岂谓母后干政，爱子弄兵；王总辔輞，朝疑逆顺。萧墙飞祸，晁王同焚；曲池既平，高毫又倾。梁园竹林，尽染南湘之泪；小山桂树，空照四园之月。簪柏唯志，方泳恭姜之诗；徒宅垂仁，终成孟宗之德。乱光女则，行满宗华；苍苍不仁，贤淑委世。开元十三年二月廿六日，寝疾于洛阳劝善里私第，春秋七十有五。夫人窃冤之美，禀自河洲；娴和之仪，播之琴瑟。采萃兴咏，每从南洞之滨；训子为文，自有东征之赋。肃雍以四德无替，浣濯而六行秉脩；道霭闺阁，义同娣姒。孤桐牛死，初崩祀妇厂之城；双剑同沉，终启滕公之室。开元十四年十一月廿八日，合葬于京兆同人原，札也。嫡孙郯国公浚等，哀辄(酒)集蓼，孝过毁棘；怨凯风之徒攀，思寒泉而罔极。玄兆斯安，荒郊岁残。白三(日)落兮山门晦，青灯凝兮陇夜寒。庶勒铭于幽础，播春门菊与秋兰。乃为铭曰：</p>
+<p>鸿源炳发，层谱相传；口宅朔裔，遂霸南燕。代封茅士，门积忠贤；札乐云歌，誓玉」蝉联。一倚书积庆，诞生阴德；成王謦居，好仇异域。始谐凤兆，和鸣比翼；运属」龙飞，自南徂北。二元妃诏册，夤餐攸加；西园飞盖，戚里香车。珠幌延月，锦障飞震；庭留玉树，道映瓊华。悲生坠剑，哀缅瞽桓；桩镜落红，庭草虚碧。岁急川景，」风驱电隙；阳云灭阴，符月奄魄。四乡郊返葬，陇塗(隧)初封；云愁画柳，雾苦青松。佳城一闋(闭)，穷泉几重；宾兮寅兮，何去何从。五</p>
+<p>维开元十四年十一月廿八日</p>
+<h1 id="_78">考释</h1>
+<p>志称：“妃讳箕如海，字淑；赵郡象城人也。开国建侯，晉有河山之锡；徂南自北，燕为赵魏之雄。”按鲜卑族的祖先徒河（一作“何”）涉归和慕容廆，晉时曾受封锡（见《魏书·慕容廆传》、《册府元龟·外臣部·继袭二》）；此慕容氏系其后裔。</p>
+<p>志称：“王以諛居荒隅，空伤赋鸟；妃以族行炎海，遂託乘龙。…运属龙飞，自南徂北。”故知慕容氏嫁给李仁为妻，系在仁流配岭南期间；后仁遇赦回，慕容氏亦偕同北上。志谓：“中兴昌曆，天飞在御。成王则盘石崇贵，元妃乃衡珈赐册。”盖指神龙元年李仁进封成王，慕容氏亦被册为王妃事。</p>
+<p>志载：“岂谓母后干政，爱子弄兵。王总钤韬，朝疑逆顺。萧墙飞祸，崑玉同焚。”所谓“母后”，当指韦后；“爱子”，系指节愍太子重俊。神龙三年七月五日，李仁参与皇太子重俊发动的宫廷兵变，因失败而被杀，详李仁墓志考释。</p>
+<p>志云：“嫡孙郦国公浚等，哀讎集蓼，孝过毁棘。”《新唐书·宗室世系表》十下作“郦国公”，所列同辈名字亦多从“山”；疑“啊”系初名，后改为“浚”。据《世系表》，峒之兄为蔡国公灌（应作“璀”），见于李仁墓志称“孙璀”，而此志文未有其名。按成王李仁卒于神龙三年(707年)，葬于景云元年(710年)，其妻慕容氏于先天二年(713年)为之立碑，俱详李仁墓志考释。据此墓志，慕容氏卒于开元十三年(725年)，与其夫李仁合葬于开元十四年(726年)，离李仁之卒已近二十年。此时其孙李璀或已先卒，故慕容氏墓志不见璀名而列“嫡孙郦国公浚”。浚与璀为兄弟行。六朝以降，所谓“嫡孙”有时不必严格的指“嫡长孙”，可一般的指嫡出之孙。抑或璀乃庶出，志文书嫡不书长。</p>
+<p>撰志者为银青光禄大夫守吏部尚书上柱国正平县开国子裴淮，《唐书》有传；志文所记江淮之散阶、勋官和爵位，史传所未载。</p>
+<h1 id="_79">（八）唐扬州大都督府司马吴贡妻韩氏墓志（图五八、五九）</h1>
+<p>大唐故韩夫人墓志铭（志盖）</p>
+<p>大唐朝散大夫守扬州大都府司马吴贡 故夫人颍川县君韩氏墓志铭并序</p>
+<p>夫人颍川县君颍川韩氏，京兆人也。隋侍中援之皙孙，唐集州刺史光祚之第五子也。祖、父皆胥大贾，貂蝉继世；家传乱乐，门亵慈爱。夫人少而偏孤，长于严训；弟恭兄友，天伦数人；迫乎立身，皆至班秩。外族兰陵胄氏，皇京兆尹、刑部倚书员，即夫人之季勇也。夫人以珪璋之美，令德口姿；以初笄之年，归于昊氏。而尤穆威属，箴规礼</p>
+<p>仪；谟明妇德之余，轨范母师之训。方期琴』瑟之契，终于岁寒；岂为神明不臧，遘疾大渐。膏育莫及，『履履无凭。以广德二年十一月十一日终于光州官舍，」春秋廿有八。呜呼！皇天不愁，歼我才良；悲风烛而难留，『欺雪车以绝影。时吴君朝典在职，王事靡盈。他乡漂泊，谅非吾土；寇梦匪安，灵辄归故。河山渺邈，孤女望而长号；丹旗朝翮，胤子亡而谁哭。即以永泰元年九月十三日，卜吉葬于信义里之嗣人原也。松栃难久，桑田有移；彤管匪书于此时，玄田将镌于不朽。铭曰：</p>
+<p>天地配德兮二仪合亲，死生莫测兮吉凶何因？昊门无日，韩氏丧珍。木落非秋，花残正春。骨归泉壤，魂掩铜人。蛾眉落月，蝉鬓生尘。鱼杆口辙，夤穴为邻。清晖兮永隔，长夜兮何晨。</p>
+<p>通直郎行京兆府云阳县丞吴通徽远</p>
+<h1 id="_80">考 释</h1>
+<p>志云“外族兰陵萧氏，皇京兆尹、刑部尚书员郎夫人之季勇也。”开元中，萧灵曾为户部侍郎剿凉州事河西、陇右节度使，见《旧唐书·吐蕃传》上及《新唐书·玄宗本纪》。志文撰于永泰元年，是时员已任“京兆尹、刑部尚书”，所记可补史之不足。</p>
+<p>志末题：“通直郎行京兆府云阳县丞吴通微述”。《旧唐书·吴通玄传》附兄通微传曰：“通微，建中四年自寿安县令入为金部员外，召充翰林学士，寻改职方郎中知制造；与弟通玄（《新唐书·吴通玄传》谓通玄乃通微之兄)同职禁署，人士荣之。七年，改礼部郎中，寻转中书舍人。”韩氏葬于永泰元年九月十三日，是时通微为通直郎行京兆府云阳县丞，为本传所未载。</p>
+<h1 id="o_1">（九）唐赠扬州大都督曹景林墓志（图六O、六一）</h1>
+<p>大唐故赠扬州大都督曹府君墓志之铭（志盖）</p>
+<p>唐故云麾将军左龙武军将军知军事兼试光禄卿上柱国谯郡开国公赠杨州大都督曹府君墓志铭并序</p>
+<h1 id="_81">前乡贡进士陈维文</h1>
+<p>将军讳景林，右卫长史秀之智孙，左卫中郎赠恆王府司马智之孙，左金吾卫」中郎赠绵州刺史元裕之长子。历世弘毅，性传懿淑。将军格操崇整，气识高博；宽茂明哲，倬为人长。天宝五载，由宿卫而渐官阶。至德初，二京陷覆，肃宗迁幸灵武，以警从授左武卫翊府左郎将。总干戈以翼 主，奋勇烈」以辟国。 皇舆返正，以功授右骁卫翊府中郎，进加云麾将军左龙武军将军。广德中，羌戎寇甸，从狩于陕，以劳拜本军大将军。通直上下，询事秉彝，勤」而逾愿，特迁将军知军事。 天官禁旅，职剧戚严。将军虞恭贞厉，恪慎周密。执践恆矩，罔蹙荒懈；惠和善恕，人皆称悦。若迺郊庙分仗，正至陈仪；挥威振旅，六师禀则。酌故制宜，曾无违忒；实敏于事也。既而惊荣宠之地，发厌离之心。」禁皋绝羣，戒酒寡欲；履精纯以养浩素，蕴诚明而际空奥。度生灭于识性，视形骸如逆旅。建中三年自春兆疾，涉夏沉痼。 帝居紬情， 王人谕问；赐绢百足，以供医救。药物莫蠲，竟臻赢亟。七月甲午，奄终于里第，享年五十三。」圣朝嗟悼，赠绢、布壹佰伍拾正，充给哀纪。戊戌， 首赠杨州大都督。交故追怆，卫士悲惧。</p>
+<p>太夫人太原王氏，以柔嘉母道，有训易之义；言念元子，高年丧之。将军孝行表于微隐，真致畅于性情。羽卫</p>
+<p>四朝，殆逾三纪。敬惧以奉上，优容以畜众。出入屯险，忠以立节；通修禅寂，善不异俗。盛迹遗美，充着周庐。然不登遐纪，不就终养，固生人之疑痛也。而知微者以为诤业克备，逮真界是往；道不系于脩短，神不滞于一方。则将军之致，何嗟及矣。夫人清河郡夫人张氏，能修采萃之职，婉婉室家之，不幸先时而致。考龟蓍与岁月，未即宜于合耐，以九月己酉葬于万年县芦川乡郑墟之先营，乱也。呜呼！逝川不口，命莫可留。去人世而倏忽，窓原之沦昧。嗣子右卫兵曹参军日孛，聪敏学口，克绍家训；衔恤血，哀懣露至。敬謠先人之光绩，以志于重泉，亦远虑陵谷口变。铭曰：</p>
+<p>于继将军，築真纯性。居宽蹈信，体和周正。箕梓内凝，贞规外映。自家形国，竭忠门敬。天遗草昧，致身事武。服勤执锐，为王杆御。烈烈桓桓，荡沧区宇。云龙口天，班命显叙。四巡东狩，出入遷阻。帝嘉厥庸，俾将虎旅。秉律无违，其仪克举。丰仁洽众，周声乐所。慎满戎约，栖心恬漠。稻善明征，期頗可託。如何不愁，中衢祖落。悼珍皇躬，褒赠夜壑。痛矣光华，与时其寅。沪水洋洋，荒阡茫茫；陵谷有变，盛烈永芳。呜呼！</p>
+<h1 id="_82">考 释</h1>
+<p>志云：“将军讳景林。天宝五载，由宿卫而渐官阶。至德初，二京陷覆，肃宗迁幸灵武，以警从授左武卫翊府左郎将。”史籍记载，天宝十四载安祿山攻陷东都，次年又陷长安，太子李亨（即肃宗）迁驻灵武，当时“尅从”的“四军将士才二千人”（见《旧唐书·肃宗本纪》）；曹景林当系其中之一。十五载七月改元“至德”，“内外文武官九品已上加两阶赐两转，三品已上赐爵一级”（同上书），景林亦“以警从授左武卫翊府左郎将”。至德二载十月，李亨回长安；十二月下制“文武三品已上赐爵一级，四品已下加一阶”（同上书）。志称：“皇舆返正，以功授右骁卫翊府中郎；进加云麾将军、左龙武军将军。”自“左武卫翊府左郎将”（正五品上阶）迁“右骁卫翊府中郎”（正四品下阶），实增三阶，与上引制文有异；制文“加一阶”的规定，或系指一般官僚而言，“尅从有功”者或不在此限。</p>
+<p>志称：“广德中，羌戎寇甸，从狩于陕，以劳拜本军大将军。…特迁将军知军事。”当指广德元年十月吐蕃进犯京畿事（见《旧唐书·代宗本纪》）；当时代宗逃往陕州，景林以“慝驾”之“劳”而迁官。志文所载，可与史书相印证。</p>
+<h1 id="_83">（一〇）唐苏州长史董楹墓志（图六二、六三）</h1>
+<p>大唐故董府君墓志铭（志盖）</p>
+<p>唐故银背光禄大夫行苏州长史上柱国陇西郡董府君墓志铭并序</p>
+<p>乡贡进士朱说言操</p>
+<p>试左武卫兵曹参军刘郢书</p>
+<p>鲁史记称董狐古之良史，书法不隐；硕德之后，必生英才，公其裔孙也。曾祖依，赠将作少监。祖钦，青州司马。公讳楹，起家至苏州长史。公性馨悟，识天命；有避伯玉卷舒之道。行藏处顺，得周易随时之义。元和元年十二月十六日，寝(寝)疾终于光宅里私第，享龄七十六。呜呼哀哉！洪范云：五福一日寿，二日富；公居五福，得其富寿。贞元初，德宗皇帝以储贰配于宜家之选，娉淑贰以备烦缓；公长女衷公阖阖之训，令淑有闻，得参其选焉。时颖川郡韩公帛，掌</p>
+<p>丝纶之诰，属天书叶(协)赞容德，册为良媛。顺宗皇帝临兆人，又册为德妃。天子每嘉公之德，礼殊懿威；而中贵人驰誉天顾，骑交金紫，贯一时之荣盛矣。至是人伦士庶，识者知者，皆仰公曼德归下，而庆袭于门。宣尼所以称居家理理，故可移于官，唯公有之。於戲！人之生代，如川阅东水，昼夜无息；所贵者贵其没有令德，余芳振于遐风。况公仁恕以及物，乱义以全节；言而信，行而值，监事能断，心不苟顺。如玉之德贞，方不掩其美恶；如金和柔刚，必从于沿革。革(疑系衍文)斯又见君子持正气，保终吉，平和其心也。有子四人。长日岌，机谋敏达，贞良悌弟，有为长敦固之爱。尝励节自谓，学未弘博，遂乘志读书，精春秋何论，皆尽正义。二三年功借业就，髪成鸿儒，卓然有古人之风。释褐拜润州司马。仲日齐，应乡里之选，举孝廉登第。次日亢，蕃干将之利，倚哉颖耀。季曰从乱，而天假僕茂；幼年而能属文，未弱冠应乡贡进士举，清词虞(窦然，迥出时）。已三较艺郡县，皆冠等第之目，而声同者真不器重清才，咸日不日必坐致青霄之上。及遭丧，哀毁柴立，栾棣在仄；顺先王之制度，礼有余焉；是知君子之有后哉！龟筮叶从，以二年四月十六日葬于万年县长乐乡之平原莹，乱也。说言每与令子，同干名秀才之科，备知故实，敢志而书之；违公盛德，铭之于墓。铭曰：</p>
+<p>噫！万物芸芸，各归其根；人之最灵，亦同其源。少壮倏忽，百年骏奔；振乎清风，唯」德是藩。公之德行，芳如兰荪；贵是帝戚，荣皆 主恩。义训于家，庆归于门；斯为不朽，琳德长存。贞石永刊，用志九原。</p>
+<h1 id="_84">考 释</h1>
+<p>韩皋“掌丝纶之诰”，即“知制诰”，据其本传系在贞元三年二月之后<sup>1</sup>；盈女被“册为良媛”，当亦在是</p>
+<p>1)《旧唐书·韩湜、串传》：“湜，贞元三年二月以疾薨。…（皋）饿丁父艰。…及免丧(《新唐书》作“服除”)，执政者拟考功耶中，御笔加知制造。”</p>
+<p>年之后。志称：“顺宗皇帝临兆人，又册为德妃。”史载，贞元二十一年正月丙申，顺宗即位；当年八月，因疾退居太上皇，传位皇太子纯(宪宗)，诰立良媛董氏为太上皇德妃（见《旧唐书·顺宗本纪》）。故董氏“册为德妃”之时，顺宗实已退位。《旧唐书·宪宗本纪》上载：“（元和元年三月）壬辰，大行太上皇德妃董氏卒。”董氏与其父同卒于一年而稍早数月，志文所未载。</p>
+<h1 id="_85">（一一）唐润州司马董炭婆杨氏墓志（图六四、六五）</h1>
+<p>大唐故杨夫人墓志铭（志盖）</p>
+<p>大唐故弘农郡杨夫人墓志铭养厚</p>
+<p>乡贡进士陇西董交撰</p>
+<p>夫人姓杨氏，弘农人。其先皆以问望，显名于世。自子云已还，史」册间载；弘厥声实，无誉于此。乃祖沛弼生，皇朝司议耶。」父讳名义， 皇朝开府仪同三司检校太子宾客。成知名」于人，德礼攸至。夫人即开府之第七女也。伏以夫人，荷积世之弘庆，奉德门之教旨。婉顺居体，徽容自天；孝敬率由，睦和赉美。爰及适人之节，归我陇西公润州司马董岌，余元兄也。正端操于君子，浩斋庄(庄)于明祀；四德不紊，三从是保。将以成内则，光教化，虽古之贞淑，亦何嘉焉？於戲！苍苍无言，福善斯惑；兰桂始茂，雪霜遯零。呜呼哀哉！元和六年闰十二月十四日，终于光宅里私第，春秋世二；以来年二月七日，叶卜筮之吉，归笺于万年县长乐乡之平原，耐于先莹，礼也。夫人有儿女五人。长男曰庆郎，始总繇(髠)，学读书；襄夫人之令训，茕茕在庆，情礼过人。其余皆以韶比之岁，未有成立。哀起童心，不坠天性。送往嗟抱绶之位，执哀伤垂白之亲；时闻独凤之音，空切哺鸟之感。交少也孤，早失慈覆之惠；敬沐柔美，十年于兹。苟有词意闻见之得者，其所不敢隐。承命纪德，小子识之。其词曰：天地久兮德不骞，陵谷更兮石之坚，有孝子兮託兹终古，谅夫人兮清风在焉。</p>
+<p>宣德耶行右清道率府胄曹参军陇西董齐书</p>
+<p>安国寺沙门同文纂</p>
+<h1 id="_86">（一二）唐张十八娘子墓志（图六六）</h1>
+<p>（无盖）</p>
+<p>大唐元和十三年三月廿日，「清河张氏十八娘子遇疾卒于永昌里之宅；廿六日，葬于王柴村原，时年廿八。」夫人言不惧物，德过于容。适武氏之门，未逾一岁；结恩情之好，有若百年。呜呼哀哉！华而不实。沛国武季元记之。</p>
+<p>岁在戊戌</p>
+<h1 id="_87">（一三）唐润州长史董岌墓志（图六七、六八）</h1>
+<p>大唐故董府君墓志铭（志盖）</p>
+<p>唐故朝散大夫守洞州长史赐紫金鱼袋陇西董公墓铭并序 季弟乡贡进士交撰</p>
+<p>宝曆元年正月乙丑，陇西董氏子复，自金陵护先君长史公柩归京师。越月景申兆告吉，与季父交奉长史腑先营，乱也。长史讳岌，字不危。皇朝将作丞、赠将作少监钦之孙，苏州长史甃之元子。咸德尊位闲，不耀于时。长史明敏博识，好读书；业左氏春秋何论，一一一穷圣人奥旨。贞元中，以天属拜怀州长史，自怀改润州司马，繇司马迁长史。长史常慕子产行事，得宠猛道，民爱吏恐，不殃岁而政成。于润时，润将王国清作乱，胁臭人将掠州库；州吏柩怯四散，逃墉窜窦，各奔其属。独长史神舆（思）不扰，叱于吏曰：彼狂贼也，不讫日当诛，胡若之耶？命左右圜州屎设御，果如长史冒，卒完其库。时廉察使亦嘉之，竟不为荐奏，岂非命耶！长史秦人，为泽国气所中成疾，长庆四年四月十八日终润州廨宅。润人罢嬉，相吊于路。男曰复，日随，日泰，皆受严教，达于成立；号墓且夕，将以扬先人之美，故授笔于交。交衰病逾时，词不能文，但直语其事也。铭曰：</p>
+<p>呜呼！生有慈仁，随于宗亲。致有追思兮衰于路人，宜不」崇兮命胡其屯，轶不终兮施引归秦，金陵之吏兮哭望江滨。呜呼！公之仁，公之仁。</p>
+<h1 id="_88">考 释</h1>
+<p>董炭系董叡长子，叡长女为顺宗德妃，俱详董叡墓志。该志曰“长日岌…释褐拜润州司马”，此志曰</p>
+<p>“贞元中，以天属拜怀州长史，自怀改润州司马，繇司马迁长史。”董叡墓志作于元和二年，郎叡卒后次年，则发迁润州长史当在元和元年之后。</p>
+<p>据朔闰丧，宝曆元年正月乙巳朔，二十一日乙丑；二月乙亥朔，二十二日丙申。此志曰“正月乙丑…越月景申…”，景申即丙申，唐人避唐讳，以景代丙。</p>
+<h1 id="o_2">（一四）唐左金吾卫大将军员外置同正员李文政墓志(图六九、七O)</h1>
+<p>大唐故李府君墓志铭（志盖）</p>
+<p>唐故右神策军同正将壮武将军守左金吾卫大将军员外置同正员上桂国赐紫金鱼袋李府君墓志铭并</p>
+<p>试太常寺奉礼耶杨础撰并书</p>
+<p>公讳文政，其先陇西人也。曾景祖然，久从辕门；蓬上将之材，有孙吴之略。公始仕从戎，授仁勇副尉，寻累勋至上柱国；所至之境，尝冠军锋。帝赏公之能，授左金吾卫将军同正。公忽尔纏疾。有四男：长曰叔庆，欠日元左、元素、元宗侍寝(寝)，久寻药饵不中，孝悌曾参也。大和四年七月十日，终于常乐私第，享年五十一。以其年十月廿六日，卜筮于京兆府万年县沪川乡郑村之乱也。夫人史氏，志性温柔，仁德钦美；有四子。叔庆等皆高节行，轻财好义，则上达云霽。居丧毁灭踰制度。《缺字》乎诘，志不墮风。就词曰：於戲！李公成德，束身从戎，著于贞节；事君之道，芳英列于千秋。呜呼噫哉！府君空余命名。</p>
+<h1 id="_89">（一五）唐赠陇西郡夫人董氏墓志(图七一、七二)</h1>
+<p>唐故陇西董夫人墓志（志盖）</p>
+<p>唐故赠陇西郡夫人董氏墓志铭并序</p>
+<p>翰林学士朝议卿倚书司勋员外郡上轻车都尉臣黎壎奉勅撰</p>
+<p>王者统天地，合阴阳；外班元士之秩，内备烦御之列，莫不慎择华族，精选」良家；将以应九九之阳数，佐 明明之圣德。其或艺传履步，体善折腰；声既溢于 九霄，名自传于千古者，有若赠陇西郡夫人董氏焉。夫人轩」盖承家，派流绵远。自扰龙而受氏，奋直笔以传芳。仲舒檀美于儒林，君异」名登于仙藉。岂独清音响亮，空号双成之笙；长袖翻翻，唯许娇饶之舞而巳哉！自笄年入居宫壺(壹)，容华绰约，仪则详闲；执乱谦和，发言明媚。而又纤」腰柔弱，举趾嫣妍；飞鹤自得于体轻，平阳雅称其妙丽。当 德皇御字，而名达 宸听；超自辈流，登于乐籍。时或曲移节奏，韵变宫商；故态方口于俗流，新声尚迷于众伎。彼则哇咬才噤，此已俯仰合仪。岂习利而学」能，诚目击而心得者也。时或令节良辰，锡燕 兰殿；百辟就列，九奏在庭。天子厌八佾之旧容，思七盘之新态。锦茵既设，罗袜徐登。动容而宛转若神，当场而意气自得。真不金乌驻景，借白日之光辉；玉女爇空，讶綵鸾之腾赴。宁独千官万乐，屏息而心呼者哉！是以」列圣佳其艺能，六宫推其德美。虽修娥已老，椒虏之贵人；而罗袖时，授」梨园之弟子。名居上品，时历六朝。逝水不留，化泉将及。以开成二年岁女丁已八月壬辰朔廿二日癸丑，卒于内院，享年六十有六。」皇帝念其 恩旧，奖以伎能。 宠赠追荣，玺引加口口其年其月廿日辛酉，俾祔葬于先莹万年县霸城乡南禀村以口口也。呜呼！通灵臺下， 汉皇传十里之香；附隅山口，项有九嫔之葬。 诏词臣填铭于墓云。铭曰：芬口口口兰发丛，婀娜兮翠柳摇风，芳姿妙舞不复见，纤腰雅口口成空。于嗟绝艺，时所仰恃。 诏词臣志幽褒。</p>
+<p>乡贡明经臣张云麟书 国子监刻字臣白儒</p>
+<h1 id="_90">考 释</h1>
+<p>董氏是能歌善舞的宫廷艺人。志云：“天子厌八佾之旧容，思七盘之新态。锦茵既设，罗袜徐登。动容而宛转若神，当场而意气自得。”《旧唐书·音乐志》二称：“汉世有檀木伎，又有盘舞；晋世加之以杯，谓之杯盘舞。乐府诗云‘奸袖陵七盘’，言舞用盘七枚也。梁谓之舞盘伎。…今井存。”盘舞即七盘舞。志文所写，或即唐代七盘舞的舞姿。</p>
+<h1 id="_91">（一六）唐齐州司马鱼君褒郑德柔墓志（图七三）</h1>
+<p>唐齐州司马冯翊鱼君故夫人荥阳（下缺）</p>
+<p>平卢军节度掌书记承奉郡监察御史襄行田（下缺）</p>
+<p>翰林待诏中散大夫鸿臯少卿上桂国吳县开国男食邑三百月赐缚鱼袋朱（下缺）</p>
+<p>夫人讳德柔，姓郑氏；其先累代家于金陵。曾大父赠司徒口，因父赠司空祐，皆以 太后祖、考追显。司空生今平卢节度使检校工部尚书光，夫人即 书女，南阳郡君樊氏出。幼而明智，及笄有淑德，故 倘书、郡君加爱之，其委以家政，若当室子。始荥阳公以 帝舅召，渥泽隆显，当代莫比。密 宜宠赐，使骑纡属。轩盖楹朱阁，歌鑽罗广榭。繁侈四会，助为挥华。时 郡君已抱恙，至于肃轨制、量出入，独 夫人亲之，靡不折中，其干敏如此。暨荥阳公建节平卢， 夫人以尝药之憂不行。旋丁 郡君艰，哀毁过礼，亲族莫能止。痛疾改耗，日剧绵顿；以大中二年二月廿九日，致于上都兴宁里第，享年十六。呜呼！其存也有懿行，其狡也以孝道，讵不为贤列哉！司马鱼上君，良士也。雅有词学，每悼其嘉配倏然，不克有嗣。会离荣谢，宛如一寐；伤神之苦，几不胜怀。以其年十一月十日，从郡君灵车，葬京兆府万年县崇义乡白鹿原。未归夫族，耐女氏之党，礼也。绚谬以书奏从_荥阳公府，靓公追伤感歎，有投车之痛；因奉命刊纪，以虞陵谷。皆传公之意，不华其词。铭曰：</p>
+<p>天大华族，口流重重；是生夫人，令美斯钮。柔顺其道，婉娩其熔；德善不孤，亦克良从。逝水奈何，舞华如电；珠坠深壑，兰败秋」。靡锡延长，空资淑媛；神道茫然，斯理何辨。哀挽晨启，霜芜野」平；二兆连封，若侍于生。宝凤皆委，菱花倘明；萧萧松梧，万古」佳城。</p>
+<p>天水赵季随刻字</p>
+<h1 id="_92">考 释</h1>
+<p>此墓志缺盖。</p>
+<p>郑德柔之父郑光，系宪宗孝明皇后之弟（见《新唐书·郑光传》）。《旧唐书·孝明皇后郑氏传》（下称《旧传》）曰：“宪宗孝明皇后郑氏，宣宗之母也。盖内职御女之列，旧史残缺，未见族姓所出、入宫之由。”《新唐书·孝明郑太后传》（下称《新传》）曰：“宪宗孝明皇后郑氏，丹杨人；或言本尔朱氏<sup>1</sup>。元和初，李筠反，有相者言后当生天子，筠闻纳为侍人。筠诛，浚入掖廷，侍懿安后；宪宗幸之，生宣宗。”《新传》叙后之郡望及入宫之由，但未述其家世；志文叙后之祖、考，可补史之不足。</p>
+<p>《旧传》载：“会昌六年，后弟光梦车中载日月，光芒烛六合；占者曰：必暴贵。月余，武宗崩，宣宗即位。光以元舅之尊，检校户部尚书、诸卫将军，出为平卢节度使。”（《新唐书·郑光传》所载略同）志称：“始荥阳公(光)以帝舅召，渥泽隆显，当代莫比；密宜宠赐，使骑縶属。轩盖隘朱阀，歌鐘罗广榭。繁侈四会，助为辉华。”志文所载，足与史书相印证。</p>
+<p>志称光“检校工部尚书”，《旧传》则作“检校户部尚书”，当以志文为正。</p>
+<h1 id="_93">（一七）唐茂州刺史何溢墓志(图七四、七五)</h1>
+<p>大庸故何府君墓志铭（志盖）</p>
+<p>大唐故银青光禄大夫使持节都督茂州诸军事行茂州刺史充剑南」西川西山中北路兵马使上柱国庐江郡开国公食邑二千月何公墓志铭并序 秘书省校书郎吴发霞</p>
+<p>知天命而大放，推道心而独擅；代所重难，惟公谓达；繇是夔寿长也。」公沛溢，字处休；京兆鄂杜人也。曾租弘靖，任左武卫将军。祖慎旨，任太原府少尹。父崇光，任右领军卫将军，赠太子少保。公即少保之少子也。长兄文言，聊州蕲春县尉；灾兄长清，左神策军军从事；女兄文鼎，不仕。惟公涵清贞之澄量，韬孤明之峻节；才术弥茂，恭恪无徒。</p>
+<p>1) 裴庭裕: 《东观奏记》卷上作“本姓朱氏”, 求知轨是。</p>
+<p>泊 宛皇乙酉磨,故中书令河东裴公度,奉诏伐淮夷。搜罗奇器,资以筹谋, 公即首辔其辟也。奏公为太子通事舍人,充义彰军军从事。明年,凯歌北旋,册功下,授荣王府长史;后迁本府司马。文皇嗣天首磨,朝廷以中令续飞荐章,尝树功淮蔡,拜蔡州别驾。佐理五稳,正色不霖;太守贲公之能名,委公以重事。连旆(帅)高公瑶,消中令以能官上闻,就加太子左谕德,拜越州别驾。星律未周,拜昭州刺史。廪问冯翊严公訾谓公知人罢困,理郡如家;变鞅舌之异风,化扩悍之殊性;极言上闻,拜循州刺史。荒陂滥靖,惠私洽闻。连旆范阳卢公贞复,以表论拜陵州刺史。歼藩蒲之盗,缚遣悬之租;毋借留,不忍其去;后拜是郡。柔氏羌之殊种,J燝仁义之大风;化莅三年,华夷一致。嘻!天与善人,党行正直也;神福正人,J悯无颜邪也。若公之业履,其不党钢哉!太中庚午祀,以寒暑所伤,医治不效;滕理已剧,荣卫潜深;春秋七十,夏五月廿九日长逝于郡舍。夫人乐女任氏,男殷、辂、铎、璁,长号损绝,形质殆残;远越关河,扶护方至。其年十一月十八日,葬于万年县崇义乡怀信里南姚村先莹西北隅,礼也。发夙承公之贷怜,愿攒于贞石,其敢固让。锦云:</p>
+<p>上天无私，唯善是与；鸟戲大德，而不久处。其一册助定难，懿绩昭彰；佐理作牧，威惠飘飄。其二衰疚饿生，奄逝蕃垒；J開(关)棱约远，精车仅至。其三三子号绝，殆以伤生；遵率遗命，J敬耐大堂。其四鸣呼哉！天理兮茫茫，来日何短兮去日何长。</p>
+<h1 id="_94">考 释</h1>
+<p>志云：“泊宪皇乙酉曆，故中书令河东裴公虔，奉诏伐淮夷。”按顺宗贞元二十一年八月辛丑改元永贞元年，岁次“乙酉”；是年八月宪宗始即位，次年为元和元年。根据两《唐书》记载，裴虔奉诏伐淮西系在宪宗元和十二年，该年岁次“丁酉”，故疑志文“乙酉”系“丁酉”之误。《旧唐书·裴虔传》载：“及度辅政，以罪贼未诛，宜延接奇士，共为筹画，乃请于私居接延宾客，宪宗许之。”与志文“搜罗奇器，资以筹谋”的记载，恰相符合。何溢当即虔所“延接”的所谓“奇士”之一，并曾参与淮西之役，因功投荣王府长史。</p>
+<h1 id="_95">（一八）唐河南府仓曹参军路復源墓志(图七六、七七)</h1>
+<p>大唐故路府君墓志铭（志盖）</p>
+<p>大唐故河南府仓曹参军路府君基志</p>
+<p>府君享年六十有七</p>
+<p>将仕郡守秘书省正字辛裕撰，</p>
+<p>路氏之先，出自炎帝。其后黄帝封支子于潞，子婴儿连姻霸国；鲁宜之代，婴儿归晉，子孙因以为氏。至汉有路博德，为伏波将军，食邑清水。魏时清水属阳平，遂为平人。绵历数百载，轩冕相系，于后至府君。曾王父府君讳琮，仕唐为朝散大夫华州郑县令。徐生滁州清流令府君，沛南金。南金生试右卫兵曹参军府君，沛项。府君即兵曹之元子，沛复源，字孟坚。早以荫第入仕，授左春坊内直局丞。朕满，迁右领卫录事参军；以莅事无阙，迁京兆府富平县主簿。朕满，迁卫尉寺主簿，掌戎曹甲库；以劳绩迁河南府仓曹参军。府君幼失怙恃，立身孝谨；友爱于同气，敦睦于亲族。喜愠之情，不形颜色；是非之理，不发于言词。莅官五任，其道一致。昆弟六人，皆历官叙；虽不列显位，士族之道亦可俞口。府君娶京兆韦氏，即故郧州三川县令、赠给事中府君之长女。口续无系，有女三人。长曰修娥，适宜州南陵尉刘逵，婴疾早夭。欠日卿娥，适光州仙居令李棱。幼曰乌娥，适宜州旌德尉王景玄。皆承夫人之内训，令淑彰于六亲。夫人归路氏逾三十八载，俾家道有立，婚嫁无失，实夫人妇道之德。不幸府君宿抱沉疾，以大中十二年八月十六日终于河南官舍。夫人衔哀护丧，以其年十一月二十一日归谢先塑，乱也。俗，韦氏之懿亲；奉夫人命，请书其事，不敢辞让，有愧无交。词曰：伊族之分，封由失祚；去周归晉，因兵为路。历览前史，轩晏相顾。德庆未泯，子孙有绪；逮于府君，仁孝是务。克享寿禄，孰为非遇。皇都之左，白鹿之阡；卜宅云吉，乱物备全。玄堂永下用，迹千万年。</p>
+<p>宣义郡守太子司议郡韦择书</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四五吕武墓志盖拓本（约1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四六吕武墓志志文拓本（约1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四七 段元哲墓志志文拓本（约1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四八 刘宝墓志盏拓本（约1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四九 刘宝墓志志文拓本（约1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图五郭墓志益拓本（1/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图五一 郭禹墓志志文拓本（1/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图五二 郭恒墓志盖拓本（1/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图五三 郭恒墓志志文拓本（1/6）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图五四 李仁墓志盖拓本（约1/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图五五 李仁墓志志文拓本（约1/8）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图五六 慕容氏墓志盏拓本（1/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图五七 慕容氏墓志志文拓本（约1/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图五八 韩氏墓志盖拓本（1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图五九韩氏墓志志文拓本（约1/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图六 曹景林墓志盖拓本（1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图六一曹景林墓志志文拓本（约1/6）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图六二 董楹墓志盖拓本（约1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图六三董楹墓志志文拓本（约1/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图六四 杨氏墓志盏拓本（1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图六五 杨氏墓志志文拓本（1/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图六六 张十八娘子墓志拓本（1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图六七 董炭墓志盖拓本（1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图六八 董炭墓志志文拓本（约1/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图六九 李文政墓志盖拓本（1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图七 李文政墓志志文拓本（1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图七一 董氏墓志盖拓本（1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图七二 董氏墓志志文拓本（约1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图七三 郑德柔墓志志文拓本（约1/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图七四何溢墓志盏拓本（1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图七五 何溢墓志志文拓本（约1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图七六 路復源墓志盖拓本（1/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图七七 路復源墓志志文拓本（1/4）</p>
+<h1 id="_96">后記</h1>
+<p>本报告系由卢兆荫、李德金、姚苑慎、冯普仁四同志集体编写，由卢兆荫同志主编。稿子经过考古研究所所长夏鼐同志审阅。在编写过程中，考古研究所王伯洪、王仲殊二同志曾提供许多有益的意见。墓志考释承考古研究所陈梦家先生提出修改意见。</p>
+<p>绘图和照像工作皆由考古研究所技术室担任。插图绝大多数是曹国鉴和冼自强同志绘制的，器物照片为赵、刘国强、韩悦三位同志所摄。英文提要是考古研究所王俊铭同志翻译的。</p>
+<p>中国科学院考古研究所西安研究室</p>
+<p>1965年10月31日</p>
+<h1 id="the-sui-and-tang-tombs-on-the-outskirts-of-sian">The Sui and T'ang Tombs on the Outskirts of Sian</h1>
+<p>This report deals with the 175 Sui and T'ang tombs excavated in 1955-1961 on the eastern and western outskirts of Sian. Of the 136 tombs excavated on the eastern outskirts, 5 were located at Hung-ch'ing Village, 22 at Kub-chia-t'an and 109 at Hanshen-chai. Of the 39 tombs excavated on the western outskirts, 16 were located at K'esheng-chuang and 23 at Chang-chia-p'o (Fig. 1).</p>
+<p>A study of other excavated tombs of this period and a systematic classification and careful study of the large amount of objects unearthed from these tombs have enabled the author to trace the development of the tomb structure and the changes which took place in regard to tomb furniture. Using the changes which took place in regard to the main tomb figures as the chief criterion but without ignoring the value of the bronze mirror, coins and tomb plan as corroborative evidence, he has divided these 175 tombs into three choronological periods.</p>
+<p>In accordance with their structures, the tombs are divided into four main types: Type I, II, III and IV. Tombs of Type I all belong to the first period. Type IIa appears in all three periods while Types IIb and IIc are found only in the second period. Type IIIa, IIIb and IIIc can also be found in all three periods but Type IIId appears only in the third period. Tombs of Type III, the most numerous of the four main types, are the commonest type in the Tang Dynasty. Tombs of Type IV are not further divided due to scarcity of tomb furniture.</p>
+<p>The following is a description of the main characteristics of each type:</p>
+<p>Tombs of Type I have a tomb chamber which is wider from east to west and narrower from north to south. The tomb passage is located at the centre of the south wall of the chamber or slightly to the west. Tombs of this type can be further divided into three sub-types: Ia, Ib and Ic (Figs. 2-4 &amp; 6). Tombs of Type II have a square or oblong chamber with the tomb passage located at the centre of its south wall or slightly to the east. The plan of the whole tomb somewhat resembles a spade in shape. Tombs of this type can likewise be divided into three sub-types: IIa, IIb and IIc (Figs. 5 &amp; 7-9). A tomb of Type IIc (Tomb No. 305) has a brick double-room chamber made up by the tomb passage, front-chamber passage, front chamber, rear-chamber passage and rear chamber. The southern end of the front-chamber passage is sealed with bricks but slightly to the north is a stone gate with carved decorations (Figs. 9-14). Tombs of Type III usually have an oblong chamber but in a few cases the chamber is square in shape. The tomb passage is located on the east side of its south wall and in some cases the east wall of the passage links up with the east wall of the chamber either in a straight line or at an angle. In a few cases, the east wall of the passage bulges out from the east wall of the chamber. The plan of the whole tomb resembles a handled knife with the chamber</p>
+<p>constituting the blade and the passage the handle. Tombs of this type can be further divided into four sub-types: IIIa, IIIb, IIIc and IIIId (Figs. 15-25). Tombs of Type IV, invariably small tombs, usually have a narrow oblong chamber which is practically of the same width as the tomb passage (Figure 26).</p>
+<p>Sixty-five out of the 175 tombs of this group have yielded a total of 775 pottery tomb figures representing tomb-guardians, men, women and animals. Among the tomb-guardians are monsters (Plates IV—VII, 1—2), warriors (Plates VII, 3; VIII, 1; IX, 1 &amp; XI, 1), lokapalas (Plates VIII, 2—4; IX, 2 &amp; X) and symbolic animals of the twelve double-hours (Plate VII, 4—5). The male figures can be divided into eight groups according to the type of headaddress each of them wears (Fig. 27; Plates XI, 2—5; XII—XIX, 1—4) while the female figures are divided into six groups according to their hair styles (Fig. 28; Plates XIX, 5—9; XX—XXIII, 5—6). The animals include the chicken, dog, pig, sheep (goat), horse and cattle (Plates XXIII, 1—4, 7—8; XXIV—XXVII, 1—3).</p>
+<p>An overwhelming majority of the pottery figures are mould-made, with only a few small animal figures which are handmade. A few of the male figures and animals were made in single-valve moulds but the majority were made in bi-valve moulds. The valves of the moulds for human figures were so arranged as to form the front and rear halves of the body respectively while those of the moulds for animals joined each other from left and right. Usually, the figures were first covered with a white slip and then painted with coloured decorations. The faces of the human figures are often painted in pink while the lips are painted in vermilion. The eyebrows, eyes, beards, hair as well as the headdresses and boots are all drawn in black ink. The garments are painted in such colours as the red, yellow, green, blue and brown. Some of the large tomb-guardians are further painted with gold. The pair of lokapalas unearthed from Tomb No. 203 with their vigorous expressions and brilliant ornaments can rival the best of the Tang Dynasty clay figures of lokapalas found in the cave temples of Tunghuang (Plate X, 1-2).</p>
+<p>Apart from the pottery tomb figures, the tomb furniture includes pottery vessels, tri-coloured glazed pottery vessels, glazed pottery, porcelains, bronzes, vessels and objects of iron and lead, objects or vessels of jade, stone, bone, shell, glass and lacquer, as well as coins and epitaph stones.</p>
+<p>The great variety of ceramics unearthed is among the more important finds from this group of tombs and includes such types as the green glazed ware, various types of celadon, brown glazed ware, black glazed ware, white ware and a mixed clay ware. Some of the porcelains are of a rather high quality in regard to both paste and glaze colour. For instance, the spitton unearthed from the tomb of Lu Wu (Tomb No. 586), which was built in the twelfth year of the K'ai Huang reign period (A.D. 592), is characterized by a fine pure white paste and a brilliant white glaze (Plate XXXV, 2). The lotus leaf shaped teacup-stand unearthed from the tomb of Lu Fu-yuan (Tomb No. 420), which was built in the twelfth year of the Ta Chung reign period (A.D. 858), is distinguished by the beauty of form and a very thin paste covered by a translucent white glaze tinged</p>
+<p>with a touch of blue (Plate XXXVII, 5-6). A celadon box-cover unearthed from Tomb No. 527 is decorated in relief with a butterfly surrounded by some brown patches (Plate XXXVII, 3). This type of new ware is an advance over the monochrome celadons in regard to decoration. The discovery of these porcelains has provided some valuable data for the study of the development of Chinese porcelains.</p>
+<p>Sixteen out of the 175 tombs of the group have yielded a total of 18 epitaphs. Except for one which is of brick the rest are all of stone and most of them are carved with decorations. The dates they bear are of great help to the dating of this group of tombs and their tomb furniture. The texts of these epitaphs are published along with some notes in the appendix.</p>
+<p>The tomb furniture found in the tombs of each period is marked by some distinctive characteristics. For instance, the modelling of the pottery tomb figures found in the tombs of the first period is rather stiff and shows the artistic influence of the Northern Dynasties. Judging by the dates borne by some of the epitaphs, the tombs of this period probably date from the Sui Dynasty or the early Tang (late sixth century to late seventh century). In the second period, some of the tomb figures and mortuary objects are largely copied from those of the first period in spite of some stylistic difference, but others, such as the lokapalas, symbolic animals of the twelve double-hours, foreigners with p'u t'ou headdress, officials with tall headdress (Plate XI, 2; XVII, 5), women with various types of hair styles (Fig. 28; Plate XXII) and two kinds of lobed bronze mirrors (Plates XLIV, 1-3; XLV, 1-2), are all new types and stylistically much more diversified than those of the first period. The tomb figures are all very lifelike and richly ornamented. Particularly striking is the ferociousness of the tomb guardians while the dignity and plumpness of the female figures are so characteristic of the High Tang style and offer a sharp contrast to the slim and delicate figures of the previous period. Judging by the dates borne by some of the epitaphs, the tombs of this period belong to the High Tang (late seventh century to middle eighth century). In the third period, most of the tomb furniture are similar to those of the second period but artistically of an inferior quality. There are also some differences in regard to style and quantity. In contrast to those of the High Tang, the tomb figures tend to be smaller and more delicate and elaborate while the female figures also suffer from an excessive plumpness. The dates borne by some of the epitaphs suggest that the tombs of this period date from the late Tang (middle eighth century to early tenth century).</p>
+<p>The excavation of such a large number of Sui and Tang tombs has yielded a great variety of tomb furniture, including some of considerable artistic and historical value. The publication of these finds will provide some reliable data for the study of the productive forces, social life and ideology of this period.</p>
+<p>彩版壹（I'）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="i">彩版贰（I）</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+长<br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span>  </p>
+<p>（20 1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版壹（I)<br />
+1.墓418清理后的墓室情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.墓576随葬器物出土情况 <br />
+墓418墓室和墓576随葬器物出土情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.型（586:135，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型（586：134，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅱ型（586:10，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.Ⅱ型（586:11，1/4）<br />
+镇墓兽</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. H型（590:4，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅲ型（590:2，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. IV型（547:6，1/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. IV型（547：5，1/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（1）<br />
+始</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（203:1-17）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. V型镇基兽（554：5，1/6）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. V型镇墓兽（589:8，1/6）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.1型武士俑（586:132，1/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. I型已蛇俑（557:5，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. II型已蛇俑（411:28，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版（VIII）<br />
+1. III型武士俑（520:10）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅲ型天王俑（592：11）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. III型天王俑（594：10）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. IV型天王俑（411:5）<br />
+武士俑和天王俑（1/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. IV型武士俑（590:1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. II型天王俑（501:3）<br />
+武士俑和天王俑（2/9）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型（203：4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型(203:3) <br />
+天王俑(1/7)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ型武士俑（549:2，1/5）<br />
+2.1型高冠女走偏（203:5，1/10）<br />
+3. II型样发值（203:12，1/7）<br />
+4、5.1型模头待通（532：71，正、背面，1/3）<br />
+武士俑和男俑</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版拾贰（XII）<br />
+1. I型小冠男诗俑（586:68）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型小冠男侍俑（586：70）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.1型小冠男侍俑（586:59）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. III型小冠男侍俑（532:40）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.1型笼冠持物男侍俑（586:31）男俑(1/3)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.Ⅱ型笼冠持物男侍俑（532：7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版拾参（XIII）<br />
+1.Ⅲ型冠特物男侍（517:27）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型笼冠骑马男俑（532：37）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.1型风帽男待插（586:96）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.Ⅱ型风帽男侍俑（586：107）男俑（1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. III型风帽男侍俑（586:94）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版拾肆（XIV）<br />
+1. IV型风脂男侍俑（586:75）<br />
+2. V型风帽男待角（600:14）<br />
+3. VI型风帽男侍俑（576:32）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. VII型风帽男待俑（516:4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.VII型风帽男侍俑（509:3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.VIII型风帽男侍俑（604:27）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版拾伍（XV）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+I. II型风帽骑马声音俑（203:15）<br />
+2. II型风帽骑马音声俑（203:16）<br />
+3. II型风帽骑马声音声（203：17）<br />
+男俑（1/4）</p>
+<h1 id="xvi">图版拾陆（XVI）</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅲ型颅头男侍俑胸象（526:8，原大）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. IV型横头男侍俑（505：4，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.IV型头男待（508：3，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. V型模头男件（515:3，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. I型馒头骑马侍从俑（543:9，1/3）<br />
+男俑</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ型幢头男侍俑（577：7，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.3.1型辫发男俑（520:5，正、侧面，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.Ⅲ型头男侍俑（518:2，1/5）<br />
+5.Ⅱ型高冠次更俑（604：7，1/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版拾捌(XVIII)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.2. II型（586:138，侧、背面）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. I型(586:139) <br />
+4. III型（532：36）<br />
+披甲骑马卤簿俑（1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版拾改 (XIX)<br />
+1.Ⅱ型头男侍俑（576:24，1/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.力士俑（505:7，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.力士俑（505:6，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.跪童俑（532:16,1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.1型低发女侍俑（586:8，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.Ⅱ型低发女侍俑（586:17，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7.低警持其安俑（586：16，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8、9.Ⅰ型高警女侍俑（532:13，正、侧面，1/3）<br />
+男、女俑</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版贰拾（XX）<br />
+1.Ⅱ型高警女侍俑（568:23，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅲ型高馨女侍俑(210:25,1/2)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. IV型高善女侍俑（553:10,1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. III型高髻女侍俑（211:3，1/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4、5.IV型高龄女侍俑胸象（562：16，正、侧面，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7.8.V型高警女侍俑（411：15，正、侧面，1/5）<br />
+女俑</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+I. 高馨骑马女俑（576:10，2/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. I型垂发梳螺女侍俑胸象（604:20，2/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3、4.1型小警女侍俑（569:7，正、侧面，2/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5、6.Ⅱ型小警女侍俑（417:8，正、侧面，2/7）</p>
+<p>图版贰贰（XXII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅲ型带糖地黄女告</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（406:18）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（53:6）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 型鸡（520:17，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型鸡（589:2，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. I型狗俑（586:124，2/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. II型狗俑（532:30，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.双鬓女侍俑胸象（581:3，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.双鬓女侍俑胸象（603:16，5/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7. III型狗俑（520:18，1/3）</p>
+<p>图版贰参（XXIII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8. IV型狗俑（605:16，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型猪俑（586:144，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. II型猪（332:24，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. III型猪俑（520:16，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.1型羊俑（586:129，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.1型马俑（592：4，1/6）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. II型羊俑（605:15，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8.Ⅱ型马俑（413:12，1/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7.Ⅲ型马俑(506:4，1/6)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. IV型马俑（593:5，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型骆驼俑（586:140，1/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. II型骆驼俑（405:3，1/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. II型骆驼俑（203:40，1/12）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. III型骆驼俑（203:42，1/2）<br />
+马俑和骆驼俑</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 1型牛（590:28，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. II型牛俑（558:8，1/4）<br />
+3. III型牛俑（593:6，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.1型二式带座罐（216:18，约1/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. II型二式带座罐（503:1，约1/5）</p>
+<p>图版贰捌（XXVIII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型一式瓶（586:150，2/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.盘（528:9，1/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+灯盏（216:29，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.Ⅱ型一式双耳罐（586:148，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. II型壶（203:15，1/6）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+陶器<br />
+图版贰玖（XXIX）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 陶砚（305:31，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 陶屋（586:144，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.陶（16：6，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.陶器座（305:30，1/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7.陶维（586:121，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.三彩罐（217：1，1/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.三彩耀（216:21，1/6）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.井栏（586:123，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.鼓形器（586:112，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.三彩扣盒底（501：1，原大）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.1型一式四系罐（532:26，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7.灶（586：120，1/2）<br />
+三彩器和陶器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. III型水蚤（520:24，原大）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.三足盘（414:3，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅲ型带座罐（413:9，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. II型碗（596:1，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.1型碗（216:6，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.1碗（216:30，1/3）<br />
+陶、瓷器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版参贰（XXXII）<br />
+1.带耳杯（535:1，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型一式陶罐（586：154，1/4）<br />
+3.1型二式陶螺（586：153，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.六系青釉罐（418:8，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.1型一式褐抽罐（588:2，1/4）<br />
+陶、瓷器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版参参（XXXIII）<br />
+1. 型二式四系罐（551:3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型三式四系罐（539：1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅱ型一式四系罐（516：19）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. II型二式四系（408:20）<br />
+釉陶和瓷器（1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版参肆（XXXIV）<br />
+1.1型一式四系罐（520:23，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型二式四系罐（520:22，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅱ型三式四系罐（418:7，1/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.Ⅱ型四式四系罐（600:2，1/4）<br />
+釉陶和瓷器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版参伍（XXXV）<br />
+1.Ⅱ型注子（563：12）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型一式唾壶（586：4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. I型二式唾壶（568:3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. I型三式唾壶（591:5）<br />
+釉陶和瓷器（1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.杯（588:4，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型四式唾壶（556:3，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.1型注子（533:2，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. II型四式四系罐（576:5，1/6）</p>
+<p>瓷器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型水蚤（586:5，原大）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.壶（576:7，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. II型水蚤（576:6，原大）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.扣盒盖（527：1，原大）<br />
+5.6. 菜托（420:6，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版参捌（XXXVIII）<br />
+1.1型二式自瓷罐（504：6，1/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.11型一式唾壶（532:95，2/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3、4.波斯银币（213：1，原大）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.高足盈（588：3，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 烛台（586:6，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7.灯盏（204：2，1/2）<br />
+釉陶、瓷器和银币</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版参玖（XXXIX）<br />
+1.瓶（576:8,1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.紫石砚（504:11，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. IV型水蚤（414：4，原大）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.四系壶（579:2，1/8）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.三足盘（216:5，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 碾（216:3，2/5）<br />
+釉陶、瓷器和石器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版肆拾（XL）<br />
+1. I型一式白瓷罐（207:1，1/4）<br />
+2.料杯（586:113，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.带耳杯（216：4，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.双耳罐（212：1，1/6）<br />
+5.Ⅱ型褐釉罐（420:9，1/6）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 杯（528:5，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7. I型三式青绿釉罐（528:7，2/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8. I型三式绿釉罐（504:7，1/3）<br />
+釉陶、瓷器和料器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版肆壹 (XLI)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 1型二式（577：1）<br />
+2.1型一式（586:3）<br />
+3.1型五式（568：1）<br />
+铜镜（约1/2）</p>
+<p>图版肆贰（XLII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 1型四式（600:7，2/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. I型六式 (551:14, 1/2)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. I型七式（546:1，2/3）</p>
+<p>图版肆参（XLIII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.1型入式（417：1，2/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型八式（607：1，原大）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.1型九式（605：1，原大）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.1型九式（218:8，原大）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. I型十式（582:1，原大）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. I型十式（599:1，原大）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版肆肆 (XLIV)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅲ型二式（594：1）<br />
+2. III型一式（216:32）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. III型三式（410:1）<br />
+铜 镜（1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版肆伍（XLV）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. H型一式（414:10，原大）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. IV型一式（555:1，2/5）<br />
+5. IV型三式（420:1，2/5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. V型（504:1，2/5）<br />
+铜镜</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版肆陆（XLVI）<br />
+铜发饰 $(1 / 2)$</p>
+<p>1.蝶形发饰 (201:10)</p>
+<p>2.1型铰（591:1）</p>
+<ol>
+<li>
+<p>II型督(201:9)</p>
+</li>
+<li>
+<p>III型钢（521:1）</p>
+</li>
+<li>
+<p>I型警(201:6)</p>
+</li>
+<li>
+<p>II型铁（201：4）</p>
+</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版肆染（XLVII）<br />
+1. 1型十一式铜镜（561:1，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型十二式铜镜（415:1，1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 铁剪（568:2，1/2）<br />
+4. H型铁刀（584:1, 1/2）<br />
+6. 铁镰（301:2，1/4）<br />
+铜镜、铁器和石器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 石人头（305:9，1/7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7.石幢顶（305:10，1/9）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.石绩（305：33，原大）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.石舞成（305:2，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.玉钗（203：31，1/2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.水晶珠（538：4，原大）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 铅马（405:18，原大）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.铅泡（538：2，原大）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7. II型二式唾壶（411:1，1/4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8. III型二式陶罐（216:16，1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9. I型一式青釉罐（600:3，1/4）</p>
+<h1 id="_97">勘误表</h1>
+<h1 id="_98">页 行</h1>
+<p>图二三</p>
+<p>21 倒6</p>
+<p>42 倒2</p>
+<p>50 倒3</p>
+<p>51 4</p>
+<p>52 倒2</p>
+<p>62 5</p>
+<p>83 倒11</p>
+<p>83 倒11</p>
+<p>83 倒10</p>
+<p>83 倒2</p>
+<p>84 6</p>
+<p>84 17</p>
+<p>图版拾玖</p>
+<p>图版拾玖</p>
+<p>图版贰玖</p>
+<p>图版武致</p>
+<h1 id="_99">误</h1>
+<p>3.开元通宝</p>
+<p>另一部则可能</p>
+<p>左手隐于外衣外。</p>
+<p>（其中胸俑1件）</p>
+<p>（其中胸俑8件）</p>
+<p>19件</p>
+<p>平顶</p>
+<p>出土钱币的墓有54座，共出185枚。</p>
+<p>五铢钱9</p>
+<p>开元通宝168枚</p>
+<p>余伟超</p>
+<p>共142枚</p>
+<p>13枚</p>
+<ol>
+<li>
+<p>I型低发女侍俑</p>
+</li>
+<li>
+<p>II型低发女侍俑</p>
+</li>
+<li>
+<p>陶砚</p>
+</li>
+<li>
+<p>陶砚</p>
+</li>
+</ol>
+<h1 id="_100">正</h1>
+<p>3、4.开元通宝</p>
+<p>另一部分则可能</p>
+<p>左手隐于外衣内</p>
+<p>（其中胸像1件）</p>
+<p>（其中胸像8件）</p>
+<p>15件</p>
+<p>平底</p>
+<p>出土钱币的墓有53座，共出160枚。</p>
+<p>五铢钱12</p>
+<p>开元通宝143枚</p>
+<p>俞伟超</p>
+<p>共143枚</p>
+<p>14枚</p>
+<p>5.1型低臀女侍俑</p>
+<ol>
+<li>II型低臀女侍俑</li>
+</ol>
+<p>3.1型陶砚</p>
+<ol>
+<li>II型陶砚</li>
+</ol>
+  </div>
+</div>
+
+<div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)"><a href="./元君庙仰韶墓地.html" style="color:var(--muted);text-decoration:none">← 元君庙仰韶墓地</a><a href="./哈克遗址2003-2008年考古发掘报告.html" style="color:var(--muted);text-decoration:none">哈克遗址 2003-2008年考古发掘报告 →</a></div>
+</div>
+
+<div class="toc-float" id="tocPanel">
+  <h4>目录</h4>
+  <div id="tocContent">正在生成...</div>
+</div>
+</div>
+<footer class="site-footer">
+<div class="footer-inner">
+  <p>中国考古学专刊·丁种 实体标注知识库 &copy; 2026</p>
+  <p class="footer-links">
+    <a href="https://github.com/CrossTheOcean/archaeology-report-kb" target="_blank">GitHub</a> ·
+    <a href="../about.html">关于本站</a>
+  </p>
+</div>
+</footer>
+<script>
+
+// Generate TOC from headings
+setTimeout(function() {
+  const body = document.getElementById('reportBody');
+  const headings = body.querySelectorAll('h1, h2, h3');
+  const toc = document.getElementById('tocContent');
+  if (headings.length === 0) {
+    toc.innerHTML = '<span style="color:var(--muted)">无标题</span>';
+    return;
+  }
+  toc.innerHTML = '';
+  headings.forEach((h, i) => {
+    h.id = 'heading-' + i;
+    const a = document.createElement('a');
+    a.href = '#heading-' + i;
+    a.textContent = h.textContent;
+    a.style.paddingLeft = (h.tagName === 'H3' ? '12px' : '0');
+    toc.appendChild(a);
+  });
+}, 500);
+
+</script>
+</body>
+</html>

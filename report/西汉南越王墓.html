@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>西汉南越王墓 — 中国考古学专刊·丁种 — 实体标注知识库</title>
+<meta name="description" content="基于70份考古学专刊·丁种发掘报告的实体标注与结构化知识库">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏺</text></svg>">
+<style>
+:root {
+  --bg: #0f1117;
+  --card: #1a1d27;
+  --border: #2a2d3a;
+  --text: #e4e4e7;
+  --muted: #8b8fa3;
+  --accent: #f59e0b;
+  --accent2: #ec4899;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* Navigation */
+.topnav {
+  background: rgba(15, 17, 23, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.nav-links a.active { color: var(--accent); background: rgba(245,158,11,0.08); }
+
+/* Layout */
+.container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+.hero {
+  text-align: center;
+  padding: 48px 20px 32px;
+}
+.hero h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.hero .subtitle { color: var(--muted); font-size: 1.05rem; }
+
+/* Stats */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin: 28px 0 36px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 28px;
+  text-align: center;
+  min-width: 150px;
+  flex: 1;
+  max-width: 200px;
+}
+.stat-card .num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.stat-card .label { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
+
+/* Grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+}
+.card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  background: var(--card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.82rem;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+thead th:hover { color: var(--text); }
+tbody td { padding: 10px 14px; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+tbody tr { transition: background 0.15s; }
+tbody tr:hover { background: rgba(245, 158, 11, 0.04); }
+
+/* Tags */
+.era-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.ebar {
+  display: inline-block;
+  height: 6px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Report detail page */
+.report-header {
+  margin-bottom: 28px;
+}
+.report-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.report-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.report-meta span {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+.report-body h2 { font-size: 1.3rem; margin: 32px 0 16px; color: var(--accent); }
+.report-body h3 { font-size: 1.1rem; margin: 24px 0 12px; }
+.report-body p { margin-bottom: 12px; }
+.report-body ul, .report-body ol { margin: 12px 0 12px 24px; }
+.report-body li { margin-bottom: 4px; }
+.report-body table { margin: 16px 0; }
+.report-body table th { background: var(--card); }
+.report-body table td, .report-body table th {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+}
+.report-body pre {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.report-body code {
+  background: rgba(245,158,11,0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* Image placeholder */
+.img-placeholder {
+  display: inline-block;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+/* Entity chips */
+.entity-section { margin: 20px 0; }
+.entity-section h4 { color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; }
+.echip {
+  display: inline-block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  margin: 2px 3px;
+}
+
+/* Report card (for list page) */
+.report-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.report-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.report-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.report-card .rc-meta { color: var(--muted); font-size: 0.84rem; }
+.report-card .rc-entities { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-top: 6px; }
+
+/* Search & filter */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+.search-input {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 260px;
+  outline: none;
+}
+.search-input:focus { border-color: var(--accent); }
+.filter-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(245,158,11,0.08);
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  margin-top: 60px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.footer-inner { text-align: center; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.footer-links { margin-top: 8px; }
+.footer-links a { color: var(--accent); text-decoration: none; }
+.footer-links a:hover { text-decoration: underline; }
+
+/* About page */
+.about-section { margin: 28px 0; }
+.about-section h2 { font-size: 1.3rem; margin-bottom: 12px; color: var(--accent); }
+.about-section p { margin-bottom: 12px; color: var(--muted); }
+.about-section ul { margin: 8px 0 8px 20px; color: var(--muted); }
+
+/* Download page */
+.dl-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.dl-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.dl-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; }
+.dl-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #000;
+  padding: 8px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.dl-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.dl-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.dl-btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Map page */
+.map-container {
+  text-align: center;
+  margin: 24px 0;
+}
+.map-container img {
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .stats-row { gap: 10px; }
+  .stat-card { min-width: 120px; padding: 14px 16px; }
+  .stat-card .num { font-size: 1.5rem; }
+  .nav-links a { padding: 6px 10px; font-size: 0.82rem; }
+  .search-input { width: 100%; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+}
+@media (max-width: 480px) {
+  .nav-links { gap: 0; }
+  .nav-links a { padding: 6px 8px; font-size: 0.78rem; }
+  .container { padding: 16px; }
+}
+
+
+.toc-float {
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.8rem;
+  max-width: 220px;
+  z-index: 50;
+}
+.toc-float h4 { color: var(--muted); margin-bottom: 8px; }
+.toc-float a { color: var(--muted); text-decoration: none; display: block; padding: 2px 0; }
+.toc-float a:hover { color: var(--accent); }
+@media (max-width: 1024px) { .toc-float { display: none; } }
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<nav class="topnav">
+<div class="nav-inner">
+  <a href="../index.html" class="logo">🏺 考古知识库</a>
+  <div class="nav-links">
+<a href="../index.html">总览</a>
+<a href="../reports.html" class="active">报告列表</a>
+<a href="../map.html">遗址地图</a>
+<a href="../download.html">数据下载</a>
+<a href="../about.html">关于</a>
+  </div>
+</div>
+</nav>
+<div class="container" style="display:flex;gap:24px">
+<div style="flex:1;min-width:0">
+<div class="report-header">
+  <a href="../reports.html" style="color:var(--muted);font-size:0.88rem;text-decoration:none">← 返回报告列表</a>
+  <h1 style="margin-top:8px">西汉南越王墓</h1>
+  <div class="report-meta">
+    <span class="era-tag" style="background:#ef444422;color:#ef4444">秦汉</span>
+    <span>74 页</span>
+    <span>37.4 MB</span>
+    <span>217 个实体</span>
+    <span>密度 2.9</span>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:24px">
+  <h3>🏷️ 实体标注</h3>
+  <div class="entity-section"><h4>遗迹编号 (212)</h4><div><span class="echip">B33</span><span class="echip">B82</span><span class="echip">B74</span><span class="echip">B75</span><span class="echip">B92</span><span class="echip">B93</span><span class="echip">B54</span><span class="echip">B43</span><span class="echip">B121</span><span class="echip">B99</span><span class="echip">B117</span><span class="echip">B79</span><span class="echip">B80</span><span class="echip">B32</span><span class="echip">B91</span><span class="echip">C86</span><span class="echip">C61</span><span class="echip">C84</span><span class="echip">C25</span><span class="echip">C20</span><span class="echip">C265</span><span class="echip">C37</span><span class="echip">C7</span><span class="echip">C5</span><span class="echip">C53</span><span class="echip">C16</span><span class="echip">C70</span><span class="echip">C74</span><span class="echip">C77</span><span class="echip">C81</span><span class="echip">C90</span><span class="echip">C91</span><span class="echip">C92</span><span class="echip">C93</span><span class="echip">C173</span><span class="echip">C33</span><span class="echip">C170</span><span class="echip">C234</span><span class="echip">C231</span><span class="echip">C213</span><span class="echip">C171</span><span class="echip">C57</span><span class="echip">C187</span><span class="echip">C189</span><span class="echip">C73</span><span class="echip">C120</span><span class="echip">C145</span><span class="echip">C204</span><span class="echip">C156</span><span class="echip">C155</span><span class="echip" style="color:var(--muted)">+162 更多</span></div></div>
+<div class="entity-section"><h4>铜器 (2)</h4><div><span class="echip">剑</span><span class="echip">戈</span></div></div>
+<div class="entity-section"><h4>石器 (2)</h4><div><span class="echip">砺石</span><span class="echip">石料</span></div></div>
+<div class="entity-section"><h4>葬具葬式 (1)</h4><div><span class="echip">棺</span></div></div>
+
+</div>
+
+<div class="card">
+  <h3>📖 报告全文</h3>
+  <div class="report-body" id="reportBody">
+    <p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二九（XXIX）<br />
+1. 博局的金饰片（B33）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 银片（B82）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.玉、水晶六博棋子（B74、B75、B92、B93）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 嵌象牙博局铜座（B54）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 嵌象牙博局铜座（B43）<br />
+东耳室六博</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 漆衣残盖（B121）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 龙首形象牙饰（B99）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 矩形象牙饰（B117）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.木俑（B79、B80）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.金饰片（B32）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.象牙片（B91）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1.考古人员在工作</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.后部器物出土情状</p>
+<p>西耳室发掘情景</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图版三二（XXXII）</p>
+<p>1.室内全貌</p>
+<ol>
+<li>前部器物出土情状</li>
+</ol>
+<p>西耳室发掘情景</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版三三（XXXⅢ）<br />
+1.壶I（C86）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 提筒Ⅱ（C61）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 壶Ⅱ（C84）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 提筒盖丝绢裹缠痕（C61）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.壶内枣核（C84）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.竹签牌(C61-2)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.甲Ⅱ（C25、C20）<br />
+3.甲I（C265）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.乙I（C37）<br />
+4.足部纹饰（C265） <br />
+西耳室铜鼎</p>
+<p>1.整I（C7、C5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>
+<p>烤炉(C53)</p>
+</li>
+<li>
+<p>勺 $\Pi ① (C16 - 1 \sim 18)$</p>
+</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+西耳室铜器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+西耳室铜姜（C70）</p>
+<p>图版三七（XXXVII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 套叠出土情形（C74～C77）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. I ①(C81)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 两匝分开后</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 匝底垫物（C90）</p>
+<p>西耳室铜也</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 销套叠出土情形（C91、C92、C93）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 销(C91)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.熏炉Ⅱ（C173）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 锅内羚羊角（C33）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.底部分铸痕（C173）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）<br />
+（）</p>
+<p>西日宝铜<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. VI②(C170)</p>
+<p>西耳室铜镜<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. V④(C234)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.带托镜上的裹绢痕(C231)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 带托镜内的胶漆痕（C231）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>西耳室铜镜<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. VIII (C213)</p>
+<ol>
+<li>VIII (C171)</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铎(C57)</p>
+<p>1.阳燧与钵形器正面（C187、C189）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 锥与管形器（C73、C120）</p>
+<p>2.阳燧与钵形器背面</p>
+<p>5.算珠形器（C145-55、56、58）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+西耳室铜器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+虎节背面（C204）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.剑与磨剑石同出</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 镀 I ①(C156-1)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 镀 I ②（C156-2）<br />
+6. 铱 I ③(C155)</p>
+<h1 id="xlv">图版四五（XLV）</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 铱Ⅱ①(C38)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 镀IV（C156-3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 镀盛囊中（C38）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.囊底的竹铎痕（C38）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 镊盛囊中(C39)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 镊盛囊中（锋部）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 箭杆(C101) <br />
+2. 箭杆（C252）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.竹筒残片（C252）</p>
+<p>西耳室器物</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜琴较与轸钥（C228）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铜轸钥（C196）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 轼钥上残弦(C197)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 瑟纳Ⅲ（C199、C200、C226、C227）<br />
+2.印花凸板（C152）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>铁衔镰(C241)</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.铜衔I（C220）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>3.铜衔 $\mathrm{II}$ (C251-8)</p>
+<p>西耳室车马饰</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 盖弓帽出土情形<br />
+4. 车马饰与箭杆等出土情状</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 镜银盖号帽IV（C101-2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.盖号帽Ⅲ（C127-1、C157</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版五一（L I）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.鎏金伞柄箍（C154、C175）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 错银伞柄箍（C230）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 缀座（C253-15、C251-7）<br />
+3. 当卢(C251-5)</p>
+<p>西耳室铜车马饰</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.络管饰I（C251-37）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.节约 $(\mathrm{C}235 - 16)$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.络管饰Ⅱ、Ⅲ、IV（C251-37）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.节约（C243）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.络管饰V（C251-41）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7.节约背面皮缰（C245、C251-43）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.节约（C236）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8.节约背面（C239、C222）</p>
+<p>图版五三（LⅢ）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 带扣I（C235）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 带扣Ⅱ（C251-46、C253-9）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.带扣Ⅲ（C253-10）<br />
+2. 带扣 I (C251-39)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜泡钉I（C251-37）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铜泡钉Ⅱ（C251-37）<br />
+4. 辕头饰（C256） <br />
+6. 铜环（C251-33、34、35、45）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铜泡钉Ⅲ（C251—48）<br />
+5. 圆片饰（C119）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+西耳室车马饰</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版五五（LV）<br />
+1.工具箱出土情形</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铜锯（C145-71、69、70）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 锯齿局部（C145-69、70）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 铁锤（C145-1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.铁锤（C145-2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 铁锛I（C145-62）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7. 铁锛Ⅱ（C 145、-4、5）<br />
+8. 铁锛Ⅲ(C145-3)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.斧（C108）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.凿（C145-36、41）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 镰（C72）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.铲（C145-14、15）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 削 I ① (C208)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 削 I ① (C145-21、30)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 削 I ① (C145-26、29)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 削 I ②（C145-7、22、6、31）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 削 $\Pi$ (C121-16)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 刻刀I（C121-9）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 刻刀Ⅱ（C121-6、8、20）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 刻刀 $(\mathrm{C}121 - 27)$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7.铲刀（C121-17）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>I ①(C121-23、12、11)</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>锉齿局部（C121-12、25）</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>I ②(C145-35)、</li>
+</ol>
+<p>II (C121-25)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>锉齿局部（C121-25、C145-35）</li>
+</ol>
+<p>图版五九（LIX）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I (C145-8、63、16、44)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.同上背面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. II (C109、C145-19、C121-24)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.同上侧面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. I (C121-15)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 刀柄局部（C145-63、8）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.劈刀（C114、C115、C116、C118）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.环首刀（C123、C124）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 锥(C129、C145-17、37)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.针（C121-40）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.服刀（C145-45、49、 $46 + 51$ ）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 钎 (C43)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7.弯刀（C121-26）</p>
+<p>图版六一(LX I)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 正面(C233)</p>
+<p>西耳室铁铠甲<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.背面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 内视</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 铁铠甲内视（C233）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.带轮铁构件（C127-2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+西耳室铁器<br />
+3. 铁刮刨（C125-1、2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版六三(LXⅢ)<br />
+1.鼎乙I（C263）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.鼎乙I（C15)左、乙Ⅱ(C11)右</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.罐I $②$ (C111)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.罐Ⅱ $①$ (C117)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.罐底后加痕</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 双耳罐(C46)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>鸽壶Ⅱ（C185）</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>酞Ⅱ（C42）</li>
+</ol>
+<p>西耳室陶器</p>
+<ol>
+<li>酞 I (C44)</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>提筒Ⅱ（C88）左、（C89）右</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>酞Ⅱ（C264）</li>
+</ol>
+<p>西耳室陶器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.扁圆形响器（C206、C210)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.扁圆形响器（C209、C206）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.网坠(C218)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.器盖（C111-1）</p>
+<p>图版六七（LXVII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.璧Ⅲ $①$ (C194）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.璧Ⅲ $②$ (C251-2)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.璜I（C149-1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.璜Ⅱ（C149-2）</p>
+<p>西耳室玉器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.环I（C195）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.璜Ⅱ（C150-2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.璜Ⅱ（C150-1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.璜背面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.玉舞人（C258）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.玉舞人（C259）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.玉舞人背面<br />
+西耳室玉器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版六九(LXIX)</p>
+<p>1.正面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+西耳室玉舞人(C137)</p>
+<p>2.背面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.玉剑饰出土情形</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.43件玉剑饰全貌（C147）</p>
+<p>西耳室玉器</p>
+<p>图版七一(LXXI)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.剑首(C147-1)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.剑格(C147-2)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.剑（C147-4）</p>
+<p>西耳室玉剑饰<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.剑琢(C147-3)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版七二（LXXⅡ）<br />
+1.剑首(C147-5)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.剑格 $(\mathrm{C}147 - 6)$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.剑（C147-7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.剑秘（147-8）<br />
+西耳室玉剑饰</p>
+<h1 id="lxxiii">图版七三（LXXⅢ）</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.剑首（C147-9）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.剑格（147-10）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.剑琢(147-11)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.剑秘（C147-12）</p>
+<p>西耳室玉剑饰</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.剑首（C147-13）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.剑格（C147-14）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.剑（C147-15）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.剑（C147-16）</p>
+<p>西耳室玉剑饰</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版七五(LXXV)<br />
+1.剑首I（C14734)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.剑首II（C14725)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.剑首Ⅱ（C147-25）背面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.剑燧II（C147-31)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.玛瑙印(C97)左、绿松石印(C139)中、水晶印(C260)右</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.石砚与墨丸（C17、C130）<br />
+2. 砺石（C104、C105、C106、C113）</p>
+<p>西耳室石器</p>
+<p>图版七七（LXXVII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.斧（C62、 $\mathrm{C}64\sim \mathrm{C}68)$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 砾石（C255）、石料（C250）、研石（C63）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.枕（C69）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.猪（C135）<br />
+西耳室石器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 金带钩（C102）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 漆杯金座足（C136）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.金花饰（C261） <br />
+3.金泡（C112）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 银厄（C151-7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 金管(C254-2、3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.银锭（C201）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.银锭(C202) <br />
+3.铅弹丸（C110）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.玻璃璧（C191）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.玻璃珠（C138）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.玻璃牌饰（C178）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7.玻璃牌饰（C180、C181）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.（C176、C178）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.(C181) <br />
+3. 两牌饰间的垫物（C178）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版八一(LXXXXI)<br />
+1. 漆盒（C145-74）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.金釘漆厄（C151-5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 漆盒底部</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 漆骰子(C215)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 漆耳杯(C32)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7.木器零件（C59）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 漆厄铜釘(C95、C96)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8. 木弓（C257）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>牙厄腹部刻画</li>
+</ol>
+<p>(C151-3)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 厄盖刻画</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.象牙算筹出土情状（C141）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.金釘牙厄 <br />
+5.五色药石出土情状（C212）<br />
+西耳室器物</p>
+<h1 id="lxxxxiii">图版八三（LXXXXⅢ）</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 骨雕天鹅(C213-2)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 皮甲(C153)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.骨质显微</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.乳香？（C223）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.羚羊角(C33-2)<br />
+西耳室器物</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.“肤”封泥（C262-1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.“昧”封泥（C262-2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.“帝印”封泥（C80-2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 背面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.“结”封泥（C162）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.背面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7. 木匣（C130-2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8.竹签牌(C011、C61-2、C011)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 石门内视</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.夏鼐先生在发掘现场<br />
+主棺室发掘情景</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.杆石掉下的情景</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 部分器物出土情形</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.考古人员在清理玉衣</p>
+<p>主棺室发掘情景</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版八七(LXXXVII)<br />
+1.外亭铜铺首（D3、D48、D100、D101、D131、D132）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+国<br />
+外亭铜铺首</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.“头箱”中的器物<br />
+2.“足箱”中的器物</p>
+<h1 id="_1">棺、椁内器物出土情形</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+玉衣两侧的玉器等出土情状</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.玉衣正面（D50）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.玉衣下垫承的玉璧</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.玉衣内的墓主骨殖</p>
+<p>玉衣出土情况</p>
+<h1 id="xc1">图版九一（XC1）</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.头罩下珍珠枕的珍珠</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.枕下垫壁的珍珠</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.玉衣内铺盖的玉璧</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.玉衣底层</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2 <br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. <br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版九三（XCⅢ）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 镦（D195）<br />
+1.戈(D178+D177)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 链 I ①(D21)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 镀Ⅱ①、②（D21、D41）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 镀Ⅲ②（D21、D126）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 镀Ⅲ①（D21、D126）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7. 箭杆(D21)</p>
+<p>图版九四（XCIV）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I (D108、D128)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. II (D113)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. II (D109、D200) <br />
+主室铜弩机</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版九五（XCV）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铜冒I（D14、D10）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 铜盖弓帽I（D9）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 铜伞柄箍（D5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.铜惠(D38)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.铜冒Ⅱ（D117、D135）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 铁轴圈（D196、D204）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7.铅弹丸（D96）</p>
+<p>主室器物</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.带钩I $①$ （D183、D134）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.牌饰（D165、D73-1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.带钩局部纹饰Ⅲ $①$ （D153）</p>
+<p>呼转王</p>
+<p>（1D1606）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（21D91D91D02D02）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.(D90)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.(D89)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. (D141)</p>
+<p>5.鞘上针刻花纹（D91）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.纳燧位置（D146）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版九九（XCIX）<br />
+1.(D147)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.正面（D89）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.背面<br />
+主室铁剑茎部丝缕</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.(D70)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. (D145)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. (D90)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. (D141) <br />
+主室铁剑茎部丝绦</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一O一（C1）<br />
+1.剑首 $(\mathrm{D90 - 2})$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.背面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.剑格 $(\mathrm{D90 - 1})$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.剑遂侧面（C141-2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.正面</p>
+<p>主室玉剑饰</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.剑格（D143-1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.剑（D143-4）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.背面</p>
+<p>3.剑首（D89-1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.侧面<br />
+主室玉剑饰</p>
+  </div>
+</div>
+
+<div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)"><a href="./胶东半岛贝丘遗址环境考古1999FB-260-32.html" style="color:var(--muted);text-decoration:none">← 胶东半岛贝丘遗址环境考古</a><a href="./新疆考古发掘报告.html" style="color:var(--muted);text-decoration:none">新疆考古发掘报告 →</a></div>
+</div>
+
+<div class="toc-float" id="tocPanel">
+  <h4>目录</h4>
+  <div id="tocContent">正在生成...</div>
+</div>
+</div>
+<footer class="site-footer">
+<div class="footer-inner">
+  <p>中国考古学专刊·丁种 实体标注知识库 &copy; 2026</p>
+  <p class="footer-links">
+    <a href="https://github.com/CrossTheOcean/archaeology-report-kb" target="_blank">GitHub</a> ·
+    <a href="../about.html">关于本站</a>
+  </p>
+</div>
+</footer>
+<script>
+
+// Generate TOC from headings
+setTimeout(function() {
+  const body = document.getElementById('reportBody');
+  const headings = body.querySelectorAll('h1, h2, h3');
+  const toc = document.getElementById('tocContent');
+  if (headings.length === 0) {
+    toc.innerHTML = '<span style="color:var(--muted)">无标题</span>';
+    return;
+  }
+  toc.innerHTML = '';
+  headings.forEach((h, i) => {
+    h.id = 'heading-' + i;
+    const a = document.createElement('a');
+    a.href = '#heading-' + i;
+    a.textContent = h.textContent;
+    a.style.paddingLeft = (h.tagName === 'H3' ? '12px' : '0');
+    toc.appendChild(a);
+  });
+}, 500);
+
+</script>
+</body>
+</html>

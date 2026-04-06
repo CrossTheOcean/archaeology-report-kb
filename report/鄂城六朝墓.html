@@ -1,0 +1,3117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鄂城六朝墓 — 中国考古学专刊·丁种 — 实体标注知识库</title>
+<meta name="description" content="基于70份考古学专刊·丁种发掘报告的实体标注与结构化知识库">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏺</text></svg>">
+<style>
+:root {
+  --bg: #0f1117;
+  --card: #1a1d27;
+  --border: #2a2d3a;
+  --text: #e4e4e7;
+  --muted: #8b8fa3;
+  --accent: #f59e0b;
+  --accent2: #ec4899;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* Navigation */
+.topnav {
+  background: rgba(15, 17, 23, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.nav-links a.active { color: var(--accent); background: rgba(245,158,11,0.08); }
+
+/* Layout */
+.container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+.hero {
+  text-align: center;
+  padding: 48px 20px 32px;
+}
+.hero h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.hero .subtitle { color: var(--muted); font-size: 1.05rem; }
+
+/* Stats */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin: 28px 0 36px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 28px;
+  text-align: center;
+  min-width: 150px;
+  flex: 1;
+  max-width: 200px;
+}
+.stat-card .num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.stat-card .label { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
+
+/* Grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+}
+.card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  background: var(--card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.82rem;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+thead th:hover { color: var(--text); }
+tbody td { padding: 10px 14px; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+tbody tr { transition: background 0.15s; }
+tbody tr:hover { background: rgba(245, 158, 11, 0.04); }
+
+/* Tags */
+.era-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.ebar {
+  display: inline-block;
+  height: 6px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Report detail page */
+.report-header {
+  margin-bottom: 28px;
+}
+.report-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.report-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.report-meta span {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+.report-body h2 { font-size: 1.3rem; margin: 32px 0 16px; color: var(--accent); }
+.report-body h3 { font-size: 1.1rem; margin: 24px 0 12px; }
+.report-body p { margin-bottom: 12px; }
+.report-body ul, .report-body ol { margin: 12px 0 12px 24px; }
+.report-body li { margin-bottom: 4px; }
+.report-body table { margin: 16px 0; }
+.report-body table th { background: var(--card); }
+.report-body table td, .report-body table th {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+}
+.report-body pre {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.report-body code {
+  background: rgba(245,158,11,0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* Image placeholder */
+.img-placeholder {
+  display: inline-block;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+/* Entity chips */
+.entity-section { margin: 20px 0; }
+.entity-section h4 { color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; }
+.echip {
+  display: inline-block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  margin: 2px 3px;
+}
+
+/* Report card (for list page) */
+.report-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.report-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.report-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.report-card .rc-meta { color: var(--muted); font-size: 0.84rem; }
+.report-card .rc-entities { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-top: 6px; }
+
+/* Search & filter */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+.search-input {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 260px;
+  outline: none;
+}
+.search-input:focus { border-color: var(--accent); }
+.filter-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(245,158,11,0.08);
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  margin-top: 60px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.footer-inner { text-align: center; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.footer-links { margin-top: 8px; }
+.footer-links a { color: var(--accent); text-decoration: none; }
+.footer-links a:hover { text-decoration: underline; }
+
+/* About page */
+.about-section { margin: 28px 0; }
+.about-section h2 { font-size: 1.3rem; margin-bottom: 12px; color: var(--accent); }
+.about-section p { margin-bottom: 12px; color: var(--muted); }
+.about-section ul { margin: 8px 0 8px 20px; color: var(--muted); }
+
+/* Download page */
+.dl-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.dl-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.dl-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; }
+.dl-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #000;
+  padding: 8px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.dl-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.dl-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.dl-btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Map page */
+.map-container {
+  text-align: center;
+  margin: 24px 0;
+}
+.map-container img {
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .stats-row { gap: 10px; }
+  .stat-card { min-width: 120px; padding: 14px 16px; }
+  .stat-card .num { font-size: 1.5rem; }
+  .nav-links a { padding: 6px 10px; font-size: 0.82rem; }
+  .search-input { width: 100%; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+}
+@media (max-width: 480px) {
+  .nav-links { gap: 0; }
+  .nav-links a { padding: 6px 8px; font-size: 0.78rem; }
+  .container { padding: 16px; }
+}
+
+
+.toc-float {
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.8rem;
+  max-width: 220px;
+  z-index: 50;
+}
+.toc-float h4 { color: var(--muted); margin-bottom: 8px; }
+.toc-float a { color: var(--muted); text-decoration: none; display: block; padding: 2px 0; }
+.toc-float a:hover { color: var(--accent); }
+@media (max-width: 1024px) { .toc-float { display: none; } }
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<nav class="topnav">
+<div class="nav-inner">
+  <a href="../index.html" class="logo">🏺 考古知识库</a>
+  <div class="nav-links">
+<a href="../index.html">总览</a>
+<a href="../reports.html" class="active">报告列表</a>
+<a href="../map.html">遗址地图</a>
+<a href="../download.html">数据下载</a>
+<a href="../about.html">关于</a>
+  </div>
+</div>
+</nav>
+<div class="container" style="display:flex;gap:24px">
+<div style="flex:1;min-width:0">
+<div class="report-header">
+  <a href="../reports.html" style="color:var(--muted);font-size:0.88rem;text-decoration:none">← 返回报告列表</a>
+  <h1 style="margin-top:8px">鄂城六朝墓</h1>
+  <div class="report-meta">
+    <span class="era-tag" style="background:#6366f122;color:#6366f1">魏晋南北朝</span>
+    <span>600 页</span>
+    <span>89.3 MB</span>
+    <span>716 个实体</span>
+    <span>密度 1.2</span>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:24px">
+  <h3>🏷️ 实体标注</h3>
+  <div class="entity-section"><h4>器物编号 (296)</h4><div><span class="echip">M1002:68</span><span class="echip">M2064:6</span><span class="echip">M2190:23</span><span class="echip">M3032:8</span><span class="echip">M1005:2</span><span class="echip">M2091:2</span><span class="echip">M3009:4</span><span class="echip">M2215:31</span><span class="echip">M3034:5</span><span class="echip">M3034:3</span><span class="echip">M2215:11</span><span class="echip">M2086:1</span><span class="echip">M2202:16</span><span class="echip">M1006:4</span><span class="echip">M1002:2</span><span class="echip">M1018:2</span><span class="echip">M4034:5</span><span class="echip">M5004:15</span><span class="echip">M2148:29</span><span class="echip">M2093:4</span><span class="echip">M2094:5</span><span class="echip">M2097:2</span><span class="echip">M1002:4</span><span class="echip">M2061:5</span><span class="echip">M2061:4</span><span class="echip">M3032:12</span><span class="echip">M2183:1</span><span class="echip">M1002:20</span><span class="echip">M2119:2</span><span class="echip">M2098:5</span><span class="echip">M3046:1</span><span class="echip">M1002:19</span><span class="echip">M3014:1</span><span class="echip">M2098:1</span><span class="echip">M2041:1</span><span class="echip">M2037:1</span><span class="echip">M2175:2</span><span class="echip">M2042:1</span><span class="echip">M3032:9</span><span class="echip">M2137:18</span><span class="echip">M1002:92</span><span class="echip">M5010:1</span><span class="echip">M2148:4</span><span class="echip">M2060:4</span><span class="echip">M1002:25</span><span class="echip">M2148:25</span><span class="echip">M2112:9</span><span class="echip">M2215:10</span><span class="echip">M2215:20</span><span class="echip">M2087:6</span><span class="echip" style="color:var(--muted)">+246 更多</span></div></div>
+<div class="entity-section"><h4>遗迹编号 (217)</h4><div><span class="echip">IV</span><span class="echip">K878</span><span class="echip">M1002</span><span class="echip">M4029</span><span class="echip">M4009</span><span class="echip">M2099</span><span class="echip">M2064</span><span class="echip">M4019</span><span class="echip">M2190</span><span class="echip">M2115</span><span class="echip">M1023</span><span class="echip">M2263</span><span class="echip">M2032</span><span class="echip">M10</span><span class="echip">M2261</span><span class="echip">M2262</span><span class="echip">M3054</span><span class="echip">M4037</span><span class="echip">M5017</span><span class="echip">M5004</span><span class="echip">M5013</span><span class="echip">M5014</span><span class="echip">M5012</span><span class="echip">M2112</span><span class="echip">M2159</span><span class="echip">M2087</span><span class="echip">M2076</span><span class="echip">M2084</span><span class="echip">M2220</span><span class="echip">M2186</span><span class="echip">M2038</span><span class="echip">M2169</span><span class="echip">M2183</span><span class="echip">M2113</span><span class="echip">M2081</span><span class="echip">M2162</span><span class="echip">M2006</span><span class="echip">M4022</span><span class="echip">M2215</span><span class="echip">M2174</span><span class="echip">M2180</span><span class="echip">M5016</span><span class="echip">M4008</span><span class="echip">M2048</span><span class="echip">M3028</span><span class="echip">M2072</span><span class="echip">M2205</span><span class="echip">M2120</span><span class="echip">M2012</span><span class="echip">M2179</span><span class="echip" style="color:var(--muted)">+167 更多</span></div></div>
+<div class="entity-section"><h4>测量数据 (122)</h4><div><span class="echip">7</span><span class="echip">90</span><span class="echip">8</span><span class="echip">31</span><span class="echip">08</span><span class="echip">04</span><span class="echip">4</span><span class="echip">21</span><span class="echip">07</span><span class="echip">33</span><span class="echip">16</span><span class="echip">05</span><span class="echip">95</span><span class="echip">87</span><span class="echip">27</span><span class="echip">9</span><span class="echip">1</span><span class="echip">73</span><span class="echip">06</span><span class="echip">24</span><span class="echip">34</span><span class="echip">58</span><span class="echip">5</span><span class="echip">37</span><span class="echip">35</span><span class="echip">18</span><span class="echip">46</span><span class="echip">3</span><span class="echip">68</span><span class="echip">32</span><span class="echip">72</span><span class="echip">26</span><span class="echip">2</span><span class="echip">86</span><span class="echip">76</span><span class="echip">93</span><span class="echip">50</span><span class="echip">28</span><span class="echip">78</span><span class="echip">62</span><span class="echip">42</span><span class="echip">94</span><span class="echip">15</span><span class="echip">03</span><span class="echip">17</span><span class="echip">52</span><span class="echip">47</span><span class="echip">88</span><span class="echip">43</span><span class="echip">64</span><span class="echip" style="color:var(--muted)">+72 更多</span></div></div>
+<div class="entity-section"><h4>年代 (41)</h4><div><span class="echip">公元221年</span><span class="echip">公元229年</span><span class="echip">公元265年</span><span class="echip">公元291年</span><span class="echip">公元304年</span><span class="echip">公元605年</span><span class="echip">公元1575年</span><span class="echip">公元496年</span><span class="echip">公元222年</span><span class="echip">公元240年</span><span class="echip">公元230年</span><span class="echip">公元238年</span><span class="echip">公元302年</span><span class="echip">公元262年</span><span class="echip">公元299年</span><span class="echip">公元280年</span><span class="echip">公元375年</span><span class="echip">公元290年</span><span class="echip">公元316年</span><span class="echip">公元254年</span><span class="echip">公元251年</span><span class="echip">公元271年</span><span class="echip">公元294年</span><span class="echip">公元273年</span><span class="echip">公元293年</span><span class="echip">公元288年</span><span class="echip">公元455年</span><span class="echip">公元493年</span><span class="echip">公元482年</span><span class="echip">公元520年</span><span class="echip">公元364年</span><span class="echip">公元485年</span><span class="echip">公元499年</span><span class="echip">公元510年</span><span class="echip">公元312年</span><span class="echip">公元447年</span><span class="echip">公元308年</span><span class="echip">公元323年</span><span class="echip">公元227年</span><span class="echip">公元282年</span><span class="echip">公元283年</span></div></div>
+<div class="entity-section"><h4>发掘信息 (16)</h4><div><span class="echip">中国社会科学院考古研究所</span><span class="echip">第一次为1956年5月至12月，系配合武（汉）大（冶）铁路鄂城段的修建而进行的。参加人员有湖北省博物馆高应勤、王富国，鄂城县文化馆熊亚云，大冶县易祖树，黄石市周保权，以及武大铁路沿线各县文教系统的有关人员。主要发掘了鄂城西郊雷山南麓樊口地区的瓦屋湾、朱家塗、秋家山、贺家嘴和花家嘴，西山南麓的郭家塗和麻家塗以及华容乡的冯家嘴和徐家湾等墓地。共清理发掘六朝墓葬75座，发掘资料和出土文物现存湖北省博物馆</span><span class="echip">博物馆王劲、郭冰廉、陈恒树和郭建安，还有鄂城县文化馆李树华等。这次共清理发掘六朝葬63座，发掘资料和出土文物现存湖北省博物馆</span><span class="echip">c. 江西省博物馆</span><span class="echip">③ 湖南省博物馆</span><span class="echip">⑤ 江西省博物馆</span><span class="echip">⑥ 江西省博物馆</span><span class="echip">① 湖南省博物馆</span><span class="echip">① 湖北省博物馆</span><span class="echip">② 湖南省博物馆</span><span class="echip">③ 湖北省博物馆</span><span class="echip">④ 江西省博物馆</span><span class="echip">⑤ 湖南省博物馆</span><span class="echip">⑦ 湖北省博物馆</span><span class="echip">科学出版社</span><span class="echip">文物出版社</span></div></div>
+<div class="entity-section"><h4>陶器 (11)</h4><div><span class="echip">陶罐</span><span class="echip">陶盆</span><span class="echip">陶盘</span><span class="echip">陶灶</span><span class="echip">陶釜</span><span class="echip">灰陶</span><span class="echip">盆</span><span class="echip">釜</span><span class="echip">罐</span><span class="echip">盘</span><span class="echip">壶</span></div></div>
+<div class="entity-section"><h4>材质 (5)</h4><div><span class="echip">铁器</span><span class="echip">铅器</span><span class="echip">金银器</span><span class="echip">玉石</span><span class="echip">水晶</span></div></div>
+<div class="entity-section"><h4>铜器 (3)</h4><div><span class="echip">铜镜</span><span class="echip">铜炉</span><span class="echip">盘</span></div></div>
+<div class="entity-section"><h4>石器 (1)</h4><div><span class="echip">石斧</span></div></div>
+<div class="entity-section"><h4>玉器 (1)</h4><div><span class="echip">玉璜</span></div></div>
+<div class="entity-section"><h4>纹饰 (1)</h4><div><span class="echip">方格纹</span></div></div>
+<div class="entity-section"><h4>保存状况 (1)</h4><div><span class="echip">一般</span></div></div>
+<div class="entity-section"><h4>地理位置 (1)</h4><div><span class="echip">北京</span></div></div>
+
+</div>
+
+<div class="card">
+  <h3>📖 报告全文</h3>
+  <div class="report-body" id="reportBody">
+    <h1 id="_1">鄂城六朝墓</h1>
+<p>南京大学历史系考古专业</p>
+<p>湖北省文物考古研究所 编著</p>
+<p>鄂州市博物馆</p>
+<p>中国社会科学院考古研究所 编辑</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_2">中国田野考古报告集</h1>
+<h1 id="_3">考古学专刊</h1>
+<h1 id="_4">丁种第七十六号</h1>
+<h1 id="_5">鄂城六朝墓</h1>
+<p>南京大学历史系考古专业</p>
+<p>湖北省文物考古研究所 编著</p>
+<p>鄂州市博物馆</p>
+<p>中国社会科学院考古研究所 编辑</p>
+<p>科学出版社</p>
+<p>北京</p>
+<h1 id="_6">内容简介</h1>
+<p>鄂城（今湖北省鄂州市），历史悠久，发现了自新石器时代以来的历代遗址和遗物，但以六朝时期的遗址、墓葬和遗物尤为突出。本书收录的就是1956~1983年期间清理发掘的394座六朝墓葬的资料，期间经过了5次较大规模的发掘清理工作。书中介绍了当时的发掘情况、六朝墓葬的分布、墓葬形制，并对出土的随葬器物进行了分类描述，最后对这批墓葬资料的分期与年代做了判断。书后还附有关于墓葬资料、陶瓷器、铜镜、钱币等的统计和发展演变表以及陶瓷器的理化分析表。</p>
+<p>本书适合于从事六朝历史、考古的专家学者以及相关专业的大专院校师生参考阅读。</p>
+<h1 id="cip">图书在版编目（CIP）数据</h1>
+<p>鄂城六朝墓/南京大学历史系考古专业，湖北省文物考古研究所，鄂州市博物馆编著.-北京：科学出版社，2007</p>
+<p>（中国田野考古报告集.考古学专刊；丁种）</p>
+<p>ISBN 978-7-03-019458-9</p>
+<p>I.鄂…Ⅱ.①南…②湖…③鄂…Ⅲ.墓葬（考古）-发掘报告－鄂州市-六朝时代 IV.K878.85</p>
+<p>中国版本图书馆CIP数据核字（2002）第091392号</p>
+<p>责任编辑：闫向东孙莉/特邀编辑：张静杨毅</p>
+<p>责任印制：赵德静/封面设计：陈敬</p>
+<p>科学出版社出版</p>
+<p>北京东黄城根北街16号</p>
+<p>邮政编码：100717</p>
+<p>http://www.sciencep.com</p>
+<p>中国科学院印刷厂印刷</p>
+<p>科学出版社发行 各地新华书店经销</p>
+<h1 id="_7"></h1>
+<p>2007年9月第一版开本： $787\times 1092$ 1/16</p>
+<p>2007年9月第一次印刷 印张：29 插页：77</p>
+<p>印数：1-1800 字数：658000</p>
+<p>定价：238.00元</p>
+<p>（如有印装质量问题，我社负责调换〈科印〉）</p>
+<p>本书为全国哲学社会科学“六五”期间考古学科重点项目。并承全国社会科学基金资助研究，以及国家文物局、香港柯君恒先生资助南京大学出版文物书籍基金、南京大学考古基金、湖北省文物考古研究所、鄂州市博物馆等资助出版。</p>
+<p>主编 蒋赞初</p>
+<p>副主编 王劲</p>
+<p>贺中香</p>
+<h1 id="_8">目录</h1>
+<h1 id="1">第一章 鄂城的地理环境和六朝墓葬的分布……熊亚云 熊海堂 徐国胜（1）</h1>
+<h1 id="1_1">第一节 鄂城的地理环境与历史沿革 (1)</h1>
+<h1 id="6">第二节 发掘经过与墓葬分区 ………………………………………… (6)</h1>
+<p>一 第一墓区——西山东麓墓区 ………………………………………… (7)<br />
+二 第二墓区——西山南麓墓区 ………………………………………… (9)<br />
+三 第三墓区——雷山南麓墓区 ………………………………………… (10)<br />
+四 第四墓区——洋澜湖周围墓区 ………………………………………… (10)<br />
+五 第五墓区——鄂城境内其他地点 (10)</p>
+<h1 id="12">第二章 墓葬形制 ………………………………………… (12)</h1>
+<h1 id="12_1">第一节 概述 魏鸣（12）</h1>
+<p>一 墓葬构筑 ………………………………………… (12)</p>
+<p>（一）砖室墓 (12)<br />
+（二）土坑基 ………………………………………… (17)</p>
+<p>二 基砖 (17)<br />
+三葬式 (19）<br />
+四葬具 (19）<br />
+五葬俗、葬制 (20）</p>
+<h1 id="20">第二节 墓形分类 熊海堂 贺中香 冯务建（20）</h1>
+<p>I型 (20)<br />
+二 Ⅱ型 (30)<br />
+三 Ⅲ型 (34)<br />
+四 IV型 (43)<br />
+五 V型 (53)<br />
+六 VI型 (91)<br />
+七V型 (99）<br />
+八 型 (114)</p>
+<h1 id="115">第三节 墓葬形制的演变与特色… 魏鸣（115）</h1>
+<p>一 墓葬构筑方式的演变与特色 ………………………………………… (115)<br />
+二 各型墓葬的演变与特色 (116)</p>
+<h1 id="120">第三章 随葬器物 (120)</h1>
+<h1 id="120_1">第一节 陶器和青瓷器贺中香 蒋赞初 李晓晖 张跃进（120）</h1>
+<h1 id="120_2">一日用器具 (120)</h1>
+<p>（一）陶器 (120)<br />
+（二）青瓷器 (148)</p>
+<h1 id="215">二 喃和模型明器 (215)</h1>
+<p>（一）俑和家禽家畜模型 (215)<br />
+（二）模型明器 (222)</p>
+<h1 id="239">第二节 金属器… 走海堂 蒋赞初 海蔚蓝 (239)</h1>
+<h1 id="239_1">日用器具 (239)</h1>
+<p>（一）铜器 (239)<br />
+（二）铁器 (248)<br />
+（三）铅器 (250)<br />
+（四）金银器 (250)</p>
+<h1 id="261">二 镜、钱币 (261)</h1>
+<p>（一）镜 (261)<br />
+（二）钱币 (291)</p>
+<h1 id="295">第三节 漆木器、玉石器、玻璃器及其他蒋赞初 海蔚蓝（295）</h1>
+<h1 id="295_1">一 漆木器 (295)</h1>
+<p>（一）漆器 (295)<br />
+（二）木器 (299)</p>
+<h1 id="299">二 玉石器及其他 (299)</h1>
+<p>（一）玉器 (299)<br />
+（二）石器 (299)<br />
+（三）其他 (303)</p>
+<h1 id="303">三 玻璃器及其他 (303)</h1>
+<p>（一）玻璃器 (303)<br />
+（二）其他 (305)</p>
+<h1 id="307">第四章 分期与年代 蒋赞初 (307)</h1>
+<h1 id="307_1">一 孙吴时期墓葬 (307)</h1>
+<p>（一）孙吴前期墓葬（第一期墓葬） (309)<br />
+（二）孙吴中期墓葬（第二期墓葬） (311)<br />
+（三）孙吴后期及吴晋之际墓葬（第三期墓葬） ………………………………………… (313)</p>
+<h1 id="315">二 西晋时期墓葬 (315)</h1>
+<p>（一）西晋前期墓葬（第四期墓葬） (315)<br />
+（二）西晋后期及两晋之际墓葬（第五期墓葬） …………………… (318)</p>
+<h1 id="319">三东晋时期墓葬 (319)</h1>
+<p>（一）东晋前期墓葬（第六期墓葬） ………………………………………… (320)<br />
+（二）东晋后期墓葬（第七期墓葬） ………………………………………… (322)</p>
+<h1 id="323">四 南朝时期墓葬 (323)</h1>
+<p>（一）南朝前期墓葬（第八期墓葬） ………………………………………… (324)<br />
+（二）南朝后期墓葬（第九期墓葬） ………………………………………… (325)</p>
+<h1 id="326">第五章 结语 蒋赞初 (326)</h1>
+<p>一 鄂城六朝墓葬各期的主要特点 (326)<br />
+二 鄂城六朝青瓷的主要特点 (330)<br />
+三 鄂城六朝铜镜的主要特点 ………………………………………… (332)<br />
+四 鄂城六朝金属器、漆木器与玻璃器等的主要特点 ………………………………………… (335)</p>
+<h1 id="_9">附录</h1>
+<p>1 鄂城六朝墓葬新墓号、原墓号对照表 ………………………………………… (338)<br />
+2 鄂城六朝墓葬形制总表 ………………………………………… (352)<br />
+3 鄂城六朝墓葬构筑方式发展变化表 ………………………………………… (388)<br />
+4 鄂城六朝墓葬出土陶器胎的理化分析测定表 ………………………………………… (389)<br />
+5长江中上游六朝青瓷胎的理化分析测定表 (390)<br />
+6长江中下游六朝青瓷釉的化学组成测定表 (392)<br />
+7长江下游六朝青瓷胎的理化分析测定表 (393)<br />
+8 鄂城六朝墓葬出土铜镜分类统计表 ………………………………………… (394)<br />
+9 鄂城六朝墓葬出土铜镜一览表 ………………………………………… (396)<br />
+10 鄂城六朝墓葬出土部分铜镜铭文（正文中未引用）一览表 (406)<br />
+11 鄂城六朝墓葬出土钱币统计表 (413)<br />
+12 鄂城六朝墓葬形制演变示意图 (插页)<br />
+13 鄂城六朝墓出土陶器器形演变示意图 ………………………………………… (插页)<br />
+14 鄂城六朝墓出土青瓷器器形演变示意图 ………………………………………… (插页)<br />
+15 鄂城六朝墓葬出土随葬器物总表 (417)</p>
+<h1 id="440">英文提要 (440)</h1>
+<h1 id="442">后记 (442)</h1>
+<h1 id="_10">插图目录</h1>
+<p>图1 鄂城位置示意图 (1)<br />
+图2 鄂城地理形势图 (2）<br />
+图3六朝武昌城址示意图· (5）<br />
+图4 鄂城六朝墓葬分区示意图 (8)<br />
+图5 铺地砖铺设形式示意图 (12)<br />
+图6 基壁砌筑形式示意图 (13)<br />
+图7 柱券和立柱砌筑形式示意图 (14)<br />
+图8 封门墙砌筑形式示意图 (15)<br />
+图9 祭台砌筑形式示意图 (16)<br />
+图10 排水设施形式示意图 (17)<br />
+图11 墓砖形制、纹饰示意图 (18)<br />
+图12 铜棺钉 (19) <br />
+图13 M2169平面、剖面图 (21)<br />
+图14 M2183平面图 (22)<br />
+图15 M2113平面图 (23）<br />
+图16 M2081平面、剖面图 (24)<br />
+图17 M5013平面、剖面图 (26)<br />
+图18 M5014平面、剖面图 (27)<br />
+图19 M2162平面、剖面图 (29)<br />
+图20 M2006平面、剖面图 (31)<br />
+图21 M4022平面、剖面图 (32）<br />
+图22 M2263平面图 (33）<br />
+图23 M2215平面、剖面图 (35）<br />
+图24 M1002平面、剖面图 (插页)<br />
+图25 M2174平面、剖面图 (37)<br />
+图26 M2180平面、剖面图 (38）<br />
+图27 M2262平面、剖面图 (40）<br />
+图28 M5012平面、剖面图 (41)<br />
+图29 M5016平面图 (42)<br />
+图30 M4008平面图 (43）<br />
+图31 M2048平面、剖面图 (44)<br />
+图32 M3028平面、剖面图 (45)</p>
+<p>图33 M2160平面、剖面图 (46)<br />
+图34 M2072平面、剖面图 (48)<br />
+图35 M2205平面、剖面图 (49)<br />
+图36 M2120平面、剖面图 (50）<br />
+图37 M2012平面、剖面图 (52）<br />
+图38 M2179平面图 (53）<br />
+图39 M5001平面图 (54)<br />
+图40 M2182平面、剖面图 (55)<br />
+图41 M2170平面图 (56)<br />
+图42 M1011平面、剖面图 (57)<br />
+图43 M2025平面、剖面图 (58）<br />
+图44 M2084平面图 (58）<br />
+图45 M2142平面图 (59)<br />
+图46 M2150平面图 (60）<br />
+图47 M3027平面、剖面图 (60）<br />
+图48 M5004平面、剖面图 (61)<br />
+图49 M2208平面、剖面图 (62)<br />
+图50 M4020平面图 (63）<br />
+图51 M2184平面、剖面图 (63）<br />
+图52 M2017平面、剖面图 (64)<br />
+图53 M2062平面图 (65）<br />
+图54 M2040平面、剖面图 (66)<br />
+图55 M2002平面、剖面图 (67)<br />
+图56 M2071平面、剖面图 (68）<br />
+图57 M2149平面、剖面图 (68)<br />
+图58 M2213平面、剖面图 (69)<br />
+图59 M2016平面、剖面图 (70）<br />
+图60 M3031平面、剖面图 (71)<br />
+图61 M2148平面、剖面图 (72)<br />
+图62 M2034平面、剖面图 (72)<br />
+图63 M2186平面、剖面图 (74)<br />
+图64 M1012平面、剖面图 (74)<br />
+图65 M2027平面、剖面图 (75)<br />
+图66 M2168平面图 (75)<br />
+图67 M2014平面、剖面图 (76)<br />
+图68 M2087平面、剖面图 (78)<br />
+图69 M3051平面、剖面图 (79)<br />
+图70 M2070平面、剖面图 (80）</p>
+<p>图71 M2112平面、剖面图 (81)<br />
+图72 M2022平面、剖面图 (82)<br />
+图73 M2167平面、剖面图 (84）<br />
+图74 M2051平面、剖面图 (85）<br />
+图75 M2157平面、剖面图 (86)<br />
+图76 M2219平面、剖面图 (87)<br />
+图77 M2227平面、剖面图 (88)<br />
+图78 M2226平面、剖面图 (90）<br />
+图79 M4004平面、剖面图 (91)<br />
+图80 M4031平面、剖面图 (92)<br />
+图81 M3019平面、剖面图 (94)<br />
+图82 M2075平面、剖面图 (95)<br />
+图83 M2057平面、剖面图 (96)<br />
+图84 M2024平面、剖面图 (96)<br />
+图85 M2261平面、剖面图 (98)<br />
+图86 M3007平面图 (99)<br />
+图87 M2137平面图 (100)<br />
+图88 M3002平面、剖面图 (100)<br />
+图89 M2039平面、剖面图 (101)<br />
+图90 M4002平面、剖面图 (101)<br />
+图91 M3045平面、剖面图 (102)<br />
+图92 M2244平面图 (102)<br />
+图93 M4016平面、剖面图 (103)<br />
+图94 M2220平面、剖面图 (104)<br />
+图95 M4003平面、剖面图 (106)<br />
+图96 M2032平面、剖面图 (107)<br />
+图97 M2049平面、剖面图 (107)<br />
+图98 M2055平面、剖面图 (108)<br />
+图99 M3010平面、剖面图 (109)<br />
+图100 M2047平面、剖面图 (110)<br />
+图101 M2054平面、剖面图 (111)<br />
+图102 M2192平面图 (112)<br />
+图103 M2114平面图 (112)<br />
+图104 M2139平面图 (112)<br />
+图105 M2211平面、剖面图 (113)<br />
+图106 M2018平面、剖面图 (113)<br />
+图107 M3035平面图 (114)<br />
+图108 M3009平面、剖面图 (114)</p>
+<p>图109 M1014平面图 (115)<br />
+图110 陶罐 (123)<br />
+图111 陶罐 (124)<br />
+图112 陶罐 (126)<br />
+图113 陶罐 (128) <br />
+图114 陶罐 (129)<br />
+图115 陶罐 (130)<br />
+图116 陶罐 (131)<br />
+图117 陶盘口壶 (133)<br />
+图118 陶盆 (135)<br />
+图119 陶三足炉 (136)<br />
+图120 陶灯、砚 (137) <br />
+图121 陶盘 (139)<br />
+图122 陶橘 (141)<br />
+图123 陶橘 (142)<br />
+图124 陶魁、勺 (143) <br />
+图125 陶魁、勺 (145) <br />
+图126 陶盏、耳杯、熏 (146)<br />
+图127 青瓷罐 (152)<br />
+图128 青瓷罐 (154)<br />
+图129 青瓷罐 (156)<br />
+图130 青瓷罐 (159)<br />
+图131 青瓷盘口壶 (162)<br />
+图132 青瓷盘口壶 (164)<br />
+图133 青瓷盘口壶 (166)<br />
+图134 青瓷盘口壶 (168)<br />
+图135 青瓷鸡首壶 (170)<br />
+图136 青瓷鸡首壶 (172)<br />
+图137 青瓷唾壶 (174)<br />
+图138 青瓷唾壶 (176)<br />
+图139 青瓷碗 (178)<br />
+图140 青瓷碗 (180)<br />
+图141 青瓷碗 (181)<br />
+图142 青瓷碗 (183)<br />
+图143 青瓷盏 (186)<br />
+图144 青瓷盏 (188)<br />
+图145 青瓷盆 (190)<br />
+图146 青瓷盆、酒樽 (191)</p>
+<p>图147 青瓷盘 (194)<br />
+图148 青瓷桶、耳杯、勺 (195)<br />
+图149 青瓷盒 (197)<br />
+图150 青瓷水盂 (199)<br />
+图151 青瓷水盂 (201)<br />
+图152 青瓷砚 (203)<br />
+图153 青瓷灯 (205)<br />
+图154 青瓷熏 (207)<br />
+图155 青瓷虎子 (209)<br />
+图156 青瓷插座 (212)<br />
+图157 陶瓷人物俑 (216)<br />
+图158 陶瓷人物俑、镇墓俑 (218)<br />
+图159 I型1式青瓷镇墓俑（M1002:68） (219)<br />
+图160 陶瓷镇墓俑 (220)<br />
+图161 陶瓷家禽、家畜 (221)<br />
+图162 陶瓷仓 (223)<br />
+图163 青瓷仓 (224)<br />
+图164 陶瓷灶 (225)<br />
+图165 陶瓷灶 (226)<br />
+图166 陶瓷灶 (227) <br />
+图167 陶瓷井 (228) <br />
+图168 陶瓷磨 (230)<br />
+图169 陶瓷磨、碓 ………………………………………… (231)<br />
+图170 陶瓷白、帷帐座、案和纺轮 (232)<br />
+图171 青瓷院落、禽舍 (233)<br />
+图172 陶瓷畜圈 (234)<br />
+图173 陶瓷车舆 (236)<br />
+图174 铜釜、洗、整 (240)<br />
+图175 铜酒樽、铜、锅 (241)<br />
+图176 铜镶斗、勺、熨斗 (242) <br />
+图177 铜耳杯、盒、烛座 (244)<br />
+图178 铜带钩 (245)<br />
+图179 铜弩机 (246)<br />
+图180 铜饰件、印章、叉枝状板形器 (247)<br />
+图181 铁镶斗、刀、穿钉和戟等 (249)<br />
+图182 金银钗、簪、项圈 ………………………………………… (251)<br />
+图183 金银钗和角钗 (252)<br />
+图184 金银镯 (254)</p>
+<p>图185 金银指环、顶针 (255)<br />
+图186 金饰片 (257)<br />
+图187 银唾壶、铃和金珠、饰件 (259)<br />
+图188 银叉枝状板形器（M4029：17） (260)<br />
+图189 铜镜 (262)<br />
+图190 铜镜 (266)<br />
+图191 铜镜 (268) <br />
+图192 VI型1式铜镜（西山南麓采集：5） (269)<br />
+图193 VI型1式铜镜（田鲁湾排灌站采集：1） (270)<br />
+图194 铜镜 (271)<br />
+图195 铜镜 (272)<br />
+图196 铜镜 (274)<br />
+图197 铜镜 (275)<br />
+图198V型2式铜镜（M4009：1） (276)<br />
+图199 铜镜 (277) <br />
+图200 VIII型铜镜（西山铁矿工地采集：2） (278)<br />
+图201 VIII型铜镜（M2099：2） (279)<br />
+图202 VIII型铜镜（M2064:6:2） (280)<br />
+图203 铜镜 (281)<br />
+图204 铜镜 (282)<br />
+图205 铜镜 (284)<br />
+图206 铜镜 (286)<br />
+图207 铜镜 (287) <br />
+图208 X型1式铜镜（M4019：2） (287)<br />
+图209 铜镜 (288) <br />
+图210 铜镜 (289)<br />
+图211 钱币拓本 (292)<br />
+图212 钱币拓本 (293)<br />
+图213 漆盒、桶、钱串 (296)<br />
+图214 漆耳杯（M2190:23） (297)<br />
+图215 木名刺（出自M2190） (298)<br />
+图216 玉石、水晶、玛瑙器 (300)<br />
+图217 石黛砚 (301)<br />
+图218 石豚 ………………………………………… (302)<br />
+图219 琥珀饰件和玻璃碗、饰件 ………………………………………… (304)</p>
+<h1 id="_11">彩版目录</h1>
+<p>彩版1 鄂城六朝墓出土青瓷罐、盘口壶<br />
+彩版2 鄂城六朝墓出土青瓷盘口壶<br />
+彩版3 鄂城六朝墓出土青瓷鸡首壶<br />
+彩版4 鄂城六朝墓出土青瓷唾壶<br />
+彩版5 鄂城六朝墓出土青瓷盆、酒樽<br />
+彩版6 鄂城六朝墓出土青瓷盒<br />
+彩版7 鄂城六朝墓出土青瓷水盂<br />
+彩版8 鄂城六朝墓出土青瓷砚、熏<br />
+彩版9 鄂城六朝墓出土青瓷熏 <br />
+彩版10 鄂城六朝墓出土青瓷虎子<br />
+彩版11 鄂城六朝墓出土青瓷插座<br />
+彩版12 鄂城六朝墓出土青瓷插座<br />
+彩版13 鄂城六朝墓出土青瓷人物俑、镇墓俑<br />
+彩版14 鄂城六朝墓出土金饰片、金银饰件<br />
+彩版15 鄂城六朝墓出土玻璃碗、银唾壶、琥珀饰件和水晶珠等<br />
+彩版16 鄂城六朝墓出土Ⅷ型鎏金铜镜（M2115：14）</p>
+<h1 id="_12">图版目录</h1>
+<p>图版1 鄂城六朝武昌城址及六朝墓地<br />
+图版2 鄂城六朝武昌城址及六朝墓地<br />
+图版3 鄂城六朝墓墓圹及墓室<br />
+图版4 鄂城六朝墓墓底铺地砖<br />
+图版5 鄂城六朝墓墓壁柱券、角柱、立柱及咬土砖形式<br />
+图版6 鄂城六朝墓封门墙及墓顶结构<br />
+图版7 鄂城六朝墓墓室底部形式及祭台<br />
+图版8 鄂城六朝墓墓室排水沟<br />
+图版9 鄂城六朝墓出土铜漏水板、棺钉和铁棺钉<br />
+图版10 鄂城六朝墓出土陶罐<br />
+图版11 鄂城六朝墓出土陶罐<br />
+图版12 鄂城六朝墓出土陶罐<br />
+图版13 鄂城六朝墓出土陶罐<br />
+图版14 鄂城六朝墓出土陶罐<br />
+图版15 鄂城六朝墓出土陶罐<br />
+图版16 鄂城六朝墓出土陶罐<br />
+图版17 鄂城六朝墓出土陶罐<br />
+图版18 鄂城六朝墓出土陶罐<br />
+图版19 鄂城六朝墓出土陶罐<br />
+图版20 鄂城六朝墓出土陶盘口壶<br />
+图版21 鄂城六朝墓出土陶盘口壶、盆<br />
+图版22 鄂城六朝墓出土陶盆、三足炉<br />
+图版23 鄂城六朝墓出土陶三足炉、砚<br />
+图版24 鄂城六朝墓出土陶灯<br />
+图版25 鄂城六朝墓出土陶盘<br />
+图版26 鄂城六朝墓出土陶盘<br />
+图版27 鄂城六朝墓出土陶棺<br />
+图版28 鄂城六朝墓出土陶棺<br />
+图版29 鄂城六朝墓出土陶魁、勺<br />
+图版30 鄂城六朝墓出土陶魁、勺、熏和盏等<br />
+图版31 鄂城六朝墓出土青瓷罐<br />
+图版32 鄂城六朝墓出土青瓷罐</p>
+<p>图版33 鄂城六朝墓出土青瓷罐</p>
+<p>图版34 鄂城六朝墓出土青瓷罐</p>
+<p>图版35 鄂城六朝墓出土青瓷罐</p>
+<p>图版36 鄂城六朝墓出土青瓷罐</p>
+<p>图版37 鄂城六朝墓出土青瓷罐</p>
+<p>图版38 鄂城六朝墓出土青瓷罐</p>
+<p>图版39 鄂城六朝墓出土青瓷盘口壶</p>
+<p>图版40 鄂城六朝墓出土青瓷盘口壶</p>
+<p>图版41 鄂城六朝墓出土青瓷盘口壶</p>
+<p>图版42 鄂城六朝墓出土青瓷盘口壶</p>
+<p>图版43 鄂城六朝墓出土青瓷盘口壶</p>
+<p>图版44 鄂城六朝墓出土青瓷盘口壶</p>
+<p>图版45 鄂城六朝墓出土青瓷盘口壶</p>
+<p>图版46 鄂城六朝墓出土青瓷盘口壶、鸡首壶</p>
+<p>图版47 鄂城六朝墓出土青瓷鸡首壶</p>
+<p>图版48 鄂城六朝墓出土青瓷鸡首壶</p>
+<p>图版49 鄂城六朝墓出土青瓷唾壶</p>
+<p>图版50 鄂城六朝墓出土青瓷唾壶</p>
+<p>图版51 鄂城六朝墓出土青瓷碗</p>
+<p>图版52 鄂城六朝墓出土青瓷碗</p>
+<p>图版53 鄂城六朝墓出土青瓷碗</p>
+<p>图版54 鄂城六朝墓出土青瓷碗</p>
+<p>图版55 鄂城六朝墓出土青瓷盏</p>
+<p>图版56 鄂城六朝墓出土青瓷盏</p>
+<p>图版57 鄂城六朝墓出土青瓷盆、酒樽</p>
+<p>图版58 鄂城六朝墓出土青瓷盘</p>
+<p>图版59 鄂城六朝墓出土青瓷棺、盒</p>
+<p>图版60 鄂城六朝墓出土青瓷水盂</p>
+<p>图版61 鄂城六朝墓出土青瓷水盂</p>
+<p>图版62 鄂城六朝墓出土青瓷砚</p>
+<p>图版63 鄂城六朝墓出土青瓷灯</p>
+<p>图版64 鄂城六朝墓出土青瓷熏陶</p>
+<p>图版65 鄂城六朝墓出土青瓷虎子</p>
+<p>图版66 鄂城六朝墓出土青瓷虎子</p>
+<p>图版67 鄂城六朝墓出土青瓷虎子、插座</p>
+<p>图版68 鄂城六朝墓出土陶瓷人物俑</p>
+<p>图版69 鄂城六朝墓出土陶瓷人物俑</p>
+<p>图版70 鄂城六朝墓出土陶瓷人物俑、镇墓俑<br />
+图版71 鄂城六朝墓出土陶瓷镇墓俑<br />
+图版72 鄂城六朝墓出土陶瓷鸡<br />
+图版73 鄂城六朝墓出土陶瓷鸭<br />
+图版74 鄂城六朝墓出土陶瓷动物<br />
+图版75 鄂城六朝墓出土陶瓷猪<br />
+图版76 鄂城六朝墓出土陶瓷狗<br />
+图版77 鄂城六朝墓出土陶瓷马、牛、羊<br />
+图版78 鄂城六朝墓出土陶瓷仓<br />
+图版79 鄂城六朝墓出土陶瓷仓<br />
+图版80 鄂城六朝墓出土陶瓷灶<br />
+图版81 鄂城六朝墓出土陶瓷灶、井<br />
+图版82 鄂城六朝墓出土陶瓷井<br />
+图版83 鄂城六朝墓出土陶瓷井、磨<br />
+图版84 鄂城六朝墓出土陶瓷磨、臼、碓和案<br />
+图版85 鄂城六朝墓出土青瓷院落<br />
+图版86 鄂城六朝墓出土青瓷禽舍<br />
+图版87 鄂城六朝墓出土陶瓷畜圈<br />
+图版88 鄂城六朝墓出土陶畜圈、车轮、纺轮和帷帐座<br />
+图版89 鄂城六朝墓出土陶瓷车舆<br />
+图版90 鄂城六朝墓出土铜釜、釜、洗和绢等<br />
+图版91 鄂城六朝墓出土铜酒樽、耳杯、带钩<br />
+图版92 鄂城六朝墓出土铜龛斗、熨斗<br />
+图版93 鄂城六朝墓出土铜弩机<br />
+图版94 鄂城六朝墓出土铜器、铁器、银器和铅器<br />
+图版95 鄂城六朝墓出土金银器<br />
+图版96 鄂城六朝墓出土金银器<br />
+图版97 鄂城六朝墓出土金银器<br />
+图版98 鄂城六朝墓出土金银器<br />
+图版99 鄂城六朝墓出土铜镜<br />
+图版100 鄂城六朝墓出土铜镜<br />
+图版101 鄂城六朝墓出土铜镜<br />
+图版102 鄂城六朝墓出土铜镜<br />
+图版103 鄂城六朝墓出土铜镜<br />
+图版104 鄂城六朝墓出土铜镜<br />
+图版105 鄂城六朝墓出土铜镜<br />
+图版106 鄂城六朝墓出土铜镜</p>
+<p>图版107 鄂城六朝墓出土铜镜<br />
+图版108 鄂城六朝墓出土铜镜<br />
+图版109 鄂城六朝墓出土铜镜<br />
+图版110 鄂城六朝墓出土铜镜<br />
+图版111 鄂城六朝墓出土铜镜<br />
+图版112 鄂城六朝墓出土铜镜<br />
+图版113 鄂城六朝墓出土铜镜<br />
+图版114 鄂城六朝墓出土铜镜<br />
+图版115 鄂城六朝墓出土铜镜<br />
+图版116 鄂城六朝墓出土铜镜<br />
+图版117 鄂城六朝墓出土铜镜<br />
+图版118 鄂城六朝墓出土漆盒、耳杯、屐等和石黛砚<br />
+图版119 鄂城六朝墓出土石黛砚、豚<br />
+图版120 鄂城六朝墓出土石豚</p>
+<h1 id="_13">第一章 鄂城的地理环境和六朝墓葬的分布</h1>
+<h1 id="_14">第一节 鄂城的地理环境与历史沿革</h1>
+<p>鄂城（今湖北省鄂州市）位于长江中游的南岸，西距武汉市区68公里，东与黄石市相邻，南为大冶县，北隔长江与黄冈市黄州区相望（图1）。</p>
+<p>在地貌分区上，鄂城属于鄂中南江汉平原区与鄂东南幕阜低山丘陵区的交接地带①。故其西境与北境的沿江一带河湖密布，而东南境则多山（图2)。长江由北而来，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图1 郾城位置示意图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图2 鄂城地理形势图</p>
+<p>折向东流，在鄂城西山脚下形成一个直角，这段江面现宽约1500米。据《光绪武昌县志》记载，清代以前，此处江面较宽，江中自西至东分布有峥嵘洲、沐鹅洲、新生洲、八里洲、举洲、芦洲、得胜洲、戴家洲、杨叶洲等大小沙洲；南岸临江则有赵家矶、泥矶、磺矶、黄子矶、龙王矶、燕矶、寡妇矶、平山矶和红石矶等突出江岸①。由于多年来这段江水不断向南岸冲刷，北岸则逐渐淤涨，所以这些古代沙洲现已大部分与北岸的陆地相连，从而使江面大为缩小。南岸鄂城一带的山矶则变化不大，但江岸时有崩坍。</p>
+<p>在鄂城众多的湖泊和河港中，主要有西南境的梁子湖、鸭儿湖和三山湖，东南境的洋澜湖、花马湖和陈州湖，以及西郊的长港等。其中梁子湖和花马湖的原有湖面均达百万亩上下，原水位高达 $21\sim 25$ 米，是湖北东部最大的两座湖泊②。</p>
+<p>洋澜湖古称南湖，或名南浦，为鄂城南郊的屏障，六朝时即是军事要地。长港古名</p>
+<p>樊川，或称樊港，在鄂城西郊的樊口入江，是梁子湖、鸭儿湖等接通长江的主要水道。樊口则是六朝时长江中游的良港，当年的水军可经樊川和梁子湖等内陆航道西通夏口（今武昌），军事地位至为重要。</p>
+<p>鄂城的南境是连绵丘陵，其高度自南向北递减，直至江岸。南境最高的山是白雉山，海拔高度为465米，位于鄂城西郊江边的西山则仅高168.7米。鄂城东郊有虎头山、仙堂山和凤山等低山，西郊除西山外，还有雨台山、雷山、吉祥山、神人山、白浒山等，在洋澜湖之南有鹰山、莲花山、葛山、少祖山、麻羊塒、五卦山等。</p>
+<p>上述鄂城的地貌情况亦与《光绪武昌县志》所载：“县境所隶。水居其七，山二，土田一耳”①相一致。故鄂城的农业不甚发达，而以水产品和铁、铜、煤等矿藏著称。如历史上有名的“武昌鱼”，即盛产于西郊江边的樊口附近②。矿藏方面，据文献记载，鄂城及其邻县大冶一带，自古以来就盛产铜铁。如《晋书·地理志》载：“鄂县有新兴、马头二冶。”③《太平寰宇记》载：“武昌白雉山……晋、宋、梁、陈以来置炉烹炼。”④梁代陶弘景所著的《刀剑录》中亦有“吴主孙权黄武四年，采武昌山铜铁，作千口剑，万口刀，各长三尺九寸，刀头方，皆是南钢越炭作之”⑤的记载。说明在六朝时代此处的铜铁冶铸业已经相当发达。直到今天，鄂城的西山一带还建有铁矿和规模较大的钢铁厂，南邻的大冶县铜绿山则自古以来即有规模很大的铜矿⑥。而且，在鄂城丁祖镇的铜灶也发现了小规模的东周冶铜遗址⑦。</p>
+<p>鄂城的历史可以追溯到五六千年前的新石器时代，在沿江的雨台山和钓鱼台，南郊的新庙官塘、华容镇和莆团吴家大湾等地点，都发现过这一时代的遗址⑧。至西周夷王时，楚王熊渠曾封其“中子红为鄂王”于此⑨，《光绪武昌县志》亦载有“鄂王城”的古迹⑩。春秋战国时仍为鄂君之地，1957年在安徽寿县楚国晚期都城遗址内发现的“鄂君启金节”，据诸家考证，均认为“鄂”即是今鄂城⑪。考古工作者于 $1958\sim 1978$ 年间在鄂城西山南麓，西南郊的五里墩和七里界，南郊的百子畈，以及东郊的洋澜湖畔等基建工地上，先后发现了战国至秦汉之际的中小型楚墓30座，出土陶器、铜器、漆木竹</p>
+<p>① 《光绪武昌县志》卷三《风俗》。<br />
+② “武昌鱼”一名“团头鲂”，又名“缩项鳊”，以产于樊川人江口一带者味最鲜美，三国孙吴时即著称于世。《三国志·吴书·陆凯传》所引童谣“宁饮建业水，不食武昌鱼；宁还建业死，不止武昌居”中之“武昌鱼”即指此。<br />
+③ 《晋书·地理志》“武昌郡鄂县”条。<br />
+④ 《太平寰宇记》卷一一二。<br />
+⑤ 《太平御览》卷三四三引。<br />
+⑥ 夏鼐等：《湖北铜绿山古铜矿》，《考古学报》1982年第1期。<br />
+⑦ 徐献国：《郭城县发现一处古冶炼遗址》，《江汉考古》1985年第4期。<br />
+⑧ 鄂城县地名办公室：《湖北鄂城县地名志》，1981年铅印本。<br />
+⑨ 《史记·楚世家》。<br />
+⑩ 《光绪武昌县志》卷九《古迹》。<br />
+$①$ a.殷涤非等：《寿县出土的鄂君启金节》，《文物参考资料》1958年第4期。</p>
+<p>b.于省吾：《“鄂君启节”考释》，《考古》1963年第8期。</p>
+<p>器和玉器共506件，亦可说明此处是楚国东部的重要地点①。</p>
+<p>秦置鄂县，属于南郡。两汉时仍为鄂县，属荆州江夏郡。至三国时代的曹魏黄初二年（公元221年），孙权自公安迁此，更名鄂为武昌，设武昌郡，辖武昌、下雉、寻阳、阳新、柴桑、沙羡六县，并筑武昌城，以此为吴王王都。孙吴黄龙元年（公元229年），孙权称帝于武昌，同年秋迁都建业（今南京市）②，但仍“留太子登及尚书九官于武昌，使大将军陆逊辅太子，并掌荆州及豫州三郡事，董督军国”③。陆逊死后，又以吕岱、诸葛恪、陆凯、滕胤等重臣先后镇守武昌。孙吴甘露元年（公元265年），后主孙皓又迁都武昌一年有余。故终孙吴之世，武昌均处于王都或首都、陪都的重要地位。</p>
+<p>西晋时武昌仍为郡治，统武昌、柴桑、阳新、沙羡、鄂、官陵等县。元康元年（公元291年）由原属荆州改属新设的江州。此时，原属武昌郡的寻阳县已改属庐江郡。永兴元年（公元304年）又自武昌郡分出柴桑县，与寻阳县合置寻阳郡④。寻阳的兴起，显然使武昌的重要性有所减弱。但在东晋偏安江左时，武昌又再度成为长江中游的重镇，王敦、温峤、陶侃、庾亮与庾翼等大臣，均先后以荆州刺史或江州刺史的身份镇守武昌，而且他们还具有将军或大将军，以至都督江、荆或加督豫、益、梁、交、广诸州军事的权力⑤，可见在东晋的前期，武昌实际上是长江中上游以至岭南地区的政治和军事中心。至东晋后期桓温专政后，改以江陵为其根据地，并以襄阳为重镇，武昌的地位遂逐步减弱。南朝时，在荆州与江州之间别立一郢州，州治设在夏口（今武昌），武昌郡亦改属郢州，辖县减为武昌、阳新、鄂三县，吴晋时武昌的重要地位又为夏口所取代。</p>
+<p>隋军灭陈后，改郢州为鄂州，并撤销武昌郡，废鄂县入武昌县，隶属于鄂州。此后，历唐、宋、元、明、清各代皆称武昌县，唐代属江南西道鄂州，宋代初属荆湖北路鄂州武昌军节度，后属寿昌军，元代属湖广行省武昌路，明代属湖广布政使司武昌府，清代属湖北省武昌府。民国二年（1913年）改武昌县为寿昌县，第二年又改称鄂城县，鄂城县一名自1914年起使用到1982年为止。在1962年和1979年曾两度设立过鄂城市，1983年合鄂城市、鄂城县及江对岸的黄州镇设置鄂州市，原鄂城城区及郊区为鄂州市鄂城区，后又不辖黄州镇，以原鄂城县境为鄂州市辖区。</p>
+<p>关于秦汉的鄂县县城、六朝的武昌城以及隋唐至明清的武昌县城的城址所在和相互关系，经过我们在20世纪80年代初期的多次实地调查，并结合有关的文献记载⑥，我们认为秦汉鄂县县城与六朝武昌城系在同一地点，而隋代至清代的武昌县城则在其西，两处城址东西毗连，均位于西山东麓江边的丘陵地带。</p>
+<p>秦汉时的鄂县城址，已被叠压在六朝武昌城之下。此城相传为汉初大将灌婴所筑，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图3六朝武昌城址示意图</p>
+<p>在现存六朝武昌城的夯土城垣中，曾发现有春秋战国时期的几何印纹陶片和汉代的绳纹陶片。此城址的形势是北临大江，南濒洋澜湖，西阻西山，东凭虎头山高地，自然条件较为优越，故孙权于黄初二年（公元221年）八月“城武昌”时①，并未另觅新址。</p>
+<p>六朝武昌城俗称“吴王城”②，位于今鄂州市区的东部。其北垣原建于陡峭的江岸之上，以江为池，故不需城墙，但因受到千余年来的江水冲刷，这段江岸已大部分崩坍成为江滩，城垣遗迹也荡然无存。只是在北垣东端的窑山和西端的寿山高地上，发现有夯土层及绳纹筒瓦和板瓦的堆积（图版1）。在崩坍而成的宽约 $20\sim 30$ 米的江滩上，则散布有大量汉末至孙吴两晋时期的绳纹筒瓦和板瓦碎片，以及两晋时期的青瓷器碎片等。此外，在这段江滩上还发现了九处排列有序的井窖底部遗迹，其年代约为东汉晚期至孙吴前期③。南垣尚有3处共200余米的夯土墙遗留在地面上，残高4~6米不等，宽度一般在 $18\sim 30$ 米之间（图3）。经钻探，南垣的中部有类似城门的缺口及“马面”的遗迹。南垣外侧的城墙仍清晰可辨，其河床遗迹上宽 $80\sim 90$ 米，下宽 $50\sim 70$ 米。在城</p>
+<p>壕中部偏西处，还遗留有一处俗称为“壕塘”的水面，计长270米，宽65~90米，深5米左右。其余的城墙故址内，今分布有被称为“壕田”的菜地，还有一些断断续续的池塘和水沟（图版2-1）。</p>
+<p>六朝武昌城的东面和西面城垣，在地面上均已无遗迹可寻，只是在东南转角处遗留有一段长60米、残宽15米、残高2米的夯土墙。但是东垣所在的地面，仍高于外侧农田7~8米；西垣所在的地面亦高于外侧的城墙故址。东垣之外的靠江岸一带，今为大片的淤沙区，或为古代渴湖的余留物，六朝时可能用作天然的城墙；而东垣外侧的南端，经钻探后发现有城墙遗迹。西垣外的城墙故址，明清时已辟为街巷，名为熊家巷，至靠近江岸处，还遗留有“壕口”的老地名。根据城垣和城墙的初步钻探结果，以及现存地面遗迹的实测，再对照1:5000的地形图，得出城址的东西长度为1100米左右，南北长度为500米左右，周长为3200米左右，约合汉代的8里，城址大体上作长方形。</p>
+<p>隋大业元年（公元605年），六朝武昌城被废弃，另在其西侧一里许建武昌县城①。隋唐时的城垣为土筑，南宋时建东、南、西、北四门，至明万历三年（公元1575年）始建石基砖垣②。据近年来的考古调查，此城的东垣已延伸到六朝武昌城的西垣内的200米左右，西依西山东脉之雨台山，南濒洋澜湖，北垣滨江。城周860丈，约合2600米，仅及六朝武昌城的三分之二大小。北垣外的江边至今还保存有唐代的“怡亭铭”石刻③。</p>
+<h1 id="_15">第二节 发掘经过与墓葬分区</h1>
+<p>建国以来，在鄂城的各项基本建设工程中，先后发现了数以千计的古代墓葬，其中六朝墓约占半数以上。六朝墓中经过清理发掘的近400座，本报告所整理研究者为1956年至1983年间清理发掘的394座六朝墓，这批六朝墓葬的资料是经过五次较大规模的清理发掘工作所取得的。</p>
+<p>第一次为1956年5月至12月，系配合武（汉）大（冶）铁路鄂城段的修建而进行的。参加人员有湖北省博物馆高应勤、王富国，鄂城县文化馆熊亚云，大冶县易祖树，黄石市周保权，以及武大铁路沿线各县文教系统的有关人员。主要发掘了鄂城西郊雷山南麓樊口地区的瓦屋湾、朱家塗、秋家山、贺家嘴和花家嘴，西山南麓的郭家塗和麻家塗以及华容乡的冯家嘴和徐家湾等墓地。共清理发掘六朝墓葬75座，发掘资料和出土文物现存湖北省博物馆。</p>
+<p>第二次为1958年，系配合兴建鄂城钢铁厂和鄂城水泥厂等大型企业的基本建设工程，在西山山麓地带和武（汉）黄（石）公路西侧进行的考古发掘。参加人员有湖北省</p>
+<p>博物馆王劲、郭冰廉、陈恒树和郭建安，还有鄂城县文化馆李树华等。这次共清理发掘六朝葬63座，发掘资料和出土文物现存湖北省博物馆。</p>
+<p>第三次为1960年，系配合武黄公路的扩建工程和寒溪公路的修建工程而进行的考古发掘。参加人员有湖北省博物馆程欣人和鄂城县博物馆李树华等。共清理发掘六朝墓葬5座，发掘资料和出土文物现存鄂州市博物馆。</p>
+<p>第四次为1967～1976年期间，系配合鄂城钢铁厂的高炉工程、兴建八一钢铁厂的工程、西山铁矿的工程、武大铁路的复线工程、湖北省冶金建设公司的基建工程、兴建鄂城化肥厂的工程，以及樊川新河道的开挖工程等等。由于这些工程进行迅速，而配备的考古人员很少，曾经采取了考古短训班的方式，训练了60余名民工参加清理工作。除这批短训班的民工外，参加人员主要有鄂城县博物馆的熊亚云、丁堂华、徐国胜和叶建清，湖北省博物馆的王劲曾短期前往指导发掘工作。这十年间清理发掘的六朝墓地有西山南麓及其迤南地带的邵家湾、玉石门、张家窑、郭家塗、五里墩、七里界和少祖山，雷山南麓的朱家塗和田鲁湾，西山的东北麓，以及东郊的菜园头等墓地。共清理发掘六朝墓葬200座，发掘资料和出土文物现存鄂州市博物馆。</p>
+<p>第五次为1980~1983年间南京大学历史系考古专业学生的两次考古实习，以及郭城境内其他零星六朝墓的清理发掘。参加人员有南京大学的教师蒋赞初和戴宁汝，研究生熊海堂和郭黎安，以及考古专业本科1977、1978级的学生24人①；湖北省博物馆的贺中香和冯务建，鄂城县博物馆的熊亚云、丁堂华、徐国胜、王友昌、叶建清和徐劲松等。考古实习的地点在西山南麓的麻家坳，洋澜湖西岸的五里墩，雷山南麓的火车站，以及新庙砖瓦厂等处，计发掘六朝墓葬20座。其他地点有西山铁矿、七里界、洋澜湖戴家山、百子畈百花台、东郊化肥厂、石山农机厂、花湖严家坳、段店周家屋基，以及碧石韩信村等处，计发掘六朝墓葬31座。这次发掘的51座墓葬的发掘资料和出土文物现存鄂州市博物馆。</p>
+<p>根据上述五次的发掘资料，我们在编写报告时将地点比较集中在鄂城附近的377座墓葬划分为四个墓区即第一墓区至第四墓区（图4)，而将鄂城远郊发现的17座墓葬另立一个墓区，为第五墓区。由于清理发掘时原墓号较为紊乱，故编写报告时另做统一编号，并列出新旧墓号对照表（附录1)。现将五个墓区的分布状况概述如下。</p>
+<h1 id="_16">一 第一墓区——西山东麓墓区</h1>
+<p>编号自M1001～M1023，计23座六朝墓葬。这些墓葬相对集中在西山东麓的八一钢铁厂和鄂城西山水泥厂，西山东北麓的西山铁矿，以及明清县城西关外的雨台山等处。墓葬的时代多数属孙吴和西晋时期，东晋时期的较少，无南朝墓发现。在孙吴墓葬中，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图4 郭城六朝墓葬分区示意图</p>
+<p>有规模较大的M1002（西铁M105）①。</p>
+<h1 id="_17">二 第二墓区——西山南麓墓区</h1>
+<p>编号自M2001～M2263，计263座六朝墓葬。这是鄂城最主要的六朝墓区，还可以划分为五个小墓地。</p>
+<h1 id="1_2">1. 仰山庙墓地</h1>
+<p>位于武黄公路北侧，高程为50米左右。这处墓地先后发掘了3座六朝墓，其中有2座吴墓，以M2081的规模较大，即孙将军墓②，余1座为东晋墓。</p>
+<h1 id="2">2. 何田埠墓地</h1>
+<p>位于武黄公路两侧，高程为30米左右。这处墓地先后发掘了74座六朝墓，以东晋墓最多，西晋墓次之，两者合计即有64座，孙吴墓和南朝墓各有5座。这批墓葬均属中小型墓，其中M2051（鄂西M71）出有“张畅”石印章，属东晋早期墓；M2032（鄂西M39）出有南齐建武三年（公元496年）宋隆太守史孚剋的砖墓志。</p>
+<h1 id="3">3. 邵家湾基地</h1>
+<p>位于西山以南，武黄公路的西侧。鄂城钢铁厂在这片丘陵岗地兴建厂房时发现大量六朝墓。这处墓地包括邵家湾、萧家湾、古坟堆、吴山、马家垅和张家窑等处，先后共发掘了124座六朝墓。其中以西晋墓最多，计50座；孙吴墓和东晋墓次之，分别为32座和26座；南朝墓仅16座。在吴晋墓中也有较大型的墓葬发现，如M2148（五四四M85）和M2112（六三○M10）等。</p>
+<p>此外，1977年曾在这处墓地内发现孙吴时期的水井一座，井内出土有“黄武元年”（公元222年）铭的铜釜，以及其他铜器和陶器多件③。</p>
+<h1 id="4">4. 麻家塢、郭家塢墓地</h1>
+<p>麻家塭为西山迤南的土岗之一，北距西山约1000米；郭家塭则是麻家塭西南的一个相毗连的土岗。这处墓地先后发掘了39座六朝墓，其中孙吴墓13座，西晋墓1座，东晋墓15座，南朝墓10座。其中亦有较大型的吴晋之际墓发现，如M2162（冷轧M11）。</p>
+<h1 id="5">5.少祖山、七里界墓地</h1>
+<p>少祖山俗名扫帚山，北距西山约2000米，七里界则在少祖山的东南500米左右，为石山乡辖地。这处墓地先后发掘了23座六朝墓。少祖山的六朝墓系在湖北冶金建设公司基建工程中发现，计清理发掘9座，其中东晋墓5座，孙吴墓和西晋墓各2座。七里界和石山乡一带计发现14座，其中孙吴墓6座，西晋墓和东晋墓各4座，内2座西晋墓（M2261、M2262）发现于少祖山与七里界之间石山农机厂内，资料较为完整④。</p>
+<h1 id="_18">三 第三墓区——雷山南麓墓区</h1>
+<p>编号自M3001～M3054，计54座六朝墓葬。这一墓区位于古代长江良港“樊口”的范围内，又可划分为三处墓地。</p>
+<h1 id="1_3">1. 朱家坳墓地</h1>
+<p>位于雷山南麓，北距雷山约700米左右，今为鄂城火车站周围地带。这处墓地先后发掘了33座六朝墓，其中有孙吴墓13座，两晋墓12座，南朝墓8座。</p>
+<h1 id="2_1">2. 瓦屋湾基地</h1>
+<p>位于长港（樊川）东侧，北近樊口。修建武大铁路时在此处清理发掘六朝墓葬9座，均属孙吴早期墓。其中M3035（瓦M7）出有“别部司马”铜印，其他墓中亦常见铁刀和弩机等，故此处或为孙吴早期驻军之墓地。</p>
+<h1 id="3_1">3.秋家山、贺家嘴、花家嘴墓地</h1>
+<p>均位于雷山的东南麓，修建武大铁路时在此处先后发掘了12座六朝墓，皆为两晋墓葬，其中西晋墓7座，东晋墓5座。</p>
+<h1 id="_19">四 第四墓区——洋澜湖周围墓区</h1>
+<p>编号自M4001～M4037，计37座六朝墓葬。这一墓区还可划分为三处墓地。</p>
+<h1 id="1_4">1.五里墩墓地</h1>
+<p>位于洋澜湖的西北岸，北距西山约1600米，与西山南麓相距较近。这处墓地先后发掘了24座六朝墓，其中孙吴墓11座，西晋墓7座，东晋墓5座，南朝墓1座。孙吴墓中有规模较大的M4022（五M122），还有2座出土有铅地券的墓；西晋墓中有1座M4021（五M121）出土了罕见的产自波斯萨珊王朝的玻璃碗。</p>
+<h1 id="2_2">2. 百子畈墓地</h1>
+<p>百子畈位于六朝武昌城的正南方，这处墓地还可括其东南的周家嘴和李家嘴，均位于洋澜湖的北岸。共发掘了6座六朝墓，其中百子畈发现西晋墓2座，周家嘴和李家嘴各发现孙吴墓2座。</p>
+<h1 id="3_2">3. 洋澜湖东岸基地</h1>
+<p>主要在何家山的鄂城化肥厂工地发掘了西晋墓2座，以及在新庙发掘了东晋墓1座。但化肥厂工地在施工时曾经有多座两晋墓葬被破坏，鄂城县博物馆获悉后曾前往采集到数十件完整的两晋青瓷器。</p>
+<h1 id="4_1">4. 洋澜湖西南岸基地</h1>
+<p>主要在观音垅及和尚塭发掘了吴晋墓4座。</p>
+<h1 id="_20">五 第五墓区——鄂城境内其他地点</h1>
+<p>编号自M5001～M5017，计17座六朝墓葬，包括鄂城远郊的华容、燕矶、段店、花湖和碧石等公社内零星发现的六朝墓葬。其中以华容冯家嘴发现的六朝墓略多，发掘的7座墓中有孙昊墓6座，M5004（冯M8）出土了赤乌三年（公元240年）纪年的铅地券。</p>
+<p>段店发现的两座孙吴墓（M5013、M5014），均规模较大。此外，碧石韩信村发现的1座西晋墓（M5012）的规模亦较大。</p>
+<p>综上所述，在鄂城的五个六朝墓区中，以西山南麓墓区（第二墓区）最为重要。这一墓区发现的六朝墓在数量上要占到鄂城全境六朝墓总数的三分之二，在年代上则六朝各期的墓葬均有发现。由于西山南麓墓区东连西山东麓墓区（第一墓区），西接雷山南麓墓区（第三墓区），南邻洋澜湖西岸的五里墩墓地（属第四墓区），这四处发现的六朝墓合计达362座，占鄂城发现六朝墓总数的 $90\%$ 。因此，可以认为鄂城六朝墓主要是分布在西山和雷山的南麓，以及西山东麓的江边至洋澜湖西岸之间的一大片丘陵地带的范围内。</p>
+<p>（执笔者：熊亚云 熊海堂 徐国胜）</p>
+<h1 id="_21">第二章 墓葬形制</h1>
+<h1 id="_22">第一节 概述</h1>
+<h1 id="_23">一 墓葬构筑</h1>
+<h1 id="_24">（一）砖室墓</h1>
+<p>共有388座。</p>
+<ol>
+<li>墓圹：均作直壁竖穴式，平面形式依墓葬结构不同而有所区别，多呈长方形。较大的墓葬在墓圹前端往往开挖坡度为 $20\sim 30$ 度的斜坡墓道（图版3）。  </li>
+<li>铺地砖：大部分墓葬在较平的墓圹底部先铺设地砖，墓壁起于其上。这样，一些铺地砖作“人”字纹平铺式和斜行错缝平铺式的墓葬，由于地砖边缘伸出墓壁之外而形成锯齿状的“菱角牙子”。其余各式铺地砖的边缘则与墓壁平齐。少量墓葬在砌筑墓壁之后才铺设地砖。</li>
+</ol>
+<p>地砖铺设形式有五种（图5；图版4)。（1）“人”字纹平铺式，数量最多，计176例，在有铺地砖记录资料的墓葬中占 $82\%$ 以上。（2）斜行错缝平铺式，12例，占 $5.6\%$ 。（3）仿席纹平铺式，11例，占 $5.1\%$ 。（4）横向错缝平铺式，9例，占 $4.2\%$ 。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5 <br />
+图5铺地砖铺设形式示意图</p>
+<p>1.“人”字纹平铺式2.斜行错缝平铺式3.仿席纹平铺式4.横向错缝平铺式</p>
+<p>5.纵向错缝平铺式</p>
+<p>(5) 纵向错缝平铺式，5例，占 $2.3\%$ 。以上五种地砖铺设形式均见于六朝全期。</p>
+<p>个别较大墓葬采用两种铺地砖形式，如M2113墓室地砖为“人”字纹平铺式，耳室地砖为仿席纹平铺式。亦有个别墓葬用碎石铺地，如M2175。</p>
+<ol>
+<li>墓壁：墓壁与墓圹壁之间一般相距30厘米以内，少数可达50厘米左右。</li>
+</ol>
+<p>墓壁砌筑形式分为四种（图6；图版5)。（1）三顺一丁式，即以三层平砖和一层侧立砖交错上砌。采用此种壁式的墓葬一般自墓底砌筑二至四组三顺一丁砖为基墙，其上以平砖顺砌结成券顶。鄂城六朝墓中，这种墓壁砌筑形式始终最为流行，计有157例，在有墓壁记录资料的墓葬中占 $76\%$ 以上。（2）平砖顺砌式，自墓底一直以平砖错缝顺砌至顶。计31例，约占 $15\%$ ，多见于孙吴和西晋墓葬。（3）顺丁砖混用式，以二顺一丁、七顺一丁、十三顺一丁等与三顺一丁结合，或以六顺一丁、八顺一丁与平砖顺砌结合，亦有一顺一丁的形式。共计15例，约占 $7\%$ ，见于六朝全期。（4）丁砖式，以侧立砖自墓底砌至一定高度，再以平砖顺砌起顶。侧立砖或以平面和端面交错外露，或仅平面外露。计3例，占 $1.5\%$ ，均见于吴墓。</p>
+<p>规模较大的墓葬多用双墙（墙厚同于砖之长度），较小的墓葬多用单墙（墙厚同于砖之宽度）。规模较大而又采用单墙的墓葬往往每隔几块半截丁砖间砌一块完整丁砖，使其一半伸出墓壁之外，嵌入填土，成为俗称的“咬土砖”，起到加固墓壁的作用。</p>
+<ol>
+<li>柱券和立柱：西晋后期开始，单室墓内出现柱券和立柱结构。至东晋后期和南朝，发展成为具有地方特色的多柱券形式，墓室侧壁柱券可达七至九道，同时，使用柱</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>6 <br />
+图6 墓壁砌筑形式示意图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 三顺一丁式 2. 平砖顺砌式 3~5. 顺丁砖混用式 6. 丁砖式</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图7 柱券和立柱砌筑形式示意图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.竖直式 2.连基塔式3、4.塔式</p>
+<p>券和立柱的墓葬数量也大为增加，南朝墓的半数以上均为此种构造。</p>
+<p>柱券和立柱的砌筑形式有三种（图7；图版5-3、4)。（1）竖直式，自地砖上起砌，上下等宽。始见于西晋。(2）塔式，自地砖上起砌，向上逐级收缩，少则两级，多则五级。东晋始见。(3）连基塔式，由塔式演变而成，若干塔式柱券的基部连在一起，形成腰墙，其上再分别砌出柱体。仅见于南朝。</p>
+<p>柱券和立柱的砌筑方法可分为贴砌与嵌砌两种：贴砌即紧贴墓壁砌造，柱、壁相贴</p>
+<p>而不相连；嵌砌即柱券或立柱的侧立砖伸入墓壁之内，二者相连成一体。显然，嵌砌较贴砌的工艺更为复杂，结构上也更为坚固。</p>
+<p>竖直式柱券用于墓室侧壁和四隅，墓隅的柱券或为二至三层，重叠交错，墓室角隅形成角柱券，墓口则形成门券；塔式和连基塔式柱券用于墓室侧壁；竖直式和塔式立柱用于墓室后壁中央。</p>
+<p>柱券和立柱的主要作用在于加固墓壁和券顶，墓室内前部所设的单柱券亦有将墓室分隔为前、后两部分的意义。塔式柱券和立柱的台面上还可放置小盏充作灯台。</p>
+<p>孙吴时代的个别墓葬于墓室侧壁的外部砌筑两道竖直式柱券或立柱以加固墓室，此或可视为墓室内设柱券的先导。</p>
+<ol>
+<li>墓顶：墓壁砌至一定高度即起顶，顶式有三种。（1）券顶，为鄂城六朝墓中始终流行的顶式，计181例，在有墓顶记录资料的墓葬中占 $90\%$ 以上。（2）叠涩顶，13例，占 $6.5\%$ ，主要见于孙吴和西晋时代的较小墓葬（图版6-3、4）。(3）四隅券进式穹隆顶（包括与券顶混用的形式），6例，占 $3\%$ ，见于孙吴和西晋时代的多室墓和“吕”字形墓。前、后室均用此种顶式的墓仅1例，其余皆为前室四隅券进式穹隆顶，后室券顶。  </li>
+<li>封门墙：根据现存资料，砌筑形式可分四种（图8；图版6-1、2）。（1）丁砖“人”字式，数量最多，在有封门墙记录资料的墓葬中占 $62\%$ 以上。（2）丁砖叠砌式，占 $21\%$ 。(3）平砖顺砌式，占 $12.5\%$ 。(4）三顺一丁式，占 $4.2\%$ 。前三种封门墙形式均见于六朝全期，三顺一丁式自西晋晚期始见。个别小墓以乱砖堆砌封门，如M2188。</li>
+</ol>
+<p>封门墙一般作一道，较大墓葬在封门墙外再设一至二道挡土墙。一部分墓葬的封门墙宽度大于甬道；亦有些墓葬的封门墙高于券顶，形成“额墙”，还有些墓葬的封门墙砌于甬道口内。墓葬封门墙大于甬道、设多道封门墙或加砌挡土墙等做法，均是用以加固封门。</p>
+<p>“凸”字形墓M2142的封门形式较为特殊，除甬道前端砌造封门墙外，亦于墓室前部砌一道封门墙，从而使整座墓葬成为各自封闭的两个空间。</p>
+<p>7.棺垫和棺床：均为垫棺隔潮设施，以一至四层砖在铺地砖上砌筑（图版7-2）。设于多室墓和“吕”字形墓的后室或单室墓的后部，亦有少数多室墓的侧室和“吕”字形墓的前室设棺垫和棺床的，个别单室墓设棺床于一侧，如M2018。</p>
+<p>棺垫呈长条形，一般为二或</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>4 <br />
+图8 封门墙砌筑形式示意图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 丁砖“人”字式 2. 丁砖叠砌式 3. 平砖顺砌式 4. 三顺一丁式</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图9祭台砌筑形式示意图<br />
+1、2、4.平砖叠砌式3.底层排水孔道式</p>
+<p>三道。多见于孙吴和西晋墓葬，东晋仍有，南朝不见。</p>
+<p>棺床作长方形，面积与棺具相仿或大于棺具。棺床的砌筑形式有三种：（1）大多用砖平铺，其中一部分于前端或前、后两端砌锁口砖。见于六朝全期。（2）少量用砖纵向等距间隔排砌为底层，其上铺以面砖。东晋后期始</p>
+<p>见。（3）个别用砖侧立砌造。见于南朝。</p>
+<p>棺床面砖多作席纹平铺式，亦有纵向平铺式、横向平铺式和一横一纵平铺式。</p>
+<p>棺床在鄂城这批六朝墓中从早到晚逐渐增多，南朝墓葬铺设棺床的达半数以上。</p>
+<ol>
+<li>祭台：设于多室墓和“吕”字形墓的前室或单室墓的前部，个别祭台设于棺床前部之上，大墓或有设两个祭台的。</li>
+</ol>
+<p>祭台多呈长方形、横长方形或方形，少量作曲尺形。砌筑形式有两种（图9；图版7-1、4)。（1）用一至五层平砖砌成实心砖垛，最简单的仅以二、三块砖平铺充作祭台。(2）用砖纵向或横向等距离间隔侧立排砌，其上铺以木板或用砖平铺。少量此种形式的祭台与墓室侧壁相贴的边缘部分压在柱券之下，同柱券连为一体。这两种祭台均见于六朝各期墓葬。</p>
+<p>祭台面砖多作横向或纵向平铺式，一部分作纵横平铺式和席纹平铺式。</p>
+<ol>
+<li>壁龛和灯台：一些墓葬在墓室两侧壁的丁砖层中留出半块砖或一块砖的空间，构成放置小盏的方形或长方形壁龛，少则一对，多则五对。见于西晋至南朝初年墓葬。</li>
+</ol>
+<p>另有部分墓葬在墓室四隅距墓底（即铺地砖上）1米左右的高度伸出半块砖承托小盏，作为灯台（俗称“羊角砖”）。始见于吴晋之际，南朝墓中仍有个别遗存。</p>
+<p>此外，墓室中塔式柱券和立柱的台面上也可放置小盏，起到灯台的作用。</p>
+<ol>
+<li>排水设施：为保护墓室内的棺具和随葬器物，一部分墓葬建有排水设施，具体方法有四种（图10；图版8)。（1）墓圹底部呈前低后高的台阶状或前低后高的倾斜状，以便自然排水。（2）棺床周边不与墓壁相连，留出凹槽用以排水。部分棺床和祭台的下层用砖间隔侧立和用砖间隔平砌，形成数条排水孔道。（3）墓底砌建渗水井，或有伸出墓外的排水沟与之相通。（4）封门墙或墓室前隅、侧壁和甬道根部留有排水孔，个别墓葬还在排水孔内口处挡以铁算（M1002）或铜漏水板（M2112，图版9-1）。一部分墓葬于墓外砌建排水沟与排水孔相接，沟长可达十数米。西晋墓M3027以圆筒状陶水管与排水孔相连，为鄂城六朝墓中所仅见。</li>
+</ol>
+<p>排水沟形制有两种：一种用砖平铺为底，斜侧立或斜直立砌砖为壁，其上或用砖平</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图10 排水设施形式示意图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 渗水井构造 2. 铜漏水板 3. 铁算 4、5. 长方形和方形孔排水沟截面<br />
+6、7.三角形孔排水沟截面</p>
+<p>铺为盖，形成三角形孔道，此种形式主要见于西晋以前的墓葬。另一种用砖平铺为底（或无底砖），一层或两层砖纵向平铺为壁，中留孔道，其上用砖平铺作顶，形成方形或长方形孔道，此种形式在孙吴以后墓葬中渐趋流行。</p>
+<p>上述排水设施除渗水井构造见于吴晋之际和东晋前期以外，其余各种均见于六朝全期，排水沟在东晋和南朝墓葬中较为发达。</p>
+<h1 id="_25">（二）土坑墓</h1>
+<p>历年来在建设工程中发现的土坑基不少于50座，但因范围不易辨认，随葬品不甚丰富，故多遭破坏，正式清理的仅6座。</p>
+<p>土坑墓作长方形直壁竖穴土坑，规模均比较小，死者下葬后即以土掩埋，少数墓有底砖或盖砖。</p>
+<h1 id="_26">二 墓砖</h1>
+<p>鄂城六朝砖室墓皆以小砖砌造。</p>
+<p>墓砖泥质，多呈青灰色，少量呈红、褐色。形制有长方形、刀形、斧形、子母口长方形和搭口长方形等几种。长方形砖数量最多，是砌筑墓室、墓顶和附属设施的主要材料，以长 $0.28\sim 0.38$ 米、宽 $0.12\sim 0.20$ 米、厚 $0.04\sim 0.05$ 米的为最常见（图版7）。刀形和斧形砖数量少，刀形砖一般用于单层券顶，斧形砖一般用于双层券顶，两者的长、宽与长方形砖相仿，一侧或一端较薄。子母口长方形砖仅在南朝墓M2222中发现，为专门用于砌建排水沟的特制砖，一端有凸榫头，另一端留出与榫头相嵌合的凹槽，长0.31米，宽0.08米，厚0.04米。搭口长方形砖见于两晋之际墓M2087的祭台，用作面砖，砖之侧面呈“凸”字形，使用时砖与砖正反相搭嵌合，长0.4米，宽0.21米，厚0.07米，为鄂城这批六朝墓中所见最大的砖。</p>
+<p>墓砖多为素面，花纹砖较少。花纹砖的平面多饰绳纹，或拍印以钱纹为中心的放射</p>
+<p>状线纹、叶脉纹、菱格纹和菱格绳纹等。砖之侧面和端面则以模印各式对角线几何纹为主，还有菱格纹、钱纹等（图11）。</p>
+<p>铭文砖在鄂城这批六朝墓中仅见两例。M2087的一部分砖面上拍印“洪”字，大概为制砖者或墓主人的姓氏。M2032封门墙外0.04米处发现砖墓志两方，为普通长方形砖阴刻而成，砖长0.33米，宽0.16米，厚0.05米，铭文内容相同，皆为“齐建武三年太岁丙子六月癸巳朔十一日癸卯前大司马豫章王西中郎永嘉二王府参军事宋隆太守武昌郡武昌县都乡新市里史孚剋今月十一日假葬本郡旧墓樊山南”。这是鄂城这批六朝墓中唯一有纪年铭文的砖。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图11 基砖形制、纹饰示意图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.长方形砖2.刀形砖3.斧形砖4.子母口长方形砖5.搭口长方形砖6~12.砖的平面纹饰<br />
+13~16. 砖的侧面纹饰 17. 砖的端面纹饰</p>
+<h1 id="_27">三 葬式</h1>
+<p>鄂城这批六朝墓因绝大部分位于新建的厂、矿范围内以及新建的铁路和公路的两侧，基建工程进行迅速，文物工作者人手不足，仅能进行抢救性的清理发掘。以至可以反映埋葬方式的资料保存很少，仅从墓内随葬器物位置，特别是棺垫范围和棺床上遗留的玉石饰件、金银饰件、铜铁兵器、铜镜、铁镜、石黛砚及石豚等，可以推定死者的头向多数是朝墓门方向。</p>
+<h1 id="_28">四 葬具</h1>
+<p>绝大部分墓葬在清理时已不见葬具，少数墓内可见棺具的朽木或板灰痕迹及从墓室内常发现的铜、铁棺钉等，推测墓葬应是使用木质葬具。</p>
+<p>墓室中发现的铁棺钉多已锈蚀较甚，原貌多不可识。</p>
+<p>西晋墓葬中开始出现铜棺钉，钉帽有瓜棱形和圆饼形两种，钉身截面呈方形。两晋之际，使用铜棺钉的墓葬增多，钉帽改作方形或长方形覆斗状，钉身截面仍呈方形。东晋时代，使用铜棺钉的墓葬更多，钉帽多作长方形覆斗状，普遍较前为高，钉身截面呈长方形或长条形，长度亦较前有所增加（图12；图版 $9 - 2\sim 23$ )。南朝墓中不见铜棺钉。</p>
+<p>在一些墓葬中，铜棺钉与铁棺钉同出。据东晋墓M2220出土情形观察，铜棺钉尖朝下，铁棺钉尖朝上。可知二者共同使用时，铜棺钉用于封棺盖，铁棺钉用于钉棺底。</p>
+<p>铜棺钉的演变序列比较清楚，其形式如何对于墓葬的大致断代有一定的参考意义，其中西晋前期墓中发现的瓜楞形帽铜棺钉在其他地区还未有所闻。</p>
+<p>图12 铜棺钉<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.M5012 2.M2262 3.M2159 4.M2087 5.M2076 6.M2112 7.M2084 8.M2220 9.M2186 <br />
+10.M2038 (1~4.为西晋及两晋之际墓出土；5~10.为东晋基出土)</p>
+<h1 id="_29">五 葬俗、葬制</h1>
+<p>六朝时期，堪舆相地术盛行。鄂城西山和雷山一带襟江带湖，为形胜之地，遂成为六朝武昌城近郊的主要墓区。有关当时埋葬习俗方面的详细资料，这批六朝墓葬亦保存较少，但从墓葬均埋葬在山冈余脉和丘陵岗地等高亢的地方看，当时选择葬地已相当讲究。有现象显示，时代较早、墓主身份较高的都埋在海拔较高的西山东麓、东北麓和南麓，如M1002、M2081等。</p>
+<p>孙吴、西晋初期，较多地承袭东汉旧制，流行I型、Ⅱ型、Ⅲ型墓，即前堂后寝的多室墓和墓内大量瘞钱的习俗。西晋后期起，逐渐形成地方特色较浓的葬俗、葬制，多见V型墓（即“凸”字形墓）和IV型墓（即双室并列墓），并流行在墓内设柱券和立柱等，柱券、立柱的数目不等，其中，IV型墓多是夫妇同茔异室合葬墓，常在两室中间的墙上开有俗称的“过仙洞”。南朝时期，除沿袭两晋墓制遗俗外，墓内随葬品又流行陈设一套以陶棺为中心的祭奠器物的习俗。</p>
+<p>（执笔者：魏鸣）</p>
+<h1 id="_30">第二节 墓形分类</h1>
+<p>在394座已清理的六朝墓中，结构保存较好的墓葬有348座。现依其平面形制的不同，分为八型二十五式，前七型为砖室墓，第八型为土坑墓，每式均举若干墓葬摘要介绍，共举出97座，其余墓葬的形制概况见附录2。</p>
+<h1 id="i">一 I型</h1>
+<p>多室墓，共8座。共同特征是规模较大，结构复杂，皆分前室、后室，或附有耳室和侧室①，带甬道等。其中M2162是规模最大、结构最复杂者，全长10.95米，总面积有30.7平方米②，由甬道及耳室、前室及左右三侧室，过道、后室及两耳室等构成。这类大墓多数已于早年被盗，随葬品所剩无几，墓外封土和墓圹亦多遭破坏。此型墓流行于孙吴及西晋前朝。又依其平面结构的不同分为四式。</p>
+<p>1式：前、后室附多耳室墓，1座。</p>
+<p>M2169 位于西山以南1公里处的麻家塗土岗的北坡，1976年鄂城钢铁厂兴建冷轧车间时发现并清理。墓葬早年被盗，前室前部遭到破坏。墓向78度（图13）。</p>
+<p>墓室由前、后室和各附的两个耳室组成。墓室复原长8.87米，总面积27.65平方米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图13 M2169平面、剖面图<br />
+1、2.青瓷罐盖 3.铁铸 4.铅锭 5.青瓷罐盖 6.漆盘残片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>前室平面呈长方形，长4.27米，宽2.9米，高2.4米。其左右各附一个耳室，左耳室长1.1米，宽0.73米，高0.9米；右耳室长1.06米，宽1.24米，高1.24米。前室后有一道券墙，形成短过道，与后室相通，券墙厚度即是过道的长，长0.34米，宽1.34米，券高1.58米。后室平面亦呈长方形，长4.24米，宽2.5米，高2.1米，其左右亦各附一个耳室，左耳室长1.04米，宽1.24米，高1.24米；右耳室长1.1米，宽0.73米，高0.9米。</p>
+<p>墓室底部用砖平铺三层，表层铺砖呈“人”字纹。墓壁采用错缝顺砌法，其中前、后室侧壁砌双层。墓顶为券顶结构，前、后两室的顶部亦是双层。封门墙已遭破坏，情况不详。有排水沟从前室右耳室一角斜穿墓外，水沟以平砖作底，两砖斜直立作壁，再以平砖盖顶，沟孔断面呈三角形，水沟长度不详。</p>
+<p>随葬器物残留较少，散见于前室左后部和后室左耳室内外，计有青瓷罐盖3件，铅锭、铁锛各1件，还有漆盘残片等。</p>
+<p>2式：带甬道的前、后室附单侧室或单耳室墓，2座。</p>
+<p>M2183 位于西山以南3公里处的七里界附近的小山坡上，1979年1月清理。墓葬早年被盗，墓顶全被破坏。墓向270度（图14）。</p>
+<p>墓室由甬道、前室及侧室和后室组成，全长6.37米，总面积13.6平方米。此墓是</p>
+<p>图14 M2183平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 陶罐 2. 铁戟 3. 石黛砚 4. 青瓷盏 5、6. 青瓷碗 7. 陶罐 8. 青瓷盘口壶 9. 青瓷罐<br />
+10.青瓷碗 11.铜弩机附件 12.钱币 13.铜镜 14.铜镊 15.青瓷器盖</p>
+<p>I型墓中最小的一例。</p>
+<p>甬道平面呈长方形，长1.35米，宽1.18米；前室略近方形，长2.34米，宽2.46米；其右侧附一长方形侧室，长2.3米，宽1.18米；后室亦为长方形，长2.68米，宽1.32米，残存高度约0.4米。</p>
+<p>墓室底部用砖仿席纹平铺一层。铺地之上，后室的后部残存砖砌棺垫一道，棺垫由一块砖横向平铺成条状。残存墓壁为错缝顺砌法。墓顶结构不详。据鄂城同期同型墓葬情况推测，方形前室应为穹隆顶，长方形甬道、侧室和后室均应是券顶。封门墙亦采用错缝顺砌法封砌。</p>
+<p>随葬器物残剩较少，主要出于前室，计有陶器2件、青瓷器7件、铜器3件、铁器和石器各1件，另外还有1枚钱币。其中铜镀和石黛砚原来应与铜镜同置于后室，是盗墓人扰乱至前室的。</p>
+<p>M2113 位于西山以南的萧家湾附近的土岗上，1971年6月清理。墓葬早年被盗。墓向360度（图15）。</p>
+<p>墓室平面近“十”字形，由甬道、前室及右耳室、过道和后室组成，全长7.72米，总面积16.49平方米。</p>
+<p>甬道平面呈长方形，长1.26米，宽1.1米；前室呈横长方形，长2.2米，宽3.86米；其右侧附一个耳室，耳室长0.76米，宽0.72米。前室后有一近方形的过道，与后室相通，过道长1.08米，宽0.93米。后室长方形，长3.2米，宽1.58米。高度均不详。</p>
+<p>墓底均用砖平铺一层，其中甬道和前室、后室铺作“人”字纹，耳室铺作仿席纹。</p>
+<p>图15 M2113平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 铁锛 2. 钱币 3. 铜饰件（2件）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>墓壁采用错缝顺砌法。墓顶结构不详。封门墙较特殊，呈弧形向外突，其砌法不详。</p>
+<p>随葬器物所剩无几，分别出于前室及耳室内，有铜饰件和钱币等。另外在后室还发现1件铁锛，或为盗墓者所遗。</p>
+<p>3式：带甬道的前、后室附双侧室或双耳室墓，4座。</p>
+<p>M2081 位于西山南麓，海拔高度为50米，1967年4月鄂城钢铁厂建造职工浴室时发现并清理。墓葬早年被盗。墓向180度（图16）。</p>
+<p>墓室平面呈“十”字形，由甬道、前室及左右耳室、过道和后室等部分组成。墓室全长8.50米，总面积21.02平方米。</p>
+<p>甬道平面现呈长方形，长1.34米，宽1.2米，高1.28米；前室横长方形，长2.1米，宽3.78米，高2.62米；其左右各附一个相同形式和大小的耳室，耳室长1.42米，宽0.9米，高1.1米。前室后有一略呈方形的过道，与后室相通，过道长1.1米，宽1.2米，高1.28米。后室长方形，长4米，前宽1.8米，后宽2米，高2米。</p>
+<p>墓底用砖斜行错缝平铺一层。铺地之上，前室左、右侧各砌一个相同结构和大小的长方形祭台，祭台长2.1米，宽0.94米，高0.15米，表层用砖纵向平铺。后室中部紧贴左壁有一砖砌长方形棺床，棺床长2.34米，宽1.42米，高0.15米，表层用砖纵向平铺。棺床表层砖除贴墓壁的一边外，其他三边均内收缩 $0.09\sim 0.25$ 米。墓壁采用“三顺一丁”和错缝顺砌法，其中甬道和耳室的下部砌两组“三顺一丁”，再错缝顺砌到顶；前室、过道和后室的下部砌三组“三顺一丁”后，再错缝顺砌到顶，前室、过道和后室壁为双层。墓顶均为券顶结构，其中前室、过道和后室亦为双层顶。封门墙砌法不详。</p>
+<p>随葬器物已遭盗扰，分布位置不明。此墓出土器物比较丰富，计有瓷器和模型明器、鎏金铜器、金器、残漆器和钱币等，其中一组带碉楼的院落模型，在屋顶内面刻有“孙将军门楼也”六个字，表明了墓主人的姓氏和身份。据先期发表的简报考证，墓主可能为孙坚之兄孙贵的后人；或为孙贵之孙——武昌督孙述之墓①。另外还有铁棺钉数枚，应是木葬具朽烂之后遗留下来的。</p>
+<p>此种墓葬在洛阳烧沟汉墓中列为第三型②，亦见于武昌和南昌地区的同期墓葬③。</p>
+<p>M5013、M5014 两墓同位于鄂城市区西北约20公里的段店乡骆李行政村所属的周家屋基村，1972年10月清理。两墓均早年被盗，破坏特甚。两墓相距10米余，墓向一致，均为270度（图17、18）。</p>
+<p>M5013由甬道、前室及左右侧室、过道和后室组成。形制与M2081大致略同，只是M5013的前室左右附有侧室，且规模较之略大一些。墓室全长9米以上，总面积20多</p>
+<p>平方米。</p>
+<p>甬道平面呈长方形，长1.68米，宽1.03米，高1.33米；前室略呈方形，长3.18米，宽3.17米，高3.52米，其左右各附一个侧室，左侧室长2.47米，宽1.1米，高0.88米；右侧室长2.33米，宽1.1米，高0.88米。前室后有过道呈长方形，与后室相通，过道长1米，宽0.8米，高1.43米，后室已残毁，长度约4米以上。</p>
+<p>M5014是典型的“十”字形墓，由甬道、前室及左右侧室和后室组成。前室略呈方形居中，其四面的甬道、左右侧室和后室的形式均相同。墓室全长9.64米，总面积为28.28平方米。</p>
+<p>甬道平面呈长方形，长3.28米，宽1.30米，高1.66米。前室长方形，长3米，宽2.8米，高3.7米；其左右各附一个形式、大小相同的侧室，侧室长3.3米，宽1.5米，高1.8米。后室长方形，长3.36米，宽1.9米，高1.8米。</p>
+<p>M5013的墓底用砖呈斜行错缝平铺。墓壁采用“三顺一丁”和错缝顺砌法，其中甬</p>
+<p>图17 M5013平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷勺（2件） 2.铅锭（4件） 3.青瓷碓 4.青瓷磨5.青瓷狗（2件）</p>
+<p>道、前室和过道的下部砌三组“三顺一丁”，上部错缝顺砌到顶。前室左右侧室的侧壁下部砌一组“三顺一丁”后，再错缝顺砌到顶，后壁则是“三顺一丁”直砌到顶。后室残毁，情况不明。墓顶皆为券顶结构，顶壁均是双层。封门墙亦是双层，封砌方法不详。</p>
+<p>M5014的墓底和墓壁的砌法与M5013大致相同，墓底呈斜行错缝平铺一层，墓壁下部“三顺一丁”砌筑，上部错缝顺砌，亦是双层墙壁、双层顶和双层封门。唯M5014的</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图18 M5014平面、剖面图</p>
+<p>前室是穹隆顶，其四角贴壁各砌一个方形砖柱①，砖柱长、宽皆为0.28米，其砌筑形式和高度不详。</p>
+<p>M5013的劫余随葬器物计有青瓷模型明器勺、磨、碓、狗等7件，铅锭4件。而M5014劫余随葬器物均已被农民取出，原放置地点不详，计有青瓷勺、仓、磨、案、院落和猪圈等，其中院落已残成多件。值得注意的是，随葬器物中的青瓷模型磨，两墓各出一扇，分别是上扇和下扇，恰可合成一个整体。</p>
+<p>4式：带甬道的前、后室附多侧室、多耳室墓，1座。</p>
+<p>M2162 位于西山以南1公里的麻家塗土岗的东南坡，1979年4月清理。墓葬早年被盗。墓向210度（图19）。</p>
+<p>墓室由甬道及耳室、前室及左右三侧室、过道和后室及二耳室等部分组成。墓室全长10.95米，总面积30.71平方米。为这批六朝墓中规模最大、结构最复杂的一座墓。</p>
+<p>甬道平面呈长方形，长1.78米，宽0.86米，高1.13米；其右侧附一个小耳室，耳室长0.7米，宽0.58米，高0.6米。前室呈方形，长、宽皆2.9米，高3.04米；其左侧附两个结构和大小相同的侧室，侧室长4米，宽0.86米，高1.3米；右侧附一个带过道的侧室，过道长1.57米，宽0.7米，高1.02米；侧室长2.18米，宽1.18米，高1.66米。前室后有过道，与后室相通，过道长1.72米，宽0.8米，高1.26米。后室长方形，长3.4米，宽1.96米，高2.3米；其左侧附一个耳室，耳室长1.35米，宽0.82米，高0.96米；其后壁右角亦附耳室一个，耳室长1.15米，宽0.45米，高0.73米。</p>
+<p>墓底自甬道经前室、过道到后室逐级递增约0.05米高，形成前低后高三级梯状地势，以利墓内积水的排泄。墓底整个用砖呈“人”字纹式平铺一层。前室及所附左右三间侧室在铺底之上，再仿席纹纵横平铺一层，三间侧室的仿席纹铺砖可能作棺床之用，沿壁均留出凹槽以排水。前室右后角在仿席纹铺砖之上再砌出长方形祭台一个，祭台长2.08米，宽0.84米，高0.15米②，祭台表层用砖横向错缝平铺。后室在铺地之上亦用砖砌出棺床，棺床已残破，长、宽与墓室相同，高0.05米。用砖纵向平铺，其所附左耳室亦在铺地之上沿壁用砖顺向平铺两道砖垫，其上原来可能曾铺设木板。墓壁采用“三顺一丁”和平砖错缝顺砌法。下部砌两组或三组“三顺一丁”，上部错缝顺砌到顶，其中前、后室为双层墙。墓室顶部仅前室为穹隆顶，其余各室为券顶，前室、后室是双层顶。封门墙为错缝顺砌法砌筑。墓砖长0.34米，宽0.17米，厚0.05米，部分墓砖的正面和长侧面分别拍印绳纹和几何形图案。</p>
+<p>随葬器物分布位置不详，计有青瓷器、模型明器、铁器、滑石器和钱币等，钱币有半两、五铢、大泉五十、货泉、大泉五百和大泉当千等80余枚。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图19 M2162平面、剖面图</p>
+<h1 id="ii">二 Ⅱ型</h1>
+<p>横前室多后室墓，共3座。共同特征是横前室之前均带甬道，前室之后并列两个或三个后室。依其平面结构的不同分为二式。</p>
+<p>1式：带甬道的横前室、双后室墓，2座。</p>
+<p>M2006 位于西山南麓、武黄公路北侧何田埠的山坡上，1958年5月鄂城钢铁厂兴建高炉一区时发现并清理。墓顶被推土机推出并坍塌，顶距地表约1米左右，有带斜坡墓道的墓圹，墓道长度不详，宽1.1米左右，坡度20度。墓葬保存尚好，未被盗掘，随葬器物有被水冲浮移位的迹象。墓向161度（图20）。</p>
+<p>墓室由甬道、前室、过道和双后室组成，全长7.49米，总面积21.95平方米。</p>
+<p>甬道呈横长方形，长1.06米，宽1.25米，高1.28米。前室横长方形，长2.22米，宽3.26米，高2.46米。前室后有两个横方形的过道，左、右过道长相同，皆为0.75米；左过道宽0.97米，右过道宽1.1米，高度为1.22米，两过道分别与并列的两后室相通。两后室结构形式和大小均相同，长3.46米，宽1.8米，高2.07米。</p>
+<p>墓底用砖平铺一层，砌法不详。铺地之上，前室后部左右角各有一个祭台，左祭台长0.96米，宽0.8米；右祭台长1.12米，宽0.64米。两祭台结构和高度均相同，高0.2米，其下部用砖纵向立砌，表层用砖横向平铺。墓壁采用“三顺一丁”和错缝顺砌法。下部砌三组“三顺一丁”，上部错缝顺砌。前室四角和左后室左边两角，在壁高1.04米处均伸出半块平砖，即所谓的“羊角砖”，据其下面地砖之上均有青瓷碗或盏，推测这种伸出的平砖是灯台，这些碗、盏应是置于灯台之上作灯盏用的。墓顶为穹隆顶和券顶两种形式，其中前室为四隅券进式穹隆顶，甬道、过道和两后室均为券顶。封门墙砌在甬道口内，呈侧立“人”字形封砌，双层封门，厚0.56米。前室左壁墙根处设有排水沟，排水沟沟底用砖横向平铺，其上用砖纵向平铺作壁，中间留出长方形沟孔，其上再用砖平铺盖顶，水沟孔深0.14米，宽0.10米，长度不详。</p>
+<p>随葬器物主要分布在前室后部的左右祭台附近和两间后室内，祭台附近砖地上的有些器物，如青瓷罐、青瓷盘口壶和一些陶模型明器，原来应是置于祭台上的，前室内的铜镜、石黛砚等原来应属后室内的器物，可能是被水冲浮移动到前室的。计有青瓷器、陶器和模型明器、铜器、石器等共30余件。从随葬器物分布情况推测，右为男室、左为女室。另外，两后室内均有铁棺钉和腐木块发现，应是棺木葬具之遗留。墓中出土钱币有半两、五铢、货泉、大泉五十、大泉当千、直百五铢钱等多种。</p>
+<p>M4022 位于洋澜湖西北岸的五里墩村，1978年9月清理。墓葬早年被盗。墓向145度（图21）。</p>
+<p>墓室平面形制与M2006基本相同，由甬道、前室、过道和双后室组成，唯此墓前、后室皆券顶结构，且规模也较M2006略小。墓室全长6.16米，总面积16.39平方米。</p>
+<p>甬道呈横长方形，长0.5米，宽1.05米，高1.04米。前室为横长方形，长1.94米，宽3.2米，复原高度为2米。前室后有两过道分别与独立的两后室相通，两过道的长、高均相同，长0.68米，高1.04米；宽度略有差异，左过道宽0.83米，右过道宽</p>
+<p>36.铜带钩 37.铁刀 <br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷盘口壶2、3.青瓷罐4.青瓷盒5.青瓷水盂6.青瓷碗7~9.青瓷盏10.青瓷灯11.青瓷熏12.青瓷虎子13.陶牛14.陶井<br />
+15.陶灯 16.陶灶 $17\sim 22$ .陶人物俑 $23\sim 26$ .陶帷帐座27、28.陶镇基俑29、30.陶车舆31.石黛砚32.铁棺钉33、34.铜镜35.钱币</p>
+<p>图20 M2006平面、剖面图</p>
+<p>图21 M4022平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 陶井 2. 陶盘口壶 3. 青瓷碗 4. 陶鸭 5. 陶狗 6. 陶灶 7. 陶鸭 8. 陶牛 9. 陶家畜残件 10. 青瓷罐 11. 陶鱼 12. 陶畜圈<br />
+13.青瓷碗 14.陶罐 15.青瓷罐 16.青瓷水盂 17.银钗 18.陶盘口壶 19.陶镇墓俑 20.钱币 21.陶盆 22、23.青瓷碗<br />
+24、25.陶鸭 26.陶鱼 27.陶家畜残件</p>
+<p>0.88米。两后室平行排列而不相连，结构和面积大小相同，长3.06米，宽1.34米，高1.78米。</p>
+<p>墓室底部铺砖呈“人”字形。墓壁采用“三顺一丁”和平砖错缝顺砌法，下部砌三组“三顺一丁”，部分丁砖伸出墙外作咬土砖，上部错缝顺砌。墓顶已遭破坏，推测当为券顶结构。封门墙砌在甬道口内，与甬道侧壁头端平齐，呈侧立“人”字形封砌。</p>
+<p>随葬器物位置已被扰乱，主要分布在前室和甬道内，计有青瓷器、陶器和模型明器、银钗和钱币等共20余件器物。</p>
+<p>2式：多甬道、横前室、多后室墓，1座。</p>
+<p>M2263 位于西山公园路口，1983年清理。墓葬早年已遭盗掘。墓向270度（图22）。</p>
+<p>墓室由三甬道、一前室和三后室组成。这应是前、后室墓型中最晚的一种形式。墓室全长6.04米，总面积23.1平方米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图22 M2263平面图</p>
+<p>三甬道均呈长方形，结构和大小相同，长1.04米，宽0.88米，高度不详。前室呈特窄的横长方形，长1.1米，宽5.5米。三后室头端各有一柱券①，形成长0.32米、宽0.88米的小过道，分别与并列的三后室相连通。三后室结构形式和大小均一致，长3.62米，宽1.2米，高度均不详。</p>
+<p>墓底用砖平铺一层，呈“人”字形。墓壁采用“三顺一丁”式砌法，除后壁和封门外，均是双层墙壁。前室侧壁设柱券一道，三后室侧壁两端各设柱券一道，前端形成门券，后端形成角柱券，后壁中央各设立柱一个，柱券和立柱的形式均不详。墓顶皆为券顶。封门墙砌法不详。墓砖长方形，部分砖的长侧面印有四出钱纹。</p>
+<p>随葬器物多已残破，分布位置已被扰乱，主要器物出于前室和左、中两后室内，计有青瓷碗、盏、鸡首壶及残器，陶器残件，铁镜、刀，石黛砚和豚等共10余件器物。右室破坏特甚，已空无一物。</p>
+<p>相同类型的墓曾见于广东广州东汉前期墓②，唯该墓仅以中间的后室葬人，左右后室则作仓厨贮藏之室。</p>
+<h1 id="iii">三 Ⅲ型</h1>
+<p>“吕”字形墓，共7座。共同特征是有甬道、前室和后室，前室多为祭奠之所，大多砌有祭台，常以四隅券进式方法砌成穹隆顶。根据平面形制的差别分为四式。</p>
+<p>1式：带甬道的前、后室，外壁有立柱的墓，1座。</p>
+<p>M2215 位于西山以南1公里的郭家坳，1956年10月铺设武（汉）大（冶）铁路时发现并清理。墓圹保留有竖井式墓道，长2.9米，宽2米，残深1.4米。墓葬早年已遭盗扰。墓向90度（图23）。</p>
+<p>墓室由甬道、前室、短过道和后室组成，全长8.3米，总面积15.39平方米。</p>
+<p>甬道呈长方形，长1.6米，宽1.04米，高1.08米。前室近方形，长2.5米，宽2.8米，高2.32米。其后有小过道与后室相通，过道长0.36米，宽0.98米，高度1.04米。后室长方形，长3.84米，宽1.66米，高1.58米。</p>
+<p>墓底用砖平铺一层，呈“人”字纹。墓壁采用“三顶一丁”和平砖顺砌法。甬道和后室下部砌二组“三顺一丁”后，再平砖顺砌结顶。前室下部砌二组“三顺一丁”后再砌“六顺”，上部自四隅呈倒“人”字形券进结顶。另外，甬道侧壁和后室侧壁外均设有护墙的柱券，这应是柱券的最早墓例，柱券为单砖平砌，形式较简单。墓顶采取穹隆顶和券顶两种形式，前室为穹隆顶，甬道和后室皆为券顶。封门墙呈斜“人”字形封砌，双层。墓砖长方形，长0.33米，宽0.17米，厚0.45米，部分砖的长侧面印有对角几何纹。</p>
+<p>图23 M2215平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 漆榻 2. 漆盘 3. 陶灶及附件 4. 漆榻 5. 漆盘 6、7. 陶灶及附件 8. 青瓷碗 9. 漆盘 10~13. 陶罐 14. 陶井 15. 陶盘 16、17. 陶罐 18、19. 陶盘 20、<br />
+21. 陶罐 22. 陶黑 23、24. 陶罐 25~27、29. 陶仓（2件） 28. 铁棺钉 30. 檢案 31. 陶罐 32. 漆耳杯 33. 漆唾壶 34. 漆耳杯 35. 玫珀饰件 36. 铁刀（4件） 37. 铁戟 38. 铜带钩 39. 银钗（2件） 40. 漆虎子 41. 青瓷碗 42. 青瓷虎子 43、44. 陶畜圈及附件 45. 漆钵 46. 陶狗 47. 钱币 48. 漆屐 49. 漆盘 50. 青<br />
+瓷碗51.铜镜52.青瓷碗53.漆盘54.漆钵55、56.漆碗57.漆耳杯 $58\sim 60$ .漆碗61.铜洗62.金花瓣形饰片63.陶罐64.青瓷碗</p>
+<p>随葬器物位置已被扰乱，主要分布在前室、过道和后室前部，计有青瓷器、陶容器和模型明器、铜器、铁器、漆木器和金银饰品以及钱币等共60余件器物。</p>
+<p>2式：带甬道的前、后室，短过道偏于一侧的墓，2座。</p>
+<p>M1002 位于西山的东北麓，北临长江，海拔高度30多米，1978年5月西山铁矿开矿时发现并清理。墓葬保存较完整。墓向35度（图24）。</p>
+<p>墓室由甬道、前室、短过道和后室组成，全长7.13米，总面积12.41平方米。</p>
+<p>甬道平面呈长方形，长1.25米，宽1.32米，高1.64米。前室略呈梯形，前窄后宽，长2.54米，宽 $2.32\sim 2.48$ 米，高2.88米；其后有过道偏于右侧，长0.5米，宽0.9米，高1.1米。后室呈长方形，长2.84米，前宽1.4米，后宽1.36米，高1.4米。</p>
+<p>墓室底部用砖斜行错缝平铺一层。铺地之上，前室左侧有砖砌棺垫四个，右侧两角各有一砖祭台，祭台长、宽及砌法不详，高度0.05米。后室亦有棺垫两道，高度为0.05米。墓壁采用“三顺一丁”与平砖顺砌法，前室下部砌“三顺”后，自四隅呈倒“人”字形券进结顶，其余的甬道、过道和后室均是下部砌两组“三顺一丁”，丁砖伸出墙外作咬土砖，上部错缝顺砌到顶。墓顶有穹隆顶和券顶两种结构，前室为穹隆顶，顶部正中并列镶嵌两块特别的青灰砖，砖的一端为圆形，横穿一孔，孔中横门着一根长约0.4米的铁穿钉，原来可能是用来悬挂物件用的。甬道、过道和后室皆为券顶。封门墙错缝顺砌。排水沟设在封门墙底部，排水沟沟底用砖平铺，两砖斜直砌作沟壁，其上面或用砖平铺盖顶，沟孔断面呈三角形，底宽0.18米，腰高0.22米。沟内口安插铁算，铁算略大于沟孔。排水沟长度不详。墓砖长方形，长0.3米，宽0.15米，厚0.05米，砖的正面、侧面模印绳纹、几何纹或钱纹。</p>
+<p>此墓的随葬器物是这批墓中最丰富的。器物主要分布于前室右侧的两座祭台附近，前室左侧和后室前部也有分布。计有青瓷器、陶容器和模型明器、铜器、金银饰品和钱币等共100余件器物。其中有孙吴黄龙二年（公元230年）纪年镜和孙吴赤乌元年（公元238年）铸造的大泉当千钱等，是推断墓葬年代的重要资料。此前已有简报发表①。</p>
+<p>M2174 位于西山以南2.5公里的少祖山（扫帚山）的东北坡上，1975年3月发现并清理。墓葬早年已被盗扰破坏。墓向90度（图25）。</p>
+<p>墓室由甬道、前室、短过道和后室组成，全长6.64米，总面积10.25平方米。</p>
+<p>甬道平面呈方形，长、宽皆1米，高1.04米。前室近方形，长1.88米，宽2.2米，高2.12米；有券墙形式的过道与后室相通，过道长0.36米，宽0.9米，高0.84米。后室长方形，长3.4米，宽1.6米，高1.72米。</p>
+<p>墓底后室高于前室、过道和甬道，形成前低后高的地势，以利墓内积水自然排泄。墓室底部用砖平铺一层，铺砌形式不详。铺地砖之上，前室的左后角有一个长方形祭台，长0.96米，宽0.80米，高0.18米，祭台表层用砖对缝横向平铺。墓壁采用“三顺一丁”与平砖错缝顺砌法。甬道、过道和后室的下部砌三组“三顺一丁”，上部错缝顺砌到顶，前室则自地砖之上即呈倒“人”字形券进结顶。墓顶有穹隆顶和券顶两种形</p>
+<p>图25 M2174平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、2.青瓷碗 3.银钗 4.石黛砚 5.青瓷盏</p>
+<p>式，前室为穹隆顶，甬道、过道和后室均为券顶结构。封门墙宽于甬道，宽1.64米，封砌形式不详。</p>
+<p>随葬器物遗留较少，主要分布于前室祭台附近和后室内，计有青瓷器3件，银钗和石黛砚各1件。</p>
+<p>3式：带甬道的前室、后室附耳室墓，1座。</p>
+<p>M2180 位于西山以南2.5公里左右的少祖山东南坡，1975年12月发现并清理。墓葬早年被盗破坏。墓向90度（图26）。</p>
+<p>墓室由甬道、前室、过道、后室及耳室组成。全长7.92米，总面积15.73平方米。</p>
+<p>甬道平面呈方形，长1.12米，宽1.12米，高1.3米。前室横长方形，长2.1米，宽2.82米，高（复原高）2米；其后有方形过道，与后室相通，过道长1米，宽1.04米，高1.3米。后室长方形，长3.72米，宽1.78米，高2米；其右侧附一个耳室，耳室长1.1米，宽0.84米，高1.02米。</p>
+<p>墓室底部用砖平铺一层，呈“人”字形。铺地砖之上，前室左后侧与过道平齐处设一长方形祭台，长0.96米，宽0.64米，高0.05米，祭台用砖纵横平铺。前室墓壁采用“三顺一丁”和错缝顺砌法砌筑，下部砌三组“三顺一丁”；过道壁采用两组“三顺一丁”和错缝顺砌法砌筑；后室壁采用以一组“三顺一丁”作底，中部为一组“八顺一丁”，上部均为错缝顺砌到顶，并皆为双层墙。墓顶均为券顶，亦是双层顶。封门墙宽于甬道，宽2米，为纵向顺砌法封砌，亦是双层，厚0.3米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图26 M2180平面、剖面图<br />
+1.青瓷碗 2.金指环</p>
+<p>随葬器物仅遗留2件，分别出于前室祭台下和后室右耳室内，计有青瓷器、金指环各1件。</p>
+<p>4式：带甬道的前室、过道和后室墓，3座。</p>
+<p>M2262位于西山以南2.8公里左右的石山，邻近少祖山东麓，1983年1月鄂城石山农机厂兴建厂房时发现，同年3月进行清理。墓室保存较完整。墓向150度（图27）。</p>
+<p>墓葬有带墓道的土圹，墓道长度不详，宽1.72米。墓圹分前、后两室，前室正方形，长、宽均为3.5米；后室长方形，长4米，宽3.2米，墓室顶部距现地表约5米。</p>
+<p>墓室由甬道、前室、过道和后室组成，全长7.46米，总面积12.6平方米。</p>
+<p>甬道平面呈方形，长1.04米，宽1.1米，高1.25米。前室略近方形，长1.9米，宽2.2米，高2.1米；其后有横长方形过道，过道偏于右侧，与后室相通，过道长0.9米，宽1.11米，高1.2米。后室长方形，长3.62米，宽1.74米，高2.3米。</p>
+<p>墓底用砖平铺，呈“人”字形，甬道和前室铺一层，过道和后室铺两层。铺地砖之上，前室左后角有一长方形祭台，祭台长1.7米，宽1.02米，高0.22米。祭台下部用砖横向侧立铺砌，表层则是对缝纵向平铺，祭台右边缘横向平铺一层形成台阶状。后室后部紧贴后壁亦纵向平铺两块砖，似当灯台用。墓壁采用“二顺一丁”、“三顺一丁”、“四顺一丁”与平砖错缝顺砌法砌筑。墓壁下部均是顺、丁砌筑，其中甬道、前室下部砌一组“二顺一丁”和两组“三顺一丁”；过道和后室下部砌一组“四顺一丁”和两组“三顺一丁”，除后壁外，部分丁砖伸出墙外作咬土砖。墓壁上部则错缝顺砌，甬道和过道的上部均是错缝顺砌到顶，前、后室（除后壁）上部则呈倒“人”字形券进结顶，后室后壁自铺地砖之上即呈倒“人”字形券进结顶。墓顶结构有穹隆顶和券顶两种形式，前室和后室为穹隆顶，甬道和过道为券顶。封门墙双层，内层错缝顺砌，略宽于甬道，宽1.78米；外层由残砖杂乱堆砌。甬道口顶部另砌出高出甬道顶部约0.26米的额墙。墓砖长方形，青灰色，长0.35米，宽0.17米，厚0.05米，纵侧面的纹饰以对角斜线纹为主，也有叶脉纹和钱纹。</p>
+<p>随葬器物大体保持原来位置，青瓷盘口壶等分布在祭台上下；后室右侧分布铜镜、铜弩机、铁刀、石印章、石豚等，推测当为男性墓主随葬品；后室左侧分布铁镜、金银饰品等，推测女性墓主葬左边。另有2件青瓷碗分别出于后壁铺地砖上的两块平砖下，推测原来本是放置在砖上作灯盏用的。共有青瓷器、铜器、漆器残件、铁器、石器和金银饰品等30余件。此前已有简报发表①。</p>
+<p>M5012 位于鄂城市以南20公里的碧石韩信村黄土坟东侧，1980年4月发掘清理。从现存地表到墓顶深1.7米。墓葬结构保存较好。墓向75度（图28）。</p>
+<p>墓室由甬道、前室、过道和后室组成，全长7.7米，总面积13.58平方米。</p>
+<p>甬道平面呈横长方形，长0.84米，宽1.12米，高1.2米。前室正方形，长2.12米，宽2.2米，高2.34米；后有过道呈方形，长1米，宽1.1米，高1.22米，过道与后室相通。后室呈长方形，长3.74米，宽1.84米，高2.14米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷盘口壶 2.青瓷唾壶 3.铁刀 4~6.银指环 7.铜弩机 8.铁镜 9、10.银指环 11.漆碗 12.金钗 13、14.银钗 15.铁刀 16.漆盒<br />
+1. 青瓷碗 28. 铁刀 39. 银镯 40. 银指环 31. 银顶针 <br />
+32. 石豚 33. 石印章 34. 青瓷碗 35、36. 银镯</p>
+<h1 id="27-m2262">图27 M2262平面、剖面图</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图28 M5012平面、剖面图<br />
+1.青瓷盘口壶2.青瓷盆3.陶马4.陶人物俑5.青瓷盘口壶6.陶狗7.陶镇墓俑8.陶猪9.青瓷盘口壶10.铁刀（2件）11.铜镜<br />
+12.铜带钩 13.铁戟（2件） 14.铜棺钉 15.青瓷盏 16.铜镜</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，前室后部正中有一个较大的方形祭台，长、宽各1.5米，高0.22米，祭台表层仿席纹平铺。墓壁采用“三顺一丁”与平砖错缝顺砌法砌筑。甬道和过道下部砌二组“三顺一丁”，前、后室下部砌三组“三顺一丁”；墓壁上部皆错缝顺砌到顶。在后室四角高1.26米处各伸出半砖作灯台之用。墓壁均是双层墙，墓顶亦为双层结构。封门墙双层，砌法不详。有排水沟经前室右侧穿出，沿甬道右壁向外伸出，水沟长度不详，宽、高均为0.13米，沟孔断面呈方形。水沟底砖横向平铺，壁砖纵向平铺，留出方形沟孔，再以平砖盖顶。</p>
+<p>随葬器物位置大体保持原状，前室祭台左侧的青瓷盘口壶、青瓷盆和一组陶模型明器，原来应是陈放在祭台之上，可能是被水冲浮到祭台下的。后室中前部有铜镜，说明死者头朝墓门方向。后室中部有铜带钩、铁刀和戟等，共有青瓷器、陶模型明器、铜器和铁兵器等10余件。另外，在后室陈放棺木的位置上较规律地散布着一排铜棺钉，应是木葬具腐烂后的残留物。</p>
+<p>M5016 位于鄂城市以西30多公里的庙岭乡破土库，1974年3月发现并清理。墓葬早年已遭破坏。墓向90度（图29）。</p>
+<p>墓室由前室、过道和后室组成，其中前室特别狭小，仅具形式。这应是“Ⅲ”型墓向“V”型演变的一种过渡墓形。墓室全长5.46米，总面积6.79平方米。</p>
+<p>前室横长方形，长0.54米，宽1.23米。过道长方形，长1.14米，宽1米。后室亦呈长方形，长3.78米，宽1.32米。高度均不详。</p>
+<p>墓室底部情况不明。后室有长3.3米、宽1.32米（与后室同宽）的棺床，棺床砌法不详。此墓的棺床是这批墓中出现最早的。墓壁及封门均是双层，砌法不明。墓顶结构亦不明。</p>
+<p>随葬器物残留较少，均出于后室的棺床前的左右侧，其中一件青瓷碗出于棺床右后角，可能是作灯盏用的。计有青瓷器、陶模型明器共5件。</p>
+<p>图29 M5016平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷碗 2.陶马、牛、鸡、人物俑</p>
+<h1 id="iv">四 IV型</h1>
+<p>并列双室或三室墓，共24座。共同特征是墓室双室或三室连墙分券①，多为同坟异室的夫妻或家族合葬墓。根据平面形制的差别分为四式。</p>
+<p>1式：不规则的双室并列墓，5座。</p>
+<p>M4008 位于洋澜湖西北岸的五里墩村的土岗上，1975年7月发掘清理。墓室已遭破坏。墓向180度（图30）。</p>
+<p>墓室为一大一小的两个“凸”字形墓室并列相连而不相通。全长4.34米，合计总面积8.85平方米。</p>
+<p>右室略大，由甬道及耳室与后室及耳室组成。甬道平面近方形，长0.83米，宽</p>
+<p>图30 M4008平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 陶罐 2、3. 青瓷盘壶 4. 青瓷碗 5. 青瓷盘口壶 6. 青瓷碗 7. 青瓷罐 8. 陶仓<br />
+9.陶鸡、鸭 10.陶井 11.青瓷碗 12.陶畜圈 13.陶磨 14.陶猪 15.青瓷碗 <br />
+16.青瓷盘口壶 17.钱币</p>
+<p>0.88米；其右侧附一耳室，耳室长方形，长0.46米，宽0.34米。后室长方形，长3.54米，宽1.6米；其前部右侧附一耳室，耳室长方形，长1.06米，宽0.66米。左室略小，在右室之左，由甬道和墓室组成。甬道平面呈方形，长、宽皆为0.56米，墓室长方形，长1.64米，宽0.8米。右室左壁与左室右壁相隔0.05米，左室后角与右室左壁中部相连接。两室高度均不详。</p>
+<p>墓底、墓壁、墓顶砌造方法均不详，两室封门墙平齐，厚0.22米，左室封门墙宽于甬道口，宽1.8米。</p>
+<p>随葬器物主要分布于右室内，计有青瓷器、陶模型明器和钱币等共10余件器物。</p>
+<p>图31 M2048平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷罐 2.青瓷碗（2件） 3.青瓷盏 4.铜镜 5.铁刀</p>
+<p>M2048 位于西山南麓的鄂城钢铁厂高炉二区工地，1958年6月发现并清理。墓室顶部已遭破坏。墓向180度（图31）。</p>
+<p>墓室为两间略呈前宽后窄的梯形墓室，并行排列，既不相连也不相通，两室间距 $0.06 \sim 0.1$ 米。墓室全长2.6米，合计总面积2.69平方米。</p>
+<p>左室略长，长2.6米，宽 $0.52\sim 0.6$ 米，高0.6米（残存高度)。右室长2.4米，宽 $0.5\sim 0.53$ 米，高度不详。</p>
+<p>墓底用砖平铺一层，左室呈斜行错缝平铺；右室用残砖作不规则平铺。墓壁为平砖错缝顺砌，于0.6米高处开始起券结顶。墓顶当为券顶结构。封门墙结构和砌筑方式不详。墓砖长方形，长0.28米，宽0.14米，厚0.04米，正面拍印方格填线纹。</p>
+<p>随葬器物均分布于左室，计有青瓷器、铜镜和铁刀等器物。</p>
+<p>2式：有规则的双室并列墓，11座。</p>
+<p>M3028 位于雷山以南0.8公里的朱家塗，1970年10月兴建武（汉）大（冶）铁路的复线工程时发现并清理。墓葬保存较好。墓向150度（图32）。</p>
+<p>墓室由两个长方形墓室并行排列，相连相通。两室皆长3.04米，合计总面积3.95平方米。</p>
+<p>左室宽0.68米，高0.69米；右室略窄，宽0.62米，高0.74米。</p>
+<p>墓底用砖呈“人”字形平铺一层，铺地砖伸出墓壁外，显出锯齿状的“菱角牙子”。墓壁为平砖错缝顺砌法。两室所共有中间隔墙的前段底部，开了一个上窄下宽的洞孔，俗称“过仙洞”，洞宽 $0.22\sim 0.33$ 米，高0.4米，两室由洞孔相通。墓顶为平砖错缝顺砌，逐渐内收为叠涩顶。封门墙亦为平砖错缝顺砌。</p>
+<p>图32 M3028平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+左室：1、2.陶罐 3.陶甑（附灶上） 4.陶罐 5.陶釜（附灶上） 6.陶罐 7.陶灶 8.陶井 9.陶勺<br />
+10.陶罐（附灶上） 11.铜熨斗 12.陶罐 13.陶罐 14.陶盆 15.石袋筐 16.银篓 17.个物片<br />
+18. 钱币 19. 铁镜 20. 铁棺钉 21. 人牙</p>
+<p>右室：1.铜镜 2.铁剑 3.钱币 4.陶畜圈 5.铁棺钉 6.人牙</p>
+<p>随葬器物的分布位置基本未被扰乱，左室出土器物较多，主要出于前部，有陶罐、盆和模型明器等；中部出土一些金银饰品；后部发现有铁镜、铜熨斗等。右室随葬器物较少，中部出土有铜镜、铁刀和钱币，后部右角发现一陶畜圈。据随葬器物分布情况推测，左室应葬的是女性，右室葬的是男性。两室共出土遗物20多件。</p>
+<p>此种有规则的双室并列墓，且有隔墙以“过仙洞”相通的墓葬形制，亦见于洛阳烧沟汉墓的第一型，洛阳地区称之为“隔山葬”①，在苏北和皖北亦有“过仙桥”的俗称。</p>
+<p>M2160位于西山以南1公里麻家坳的西北坡上，1980年10月南京大学历史系考古专业学生实习时发掘清理。有土犷略呈长方形，长6.32米，宽 $3.24\sim 3.54$ 米，残深0.6米。砖墓室砌建其中，其左右侧壁和后壁距墓扩壁 $0.45\sim 0.5$ 米，砖室门（即封门墙）距扩壁为1米。墓葬早年被盗破坏。墓向345度（图33）。</p>
+<p>墓室由两个呈“凸”字形的墓室并行排列，相连相通。墓室总长4.48米，合计总面积7.7平方米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图33 M2160平面、剖面图<br />
+左室：1、2.青瓷盏 3、4.青瓷盘口壶 5.陶盘口壶<br />
+右室：1.青瓷盏2.石黛砚3.陶勺4.陶砚5.石豚（2件）6.青瓷盏7.陶砚8.青瓷盘口壶9.青瓷碗</p>
+<p>右室的总长略长于左室，甬道平面呈横长方形，长0.33米，宽0.74米，高1.5米；室长4.10米，宽0.88米，高1.53米。左室甬道亦呈横长方形，长0.25米，宽0.77米，高1.5米；室长4.15米，宽0.87米，高1.53米。</p>
+<p>墓室底部铺砖一层，呈“人”字形，墓壁采用“三顺一丁”与平砖错缝顺砌法砌筑，下部砌两组“三顺一丁”，部分丁砖伸出墙外作咬土砖；上部平砖错缝顺砌到顶。两室中间为双层隔墙相连成体，在其前部高约0.34米处开一长方形的“过仙洞”，洞宽0.3米，高0.5米，两室由此相通。两室后隅均有竖直式柱券，形成角柱券，后壁中央均有三级塔式立柱。墓顶为券顶结构。封门墙砌法不详，左室封门墙砌于甬道内，在外距封门墙约0.1米处有一堵挡土墙；右室的封门墙与挡土墙之间无空隙，两室挡土墙均略宽于墓室甬道。排水沟设在左室前部右角的挡土墙之下、铺地砖之上；排水沟以砖平铺作底，纵向平铺砖作壁，中间留出水沟孔，上部纵向平铺盖顶，沟孔断面呈长方形，宽0.12米，深0.05米。</p>
+<p>随葬器物残留较少。主要分布两室前、中部，左室前端有青瓷盘口壶和陶盘口壶。右室前部发现有青瓷盘口壶和青瓷碗等；中部出有青瓷盏、陶勺、陶砚以及石黛砚、石豚等。左室后壁塔式立柱下出土的青瓷盏，原来应是放置于立柱塔级面上作灯盏用的，可见，塔式柱的塔级面还可作灯台用。两室共出土器物10余件。</p>
+<p>3式：有规则的双室并列多柱券墓，7座。</p>
+<p>M2072 位于西山以南0.8公里的邵家湾土岗上，1972年6月鄂城钢铁厂修建焦化车间时发现并清理。墓室早年被盗破坏。墓向180度（图34）。</p>
+<p>墓室由两个结构相同、大小略有差别的长方形墓室并行排列，两室既不相连也不相通。墓室全长4.9米，合计总面积17.15平方米。</p>
+<p>两墓室平面均呈长方形，长度相同，均是4.9米；左室宽1.68米，右室宽1.83米；两室高度相同，均是1.94米。</p>
+<p>墓室底部用砖平铺一层，呈“人”字形。铺地砖之上，两室分别设有祭台。左室祭台在室的中前部，长0.64米，宽1.6米，高0.05米；右室祭台在室的前端，长0.56米，宽1.83米，高0.05米。两室祭台结构相同，均是用砖纵向对缝平铺。墓壁采用“三顺一丁”与平砖错缝顺砌法砌筑，下部砌三组“三顺一丁”，上部错缝顺砌结顶。两室在距封门0.8米处皆设有柱券一道，柱券形式为竖直式；两室后隅亦各设一道柱券，形成角柱券，形式为两级塔式；两室后壁中央皆各设一竖直式立柱。所有柱券、立柱的砌法均与墓壁一致，下部用“三顺一丁”，上部错缝顺砌。墓顶为券顶结构。两室墓口均设有多层门柱券（或门券）。左室设二层，右室设三层，均重叠成门券。左室门券宽0.8米，高1.25米；右室门券宽0.95米，高1.6米。两室封门砌法相同，下部砌三组“三顺一丁”，上部平砖顺砌。</p>
+<p>随葬器物残留较少，主要分布于两室的祭台上；左室中部和右室后部亦有少量发现。计有青瓷器、铜镜、金银饰品和石豚等10余件器物。据随葬的金银饰品和铜镜均出于左室推测，此室应埋葬女性，右室可能葬男性。</p>
+<p>M2205 位于西山以南约1公里处的郭家壻东南坡上，1956年7月修建武（汉）大</p>
+<p>图34 M2072平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+左室：1.铜镜 2.青瓷碗 3.青瓷水盂 4.银镯（2件） 5.金指环 6.银指环<br />
+右室：1.青瓷盘口壶 2.青瓷盏 3.石豚 4.大铜棺钉 5.小铜棺钉</p>
+<p>（冶）铁路工程时发现并清理。墓室上部已遭破坏。墓向45度（图35）。</p>
+<p>墓室由两个结构略同的长方形墓室并行排列，相连相通，两墓皆长4.5米，合计总面积10.44平方米。</p>
+<p>两墓室的结构和大小基本相同，左室略宽，宽1.2米，右室宽1.12米，两室均高1.9米。</p>
+<p>墓底用砖平铺一层，呈“人”字纹。铺地砖之上，左室前端有祭台，祭台长方形，长0.96米，宽0.8米，高0.05米，用砖仿席纹平铺。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌两组“三顺一丁”，部分丁砖伸出墙外作咬土砖；上部平砖顺砌到顶，两室中间的双层隔墙连成一体，其前部自铺地砖上开一长方形的“过仙洞”，洞宽0.18米，高0.32米，两室由此相通。两室侧壁等距离设柱券五道，其中前端和后端的柱券</p>
+<p>图35 M2205平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+左室：1.青瓷盏 2.青瓷砚 $3\sim 5$ .青瓷盏 $6\sim 10$ .青瓷盘 11.青瓷鸡首壶 12.青瓷盘口壶 13.青瓷盏右室： $1\sim 3$ .青瓷盏</p>
+<p>分别可作为门券和角柱券，柱券形式为竖直式；中间三道为塔式柱券。后壁中央亦设有三级塔式立柱一个。两墓室顶部均为券顶结构。封门墙封砌于门券之外，略伸入于门券内，封门的封砌方法不详。</p>
+<p>随葬器物分布位置未被扰乱，主要分布于左室祭台上，两室柱券之间的青瓷盏，原来可能是放置在柱券塔级面上作灯盏用的。两室共出青瓷器10余件。</p>
+<p>M2120 位于西山以南0.7公里的古坟堆附近，1972年1月鄂城钢铁厂兴建高炉时发现并清理。墓葬保存较好。墓向180度（图36）。</p>
+<p>墓室由两个结构大致相同的长方形墓室并行排列，相通但不相连，两室皆长4.14米，合计总面积6.49平方米。</p>
+<p>两室宽度略有差异，左室略宽，宽0.8米，右室宽0.77米；两室高度相同，高1.96米。</p>
+<p>墓室底部用砖平铺一层，呈“人”字纹，铺地砖伸出墓壁之外，显出“菱角牙子”。铺地砖之上，两室前部均设祭台。左室祭台呈方形，长、宽皆为0.64米，高0.05米；</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+北</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1米</p>
+<h1 id="36-m2120">图36 M2120平面、剖面图</h1>
+<p>左室：1.青瓷盘口壶 $2\sim 5$ .陶盘6.陶灯7.陶盘8.青瓷盏9.陶桶 $10\sim 12$ .青瓷盏13.铜镜14.钱币15.青瓷盘口壶 $16\sim 18$ 青</p>
+<p>瓷盏 19.陶魁</p>
+<p>右室：1.青瓷盏2、3.陶盘4.青瓷罐5.陶盘6.陶桶7~9.陶盘10.青瓷盏11.陶盘口壶12.陶碗13.陶魁14.陶勺15.青瓷</p>
+<p>砚 16、17.青瓷盏 18.钱币 19.青瓷盏 20.铁刀 21.青瓷盏</p>
+<p>右室祭台呈横长方形，长0.5米，宽0.6米，高0.05米。右室祭台与棺床连接，棺床长2.7米，宽0.48米，高0.05米，均用砖仿席纹平铺。两室墓壁采用“三顺一丁”与平砖顺砌法，侧壁下部砌两组“三顺一丁”，丁砖间各留出小龛五个。小龛（或灯龛）呈长方形，宽0.1米，高0.16米。侧壁上部和后壁均是错缝顺砌起顶。两室中间的墙壁各自成体，互不相连，其间距0.04米，在其前端对应处各开一个圆拱顶长方形“过仙洞”，两室由此相通，洞宽0.27米，高0.74米。两室侧壁各设柱券六道，柱券下部连成一体，形成腰墙并嵌入墓壁之中。后壁中央设立柱一个，立柱为四级塔式。墓顶为券顶结构。封门墙为双层，封砌方式不明。</p>
+<p>随葬器物位置未被扰乱，主要分布于两室的前端祭台上下，左室后部亦有少量器物。左右二室祭台上下的器物均以陶桶为中心围绕以多件陶瓷器，此种形式为南朝随葬的流行方式。从左右二室随葬器物的差别，如左室出有铜镜、右室出有铁刀等，推测左室应埋葬女性；右室当葬男性。两室共出青瓷器、陶器、铜镜、铁兵器和钱币等40余件。</p>
+<p>M2012 位于西山以南、武（汉）黄（石）公路的北侧的何田埠，1958年鄂城钢铁厂兴建高炉时发现并清理。墓葬早年被盗破坏。墓向197度（图37）。</p>
+<p>墓室由两个结构相同的长方形墓室并行排列，相连相通，两室皆长4.44米，合计总面积10.12平方米。两室的平面形制、大小和结构均相同，宽皆1.14米，高1.9米。</p>
+<p>两墓室底部均用砖平铺一层，呈“人”字形。铺地砖之上，两室均设有棺床。左室棺床已残，长度不详，宽0.82米，高0.05米，用砖纵向平铺四道，其间留出凹槽用以排水；右室棺床长3.04米，宽0.64米，高0.05米，用砖仿席纹平铺。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌两组“三顺一丁”，上部顺砌起顶。两室中间的双层隔墙相连成体，并在前端开一个长方形的“过仙洞”，洞宽0.2米，高0.46米，两室由此相通。两室侧壁等距离各设柱券五道，其中前端和后端分别在墓门口和后角，可作为门券和角柱券，柱券形制皆竖直式；中间三道为两级塔式柱券。后壁中央亦设一立柱，立柱形制为三级塔式。墓顶为券顶结构。封门墙封砌于门券内，双层，外层墙下部砌三组“三顺一丁”，上部错缝顺砌到顶；内层墙砌法不详。有砖砌排水沟设在左室左前角，封门墙之下，铺地砖之上。水沟曲折通向墓外，用砖横向平铺为底，顺向平铺为壁，中留沟孔，上盖顺向平砖。沟孔断面呈横方形，孔宽0.06米，深0.05米。水沟长度不详。墓砖长方形，长0.32米，宽0.16米，厚0.05米，纵侧面印有五铢钱纹。</p>
+<p>随葬器物残留较少，主要分布于右室前端，即棺床前和“过仙洞”的内外。左室仅残留下一串铜钱。右室的随葬器物以陶桶为中心，周围有青瓷盏、盘口壶、砚和陶盘、盆等，两室共出随葬器物20余件。</p>
+<p>4式：三室并列墓，1座。</p>
+<p>M2179 位于西山以南2.5公里的少祖山东南坡，1975年7月兴建湖北省冶金建设公司的工程中发现并清理。墓室早年被盗破坏。墓向90度（图38）。</p>
+<p>墓室由三个结构和大小相同的长方形墓室并行排列，三室相连相通。三室皆长3.44米，合计总面积8.67平方米。三室同宽，宽0.84米。高度均不详。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图38 M2179平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+左室：1.银镯（4件） 2.银铃 3.石豚 4.铜棺钉 5.青瓷鸡首壶 6.青瓷罐<br />
+7.青瓷碗 8.石黛砚 9.铁镜 <br />
+中室：1.青瓷碗 2.石豚（2件） 3.青瓷碗<br />
+右室：1.银钗</p>
+<p>墓室底部铺砖情况不明，左、中两室前端均设有祭台。左室祭台长0.32米，宽0.8米，呈横长方形，表层用砖纵向平铺。中室祭台长0.46米，宽0.63米，高度不详，用砖纵向侧立砌筑，原来上面可能铺有木板。墓壁砌法不详，均为双层。中室与左、右室之间的隔墙前端各开一个“过仙洞”，分别与左、右二室相通。其中左边的洞孔宽0.2米，高度不明；与右室相通的洞宽0.12米，高度亦不详。墓顶和封门墙均是双层，砌法不详。</p>
+<p>随葬器物残留较少，主要分布于左室祭台上下和中部，计有青瓷鸡首壶、罐、碗和铁镜、银铃、银镯、石黛砚、石豚等；中室出土青瓷碗和石豚各2件；右室仅出土银钗1件。三室共出随葬器物10余件。</p>
+<h1 id="v">五 V型</h1>
+<p>“凸”字形墓，共99座。共同特征是长方形墓室前有甬道，墓室平面均呈“凸”字</p>
+<p>图39 M5001平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 陶罐 2. 钢弩机 3. 钱币</p>
+<p>形。依其平面结构的不同形式和局部特征的差异又分为三式。</p>
+<p>1式：不规则“凸”字形墓，14座。</p>
+<p>M5001 位于鄂城西郊华容乡的冯家嘴，1956年7月清理发掘。墓葬早年被盗。墓向95度（图39）。</p>
+<p>墓室全长3.8米，总面积3.73平方米。甬道和墓室的平面均呈梯形，甬道长0.8米，前窄后宽，宽 $0.76\sim 0.84$ 米；墓室长3米，前宽后窄，宽 $1\sim 1.06$ 米，高度均不详。</p>
+<p>墓底用砖平铺一层，作“人”字形，墓壁砌筑方法不详，后壁为双层墙，墓顶为券顶结构。封门墙封砌形式不详，排水沟设在封门墙下，伸出墓外的部分残长6.12米，用砖平铺作底，斜直立作壁，水沟断面呈三角形。</p>
+<p>随葬器物残留较少，分布于墓室内，计有陶器、铜兵器和钱币。</p>
+<p>M2182 位于西山以南3公里的七里界，1979年1月清理发掘。墓葬早年被盗。墓向170度（图40）。</p>
+<p>墓室全长5.06米，总面积8.35平方米。甬道长方形，长1.54米，宽1.08米，高1.16米；墓室亦为长方形，长3.52米，宽1.9米，高2米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室内设棺床，棺床长3.3米，宽1.7米，高0.05米，用砖仿席纹平铺。墓室壁与棺床之间留出0.1米的空隙，以利墓室内积水的外泄。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌三组“三顺一丁”，部分丁砖伸出墙外作咬土砖；上部错缝顺砌起顶。墓顶为券顶结构。封门墙较特殊，呈弧形向外凸出，封砌方式为下部“三顺一丁”，上部错缝顺砌法。墓砖长方形，长0.35米，宽0.17米，厚0.05米，纵侧面印对角斜线纹。</p>
+<p>随葬器物散布于棺床前部，主要是青瓷器，另有铜镜1件，计有随葬器物10余件。</p>
+<p>M2170 位于西山以南1.8公里的吴山，1975年9月鄂城钢铁厂兴建粉末车间时发现并清理。墓葬已遭严重破坏。墓向250度（图41）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图40 M2182平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷唾壶 2.铜镜 3.青瓷碗 4.青瓷盏 5.青瓷碗 6.青瓷盏 7.青瓷碗 8.青瓷盏 9、10.青瓷罐 11、12.青瓷碗 13.铁棺钉</p>
+<p>图41 M2170平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷插座 2.青瓷灯 3.青瓷盘口壶 4.青瓷罐 5.铜酒樽、勺 6.青瓷水盂 7.青瓷罐8、9.青瓷盏（4件） 10.青瓷罐 11.青瓷碗</p>
+<p>墓室全长5米，总面积7.42平方米。甬道长方形，略偏于右侧，长1.5米，宽0.84米；墓室长3.5米，宽1.76米，高度均不详。墓底铺地形式不明。墓壁砌筑方法不详。墓顶为券顶结构。</p>
+<p>随葬器物主要分布于墓室前部和甬道。以青瓷器为主，也有个别的铜器，计有10余件器物。</p>
+<p>M1011 位于西山东麓的雨台山，1957年发掘清理。墓葬早年被盗破坏。墓向192度（图42）。</p>
+<p>墓室全长4.5米，总面积7.56平方米。甬道呈横长方形，长0.5米，宽1.2米，高1.13米；墓室长方形，长4米，宽1.62米，高1.74米。</p>
+<p>墓底铺地砖呈“人”字形。铺地砖之上，墓室前端设祭台，祭台横长方形，长0.75米，宽1.62米，高0.2米，祭台表层用砖横向平铺。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌三组“三顺一丁”，上部错缝顺砌起顶。墓顶为券顶结构。封门墙特厚，封砌于甬道口内，其外面呈弧形突出。封门墙上部略高于甬道顶，形成所谓的“额墙”。封门墙封砌方式不详。墓砖长方形，长0.34米，宽0.16米，厚0.04米，纵侧面印对角斜线纹。</p>
+<p>随葬器物残留较少，以青瓷器为主，另有铜镜和钱币，共计7件器物。</p>
+<p>M2025 位于西山以南、武黄公路北侧的何田埠，1958年5月鄂城钢铁厂兴建高炉时发现并清理。墓葬早年被盗破坏。墓向189度（图43）。</p>
+<p>墓室全长4.18米，总面积4.69平方米。甬道略近方形，长0.6米，宽0.84米，高1.08米（残存高度）。墓室两端稍窄、中间略宽，墓室长3.58米，宽 $1.14\sim 1.2$ 米，高1.34米（残存高度）。</p>
+<p>图42 M1011平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷盘口壶 2.青瓷罐 3.铜镜 4.钱币 5.青瓷盏 6、7.青瓷碗</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室前端设祭台。祭台横长方形，长0.6米，宽1.06米，高0.18米；祭台表层用砖横向平铺。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌三组“三顺一丁”，上部错缝顺砌起顶。侧壁分别在甬道和墓室中的第二层丁砖间各开设两个壁龛，龛高0.14米，前宽后窄。后壁顶部向前倾斜内收，其两角在高0.78米处伸出半块砖作灯台用。墓顶为券顶结构。封门墙纵向叠砌，厚0.32米。墓砖长方形，长0.32米，宽0.14米，厚0.04米。</p>
+<p>随葬器物仅残留青瓷器2件，出于甬道口前端。</p>
+<p>M2084 位于西山以南0.8公里的邵家湾，1972年6月清理发掘。墓室已被破坏。墓向95度（图44）。</p>
+<p>墓室全长4.32米，总面积5.34平方米。甬道呈前宽后窄的梯形，长0.8米，宽 $0.8\sim 0.72$ 米；墓室长方形，长3.52米，宽1.34米，高度均不详。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室后部砌棺床，棺床呈长方形，长3.05米，宽1.34米，与墓室同宽，高度不明，用砖横向错缝平铺。墓壁、顶及</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图43 M2025平面、剖面图<br />
+1、2.青瓷盘口壶</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图44 M2084平面图<br />
+1、2.石豚3.铜棺钉4、5.石豚6、7.青瓷碗</p>
+<p>图45 M2142平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、2.青瓷盏 3.青瓷碗 4.青瓷唾壶 5.青瓷碗</p>
+<p>封门砌筑方法均不详。</p>
+<p>随葬器物主要分布于棺床前、中部，计有青瓷器和石豚等6件器物。此外，棺床后部还发现有铜棺钉，应是木棺具腐朽后之遗留。</p>
+<p>M2142位于西山以南0.7公里的古坟堆附近，1973年5月鄂城钢铁厂兴建高炉平整地基时发现并清理。墓葬已受到严重破坏。墓向90度（图45）。</p>
+<p>墓室全长4.54米，总面积7.04平方米。甬道呈横长方形，长0.84米，宽1.34米；墓室长方形，长3.7米，宽1.62米，高度均不详。</p>
+<p>墓底用砖平铺一层，呈“人”字形。墓壁砌法不详，墓顶为券顶结构。墓室与甬道之间封砌一道墙，将两者分隔成两个封闭的空间，为鄂城这批六朝墓中之特例。封门墙略宽于甬道口，封砌方式不详。</p>
+<p>随葬器物残留较少，分布于墓室角隅。计有青瓷器5件。</p>
+<p>M2150 位于西山以南0.7公里的古坟堆土岗附近，1973年8月鄂城钢铁厂兴建高炉时发现并清理。墓葬已遭破坏。墓向215度（图46）。</p>
+<p>墓室全长4.54米，总面积5.98平方米。甬道呈横长方形，长0.58米，宽0.9米；墓室长方形，长3.96米，宽1.4米，高度均不详。</p>
+<p>墓底和墓壁砌筑方式不详，后壁为双层，向墓内凹进。墓顶为券顶结构。封门墙砌法不明。</p>
+<p>随葬器物残留较少，分布于墓室左侧和后部，计有陶器和青瓷器共6件。</p>
+<p>M3027 位于雷山以南0.8公里的朱家坳，1970年10月发现并清理。墓葬已遭严重破坏。墓向150度（图47）。</p>
+<p>墓室全长4.1米，总面积5.6平方米。甬道呈方形，长0.8米，宽0.82米，残存高度0.76米；墓室长方形，长3.3米，宽1.5米，残存高度1.28米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室前部右侧，正对甬道处设一祭台。祭台呈方形，长、宽皆0.65米，高0.05米，用砖纵横平铺。墓壁采用“四顺一</p>
+<p>图46 M2150平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 陶盘（5件） 2. 青瓷盏</p>
+<p>图47 M3027平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷盘口壶 2.铜镜 3.石黛砚 4.铁棺钉 5.筒形陶水管</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图48 M5004平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜弩机 2.铁棺钉 3.钱币 4.青瓷唾壶 5.石黛砚 6.银钗 7.鹅卵石 8.人牙 9.残漆器<br />
+10.青瓷罐 11.陶罐 12.铅地券</p>
+<p>丁”、“三顺一丁”与平砖顺砌法，下部砌一组“四顺一丁”和两组“三顺一丁”，上部平砖顺砌起顶。墓顶为券顶结构。封门墙砌法不详。排水沟设在甬道左前角封门墙之下，铺地砖之上，由圆筒状的陶水管连接排水孔通向墓外，此种形式的排水设施在这批墓中仅此一例。排水沟长度不详。</p>
+<p>随葬器物残留较少，分布于甬道口和祭台上，计有青瓷器、铜镜和石黛砚各1件。</p>
+<p>2式：有规则“凸”字形墓，47座。</p>
+<p>M5004 位于鄂城市西郊华容乡的冯家嘴，1956年8月配合武大铁路工程时发现并清理。墓葬早年被盗破坏。墓向174度（图48）。</p>
+<p>墓室全长4.18米，总面积5.86平方米。甬道平面呈长方形，长1.2米，宽0.96米，高0.88米；墓室长方形，长2.98米，宽1.58米，高1.42米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室中部设有棺垫两道，棺垫分别由四块砖横向平铺成条，长0.14米，宽1.05~1.2米，高0.05米。墓壁采用平砖顺砌法。墓顶为券顶结构。封门墙亦是平砖错缝顺砌，略宽于甬道口，宽1.6米。</p>
+<p>随葬器物散布于墓室棺垫附近。有陶器、青瓷器、银钗、铜兵器和钱币等近10件器物，其中出土的一件铅地券上有孙吴“赤乌三年”字样，说明此墓葬于孙吴赤乌三年即公元240年。它是目前鄂城已发现的孙吴墓中唯一有纪年的墓葬。</p>
+<p>M2208 位于西山以南1公里左右的郭家坳，1956年8月配合武大铁路工程时发现并清理。墓葬保存基本完好。墓向290度（图49）。</p>
+<p>图49 M2208平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 陶罐 2. 陶磨 3. 陶碓 4. 陶鸭 5. 陶井 6. 陶仓 7. 陶甑（附灶上） 8. 陶釜（附灶上）<br />
+9、10.陶鸡 11.陶灶 12.陶人物俑 13.陶镇基俑 14.陶仓盖 15.漆器（残） 16.陶狗<br />
+17.陶鸭 18.陶罐 19.青瓷碗 20.陶车轮 21.陶罐 22.铁棺钉 23.陶猪（2件） 24.陶畜圈</p>
+<p>墓室全长4.1米，总面积5.93平方米。甬道平面长方形，长0.94米，宽0.86米，高1米；墓室亦是长方形，长3.2米，宽1.6米，高1.42米。</p>
+<p>墓底用砖平铺，呈“人”字形。墓壁采用平砖错缝顺砌法，其中后壁略宽于墓室的宽度，两侧角形成一个砖柱。墓顶为券顶结构。封门墙封砌于甬道口内，呈丁砖斜“人”字形封砌；其外再砌一道挡土墙，以砖错缝顺砌，封门墙和挡土墙通厚0.5米，两墙之间及与甬道侧壁间咬合均不严，留有缝隙。甬道口外侧亦因封门墙和挡土墙略宽而形成砖柱。</p>
+<p>随葬器物基本保留，主要分布于墓室的两前隅，少量器物在后部。计有青瓷器、陶容器和模型明器等20余件器物。</p>
+<p>M4020 位于洋澜湖西北岸的五里墩村的山坡上，1978年9月因兴建武大铁路的复线工程时发现并清理。墓葬保存情况较差。墓向180度（图50）。</p>
+<p>墓室全长3.4米，总面积5.07平方米。甬道呈长方形，长1.16米，宽0.74米；墓室较宽，长2.24米，宽1.88米，高度仅存0.36米。</p>
+<p>墓室底部用砖平铺，呈“人”字形。墓壁下部砌“三顺一丁”，上部和顶部砌筑形式不明。封门墙用砖错缝顺砌。墓砖有两种规格，墓壁砖长0.32米，宽0.16米，厚0.05米；墓底砖长0.33米，宽0.16米，厚0.05米。</p>
+<p>随葬器物主要分布于墓室前部。计有陶器、银钗、铜镜、钱币等10件器物，其中有铅地券一块，其上面的文字多已漫漶不清。</p>
+<p>M2184 位于西山南3公里的七里界，1980年1月发现并清理。墓室顶部已遭破坏。墓向225度（图51）。</p>
+<p>墓室全长4.66米，总面积6.2平方米。甬道呈横长方形，长0.54米，宽0.97米，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图50 M4020平面图</p>
+<p>1.铜镜 <br />
+2. 漆碗 <br />
+3. 铅地券 <br />
+4. 陶罐 <br />
+5. 钱币 <br />
+6. 陶罐（2件）<br />
+7. 陶罐（2件）<br />
+8.银钗</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图51 M2184平面、剖面图</p>
+<p>1.青瓷盘口壶 2.青瓷罐（2件） 3、4.青瓷罐（4件） $5\sim 8$ .青瓷碗9、10.青瓷盘</p>
+<p>11、12.青瓷熏 13.铜熨斗 14.青瓷灶 15.青瓷井 16.青瓷仓（4件） 17.青瓷臼</p>
+<p>18.青瓷磨 19.青瓷禽舍（2件） 20.青瓷畜圈 21.青瓷人物俑 22.青瓷镇基俑</p>
+<ol>
+<li>钱币 24. 石豚 25. 银指环 (2 件) 26. 金镯</li>
+</ol>
+<p>残存高度0.86米；墓室长4.12米，宽1.38米，残存高度0.86米。</p>
+<p>墓底用砖平铺两层，表层呈“人”字形。甬道底与墓室底略有高差，墓室底略高，形成前低后高的阶梯状，以利墓室内积水的外泄。铺地砖之上，墓室前部设祭台，祭台呈横长方形，长0.66米，宽1米，高0.14米，表层用砖纵向平铺。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌三组“三顺一丁”，上部错缝顺砌起顶。墓顶为券顶结</p>
+<p>构。封门墙以丁砖作斜人字形封砌，墙厚0.37米。排水沟设在甬道左侧，铺地砖之下。排水沟底无铺砖，两壁用砖顺向平铺，上盖平铺砖。沟孔断面呈方形，宽、深皆0.06米，排水沟长度不详。排水沟口在甬道内，被一青瓷罐堵住，此罐应是被水冲浮到这里的。墓砖有长方形和楔形两种，长方形砖长0.34米，宽0.17米，厚0.06米；楔形砖长0.32米，宽0.16米，厚 $0.16\sim 0.1$ 米，砖的正面均印绳纹，纵侧面印对角几何纹和钱纹。用楔形砖砌墓顶，长方形砖砌墓壁和墓底。</p>
+<p>随葬器物较丰富，分布位置已被扰乱。主要分布于祭台附近和墓室中部，甬道和墓室后部有少量器物。以青瓷器和陶模型明器为主，还有铜器、金银饰品和石豚等共计近40件器物。另外，出土的钱币数量较多，种类包括半两、五铢、四出五铢、货泉、直百五铢、太平百钱等多种。</p>
+<p>M2017 位于西山以南、武黄公路北侧的何田埠，1958年5月鄂城钢铁厂兴建高炉时发现并清理。墓葬已遭破坏。墓向172度（图52）。</p>
+<p>墓室全长3.92米，总面积6.16平方米。甬道呈横长方形，长0.34米，宽1.28米，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图52 M2017平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 石黛砚 2. 铁棺钉 3. 铜熨斗 4. 石斧 5. 青瓷水盂 6、7. 青瓷盘口壶 8. 铜镜 9. 钱币<br />
+10.青瓷酒樽 11.青瓷灯 12.朽木片 13.铜酒樽</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图53 M2062平面图</p>
+<ol>
+<li>陶井   </li>
+<li>陶禽舍 <br />
+3.青瓷唾壶 <br />
+4.青瓷盘口壶 <br />
+5.青瓷盏（2件）<br />
+6、7. 陶人物俑  </li>
+<li>陶灶   </li>
+<li>陶人物俑  </li>
+<li>陶镇基俑</li>
+</ol>
+<p>高1.38米；墓室长3.58米，宽1.6米，残存高度1.6米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室前端偏左设有祭台，祭台长0.83米，宽1.04米，高0.08米，用砖横向平铺。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌两组“三顺一丁”，上部错缝顺砌起顶。在后壁两角高0.88米处伸出半块砖作灯台。墓顶为券顶结构。封门墙纵向叠砌，厚0.30米。排水沟由封门墙下通向墓外，沟宽0.06米，深0.06米，长度不详，结构应是用砖平铺作底，顺向平铺作壁，中留水沟孔，沟上平铺盖砖。</p>
+<p>随葬器物位置已被扰乱，主要分布于墓室祭台附近，甬道和墓室中后部有少量分布。计有青瓷器、铜器、铜镜、石黛砚等共10余件器物。另在墓室后部还有一些朽木片，应是木葬具腐朽之后的残留物。</p>
+<p>M2062位于西山以南1.5公里的吴山，1975年鄂城钢铁厂兴建炼钢车间时发现并清理。墓葬已遭破坏。墓向65度（图53）。</p>
+<p>墓室全长4米，总面积6.83平方米。甬道呈横长方形，长0.66米，宽1.04米；墓室长方形，长3.34米，宽1.84米，高度均不明。</p>
+<p>墓底用砖平铺，呈“人”字形。墓壁砌法不明，墓顶为券顶结构。封门墙封砌方式不详。</p>
+<p>随葬器物残留较少，主要分布于墓室左前隅和甬道内。计有青瓷器和陶模型明器10余件。</p>
+<p>M2040 位于西山以南、武黄公路北侧的何田埠，1958年6月鄂城钢铁厂兴建高炉时发现并清理。墓顶已遭破坏。墓向213度（图54）。</p>
+<p>墓室全长4.56米，总面积7.35平方米。甬道平面呈横长方形，长0.5米，宽0.9米，高1.25米；墓室长4.06米，宽1.7米，残存高度1.92米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室前部设祭台。祭台呈横长方形，长0.74米，宽1.6米，高0.05米，用砖纵向平铺。墓壁采用“三顺一丁”与平砖</p>
+<p>图54 M2040平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜镜 2.钱币 3.银钗 4.铁刀 5.青瓷碗 6.青瓷唾壶 7.青瓷水盂 8.铅俑 9~11.青瓷罐 <br />
+12.青瓷盏 13.青瓷唾壶 14.铜镜 $15\sim 17$ .青瓷盘口壶 18.青瓷罐 19.青瓷盆</p>
+<p>错缝顺砌法，下部砌三组“三顺一丁”，上部错缝顺砌起顶。其中墓室两前隅在高1.25米处各伸出半块砖作灯台用。墓顶为券顶结构。封门墙用砖纵向叠砌，厚0.35米。排水沟由墓室右壁前端通向墓外，沟宽0.08米，深度、长度和水沟的结构均不详。</p>
+<p>随葬器物比较丰富，主要分布于墓室中部、祭台上下和甬道内，计有青瓷器、铜镜、铁兵器、银钗、铅俑和钱币等20余件器物。</p>
+<p>M2002 位于西山以南的何田埠，1958年4月兴建武大铁路时发现并清理。墓葬顶部已遭破坏。墓向270度（图55）。</p>
+<p>墓室全长4.5米，总面积6.56平方米。甬道平面略近方形，长0.86米，宽0.94米；墓室长3.64米，宽1.58米，残存高度均为1.18米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室前端设祭台。祭台呈横长方形，长1.04米，宽1.58米，与墓室同宽，高0.16米，表层用砖横向平铺。墓室中、后部设棺垫，棺垫横列，用砖横向平铺成条，棺垫的长度（即是每块砖的宽度）为0.14</p>
+<p>图55 M2002平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷盘口壶 2、3.青瓷碗 4.铁棺钉 5.青瓷罐</p>
+<p>米，宽度皆与墓室同宽，高0.05米。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌两组或三组“三顺一丁”，上部错缝顺砌起顶。两侧壁在第二层和第三层丁砖间各开壁龛四个，壁龛宽0.3米，高0.15米。墓室四隅在高0.76米处各伸出半块砖作灯台。墓顶为券顶结构。封门墙用砖纵向叠砌，厚0.32米，略宽于甬道口，在甬道口两侧形成砖柱。排水沟设在封门墙下，铺地砖之上，由此通向墓外。排水沟宽0.06米，长度、深度和结构不详。</p>
+<p>随葬器物残留较少，主要分布于甬道和墓室祭台上，计有青瓷器4件。</p>
+<p>M2071 位于西山以南0.8公里的邵家湾，1972年6月鄂城钢铁厂兴建焦化车间时发现并清理。墓室顶部遭破坏。墓向180度（图56）。</p>
+<p>墓室全长3.64米，总面积3.28平方米。甬道平面呈横长方形，长0.52米，宽0.73米；墓室长方形，长3.12米，宽0.93米，残存高度皆为0.66米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室前端设祭台。祭台横长方形，长0.43米，宽0.93米，与墓室同宽，高0.04米，用砖横向平铺。墓壁采用“三顺一丁”与平砖错缝顺砌法砌筑，下部砌三组“三顺一丁”，上部已残，似为错缝顺砌起顶。墓顶应是券顶结构，已残。封门墙砌法不详。</p>
+<p>随葬器物分布于墓室中部，计有青瓷器近10件。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图56 M2071平面、剖面图</p>
+<p>1.青瓷碗 <br />
+2.青瓷盘 <br />
+3.青瓷唾壶 <br />
+4.青瓷盘口壶 <br />
+5.青瓷鸡首壶 <br />
+6.青瓷盘口壶 <br />
+7.青瓷盏</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图57 M2149平面、剖面图<br />
+1~4.陶盘5.青瓷唾壶6~8.青瓷碗9.青瓷盏10.青瓷碗11.青瓷鸡首壶<br />
+12.金圆形饰片</p>
+<p>M2149 位于西山以南0.7公里的古坟堆附近，1973年7月鄂城钢铁厂兴建高炉时发现并清理。墓室顶部已遭破坏。墓向224度（图57）。</p>
+<p>墓室全长4.28米，总面积3.93平方米。甬道平面略近方形，长0.6米，宽0.8米，残存高度0.68米；墓室长3.7米，宽0.94米，高0.86米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。其中甬道和墓室底略有高差，甬道底低于墓室底，形成前低后高的阶梯状，以利墓内积水的外泄。铺地砖之上，墓室前端设有祭台。祭台呈横长方形，长0.58米，宽0.94米，与墓室同宽，高0.05米，用砖平铺。墓壁下</p>
+<p>图58 M2213平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 陶三足炉 2. 陶桶 3. 陶魁 4. 陶勺</p>
+<p>部残留三组“三顺一丁”，估计上部应是错缝顺砌起顶。两侧壁前部在第三层丁砖间各开一方形壁龛，龛高0.13米，宽0.1米。墓顶为券顶结构。封门墙砌法不详。</p>
+<p>随葬器物分布较散乱，主要在墓室的祭台上和墓室中部，以青瓷器为主，计有青瓷器和陶器10余件。</p>
+<p>M2213 位于西山以南1公里的郭家坳，1956年9月兴建武大铁路时发现并清理。墓顶已遭破坏。墓向180度（图58）。</p>
+<p>墓室全长3.96米。总面积5.51平方米。甬道平面呈横长方形，长0.6米，宽1米，残存高度0.7米；墓室长方形，长3.36米，宽1.46米，残存高度0.9米。</p>
+<p>墓底用砖平铺一层，呈斜行错缝平铺。铺地砖之上，墓室中后部砌一棺床。棺床长方形，长2.64米，宽1.46米，与墓室同宽，高0.16米，用砖横向立砌，其前缘纵向立砌一排砖锁口。墓壁采用“三顺一丁”与平砖错缝顺砌法砌筑，下部砌三组“三顺一丁”，上部错缝顺砌到顶。墓顶为券顶结构。封门墙双层，厚0.34米，用砖“三顺一丁”式封砌，其中内层封门墙宽于甬道口，在其外侧形成砖柱。封门墙下有排水沟，未清理，其长度、深度和结构均不详。</p>
+<p>随葬器物残留较少，分布于墓室前端棺床上下，仅有陶器4件。</p>
+<p>3式：外部加柱券“凸”字形墓，1座。</p>
+<p>M2016 位于西山南麓，1958年5月鄂城钢铁厂兴建宿舍时发现并清理。墓葬早年被盗破坏。墓向180度（图59）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图59 M2016平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 陶灯 2. 陶灶 3. 青瓷罐 4. 陶猪 5. 陶狗 6. 陶畜圈 7. 铜镜 8. 陶三足炉 9. 陶罐 10. 石黛砚<br />
+11. 钱币 12. 铁棺钉</p>
+<p>墓室全长4.74米，总面积7.33平方米。甬道平面呈长方形，长1.04米，宽0.86米，高1.17米；墓室亦为长方形，长3.7米，宽1.74米，高1.88米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。墓壁采用“三顺一丁”与平砖顺砌法，下部砌两组“三顺一丁”，上部错缝顺砌起顶。两侧壁外各设两道柱券，以加固墓顶和墓壁。墓外设柱券，在鄂城这批六朝墓中仅此一例，应是墓内设柱券之先导。墓顶为券顶结构。封门墙用砖纵向叠砌，厚0.32米。</p>
+<p>随葬器物残留少且多已残破，分布于甬道和墓室内。计有青瓷器、陶容器和模型明器、铜镜、石黛砚和钱币等共10余件器物。</p>
+<p>4式：内部加柱券的“凸”字形墓，15座。此式墓在墓口或墓室两端设柱券，以加固墓壁和墓顶。其中部分墓室外形似长方形，但从墓室平面看是有一个甬道，故归入“凸”字形墓之中。</p>
+<p>图60 M3031平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1~4. 陶罐 5. 陶盘口壶 6. 陶罐 7. 青瓷灯 8. 青瓷碗 9. 陶罐 10. 铜镜 11. 银钗（3件）<br />
+12. 铜镜 13. 青瓷碗 14. 铜镜 15. 青瓷碗 16. 钱币 17. 铁棺钉 18. 银镯（2件）<br />
+19.银指环（4件） 20.陶罐 21.青瓷碗</p>
+<p>M3031 位于雷山以南0.6公里的瓦屋湾，1956年8月兴建武大铁路时发现并清理。墓葬基本保存完整。墓向290度（图60）。</p>
+<p>墓室全长3.58米，总面积5.15平方米。墓室外形似长方形，墓口内砌有柱券，形成甬道。甬道长0.4米，宽0.96米，高度不详；墓室长方形，长3.18米，宽1.5米，高1.08米。</p>
+<p>墓底用砖平铺，呈“人”字形。铺地砖之上，甬道和墓室前端设祭台，祭台前窄后宽，长0.62米，宽 $0.71\sim 1.01$ 米，高0.05米，用砖纵向平铺。墓壁砌造较特殊，墓圹内深挖0.28米深的墓壁槽，壁砖由槽内起砌，先砌“八顺一丁”，再用平砖顺砌起顶。墓顶为券顶结构。封门墙用砖作斜“人”字形封砌。</p>
+<p>随葬器物集中发现于祭台上下和墓室中部，计有青瓷器、陶器、铜镜、银饰品和钱币等共20余件器物。</p>
+<p>M2148 位于西山以南0.7公里的萧家湾附近的古坟堆土岗上，1973年7月鄂城钢铁厂兴建高炉时发现并清理。墓葬保存较完好。墓向360度（图61）。</p>
+<p>墓室全长4.04米，总面积5.4平方米。甬道呈横长方形，长0.34米，宽0.65米，残存高度0.76米；墓室亦为长方形，长3.7米，宽1.4米，残高1.18米。</p>
+<p>墓底用砖平铺一层，铺砌形式不明，铺地砖之上，墓室后端用三块砖纵向平铺，权当灯台用。墓壁均为平砖错缝顺砌，墓顶为叠涩顶。封门墙封砌方式不明。</p>
+<p>随葬器物主要分布于墓室前、中部，计有青瓷器、陶容器和模型明器、铜器、银饰品、铜镜和钱币等40余件器物。</p>
+<p>M2034 位于西山以南、武黄公路北侧的何田埠，1958年6月鄂城钢铁厂兴建高炉时发现并清理。墓顶已遭破坏。墓向151度（图62）。</p>
+<p>墓室全长3.97米，总面积4.23平方米。墓口内设柱券，形成甬道，甬道长0.67</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图61 M2148平面、剖面图</p>
+<ol>
+<li>陶鸡（2件）、陶鸽（2件） 2. 陶灶及附件 3. 银钗（2件） 4. 陶罐（5件） 5. 铜</li>
+</ol>
+<p>6.青瓷盒7.陶狗8.陶碓9.青瓷灯10.陶磨11、12.青瓷碗13.陶三足炉14.铜镜</p>
+<p>15.青瓷碗 16.铜勺 17.陶盆 18.陶灶及附件 19.青瓷罐 20.铜镜 21.青瓷盘壶<br />
+22.青瓷盏 23.铜洗 24.青瓷罐 25.陶罐 26.银镯 27.陶畜圈 28.钱币 29.陶罐 <br />
+30.陶猪 31.陶灶及附件 32.陶井 33.银指环 34.铜镜 35、36.青瓷碗</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图62 M2034平面、剖面图</p>
+<p>1.青瓷盆 2.青瓷盘口壶 3.青瓷盏 4.铁棺钉</p>
+<p>米，宽0.86米，残高0.84米；墓室长方形，长3.1米，宽1.18米，残存高度0.96米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌两组“三顺一丁”，上部错缝顺砌起顶。在后壁两隅高0.73米处各伸出半块砖作灯台用。墓顶为券顶结构。封门墙较特殊，呈弧形外凸，且与甬道侧壁封砌不严合。</p>
+<p>随葬器物残留较少，分布于甬道和墓室后部，仅存青瓷器3件。</p>
+<p>M2186 位于西山以南3公里的七里界，1979年3月发现并清理。墓葬结构基本完好。墓向170度（图63）。</p>
+<p>墓室全长5.9米，总面积11.19平方米。墓室甬道稍偏于左侧，平面呈横长方形，长0.76米，宽1.2米，高度不详；墓室为长方形，长5.14米，宽2米，高3.02米。</p>
+<p>墓底用砖铺砌，厚0.12米，表层平铺呈“人”字形。铺地砖之上，墓室内设棺床。棺床长方形，长4.74米，宽1.8米，高0.06米，用砖纵向平铺。棺床与墓壁之间留出宽0.1米的凹槽，以利墓内积水的外泄。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌两组“三顺一丁”，上部错缝顺砌起顶。墓壁后隅设柱券，形成角柱券。角柱券形式为竖直式。后壁中央设三级塔式立柱一个。墓壁皆为双层。墓顶为券顶结构。封门墙较厚，厚0.36米，封砌方式不明。</p>
+<p>随葬器物主要分布于棺床的中后部，以陶器和金饰品为主，还有少量青瓷器、玛瑙饰品和钱币，共计20余件器物。另外，还发现有几枚铜棺钉，应是木葬具腐朽之后所遗留。</p>
+<p>M1012 位于西山东麓的雨台山，1957年9月发掘。墓葬早年被盗破坏。墓向180度（图64）。</p>
+<p>墓室全长4.36米，总面积3.88平方米。墓口内砌柱券一道，形成甬道。甬道长0.3米，宽0.76米，残存高度0.64米；墓室长方形，长4.04米，宽0.9米，残高0.82米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌三组“三顺一丁”，上部错缝顺砌起顶。墓顶为券顶结构。封门墙较厚，厚0.44米，封砌形式不详。</p>
+<p>随葬器物残留较少，仅有青瓷器6件。</p>
+<p>M2027 位于西山以南、武黄公路北侧的何田埠，1958年5月鄂城钢铁厂兴建高炉时发现并清理。墓室顶部已遭破坏。墓向131度（图65）。</p>
+<p>墓室全长4.6米，总面积4.57平方米。甬道特短，甬道长0.17米，宽0.83米，残存高度0.74米；墓室长4.42米，宽1米，残高1米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室前端设祭台。祭台略近方形，长0.93米，宽1米，与墓室同宽，高0.23米，表层用砖横向平铺。墓室后部、紧连祭台设棺床。棺床长方形，长3.04米，宽1米，高0.05米，用砖仿席纹平铺。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌两组“三顺一丁”，上部错缝顺砌起顶。两侧壁后端内收，从墓内看为柱券，形成角柱券。后壁中央设立柱，立柱形式不详。墓顶为券顶结构。封门墙用砖纵向叠砌，厚0.32米。排水沟设在甬道口右侧角，宽0.12米，深度、长度和结构不详。</p>
+<p>图63 M2186平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷盘口壶2.陶瓷3.陶桶4、5.金花瓣形饰片6~8.陶盏9.陶勺10.陶耳杯11.陶魁12.陶魁13.铜棺钉14.金花瓣形饰片 <br />
+15.金扁壶形饰件 16、17、19.金桃形饰片（7片） 18.钱币 20.金花瓣形饰片 21.玛瑙珠 22.金圆形饰片</p>
+<p>图64 M1012平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、2.青瓷盘口壶<br />
+3.青瓷碗 <br />
+4. 青瓷盏<br />
+5. 铁棺钉 <br />
+6.青瓷唾壶 <br />
+7.青瓷盏</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图65 M2027平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷罐 2.青瓷盏3、4.青瓷盘5、6.陶盘 $7\sim 9$ .青瓷盏10.青瓷鸡首壶</p>
+<p>图66 M2168平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1~4.青瓷盏5.青瓷榻6~9.陶盘 10.陶橘11、12.陶灯13.陶勺14.陶魁15.青瓷盘口壶</p>
+<p>随葬器物集中分布于祭台上下，以青瓷器为主，计有青瓷器和陶器共10件器物。</p>
+<p>M2168位于西山以南1公里的麻家坳，1976年8月鄂城钢铁厂兴建冷轧车间时发现并清理。墓室顶部已遭破坏。墓向360度（图66）。</p>
+<p>墓室全长5.5米，总面积8.63平方米。甬道由两道重叠交错的柱券形成，呈前窄后宽的“凸”字形，长0.32米，宽 $0.96\sim 1.28$ 米，高度不明；墓室长5.18米，宽1.6</p>
+<p>米，高度不详。</p>
+<p>墓底铺砖，呈“人”字形。铺地砖之上，墓室前部设祭台，祭台呈横长方形，长0.64米，宽0.95米，高0.05米，用砖横向平铺。墓室中后部，紧连祭台设棺床。棺床长方形，长3.5米，宽1.6米，与墓室同宽，高0.05米，用砖仿席纹平铺。墓壁双层，下部用“三顺一丁”式砌筑，上部错缝顺砌起顶。墓室后隅设柱券，形成角柱券，形式不明。后壁中央设塔式立柱一个，立柱分级情况不详。墓顶为券顶结构。封门墙较厚，厚0.32米，封砌方式不详。排水沟设在甬道左侧角的封门墙之下，长、宽、深及结构均不详。</p>
+<p>随葬器物主要分布于墓室前端祭台上下，以陶器为主，计有青瓷器和陶器10余件。</p>
+<p>5式：单柱券“凸”字形基，14座。此式基在墓室中前部设柱券一道，形式上将墓室一分为二，前设祭台，后为棺室。其前、后端多有门券、角柱券和立柱等。</p>
+<p>M2014 位于西山以南、武黄公路北侧的何田埠，1958年4月鄂城钢铁厂兴建高炉时发现并清理。墓顶已遭破坏。墓向90度（图67）。</p>
+<p>墓室全长6.08米，总面积9.18平方米。甬道长方形，长1.6米，宽1.26米，残存高度1.44米；墓室长4.48米，宽1.6米，残高1.44米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室中后部残存棺垫三道，每道棺垫由两砖并列，横向平铺成条。长0.26米，残宽0.6米，高0.05米。墓壁用错缝顺砌法，柱券设在甬道和墓室交接处。墓顶为券顶结构。封门墙较厚，厚0.31米，砌法不详。</p>
+<p>随葬器物很少，分别出于墓室右侧的前、后隅，有青瓷器、残漆器各1件。</p>
+<p>图67 M2014平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 滨耳杯 2. 背瓷碗</p>
+<p>M2087位于西山以南0.8公里的邵家湾土岗上，1978年4月鄂城钢铁厂兴建火车大修车间时发现并清理。墓顶已遭破坏。墓向180度（图68）。</p>
+<p>墓室全长6.8米，总面积12.74平方米。甬道平面呈横长方形，长0.8米，宽1.22米，高2.26米；墓室长6米，宽1.96米，高2.52米。墓圹底部自甬道到墓室祭台前较低，墓室中后部略高，形成前低后高的阶梯状。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室前端设祭台。祭台横长方形，长1.2米，宽1.96米，与墓室同宽，高0.3米，其下部用砖纵向平铺，砖与砖之间留出0.02米左右的空隙，以利墓内积水的外泄；表层用砖横向平铺。墓室中后部设棺垫三道，每道棺垫由两砖并列，横向平铺成条。墓壁采用“四顺一丁”、“三顺一丁”与平砖错缝顺砌法，甬道和墓室前端下部砌一组“四顺一丁”和两组“三顺一丁”，墓室中后部砌三组“三顺一丁”，均在壁高1.22米以上采用错缝顺砌法，且由此向外错出0.06米，此种情况亦见于M2212和M3051。柱券设在墓室中前部，形式为两级塔式。墓室两后隅设柱券一道，形成角柱券，角柱券形式为竖直式。后壁中央设一个两级塔式立柱。墓顶为券顶结构。封门墙较厚，厚0.34米，砌法不详。</p>
+<p>随葬器物分布情况不详，以青瓷器为主，有少量陶器，计有10余件器物。</p>
+<p>M3051位于雷山以南0.3公里处，1981年10月鄂城火车站修建站前道路时发现并清理。墓室顶部已遭破坏。墓向200度（图69）。</p>
+<p>墓室全长5.68米，总面积9.96平方米。甬道呈横长方形，长0.68米，宽1.12米，残高1.76米；墓室长5米，宽1.82米，高2.74米。</p>
+<p>墓底用砖平铺一层，呈“人”字形，铺地砖伸出墓壁外，显出“菱角牙子”。铺地砖之上，墓室前端设祭台。祭台横长方形，长1米，宽1.5米，高0.22米。祭台下部用砖纵向立砌，中留空隙以利墓内积水的排泄；表层用砖横向平铺。祭台与墓壁之间有0.16米宽的空隙，墓内积水也可由此外泄。墓室后部，紧连祭台有棺床。棺床长方形，长3.4米，宽1.66米，高0.16米。棺床用砖平铺三层，表层横向平铺。棺床与墓壁间亦有 $0.08\sim 0.22$ 米宽的空隙，可以排泄墓内积水。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌三组“三顺一丁”，丁砖每隔四块或六块即有一砖伸出半块到墙外作咬土砖。在第三层丁砖之上，砌四层顺砖，再横向顺砌一层，此层砖块块相连，均伸出墙外，既可作咬土砖，又像一个“平座”。上部即在1.3米高以上均错缝顺砌起顶，且向外错出0.04米左右。除墓室中前部设柱券一道外，在后端亦设一道柱券（距后壁仅0.16米）充作角柱券。后壁中央设立柱一个。柱券和立柱的形式均为竖直式。墓室两前隅，在高1.36米处伸出半块砖作灯台。墓顶为券顶结构。封门墙较厚，厚0.36米，采用“三顺一丁”式封砌。</p>
+<p>随葬器物主要分布于祭台附近和棺床前部，以青瓷器为主，还有铜绕线板、铁镜和漆器等共10余件器物。</p>
+<p>M2070位于西山以南0.8公里的邵家湾土岗上，1972年鄂城钢铁厂兴建焦化车间时发现并清理。墓葬早年被盗，墓室顶部遭破坏。墓向270度（图70）。</p>
+<p>墓室全长5.2米，总面积9.04平方米。甬道平面呈方形，长0.96米，宽0.94米，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图68 M2087平面、剖面图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+0 1米</p>
+<h1 id="69-m3051">图69 M3051平面、剖面图</h1>
+<ol>
+<li>钱币 2. 青瓷盘口壶 3. 铁镜 4. 青瓷盒 5、6. 青瓷碗 7. 青瓷盘口壶 8、9. 青瓷碗 10. 铜绕线板 11. 青瓷碗 12. 铁镜</li>
+</ol>
+<p>13.青瓷砚 14.青瓷盏 15.青瓷碗 16.青瓷盏 17.漆奁（残）</p>
+<p>图70 M2070平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1~3.石豚 4.青瓷唾壶 5.铜棺钉</p>
+<p>残高1.2米；墓室长方形，长4.24米，宽1.92米，高1.17米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室前部设祭台。祭台方形，长、宽皆为1.3米，高0.15米，用砖纵向立砌，其上原来应铺有木板。棺床在祭台之后，长方形，长2.24米，宽1.92米，与墓室同宽，高0.05米，用砖横向平铺。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌三组“三顺一丁”，上部错缝顺砌起顶。墓室除中部设柱券一道外，其前、后两端各设一道柱券，形成角柱券。角柱券从墓外看，墓室四隅皆向内凹进。后壁中央设立柱一个。柱券和立柱皆是竖直式。墓顶为券顶结构。封门墙砌法不详。</p>
+<p>随葬器物残留较少，分布于棺床之上。计有青瓷器1件、石豚3件。另外还发现几枚铜棺钉，应是葬具腐朽后的遗留物。</p>
+<p>M2112位于西山以南0.7公里的古坟堆附近的土岗上，1970年10月鄂城钢铁厂兴建高炉时发现并清理。墓葬早年被盗破坏，但结构尚保存完整。墓向90度（图71）。</p>
+<p>墓室全长7.52米，总面积13.75平方米。墓室外观呈长方形，内看为“凸”字形。甬道平面近似方形，长1.4米，宽1.34米，高2.12米；墓室长方形，长6.12米，宽1.94米，高2.35米。墓底呈前低后高的三级台阶状，甬道最低，墓室中前部和后部渐高。</p>
+<p>图71 M2112平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 钱币 2. 铜漏水板 3. 铜棺钉 4. 金桃形饰片（4 片） 5. 金珠（7 件） 6. 金花瓣形饰片 7. 石羊形饰 8. 银小钉（8 件） 9. 陶罐<br />
+10.金圆壶形饰件 11.金神兽纹饰片</p>
+<p>墓底用砖平铺一层。在墓室的铺地砖层内，用砖砌出两个大小、深浅不一的渗水阴井，阴井结构和封口部分的结构见图10-1。墓壁采用“六顺一丁”与平砖错缝顺砌法，皆为双层，下部砌一组“六顺一丁”和十二顺，形成基墙或“腰墙”；上部向外错出0.04米，皆错缝顺砌法，直至顶部。甬道侧壁丁砖层中各设壁龛一个，壁龛高0.12米，宽0.28米。墓室四隅和中前部柱券后，在壁高0.88米处，即墓壁基墙或“腰墙”上各有半砖伸出作灯台。墓室后隅设柱券，形成角柱券。角柱券竖直式。后壁外另砌一道护墙加固后壁，护墙用砖交叉叠砌而成。封门墙砌于甬道口内，亦用砖交叉叠砌。甬道口外0.04米处亦设一道挡土墙，挡土墙厚0.54米，砌法不详。排水沟设在甬道左侧壁下，二孔各宽0.18米，高0.14米，孔口竖立一块特制的铜质漏水板（参见图9-1；图10-2)。排水沟长度和结构不详。此墓有较多且复杂的排水设施，是这批墓中少见的。</p>
+<p>随葬器物残留较少，主要分布于墓室前部。以各类金银饰品为主，另有陶器和石饰品各1件，计有器物20余件。还有铜棺钉散布于墓室后部，应是葬具腐朽后的遗留物。</p>
+<p>随葬器物主要发现于祭台上和棺床前部，以陶器为主，有少量青瓷器，计10余件器物。另外棺床上有铜棺钉数枚，应是葬具腐朽后的遗留物。</p>
+<p>M2022 位于西山以南、武黄公路北侧的何田埠，1958年5月鄂城钢铁厂兴建高炉时发现并清理。墓室已遭破坏。墓向210度（图72）。</p>
+<p>墓室全长5.04米，总面积9.39平方米。甬道极短，平面呈前窄后宽的横长方形，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图72 M2022平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 陶魁、勺 $2\sim 4$ 陶盘5. 陶砚6. 青瓷唾壶7. 陶耳杯</p>
+<p>长0.46米，宽 $0.96\sim 1.6$ 米，残存高度1米；墓室长方形长4.58米，宽1.9米，残存高1.46米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室前部设祭台，横长方形，长0.78米，宽0.96米，高0.05米。墓室中后部，与祭台紧连有棺床，长方形，长2.78米，宽1.6米，高0.05米，祭台和棺床均用砖仿席纹平铺。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌两组“三顺一丁”，上部错缝顺砌起顶。除墓室中前部设柱券一道外，甬道口设重叠交错的柱券三道，形成门券；墓室后隅设柱券一道，形成角柱券；后壁中央设立柱一个。柱券和立柱皆竖直式，其砌法与墓壁相同，且丁砖伸入墓壁之内，两者连为一体。墓顶为券顶结构。封门墙封砌于门券内，厚0.34米，封砌方式不明。排水沟设在甬道左前隅的封门墙之下。排水沟宽0.08米，深度、长度和结构不详。</p>
+<p>随葬器物均分布于祭台上下，以陶器为主，有少量青瓷器，共计近10件器物。</p>
+<p>6式：多柱券“凸”字形墓，8座。此式墓的墓室前、后端及两侧设柱券多道，这是东晋后期至南朝时期墓葬最显著的地方特点。</p>
+<p>M2167 位于西山以南1公里的麻家塙，1979年鄂城钢铁厂兴建冷轧车间时发现并清理。墓室顶部已遭破坏。墓向360度（图73）。</p>
+<p>墓室全长4.6米，总面积6.84平方米。甬道平面前窄后宽，呈“凸”字形，甬道长0.5米，宽 $0.9\sim 1.2$ 米，残存高度0.94米；墓室长方形，长4.1米，宽1.54米，高0.94米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室前端设祭台。祭台呈横长方形，长0.62米，宽1.22米，高0.2米。祭台下部用砖纵向立砌，砖与砖之间留出大小不一的空隙，以利排水；表层用砖仿席纹平铺。祭台之后设有棺床，棺床长方形，长3.08米，宽1.43米，高0.04米，用砖仿席纹平铺。祭台、棺床与墓壁之间留有0.04米的空隙，以便排泄墓内积水。墓壁采用“三顺一丁”与平砖顺砌法，下部砌两组“三顺一丁”，上部错缝顺砌起顶。墓室除中前部设柱券外，甬道口设柱券一道，形成门券。墓室后隅设柱券一道，形成角柱券，后壁中央设立柱一个，柱券和立柱的形式为竖直式。墓顶为券顶结构。封门墙砌于甬道口门券内，略向外错出一点。封门墙较厚，厚0.32米，用砖“三顺一丁”式封砌。排水沟孔设于甬道口左前隅，用砖纵向平铺作水沟壁，中间留出宽0.07米、高0.05米的沟孔，沟底和沟顶结构及排水沟长度不详。</p>
+<p>随葬器物主要发现于祭台上和棺床前部，以陶器为主，有少量青瓷器，计10余件器物。另外棺床上有铜棺钉数枚，应是葬具腐朽后的遗留物。</p>
+<p>M2051位于西山以南、武黄公路北侧的何田埠，1958年7月发现并清理。墓葬结构保存基本完整。墓向192度（图74）。</p>
+<p>墓室全长6.06米，总面积10.47平方米。甬道平面呈长方形，长1.1米，宽0.95米，高1.34米；墓室亦呈长方形，长4.96米，宽1.9米，高2.51米。</p>
+<p>墓底用砖平铺，呈“人”字形。铺地砖之上，墓室中后部设棺床。棺床长方形，长4.14米，宽1.9米，与墓室同宽，高0.16米。用四层砖平铺而成，表层横向平铺，棺床两端纵向平铺锁口。墓壁采用“三顺一丁”与平砖错缝顺砌法，甬道壁下部砌两组</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图73 M2167平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷罐 2.陶魁 3.陶桶 $4\sim 8$ .陶盘 9.青瓷盏 10.陶盘 11.铜棺钉 12.陶盏</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="74-m2051">图74 M2051平面、剖面图</h1>
+<p>1.青瓷壶 2.铜勺 3.陶盘 4.陶耳杯 5.陶盘 6.铜棺钉 7.青瓷灯 8.青瓷熏 9.铁矛 10.石印章 11、12.青瓷盏 13.青瓷碗 14.石黛砚 15.石豚 16.铜盏 17.铜饰件 18.石豚 19.青瓷盏 20.银指环 21.青瓷盆 22、23.石豚 24.青瓷碗 25.陶砚 26.陶桶</p>
+<ol>
+<li>铜镜 28. 青瓷盏 29. 青瓷唾壶 30. 铜镜 31. 钱币 32. 铁棺钉 33. 青瓷盏</li>
+</ol>
+<p>“三顺一丁”，上部错缝顺砌起顶；墓室侧壁下部砌三组“三顺一丁”和五顺，即在壁高1.06米处，向外错出0.03米，砌法为错缝顺砌直至顶部；后壁砌法与侧壁相同，唯其上部墙壁不向外错出。壁龛10个，开在第二层丁砖层中，甬道侧壁各1个，墓室侧壁各3个，后壁两个。壁龛的大小、结构均相同，高0.15米，宽0.3米。墓室侧壁在高1.06米处还伸出半砖作灯台，两侧各4个，共8个灯台。墓室侧壁设柱券3道，后壁中央设立柱一个，柱券、立柱的形式皆竖直式。墓顶为券顶结构，在壁高约1.54米处以楔形砖砌筑起券。封门墙为双层，厚0.32米，其中外层略宽于甬道口，均用“三顺一丁”式封砌。排水沟设在墓室右前侧壁下，宽0.08米，高（即深）0.08米，长度和结构不明。墓砖长方形，素面无纹，长0.3米，宽0.15米，厚0.04米。</p>
+<p>随葬器物分布位置已被扰乱，器物主要分布于甬道内和棺床前部。甬道内发现一铜勺置于青瓷盆中，棺床前部有青瓷唾壶、碗、盏、灯、熏，陶器有陶桶、盘、耳杯和砚，铜器有盏、饰件和铜镜2面（其中一面上有“建安十三年”纪年铭文），还有铁矛、银指环，石豚、石黛砚等，其中1枚石印章刻有“张畅字道思”字样，应是墓主人之印章。另外还发现钱币和铜棺钉等。计有随葬器物30余件。</p>
+<p>M2157 位于西山南麓古坟堆附近的鄂城钢铁厂子弟学校内，1973年10月发现并清理。墓葬早年已遭破坏。墓向30度（图75）。</p>
+<p>墓室全长5.3米，总面积6.34平方米。甬道平面近方形，长0.8米，宽0.9米，高2米；墓室为长方形，长4.5米，宽1.25米，高2.25米。</p>
+<p>墓底用砖平铺一层，铺砌形式不详。墓壁采用“三顺一丁”与平砖错缝顺砌法，下</p>
+<p>图75 M2157平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷盒 2.青瓷鸡首壶</p>
+<p>部砌两组“三顺一丁”，上部错缝顺砌起顶。墓室侧壁为双层，中部设柱券两道，两后隅对称设立柱，形成角柱，后壁中央设立柱一个。柱券、角柱和立柱皆为竖直式。墓顶为券顶结构。封门墙封砌方式不详。</p>
+<p>随葬器物残留较少，分布位置不明，计有青瓷器2件。</p>
+<p>M2219位于西山以南1公里的麻家坳的东南坡上，1981年10月南京大学历史系考古专业师生实习时发掘。有带斜坡墓道的长方形墓圹，墓道长7米以上，宽1.4米，坡度为20度。墓圹长方形，长约5.7米，宽2.4米，距地表深约2.5米。墓室顶部已遭破坏。墓向240度（图76）。</p>
+<p>墓室全长4.96米，总面积9.07平方米。甬道极短，呈前窄后宽的棱长方形，长0.46米，宽 $0.9\sim 1.54$ 米，高 $1.66\sim 2$ 米；墓室长方形，长4.5米，宽1.84米，高2.16米。</p>
+<p>墓底用砖平铺一层，呈“人”字形，铺地砖伸出墓壁外，显出“菱角牙子”。铺地砖之上，墓室前部设祭台。祭台横长方形，长0.76米，宽0.97米，高0.05米，用砖仿席纹平铺。墓室中后部设棺床，棺床长2.9米，宽1.4米，高0.05米，亦是仿席纹平铺。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌两组“三顺一丁”，上部错缝顺砌起顶。甬道口设柱券三道，重叠交错，形成门券，墓室侧壁设柱券两道，两后隅设柱券一道，形成角柱券，后壁中央设立柱一个。门券、角柱券为竖直式，柱券和立柱为两级塔式。墓顶为券顶结构。封门墙双层，厚0.35米，其中内层封砌于甬道口门券内，外层略宽于甬道口，封门墙封砌方式不详。排水沟设在甬道右侧的封门墙之下、铺地砖之上，沟底用砖平铺，沟壁纵向平铺，中留沟孔，上盖砖平铺。排水沟孔断面呈方形，</p>
+<p>图76 M2219平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷盘口壶 $2\sim 4$ .青瓷碗5.青瓷盒6\~8.青瓷盘9、10.青瓷盏11\~15.陶盘16.陶桶<br />
+17、18. 陶耳杯 19、20. 石豚 21. 玉饰件 22. 金指环 23. 石黛砚</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图77 M2227平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1\~4.青瓷盏5、6.青瓷碗7\~10.陶盘11.陶勺12.陶盘13.陶桶14.陶盘15、16.青瓷盘口壶（残片）17.陶魁18.石黛砚<br />
+19. 石豚 20. 金指环 21. 铜镜 22. 青瓷盒</p>
+<p>宽、深皆0.07米，长度在7米左右。</p>
+<p>随葬器物尚有部分保持原来位置，主要分布于祭台上下。祭台上以陶桶为中心，有陶盘、陶耳杯、青瓷盘、青瓷碗和盏；祭台下有青瓷盘口壶、碗和陶盘等。祭台下之器物原来应是放置在祭台上的。棺床中部还发现金指环、玉饰件和石豚，原来应是放在棺内之物。墓室右后隅有一青瓷盏，当是作为灯盏之用。计有随葬器物20余件。</p>
+<p>M2227 位于西山以南1公里的麻家坳，1981年10月南京大学历史系考古专业师生实习时发掘。有带斜坡墓道的长方形墓圹，墓道因故未作清理，墓圹长6米，宽2.74米，距地表深2米以上。墓室顶部已塌毁。墓向240度（图77）。</p>
+<p>墓室全长5.1米，总面积10平方米。甬道较短，前窄后宽，长0.48米，宽1.28米～1.58米，残存高度0.68米；墓室长方形，长4.62米，宽1.9米，复原高度1.98米。</p>
+<p>墓底用砖平铺一层，呈斜行错缝平铺。铺地砖之上，墓室中后部设棺床。棺床长方形，长4.2米，宽1.9米，高0.1米，用砖平铺两层，下层纵向平铺；砖与砖之间留出宽0.06米的空隙，以利墓内积水的外泄。棺床表层横向平铺和仿席纹平铺，前端纵向平砌一排砖作锁口砖，亦可称之为棺床的“踏步”。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌两组“三顺一丁”，上部错缝顺砌起顶。甬道口设柱券三道，形成门券。第一道柱券独立成券，第二、三道重叠交错。墓室侧壁设柱券三道，后隅设柱券一道，形成角柱券。后壁中央设立柱一个。柱券和立柱下部砌法与墓壁相同，其丁砖嵌入墓壁中，与壁连成一体。墓顶为券顶结构。封门墙砌法不详，仅甬道口残留横向平铺砖三道。排水沟设在甬道左前角，用砖平铺作底，纵向平铺砖作壁，中间留出沟孔，上盖平砖。排水沟孔断面宽0.09米，深0.05米，长度不详。</p>
+<p>随葬器物主要分布于墓室棺床前端，以青瓷器、陶器为主，另有石豚、石黛砚、铜镜和金指环各1件，共有20余件器物。</p>
+<p>M2226 位于西山以南1公里的麻家塗南坡，1981年10月南京大学历史系考古专业师生实习时发掘。有带斜坡墓道的墓圹，墓道长度不明，宽1.62米，坡度32度；墓圹长方形，长5.6米，宽2.4米，距地表深2.2米。墓室顶部已破坏塌毁。墓向214度（图78）。</p>
+<p>墓室全长5.07米，总面积9.94平方米。甬道较短，长0.32米，宽 $0.9\sim 1.22$ 米，残高1.4米；墓室长方形，长4.75米，宽1.86米，复原高度2.34米。</p>
+<p>墓底用砖平铺一层，呈“人”字形，铺地砖伸出墓壁之外，显出“菱角牙子”。铺地砖之上，墓室内设较大的棺床，棺床前端设祭台。祭台长方形，长0.65米，宽0.48米，高0.05米，用砖纵横平铺。棺床长方形，宽1.48米，高0.1米，前部已残，用砖平铺两层，下层纵向平铺，砖与砖之间留出空隙，以利墓内积水的外泄，上层横向平铺。墓壁采用“三顺一丁”与平砖顺砌法，下部砌三组“三顺一丁”，上部错缝顺砌起顶。甬道口设柱券三道，柱券重叠，形成门券。墓室侧壁设柱券三道，后隅设柱券一道，形成角柱券，后壁中央设立柱一个。柱券和立柱砌法与墓壁相同，上部已残，应是分级塔式，级数不明。墓顶为券顶结构。封门墙封砌于甬道口门券内，厚0.33米，封砌方式不详。排水沟设在甬道右前角，用砖平铺作沟底，纵向平铺砖为沟壁，中间留出</p>
+<p>图78 M2226平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 陶橘 2~6. 青瓷盘 7. 陶盘 8、9. 陶魁、勺 10. 青瓷盘 11. 青瓷盏 12. 青瓷盘口壶 13. 陶盘 14. 青瓷盏 15. 陶盘 16. 青瓷盘 17. 陶盘 18. 陶橘 19. 陶盘 20. 青瓷盏 21. 石珠、玻璃珠（34枚） 22. 钱币 23. 青瓷盏 24. 铁镜 25. 石豚 26. 银钗 27. 金桃形饰片（2片） 28~32. 青瓷盏 33. 银指环</p>
+<p>水孔，上盖砖平铺。排水沟断面呈长方形，孔宽0.08米，深0.05米，长度不详。</p>
+<p>随葬器物还有部分保存原来位置，主要器物分布于祭台上下。祭台上以陶桶为中心，周围分置青瓷盘5件，陶盘1件；祭台前甬道内还有青瓷盘口壶、盘、盏和陶桶、魁、勺、盘等。棺床中后部出有玻璃珠、金银饰品、铁镜和钱币等，应是棺内之物。还有各柱券间出有青瓷盏，应是作灯盏用的。这种随葬器物的陈放方式为当时颇为流行的墓内设祭方式，是比较有价值的考古资料。此墓计有随葬器物30余件。</p>
+<h1 id="vi">六 VI型</h1>
+<p>刀形墓，共25座。共同特征是墓室为长方形，有甬道偏于一侧，平面呈刀形。这种刀形墓的附加设施少，流行于六朝全期。</p>
+<p>M4004 位于洋澜湖西北岸的五里墩村的山坡上，1980年10月南京大学历史系考古专业师生实习时发掘。墓顶早年已遭破坏。墓向143度（图79）。</p>
+<p>墓室全长4.9米，总面积7.23平方米。甬道平面近方形，偏于左侧，长0.98米，宽1.05米，残高0.28米；墓室长方形，长3.92米，宽1.6米，残高0.7米。墓底呈前低后高的斜坡状，以利墓内积水的自然排泄。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室右前侧有四块散砖纵向平铺，或许是祭台的残留部分。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌三组</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图79 M4004平面、剖面图</p>
+<p>1、2.青瓷碗3.陶罐4.陶罐5.青瓷砚6.青瓷盏7.陶窑及附件9~12.陶仓</p>
+<p>13.陶磨 14.陶井 15.陶羊 16.陶狗 17.陶猪 18.陶鸭 19.陶鸡 20.陶镇基俑 21.铜镜</p>
+<ol>
+<li>铁刀 23、24. 残铁器 25. 钱币 26. 青瓷盘口壶（残）</li>
+</ol>
+<p>“三顺一丁”，部分丁砖伸出墓壁外作咬土砖，上部错缝顺砌起顶。墓顶为券顶结构。封门墙残毁无遗。</p>
+<p>随葬器物主要分布于墓室右侧，左侧亦有少量。计有青瓷器、陶容器和模型明器、铜镜、铁器及钱币等，共计近30件器物。</p>
+<p>M4031 位于洋澜湖西南岸的观音垅土岗上，1956年9月兴建武大铁路时发现并清理。墓室顶部已遭破坏。墓向135度（图80）。</p>
+<p>墓室全长5.1米，总面积7.34平方米。甬道平面近方形，偏于左侧，长1.24米，宽0.88米，残高0.75米；墓室长方形，长3.86米，宽1.67米，残存高度1.16米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室左侧设有棺床。棺床长方形，长1.75米，宽0.6米，高0.05米，用砖横向平铺。墓壁采用“七顺一丁”、“三顺一丁”与平砖错缝顺砌法，墓壁下部砌一组“七顺一丁”和一组“三顺一丁”，上部错缝顺砌起顶。墓顶为券顶结构，封门墙向外呈圆弧形封砌，封砌形式为“三顺一丁”。排水沟设于墓室右壁前端的铺地砖之上，沟孔宽0.08米，深0.05米，长度不详，其结构应是由三层砖砌筑，中间留出方形或长方形沟孔的流行结构。</p>
+<p>随葬器物主要分布于墓室右侧，以陶容器和模型明器为主，有少量青瓷器和石黛砚、石豚各1件，共计20余件器物。</p>
+<p>图80 M4031平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.陶灶 2.陶仓 3.陶井 4.青瓷盏 5.陶狗 6、7.陶仓 8.陶车轮 9.陶马 10.石豚 11.陶鸡<br />
+12.铁棺钉 13.青瓷碗 14.陶狗 15.陶镇基俑 16.陶马 17.陶镇墓俑 18.陶羊 19.陶鸭 <br />
+20. 石黛砚 21. 青瓷罐 22、23. 青瓷碗</p>
+<p>M3019 位于雷山以南0.8公里的朱家坳，1956年9月兴建武大铁路时发现并清理。墓室顶部已塌毁。墓向180度（图81）。</p>
+<p>墓室全长4.72米，总面积7.62平方米。甬道略近方形，偏于右侧，长1.06米，宽0.94米，高1.02米；墓室长方形，长3.66米，宽1.82米，残高1.6米。</p>
+<p>墓底平铺一层砖，呈“人”字形。墓壁采用“五顺一丁”、“四顺一丁”与平砖错缝砌法，甬道两侧壁下部砌一组“五顺一丁”，上部错缝顺砌起顶；墓室壁下部砌一组“五顺一丁”和一组“四顺一丁”，部分丁砖伸出墙外作咬土砖，上部错缝顺砌起顶。墓顶为券顶结构，已遭破坏。封门墙呈“三顺一丁”式封砌。</p>
+<p>随葬器物主要分布于墓室中、后部，有青瓷器、铜器皿、铜镜、铁兵器、银钗和钱币等共10余件器物。</p>
+<p>M2075 位于西山以南0.8公里的邵家湾，1972年7月鄂城钢铁厂兴建焦化车间时发现并清理。墓葬早年已遭严重破坏。墓向180度（图82）。</p>
+<p>墓室全长4.4米以上，总面积7.8平方米。甬道残，残长0.26米，宽0.95米，残高1.3米；墓室长方形，长4.14米，宽1.83米，高2.05米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室后部右隅有两块砖一横一纵平铺，或许是棺床、棺垫的遗留。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌三组“三顺一丁”，部分丁砖伸出墙外作咬土砖。丁砖层砌筑较特别，每三块丁砖间夹砌一块顺向立砖。上部错缝顺砌起顶。墓顶为券顶结构，券顶正中嵌砌三块平砖。封门墙已破坏无遗。</p>
+<p>随葬器物主要分布于墓室左右两侧，以青瓷器为主，还有金银饰品、玻璃珠、铜镜和钱币等，共计有随葬器物20余件。</p>
+<p>M2057位于西山南麓、武黄公路北侧的何田埠，1958年9月鄂城钢铁厂兴建宿舍时发现并清理。墓顶已塌。墓向136度（图83）。</p>
+<p>墓室全长4.48米，总面积6.48平方米。甬道平面呈横长方形，偏于右侧，长0.83米，宽1米，高1米；墓室长方形，长3.64米，宽1.54米，高1.85米。</p>
+<p>墓底用砖平铺一层，仿席纹。铺地砖之上，墓室前部设一横长方形的祭台。祭台长0.5米，宽0.85米，高0.05米，用砖纵横平铺。墓壁采用“三顺一丁”与平砖顺砌法，甬道侧壁下部砌两组“三顺一丁”，上部错缝顺砌起顶。墓室侧壁下部砌三组“三顺一丁”，上部错缝顺缝顺砌起顶。后壁向外弧出，砌法与侧壁相同。墓室四隅，在壁高1米处各伸出半块砖作灯台。墓顶为券顶结构，顶的两端收作圆抹角形。封门墙用砖纵向叠砌，厚0.32米。排水沟设在墓室左前角，沟宽0.07米，深0.05米，长度不详，结构应是三层砖平铺，中间留出排水孔的结构形式。</p>
+<p>随葬器物残留较少，主要分布于墓室左前角的排水沟孔附近。计有青瓷器、陶器和铜镜等共6件器物。</p>
+<p>M2024位于西山以南、武黄公路北侧的何田埠，1958年5月鄂城钢铁厂兴建高炉时发现并清理。墓顶已遭破坏。墓向180度（图84）。</p>
+<p>墓室全长5米，总面积8.5平方米。甬道平面呈横长方形，偏于右侧，长1.04米，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图81 M3019平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷碗 2.青瓷罐 3.铜镜 4.青瓷壶壶 5.铜杯 6.银钗 7.青瓷罐盖（附2上） 8.铁刀（附小刀） 9.铜带钩<br />
+10.青瓷碗 11.青瓷盆 12.钱币</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+北</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>0 1米<br />
+图82 M2075平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷罐2.青瓷盘口壶3.青瓷盏4~6.青瓷盘口壶7.铜镜8、9.青瓷碗10.青瓷盆11.铜镜12.钱币 <br />
+13、14.青瓷碗 15、16.银钗 17.玻璃珠（2件） 18.金指环（2件） 19.银指环（2件）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图83 M2057平面、剖面图</p>
+<p>1.铜镜 <br />
+2.青瓷盘口壶 <br />
+3. 陶盆 <br />
+4.青瓷虎子<br />
+5. 青瓷碗<br />
+6.青瓷盏 <br />
+7. 铁棺钉</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图84 M2024平面、剖面图</p>
+<p>1.青瓷盘口壶 <br />
+2.青瓷鸡首壶 <br />
+3. 青瓷唾壶<br />
+4、5.青瓷盏 <br />
+6.青瓷碗</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>宽1.22米，高1.32米；墓室长方形，长3.96米，宽1.82米，残高1.86米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室前端设祭台。祭台为横长方形，长0.74米，宽1.82米，与墓室同宽，高 $0.1\sim 0.15$ 米，用砖横向平铺。墓室中后部，紧连祭台设有棺床。棺床长方形，长3米，宽1.5米，高0.15米，用砖纵向平铺。墓壁采用“三顺一丁”与平砖错缝顺砌法，甬道下部砌两组“三顺一丁”，上部错缝顺砌起顶。墓室壁下部砌三组“三顺一丁”，上部错缝顺砌起顶。墓室四隅在壁高0.9米处各伸出半块砖作灯台。墓顶为券顶结构。封门墙较厚，厚0.32米，封砌方式不详。</p>
+<p>随葬器物残留较少，主要分布于甬道内和墓室祭台上，计有青瓷器6件。</p>
+<p>M2261位于西山以南2.8公里的石山，1983年1月石山农机厂建房时发现并清理。有长方形墓圹，长5.7米，宽2.3米，距地表约2.8米。墓室左后隅墓顶已遭破坏。墓向150度（图85）。</p>
+<p>墓室全长4.06米，总面积4.3平方米。甬道平面略近方形，偏于右侧，长0.96米，宽0.86米，高1.01米；墓室长方形，长3.1米，宽1.1米，高1.27米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖伸出壁外，显出“菱角牙子”。铺地砖之上，墓室前端与甬道交接处设有祭台。祭台曲尺形，长 $0.34 \sim 0.86$ 米，宽 $0.68 \sim 1.02$ 米，高0.05米，用砖横向平铺。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌两组“三顺一丁”，部分丁砖伸出墙外作咬土砖，上部错缝平砌起顶。墓室右后隅，在壁高0.79米处原伸出半砖作灯台用，左隅因被破坏，情况不详。墓顶为券顶结构，在壁高0.82米处开始起券。封门墙用砖错缝顺砌，其外另砌挡土墙一道，两墙之间有宽0.1米的间距，挡土墙的用砖和砌法不规整。挡土墙下有砖砌排水沟，但排水沟并不与墓室相通，仅具象征意义。排水沟由三层砖平铺，中间留出沟孔，沟孔断面呈方形，宽和深度皆为0.08米，排水沟长度未作清理。</p>
+<p>随葬器物基本保存，主要分布于墓室祭台上下，墓室中后部有少数几件，以青瓷器为主，另有铁镜、铁剪，共计8件器物。</p>
+<p>M3007 位于雷山以南0.8公里的朱家坳，1956年8月兴建武大铁路时发现并清理。墓室顶部已遭破坏。墓向108度（图86）。</p>
+<p>墓室全长4.28米，总面积6.64平方米。甬道平面呈长方形，偏于右侧，长0.77米，宽0.85米，高度不详。墓室长方形，长3.51米，宽1.68米，高度不详。</p>
+<p>墓底用砖平铺，呈“人”字形。铺地砖之上，墓室前部设祭台。祭台横长方形，长0.54米，宽1.68米，高0.2米，下部用砖纵向立砌，砖与砖之间留出空隙，以利积水的外泄，表层用砖横向平铺。墓室中后部，在祭台之后设棺床，棺床长方形，长2.66米，宽1.54米，高度不详，表层用砖纵向平铺。棺床与祭台、墓壁间均留有 $0.04\sim 0.1$ 米的空隙，以利积水外泄。墓壁采用“二顺一丁”与平砖顺砌法，下部砌四组“二顺一丁”，上部错缝顺砌起顶。墓顶为券顶结构。封门墙封砌于甬道口内，封砌方式不详。有一略呈方形的凹槽式阴井，设在甬道封门内右侧的铺地砖之下，排水沟结构形式不明。</p>
+<p>随葬器物主要分布于祭台和棺床上下，以青瓷器为主，另有铁镜、银项圈、石豚和钱币，共计10余件器物。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图85 M2261平面、剖面图<br />
+1.青瓷罐 2.青瓷碗 3.青瓷罐 4.青瓷盏 5.铁镜 6.青瓷狮形插座 7.青瓷盘口壶 8.铁棺钉 9.铁剪</p>
+<p>图86 M3007平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷罐 2.青瓷鸡首壶 3.青瓷罐 4、5.青瓷唾壶 6.青瓷盏 7.钱币 8.铁镜<br />
+9. 石豚 10. 青瓷盏 11. 银项圈</p>
+<h1 id="v_1">七V型</h1>
+<p>长方形墓，共176座。共同特征是墓室平面为长方形，是各型墓的基本组合单元，也是小型墓的主要形式。又根据附加设施和结构上的区别可分三式。</p>
+<p>1式：一般长方形墓，155座。</p>
+<p>M2137 位于西山以南0.7公里的古坟堆附近，1976年10月鄂城钢铁厂兴建高炉时发现并清理。墓室顶部已遭破坏。墓向180度（图87）。</p>
+<p>墓室长3.66米，宽1.8米，面积为6.9平方米。墓室高度不详。</p>
+<p>墓底用砖仿席纹平铺。墓壁采用平砖错缝顺砌法。墓顶结构不详。封门墙封砌于墓口内，封砌形式不明。</p>
+<p>随葬器物较丰富，基本保持原来位置。墓室右侧残留有棺木痕迹，金银饰品均发现于墓室右侧，原来应是棺内之物；青瓷器、陶器、铜器等均出于墓室前、后左隅，计有随葬器物近60件。</p>
+<p>M3002 位于雷山以南 0.8 公里的朱家坳，1956 年 7 月兴建武大铁路时发现并清理。墓葬保存基本完整。墓向 270 度（图 88）。</p>
+<p>墓室长3米，宽0.76米，高0.82米。面积2.28平方米。</p>
+<p>墓底用砖斜行错缝平铺一层。墓壁采用平砖错缝顺砌法。墓顶为券顶结构。封门墙下部平砖顺砌五层，上部呈“人”字形封砌。</p>
+<p>随葬器物较丰富，主要分布于墓室前部，计有青瓷器、陶器、漆木器、铜镜和钱币等共10余件器物。另有铁棺钉布散布于墓室内，应是木葬具腐朽后的遗留物。</p>
+<p>M2039位于西山以南、武黄公路北侧的何田埠。1958年6月鄂城钢铁厂兴建高炉时发现并清理。墓室早年已遭破坏。墓向180度（图89）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图87 M2137平面图</p>
+<p>1.铜洗2、3.陶盘口壶4.青瓷盘口壶5.陶罐6.铜熨斗7.铜鍛斗8.陶罐<br />
+9. 陶盘口壶 10. 青瓷碗 11. 陶罐 12. 铜铜 13. 铜盘 14. 铁刀 15. 铜炉 16~ <br />
+18. 陶罐 19. 漆耳杯（2件） 20. 漆耳杯（2件） 21. 漆盘 22. 漆盒 23. 漆盘<br />
+24. 漆盒 25、26. 银镯 27. 金钗（2件） 28. 钱币 29. 银簪 30、31. 银饰件（残）<br />
+32.金圆形饰片 33.琥珀饰件 34.银链 35:1.金桃形饰片 35:2.金圆形饰片<br />
+36.金桃形饰片（16片） 37.铁器（残） 38.金指环（2件） 39.朱砂 40.蜡块</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+41. 漆盘 <br />
+图88 M3002平面、剖面图</p>
+<p>1~3. 漆盘 4. 青瓷碗 5. 青瓷砚 6. 漆盒（残） 7. 青瓷碗 8. 陶罐 9. 漆器</p>
+<p>残片 10.陶罐 11.漆盘 12.陶罐 13.青瓷碗 14.漆器残片 15.陶罐 16.铜</p>
+<p>镜17.人牙18.铁棺钉19.钱币20.木器残片21.漆盘22.木器残片</p>
+<p>墓室长2.24米，墓室前宽后窄，宽 $0.47\sim 0.52$ 米，残存高度0.28米。面积为1.1平方米。</p>
+<p>墓底用残断半砖呈斜行平铺一层，墓室侧壁平砖错缝顺砌，后壁立砌。墓门两侧用砖立砌，中间未见封门墙痕迹。墓顶结构不详。</p>
+<p>随葬器物仅3件，铜镜出于墓室前部，原来应置于棺内。另2件器物因墓室狭小，只可容棺，故放置于墓门之外。</p>
+<p>M4002 位于洋澜湖西北岸的五里墩村，1980年10月南京大学历史系考古专业师生实习时发掘。有长方形墓圹，长3.78米，宽1.76米，深度不详。墓室距圹边0.26米。墓室结构基本保持完整。墓向100度（图90）。</p>
+<p>墓室长2.7米，宽0.7米，高1.12米。面积为1.89平方米。</p>
+<p>墓底用砖呈“人”字形平铺一层，铺地砖伸出壁外，显出“菱角牙子”。墓壁采用平砖错缝顺砌法。墓顶为四面坡式叠</p>
+<p>图89 M2039平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 陶罐 2. 青瓷盘口壶 3. 铜镜</p>
+<p>图90 M4002平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷盘口壶2、3.青瓷碗4.铜镜5.青瓷罐6.钱币7.铁棺钉</p>
+<p>涩顶。封门墙用砖错缝顺砌。墓砖形式和纹饰较复杂，有长方形砖、楔形砖和斧形砖。砖纹有32种不同的纹饰，以几何纹为主。</p>
+<p>随葬器物集中分布于墓室前部，计有青瓷器、铜镜和钱币等共6件器物。</p>
+<p>M3045 位于雷山以南0.9公里的花家嘴，1956年7月兴建武大铁路时发现并清理。墓顶已遭破坏。墓向246度（图91）。</p>
+<p>墓室长2.98米，宽0.72米，高0.9米。面积2.1平方米。</p>
+<p>墓底用砖平铺一层，呈“人”字形，墓壁下部砌两组“三顺一丁”，上部错缝顺砌起顶。墓顶为叠涩顶。</p>
+<p>随葬器物基本保持原来位置，主要分布于墓室前、后部，墓室前部发现有铜镜、铁镜和青瓷罐等，墓室后部发现有青瓷虎子和盏等，共有随葬器物近10件。</p>
+<p>M2244 位于西山以南0.8公里的邵家湾，1976年3月鄂城钢铁厂兴建火车大修车间时发现并清理。墓顶已遭破坏。墓向180度（图92）。</p>
+<p>墓室长3.87米，宽0.74米，高度不详。面积为2.85平方米。</p>
+<p>墓底用砖横向平铺。铺地砖之上，墓室前端有两块砖横向平铺作为祭台。墓壁下部“二顺一丁”式砌，上部和墓顶结构不详。封门墙封砌方式不明。</p>
+<p>随葬器物基本保持原来位置，集中分布于墓室前端，墓室后隅各出青瓷盏1件，应</p>
+<p>图91 M3045平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷虎子 2.青瓷盏 3.铜镜 4.银饰品（2件） 5.铁镜 6、7.青瓷罐 8.青瓷碗<br />
+北</p>
+<p>图92 M2244平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、2.青瓷盏3、4.青瓷盘5~11.青瓷盏 12.青瓷鸡首壶 13.铁棺钉</p>
+<p>图93 M4016平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷盆2.青瓷碗3.青瓷罐（残）4.铜鏃斗5.青瓷盘口壶 <br />
+6.青瓷罐 7.铜镜 8.石黛砚 9.铁棺钉</p>
+<p>是作灯盏用的。共有随葬器物10余件，全部为青瓷器。</p>
+<p>M4016 位于洋澜湖西北岸的五里墩村，1978年7月发现并清理。墓顶已遭破坏。墓向18度（图93）。</p>
+<p>墓室长3.44米，宽0.87米，残高0.63米。面积2.96平方米。</p>
+<p>墓底用砖平铺一层，铺砌方式不明。铺地砖之上，墓室前端设祭台，祭台横长方形，长0.6米，宽0.87米，高0.17米，用两层砖砌成，下层用砖纵向立砌，中间留出空隙以利积水外泄。表层横向平铺。墓室中、后部设棺垫三道，每道棺垫由两砖并列、横向平铺成条，长0.14米，宽0.58米，高0.05米。墓壁下部砌两组“三顺一丁”，部分丁砖伸出墙外作咬土砖，墓壁上部和顶部结构不详。封门墙封砌方式不明。</p>
+<p>随葬器物基本保持原来位置，集中分布于祭台之上。主要是青瓷器，另有铜镶斗、铜镜和石黛砚各1件，共计近10件器物。</p>
+<p>M2220 位于西山以南1公里麻家坳的南坡，1981年10月南京大学历史系考古专业师生实习时发掘清理。有墓圹长5米，宽1.3米，距现地表深约1米。墓室早年被盗破坏。墓向250度（图94）。</p>
+<p>墓室长3.58米，宽0.69米，高1.02米，面积为2.47平方米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。墓壁采用“两顺一丁”、“三顺一丁”与平砖错缝顺砌法，下部砌一组“三顺一丁”和一组“两顺一丁”，部分丁砖伸出墙外作咬土砖，上部错缝顺砌起顶。墓顶为券顶结构。封门墙封砌方式与墓壁相同，与墓口侧壁砌合不严密。</p>
+<p>随葬器物主要分布于墓室前端，有青瓷器2件，铜镜和玉璜各1件。另有钱币和</p>
+<p>图94 M2220平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 铜镜 2、3. 钱币 4. 玉璜 5. 青瓷鸡首壶 6. 青瓷盘口壶 7. 铜棺钉 8. 铁棺钉</p>
+<p>铜、铁棺钉散布于墓室中、后部。其中铁棺钉钉帽在下，钉尖朝上，应是专用来钉棺木底板的；铜棺钉则相反，钉帽在上，钉尖朝下，应是用来钉合棺木盖板的。</p>
+<p>M4003 位于洋澜湖西北岸的五里墩村，1980年10月南京大学历史系考古专业师生实习时发掘并清理。墓葬早年被盗破坏。墓向150度（图95）。</p>
+<p>墓室长3.15米，宽0.74米，高1.17米。面积为2.33平方米。</p>
+<p>墓底用砖平铺一层，呈“人”字形，铺地砖伸出壁外，显出“菱角牙子”。铺地砖之上，墓室前部设祭台，祭台长方形，长0.63米，宽0.46米，高0.04米，用砖纵横平铺。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌两组“三顺一丁”，部分丁砖伸出墙外作咬土砖，上部错缝顺砌起顶。墓顶为券顶结构。封门墙下部用“三顺一丁”封砌，上部错缝顺砌，其外侧有短矮的挡土墙，砌法不规则。排水沟设于封门墙下，略偏于右侧。沟底铺砖，沟壁用砖纵向平铺，沟顶亦用砖纵向平铺。排水沟孔呈长方形，宽0.06米，深0.04米，排水沟长8.11米，在长至7.5米处沟底不再铺砖。</p>
+<p>随葬器物主要分布于墓室前部的祭台上下，以陶瓷器为主，计有随葬器物近10件。</p>
+<p>M2032 位于西山以南、武黄公路南侧的何田埠，1958年6月鄂城钢铁厂兴建高炉时发现并清理。墓顶已遭破坏。墓向237度（图96）。</p>
+<p>墓室长4.38米，宽0.88米，残存高度0.14米。面积3.85平方米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。墓壁双层，下部错缝顺砌，上部和顶部结构不详。后壁中央设立柱一个，立柱形式不详。封门墙用砖纵向叠砌，厚0.32米。排水沟设在墓口右前隅的封门墙之下，沟宽0.08米，深度、长度及结构不详。</p>
+<p>随葬器物较少，仅残留陶器3件，另外在封门外0.04米处，还发现一方有“齐建武三年……宋隆太守……史孚剋……”铭文的砖质墓志。这是这批鄂城六朝墓中发现的唯一的一方砖墓志，是判断墓葬时代和墓主人身份的重要资料，惜已散失，仅见于田野记录。</p>
+<p>M2049 位于西山以南、武黄公路南侧的何田埠，1958年6月鄂城钢铁厂兴建高炉时发现并清理。墓顶已遭破坏。墓向177度（图97）。</p>
+<p>墓室长3.8米，宽0.74米，残高0.7米。面积2.84平方米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室后部设棺床。棺床长方形，长3米，宽0.62米，高0.1米。用砖平铺两层，表层仿席纹平铺。棺床前有一块砖纵向平铺，权充作祭台。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌两组“三顺一丁”，上部错缝顺砌起顶，其中后壁为双层。墓顶结构不详。封门墙封砌方式与墓壁相同，双层，厚0.32米。排水沟设在墓口右侧的封门墙之下，沟宽0.08米，长度、深度和结构均不明。</p>
+<p>随葬器物主要分布于墓室棺床的前端，有青瓷器、陶器共8件。</p>
+<p>2式：多柱券长方形墓，14座。</p>
+<p>M2055位于西山南麓何家埠，1958年7月铺设武大铁路鄂城钢铁厂支线时发现并清理。墓顶已遭破坏。墓向12度（图98）。</p>
+<p>墓室长4.44米，宽1.18米，残高1.3米。面积为5.24平方米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图95 M4003平面、剖面图<br />
+1.青瓷盘口壶2.陶砚3.钱币4.金珠5.铜饰件6.青瓷碗7.青瓷盏8.银钉帽9.陶盘</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图96 M2032平面、剖面图</p>
+<p>图97 M2049平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 陶盘口壶 2. 陶魁 3、4. 陶盘 5~8. 青瓷盏</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室中、后部设棺床。棺床长方形，长3.7米，宽0.64米，高0.05米，用砖横向平铺。墓壁采用“三顺一丁”与平砖错缝顺砌法，下部砌两组“三顺一丁”，上部错缝顺砌起顶。墓室侧壁设柱券四道，其中前、后两端的柱券分别形成门券和角柱券，为竖直式，中间两道柱券为两级塔式，后壁中央设立柱一个，形式不详。柱券和立柱砌筑方式与墓壁相同，下部砌两组“三顺一丁”，丁砖嵌入墓壁中，与壁相连成一体，上部错缝顺砌。墓顶为券顶结构。封门墙双层，厚0.32米，封砌方式与墓壁相同。排水沟设在墓口右角的封门墙之下，沟宽0.07米，深度、长度和结构不详。</p>
+<p>图98 M2055平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、2.青瓷盏3.残铁刀4.铜棺钉5.石豚</p>
+<p>随葬器物分布于棺床前端和棺床中部，计有青瓷器2件、铁兵器1件、石豚1件。</p>
+<p>M3010 位于雷山以南0.8公里的朱家坳，1956年8月兴建武大铁路时发现并清理。墓葬早年被盗破坏。墓向120度（图99）。</p>
+<p>墓室长4.68米，宽0.88米，高1.94米，面积为4.12平方米。</p>
+<p>墓底用砖平铺一层，仿席纹平铺。墓壁下部砌两组“三顺一丁”，上部错缝顺砌起顶。墓室侧壁设柱券九道，其中前、后两端柱券分别可视作门券和角柱券。柱券下部与墓壁嵌合成一体，形成0.67米高的腰墙。其上收缩成柱券九道，此即连基塔式柱券。后壁中央设立柱一个，立柱上部已毁，形式为三级塔式。墓顶为券顶结构。封门墙较厚，厚0.3米，封砌方式不明。</p>
+<p>随葬器物分布散乱，计有青瓷器3件、陶器4件和石豚1件。</p>
+<p>M2047 位于西山南麓何田埠，1958年6月鄂城钢铁厂兴建高炉时发现并清理。墓顶已遭破坏。墓向185度（图100）。</p>
+<p>墓室长4.38米，宽1.14米，残存高度1米。面积为4.99平方米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室中后部设棺床。棺床长方形，长3.76米，宽0.64米，高0.05米，用砖仿席纹平铺。棺床与墓壁之间留出空隙以利墓内积水外泄。墓壁下部砌两组“三顺一丁”，上部错缝顺砌起顶。墓室侧壁设柱券</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图100 M2047平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷盘口壶 2.陶橘 3.陶灯 $4\sim 8$ .陶盘 $9\sim 12$ .青瓷盏 13.银钗</p>
+<p>七道，其中前、后两端柱券分别可视作门券和角柱券，为竖直式；中间五道柱券皆为三级塔式。柱券砌法与墓壁相同，下部砌两组“三顺一丁”，丁砖嵌入墓壁之中，与壁相连成一体，上部平砖错缝顺砌。后壁中央设立柱一个，立柱为分级塔式，分级数不明。墓顶为券顶结构。封门墙为纵向叠砌式封砌，厚0.32米。排水沟设在墓口左隅的封门墙之下，沟宽0.06米，深度、长度和结构均不明。</p>
+<p>随葬器物基本保持原来位置。主要分布于棺床前部，以陶桶为中心，周围绕以陶盘5件、陶灯1件和青瓷盘口壶1件。另外在棺床中后部出有银钗，原来应是棺内之物；而柱券间发现的青瓷盏，原来可能是放在塔式柱券基座的台面上作灯盏用的，共计有随葬器物10多件。</p>
+<p>M2054 位于西山南麓何田埠，1958年7月发现并清理。墓室早年被盗破坏。墓向222度（图101）。</p>
+<p>墓室长4.74米，宽1.2米，高1.86米。面积为5.68平方米。</p>
+<p>墓底用砖平铺一层，呈“人”字形。铺地砖之上，墓室前部设祭台。祭台略近方形，长0.68米，宽0.64米，高0.05米。墓室中后部与祭台紧连有棺床。棺床长方形，长2.5米，宽0.48米，高0.05米。祭台、棺床均用砖仿席纹平铺。墓壁采用“四顺一丁”、“三顺一丁”和错缝顺砌法，下部砌一组“四顺一丁”和一组“三顺一丁”，上部错缝顺砌起顶。墓室侧壁设柱券五道，其中前、后两端分别作为门券和角柱券，皆竖直式；中间三道为两级塔式。柱券下部砌两组“三顺一丁”，丁砖嵌入墓壁之中，与壁连</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图101 M2054平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 陶魁、勺 2. 陶桶 3. 陶盏 $4 \sim 9$ . 陶盘 $10 \sim 13$ . 青瓷盏 14. 青瓷砚 15. 青瓷盏 16. 青瓷盘口壶</p>
+<p>成一体。后壁中央设立柱一个，立柱形式不详。墓顶为券顶结构。封门墙用砖纵向叠砌，厚0.32米。排水沟设在墓口右角的封门墙之下，沟宽0.16米，深度、长度和结构均不明。</p>
+<p>随葬器物分布略有扰乱，主要分布于墓室前部的祭台上下，祭台下面的器物原来应是放在祭台上的，是一组以陶桶为中心的祭奠器物，计有陶桶、陶盘、陶魁、勺和青瓷盏等；墓室柱券间发现的青瓷盏，原应是作灯盏用的；棺床上还发现青瓷盘口壶1件。共有青瓷器、陶器近20件。</p>
+<p>3式：特异结构长方形墓，7座。</p>
+<p>M2192 位于西山南麓何家埠，1960年3月拓宽扩建武黄公路时发现并清理。墓顶已遭破坏。墓向180度（图102）。</p>
+<p>墓室长3.15米，宽1.7米，高度不详。总面积为6.22平方米。其特异处在于长方形墓室附两个耳室，右耳室长0.5米，宽0.7米；左耳室长0.6米，宽0.7米。</p>
+<p>墓底用砖平铺，呈“人”字形。墓壁、墓顶及封门墙结构均不详。</p>
+<p>随葬器物残留少，分布于墓室后部，计有青瓷器2件和钱币，其中青瓷碗内装满五铢钱。</p>
+<p>M2114 位于西山以南0.7公里的古坟堆土岗上，1971年6月鄂城钢铁厂兴建高炉时发现并清理。墓室顶部已遭破坏。墓向360度（图103）。</p>
+<p>墓室长2.52米，宽1.12米，高度不明，面积为2.87平方米。</p>
+<p>墓底用砖纵向平铺。特异处是，铺地砖之上，墓室左壁下有横向立砖七块，间隔排列，或许是作棺垫用的。墓壁为错缝顺砌法。墓顶结构不明。封门墙封砌方式与墓壁相同。</p>
+<p>随葬器物散见于墓室前部。计有青瓷器2件、陶器1件和铜镜1件。</p>
+<p>M2139位于西山以南0.7公里的古坟堆土岗上，1973年3月鄂城钢铁厂兴建高炉时发现并清理。墓顶已遭破坏。墓向180度（图104）。</p>
+<p>墓室长3.25米，宽1.65米，面积为5.36平方米。墓底、壁、顶的砌造方法和结构不详，特异处是封门墙弧形向内封砌，封砌方式不明。</p>
+<p>随葬器物散布于墓室右前隅和墓室中部，仅有陶器1件和钱币。</p>
+<p>M2211 位于西山以南1公里的郭家塘，1956年8月兴建武大铁路时发现并清理。墓室顶部已遭破坏。墓向163度（图105）。</p>
+<p>墓室长3.74米，宽0.76米，残高0.73米。面积为2.87平方米。</p>
+<p>墓底用砖平铺一层，呈“人”字形，墓壁下部砌两组“三顺一丁”，上部错缝顺砌起顶。后壁中央设一内凹的立柱，立柱形式不明。墓顶结构不详。封门墙封砌方式与墓壁相同。</p>
+<p>图102 M2192平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷虎子 2.钱币 3.青瓷碗</p>
+<p>图103 M2114平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 陶罐 2. 青瓷碗 3. 铜镜 4. 青瓷罐</p>
+<p>图104 M2139平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 陶釜 2. 钱币</p>
+<p>图105 M2211平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 陶桶 2~5. 陶盘 6. 陶魁 7. 青瓷盏 8. 陶勺 9. 青瓷盘口壶 10. 银镯</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图106 M2018平面、剖面图</p>
+<p>随葬器物主要分布于墓室前、后端，前端有以陶桶为中心的一组器物，后端有陶魁、勺和青瓷盏等；墓室中部左侧出有青瓷盘口壶1件，共计有随葬器物10件。</p>
+<p>M2018 位于西山以南、武黄公路南侧的何田埠，1958年5月鄂城钢铁厂兴建高炉时发现并清理。墓顶已遭破坏。墓向170度（图106）。</p>
+<p>墓室长2.72米，宽1.8米，残高0.4米。面积为4.97平方米。</p>
+<p>墓底用砖横向平铺。铺地砖之上，墓室左侧设棺床。棺床长2.72米，与墓室同长，宽0.75米，高0.1米，用砖横向平铺，其右边边缘用砖纵向平砌锁边。墓壁采用错缝顺砌法，墓顶结构不详。封门墙封砌方式与墓壁相同。</p>
+<p>随葬器物残留于墓室中部，原应置于棺内。仅出金簪1件。</p>
+<h1 id="v_2">八V型</h1>
+<p>土坑墓，共6座。共同特征是墓室为长方形的土坑，规模较小，随葬器物简单。据有关人员反映，鄂城历年发现的土坑墓不少于50座，但因基建工地工程紧迫，多已遭破坏。</p>
+<p>M3035 位于雷山以南0.6公里的瓦屋湾，1956年8月兴建武大铁路时发现并清理。墓向324度（图107）。</p>
+<p>图108 M3009平面、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青瓷碗 2.陶罐 3、4.青瓷碗 5.青瓷罐 6.青瓷盏 7、8.陶罐 9.铜镜 10、11.陶罐<br />
+12.银钗 13.钱币 14.青瓷碗</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图109 M1014平面图</p>
+<p>1、2.青瓷鸡首壶<br />
+3.青瓷水盂</p>
+<p>墓坑长方形，长2.66米，宽0.88米，面积为2.34平方米。</p>
+<p>随葬器物集中发现于墓坑前部，计有青瓷器1件、陶器4件、银饰品10件、铜镜1件和铜印1件等，共近20件器物。其中铜印上有“别部司马”刻文，是推断墓主人身份的重要资料。</p>
+<p>M3009 位于雷山以南 0.8 公里的朱家坳，1956 年 8 月兴建武大铁路时发现并清理。墓向 20 度（图 108）。</p>
+<p>墓坑长方形，长2.54米，宽0.9米，残深0.3米，面积为2.25平方米。特异处是在深0.26米处用砖横向复盖三排砖，盖砖之下似曾撒过草木灰。</p>
+<p>随葬器物主要分布于墓坑前端，计有青瓷器6件、陶器5件和铜镜、银钗各1件。还有钱币等，共有10余件器物。</p>
+<p>M1014 位于西山东麓的雨台山上，1957年9月发掘清理。墓向147度（图109）。</p>
+<p>墓坑长方形，长2.3米，宽0.8米，深度不详，面积为1.84平方米。</p>
+<p>随葬器物分别出于墓室前、后端。仅有青瓷器3件。</p>
+<p>（执笔者：熊海堂 贺中香 冯务建）</p>
+<h1 id="_31">第三节 墓葬形制的演变与特色</h1>
+<h1 id="_32">一 墓葬构筑方式的演变与特色</h1>
+<p>鄂城六朝墓的多数构筑方式自孙吴至南朝一直通用，其中一部分只是随时代不同而发生数量上的变化，因此，它们都不具备明显的时代意义。</p>
+<p>少数构筑方式的使用具有一定的时间性（附录3），这对于墓葬断代有着参考价值。如墓壁以侧立砖自墓底砌至一定高度再以平砖顺砌起顶的构筑方式，只用于孙吴小墓。柱券和立柱的使用与周围地区的影响有关，这种做法最早见于江西的东汉晚期</p>
+<p>墓①，在江西的孙吴和西晋墓中十分流行。鄂城六朝墓中使用柱券和立柱始自西晋，流行于东晋和南朝，而以南朝为最盛。柱券和立柱的形制渐趋复杂，其中塔式和连基塔式柱券或立柱未见于其他地区。鄂城六朝墓中一墓使用诸多柱券的做法亦为其他地区所少见。四隅券进式穹隆顶的出现较其他地区为早，始见于孙吴前期，但至东晋已不复使用，而长江下游地区的东晋墓中仍有所见。三顺一丁式封门墙的使用开始得稍迟，目前还未见孙吴墓使用此式封门墙的实例。底层排水孔道式棺床和丁砖排砌式棺床出现得较晚，前者始于东晋后期，后者仅见于南朝。壁龛和灯台流行于西晋至南朝，前者在东晋最盛，南朝后期不见；后者在吴末至西晋墓中使用最多。渗水井较少，使用时代大致为孙吴末至东晋初。</p>
+<p>墓砖形制与其他地区所见基本相同，仅子母口长方形砖和搭口长方形砖在其他地区甚为少见。墓砖纹饰和图案与长江中游其他地区及长江下游地区所见亦多相同或相似，但种类明显较其他地区为少，譬如南昌地区孙吴晚期和西晋墓砖中较为流行的缠枝纹，江苏、浙江地区西晋墓砖中的人面、兽面及龙、虎、凤等图案，武汉地区南朝墓砖中的卷草、莲瓣、忍冬、鱼、人物、飞天等纹饰和图案，在鄂城六朝墓砖中均未见到。而纪年铭文砖在鄂城从未发现，这是鄂城六朝墓砖的一个特点。</p>
+<h1 id="_33">各型墓葬的演变与特色</h1>
+<p>I型为多室墓，以具有前、后室为基本形式，又以其分别附多耳室（I型1式）、带甬道附单侧室或单耳室（I型2式）、带甬道附双侧室或双耳室（I型3式）、带甬道附多侧室多耳室（I型4式）而分四式。这种多室的墓葬形制与东汉多室墓②有着明显的承继关系，主要流行于孙吴至西晋前期。前室用以祭奠，后室用以置棺，耳室用以放置随葬品，侧室亦用以置棺。这类墓葬规模都较大，墓主人当有相当高的地位，出有带铭文器物的“孙将军”墓（M2081）即为例证。可惜这些墓葬均盗掘破坏，随葬品多有缺失，其原貌不全。I型墓中，以规整的带甬道前后室附双侧室或双耳室墓（I型3式）最为典型，这是长江中游地区孙吴至西晋早期较为流行的一种墓葬形制。</p>
+<p>Ⅱ型为横前室多后室墓，是埋葬双人或三人的较大墓葬形制，又分为带甬道横前室双后室（Ⅱ型1式）、多甬道横前室多后室（Ⅱ型2式）二式。Ⅱ型1式墓二座，时代分别为孙吴中期和西晋前期。这种墓葬形制在长江中游地区③可溯源至东汉中期。西晋墓M2006（图20）保存完好，其随葬品除有被水浮动的迹象外，未经人为扰乱。观察随葬品的分布情况，可知双后室中的右室葬男性，左室葬女性，此当与古人以右为尊的</p>
+<p>① a. 江西省文物管理委员会：《江西南昌青云谱汉墓》，《考古》1960年第10期。<br />
+b.江西省文物管理委员会：《南昌市郊东汉墓清理》，《考古》1965年第11期。<br />
+c. 江西省博物馆：《江西南昌地区东汉墓》，《考古》1981年第5期。</p>
+<p>② a. 洛阳区考古发掘队：《洛阳烧沟汉墓》第二编第三、四、五章，科学出版社，1959年。<br />
+b. 广州市文物管理委员会等：《广州汉墓》第六章第一篇，文物出版社，1981年。<br />
+c. 云梦县博物馆：《湖北云梦痢痢墩一号墓清理简报》，《考古》1984年第7期。</p>
+<p>③ 湖南省博物馆：《湖南资兴东汉墓》，《考古学报》1984年第1期。</p>
+<p>习俗有关。这种男右女左合葬的现象在其他地区同时代墓葬中亦屡有发现①，或为当时定制。此墓前室两后隅各设一个砖砌祭台，祭台上下有陶人物俑和罐、盘口壶、虎子等青瓷器。右祭台上还置陶帷帐座，清理墓葬时帷帐座已聚在一起，原或为四隅各一，此祭台当有反映墓主人生前家居生活的意义。这种祭台上设置陶帷帐座的情况亦见于在南京的西晋永宁二年（公元302年）太中大夫高平太守侯某墓，其祭台上除帷帐座外还置一袖手踞坐的男性瓷俑，或为墓主人的坐像②。Ⅱ型2式墓仅一座，时代为东晋后期，此种形制较早见于广东广州东汉前期墓③。</p>
+<p>Ⅲ型为“吕”字形墓，亦为一种规模较大的墓葬形制。以带甬道的前、后室为基本形式，可细分为侧壁加护墙砖柱（Ⅲ型1式）、过道偏于一侧（Ⅲ型2式）、附耳室（Ⅲ型3式）、带过道（Ⅲ型4式）四式。这种具有前、后室的墓葬形制在南方始见于西汉晚期，东汉渐多④。鄂城六朝墓中，此型墓流行于孙吴和西晋时期，与I型多室墓的流行时代大致相仿，唯其消失时间略迟。前室主要用以祭奠，一般都设置祭台；后室则为棺室。Ⅲ型1式孙吴时期的M2215（图23）在后室两侧壁外附加了护墙砖柱，使墓室更为牢固，这种做法在鄂城六朝墓中所见不多。Ⅲ型2式孙吴时期的M1002（图24）未经盗扰，保存较好，随葬品多集中于前室右侧两隅和前、后室间的过道处。此墓前室左侧设有砖砌棺垫四个，可知亦作为陈棺之所，这种前室置棺的现象尚属少见。Ⅲ型3式西晋时期的M2180（图26）于后室右侧设一耳室，其平面形式在Ⅲ型墓中是最复杂的。Ⅲ型4式西晋时期的M2262（图27）的前、后室均用四隅券进式穹隆顶，为鄂城六朝墓中仅有的一例。而Ⅲ型4式西晋时期的M5016（图29）仅有一个十分狭小的前室，属于前、后室墓葬形制的衰变形式。概括言之，此型墓中的前、后室间无明显过道者时代较早，前、后室间有过道的典型“吕”字形墓时代较晚。这种类型的墓葬在孙吴和西晋时期普遍流行于长江中、下游地区，各地考古发掘中多有发现。</p>
+<p>IV型为并列双室或三室墓，是埋葬双人或三人的一般墓葬形制。分为不规则的双室并列（IV型1式），有规则的双室并列（IV型2式）、有规则的双室并列多柱券（IV型3式）、三室并列（IV型4式）四式。双室并列的墓葬形制在东汉已有，长江流域较早的墓例见于湖南⑤。鄂城六朝墓中双室并列墓始终流行，然具体形式随时代不同而发生变</p>
+<p>化。孙吴和西晋时期的双室并列墓多为IV型1式，如M4008（图30），双室一大一小，形制不同，仅有部分墓壁相连；又如M2048（图31），双室并列而不相连接，且长短不一。IV型2式在孙吴和西晋时期仅见个别墓例，主要流行于东晋和南朝时期。此式墓双室的形制、规模整齐划一，二室间墓壁多相连接，且多有“过仙洞”贯通。东晋和南朝时期还流行IV型3式。此式墓除具IV型2式各种特征外，还使用柱券，时代越晚，柱券数目越多，最多可达六道（图36）。并列双室墓在长江中、下游其他地区六朝墓中所见不多，而使用多柱券的并列双室墓更为鲜见。因此，IV型3式墓是鄂城六朝墓中较具特色的一种形制。IV型4式的三室并列墓仅一座，三室的形制、规模相同，并列相连，以“过仙洞”贯通，时代为东晋。此种形制较为少见。</p>
+<p>V型为“凸”字形墓，是鄂城六朝墓中数量居第二位的墓葬类型。以长方形墓室和甬道构成基本形制，又具体分为不规则“凸”字形（V型1式）、有规则“凸”字形（V型2式）、外部加柱券的“凸”字形（V型3式）、内部加柱券的“凸”字形（V型4式）、单柱券“凸”字形（V型5式）、多柱券“凸”字形（V型6式）六式。V型1式的不规则主要表现在封门墙外弧（图40）、封门墙特厚且前弧后平（图42）、甬道呈梯形（图39、44）、甬道较偏（图41、47）、墓壁外弧（图42、43）、墓壁内凹（图46）等方面。V型2式为标准的“凸”字形墓。V型3式仅一座，在墓侧壁外和墓顶之上附加柱券以加固墓室（图59）。V型4式在墓内一端或两端以柱券加固墓室，其后壁或附加立柱。V型5式在墓内前部或中部设一道柱券，将墓室分隔为二，墓内前、后两端或亦设角柱券和立柱等。V型6式在墓内设二道以上柱券，前、后两端亦如V型5式采取各种加固措施。“凸”字形墓是长江中、下游地区自东汉中、晚期开始流行的一种墓葬形制。鄂城六朝墓中，V型1式、V型2式、V型4式见于六朝全期；V型3式仅见于孙吴；V型5式见于西晋后期和东晋；V型6式见于东晋和南朝，是一种具有明显地方特色的墓葬形制。</p>
+<p>VI型为刀形墓，由长方形墓室和偏于墓室前端一侧的甬道构成。这种墓葬形制在长江中游地区东汉墓中已出现①，在鄂城六朝墓中始终流行。此型墓的平面形制基本一致，仅有个别墓的封门墙作外弧状（图80）或后壁外弧（图83）。</p>
+<p>V型为长方形墓，是鄂城六朝墓中最为常见的、面积不大的墓葬形制。分为一般长方形（Ⅶ型1式）、多柱券长方形（Ⅶ型2式）、特异结构长方形（Ⅶ型3式）三式。Ⅶ型1式为标准的长方形墓，或略呈梯形，个别墓的后壁设有立柱（图96），时代较早的此式墓常用叠涩顶。Ⅶ型2式内设二道以上柱券，最多可达八道（图99），墓内两端或设角柱券、立柱。Ⅶ型3式特异处主要表现在封门墙内凹（图104）、附耳室（图102），后壁立柱外凹内凸（图106）等方面。长方形墓自东汉始流行于长江中、下游地区。鄂城六朝墓中的Ⅶ型1式见于六朝全期；Ⅶ型2式仅见于东晋后期和南朝，具有地方特色；Ⅶ型3式为数不多，散见于六朝全期，多为孙吴墓。</p>
+<p>Ⅲ型为土坑墓，皆作长方形。此类墓的墓主人不尽是地位低下的平民，亦有地位较高者，如M3035出有“别部司马”铜印和多件银饰品即为例证（图107）。</p>
+<p>综上所述，鄂城六朝墓葬形制的大致发展变化概况如下：</p>
+<p>孙吴至西晋前期——东汉遗风尚存，多室墓和“吕”字形墓继续流行。墓葬形制的型式种类丰富，鄂城六朝墓的八型二十五式有十九式在此时共存。</p>
+<p>西晋后期至东晋前期——多室墓消失，“吕”字形墓减少，单柱券墓出现并流行。墓葬的外部形制趋于简化、规整。</p>
+<p>东晋后期至南朝——多种规模的墓葬均以单室为主。墓中流行使用多柱券结构，时代越晚，柱券的排列越密集，柱券形制亦趋复杂，从而形成有别于其他地区的地方特色。</p>
+<p>（执笔者：魏鸣）</p>
+<h1 id="_34">第三章 随葬器物</h1>
+<p>鄂城六朝墓出土的随葬器物有陶器、青瓷器、铜铁铅器、铜镜、钱币、金银器、漆木器和玉石玻璃器等类别，现分别叙述如下。</p>
+<h1 id="_35">第一节 陶器和青瓷器</h1>
+<p>陶器和青瓷器是鄂城六朝墓中出土数量最多，也最常见的两种随葬器物，总数共达2370件，其中青瓷器的数量又多于陶器。就这批陶器和青瓷器的用途来看，可以分为生活用具和模型明器两大类。</p>
+<h1 id="_36">一 日用器具</h1>
+<h1 id="_37">（一）陶器</h1>
+<p>鄂城六朝墓出土的陶质生活用具可分为细泥软陶和釉陶两种。细泥软陶，一般火候不高，疏松易碎，胎色多为灰色，少数为灰黄色和红色。另有少数灰色或灰褐色陶器，质地较坚硬，胎内有夹砂或其他屑和料，应是硬陶或夹砂陶之属。釉陶又有低温釉陶和高温釉陶之分。低温釉陶，胎质粗细不一，火候不太高，胎色以深灰色和褐色为主，外挂绿色和酱绿色釉，釉层薄而不匀，普遍有橘皮状缩釉与蜡泪状流釉的现象。出土时，釉层大部分已脱落，但原着釉处的胎面呈青灰色，露胎处呈褐色，故釉线清晰。这类釉陶应属汉代低温釉陶系统，从其质量低劣来看当非实用器，而是专为随葬用的。高温釉陶，即有的学者所称的“秦汉原始瓷”①，其胎料多已采用瓷土，与一般陶器和低温釉陶器的区别已很明显，在造型装饰、烧制技艺方面与青瓷器有直接的发展关系，是青瓷器的前身。但高温釉陶与瓷器相比，胎土的淘炼欠精，杂有少量细砂，甚或还有少量的粗砂粒，烧成温度也未达到瓷器生产的标准，致使胎质致密坚硬不够，胎色多呈灰白色、淡灰色，少量火候较差的呈灰黄色。高温釉陶的釉质、釉色与瓷釉相比也有一定距离，其釉质选炼不精，较浑浊，绝大多数呈黄褐色或绿褐色，极少数呈酱色；施釉欠匀，常有流釉和缩釉现象，脱釉的情况比较严重。</p>
+<p>我们请江苏宜兴陶瓷研究所对出土的8件陶器（含釉陶）标本作了理化分析测定（附录4）。分析测定的结果表明，5件陶器标本的理化性能区别不大，而3件高温釉陶标本的理化性能与之区别明显。</p>
+<p>具体地说，孙吴时期陶器胎的含铁量在 $6\% \sim 8\%$ 之间，含钛量亦较高，在 $1.12\% \sim$</p>
+<p>1.14%之间，显气孔率达 $24\% \sim 38\%$ ，吸水率达 $14\% \sim 22\%$ 。同期高温釉陶胎的含铁量为 $3.24\%$ ，含钛量为 $0.97\%$ ，并含较高的钾，显气孔率和吸水率分别为 $15.47\%$ 和 $7.18\%$ ，两者的区别是显而易见的。高温釉陶与同期青瓷器相比，却较为接近①。</p>
+<p>东晋前期，高温釉陶所占比例已经很小，在质量上也不够稳定，既有含铁量较低的（标本W16)，也有含铁量偏高的（标本W15)；但在物理性能方面已较孙吴时期的高温釉陶有相当的改善，显气孔率和吸水率分别降到 $9\% \sim 11\%$ 和 $4\% \sim 5\%$ ，已很接近于同期瓷器的测试数值，但在釉色和釉质的匀净程度上却远不如东晋的瓷器。</p>
+<p>东晋晚期到南朝时期，墓中出土陶器的数量反而有增加的趋势。据理化分析结果知道，这时期陶器胎的含铁量甚至超过孙吴时期的陶器，在物理性能方面也与之接近。当时，日用青瓷器已普及于民间，这类陶器看来是专为随葬而制作的。</p>
+<p>鄂城六朝墓出土陶器（含釉陶）的制法，大多以轮制或模制为基本方法，手制较少，仅起辅助作用。轮制法使用普遍，主要用来制作各类圆体器物，如罐、盘口壶、盆、盘、盏等，以及灯、炉、砚、魁等器物的器身部分。这类器物的底部常留有同心圆状的轮旋切割痕迹。模制法主要用来制作非圆形器物，如耳杯、桶、勺等，或是器物的某些附件，如器足、器柄和器系等。值得注意的是，高温釉陶质罐类的制法，是采用将口肩部与腹底部分别轮制成型后再加以粘接的方法，故肩腹分界处的外观有厚肩现象，内壁则明显有手抹粘接的痕迹。</p>
+<p>陶器（含釉陶）的装饰方法主要有刻划、模印及拍印等。刻划的纹饰主要是弦纹，通常饰于器物肩部，起装饰作用，还可起到安装器系时的定位作用。弦纹也饰于器物口部或密集地饰于器腹。此外，刻划的纹饰中还有东汉遗留下来的水波纹、弦纹间篦纹或锥刺点纹等。模印的纹饰主要是斜网格填竖线纹带，多饰于器物肩及腹部，这种纹饰带孙吴早、中期出现并流行于陶器上，已开吴末西晋青瓷器上盛行纹饰带的先声。模印纹饰还常饰于器物的系面，有蕉叶纹以及较简化的双“十”字斜线纹、“十”字斜线纹等。拍印纹饰主要有斜方格纹和麻布纹，大多饰于罐、壶、盆等器物和器身。这类满饰于器身的纹饰除作装饰外，也可能是为了加强胎、釉的结合。拍印纹饰还有大方格填几何线纹和“大开五十”仿钱纹为中心的几何纹等，多饰于较大型的罐身。这种纹饰似乎继承了南方早期几何印纹陶的某些传统，具有浓厚的地方色彩。</p>
+<p>釉陶器的施釉方法，一般多采用刷釉法，尤其是器形较大的器物，釉层多数不匀；较小一些的器物还采用蘸釉法（或称浸釉法）施釉。另外，某些敞口器（如盆）的内部，应是用的荡釉法。施釉一般都不及底，器物的外底及下腹部通常露胎无釉。</p>
+<p>陶质（含釉陶质）生活用具有罐、盘口壶、盆、三足炉、灯、砚、盘、桶、魁与勺、盏、耳杯、熏、唾壶等14类器物，共664件，现分类叙述如下。</p>
+<ol>
+<li>罐 276件。分别出自95座墓中。一般是1座墓出土 $2 \sim 10$ 件不等，少数是每座墓只出1件。其中M1002出土最多，多达19件。在这276件罐中，有9件因残破过甚，仅可辨形；还有10件整理时已不见器物，参加分型分式者为257件。另外，选择鄂钢</li>
+</ol>
+<p>孙吴古井①和鄂城江边古井出土的5件陶（含釉陶）罐作参考物。根据罐系与罐的外形特点，可分为八型。</p>
+<p>I型32件。分别出自14座墓中。牛鼻式双系，泥质软陶。所谓牛鼻式系，即系面较宽，两缘向上翻卷似牛鼻，系孔内的器壁向里凹进使系孔呈椭圆形。又根据口、唇、沿和腹部的不同，可分为三式。</p>
+<p>1式：13件。矮直口，圆唇，厚沿，圆腹。M3032:8，大口略外侈，圆腹下部急收，小平底。肩部有双竖系。器身满饰竖短线纹。灰陶，质地疏松。通高17.5厘米，口径13.6厘米，最大腹径20.2厘米，底径10.2厘米（图110-1；图版10-1）。M1005:2:1，口微内敛，沿宽厚，上腹扁圆，下腹内收较缓，小平底内凹。肩有双竖系。器身满饰弦纹间短线纹。灰陶，火候较足。通高17.4厘米，口径15.2厘米，最大腹径22.6厘米，底径10.8厘米（图110-2；图版10-2）。M1003:2与前件大致相同（图版10-3）。M2091:2，腹部略瘦，仅饰两道弦纹。灰色软陶。通高14.8厘米，口径15.7厘米，最大腹径20.2厘米，底径10厘米（图110-3）。</p>
+<p>2式：11件。直口，薄唇，薄沿，扁圆腹。M3009:4，薄圆唇，上腹扁圆，小平底。肩部有稍加简化的牛鼻式双竖系。口壁外饰弦纹一道，系际饰网格纹间短线纹夹两道弦纹的装饰带。深灰色陶，质地坚硬。通高12.8厘米，口径10.8厘米，最大腹径16厘米，底径8.4厘米（图110-4；图版10-5）。M2215:31，器形与前者相似，唯器体稍大。系际饰栉齿纹间网格纹并加弦纹的装饰带。灰陶较细，火候充足，质地坚硬。器物制作精细规整。通高15.1厘米，口径14.2厘米，最大腹径20.3厘米，底径10厘米（图110-6；图版10-6）。相同造型和质地的罐，在鄂城钢铁厂一座孙昊古井中曾有出土。鄂钢古井：6，系际饰弦纹间斜短线纹装饰带。通高14.1厘米，口径11.7厘米，最大腹径17.2厘米，底径8.5厘米（图110-7）。M3034:5，器体较小，唇略厚，下腹急收成小平底。系际饰弦纹两道。深灰色胎，火候充足，较坚硬。通高8.9厘米，口径9厘米，最大腹径12.2厘米，底径6厘米（图110-5；图版10-4）。</p>
+<p>3式：5件。直口，厚圆唇外卷，长圆腹。M3034:3，口微外侈，腹呈橄榄形，平底，底径略小于口径。肩部有双竖系，器身满饰细弦纹。灰黄陶，火候不足，质地松软。通高24.4厘米，口径12.6厘米，最大腹径19.6厘米，底径10.5厘米（图110-8；图版11-1）。M2215:11，长圆腹中部略鼓，肩部有双竖系。器肩装饰栉齿纹间弦纹。灰黄色软陶。制作规整。通高23.9厘米，口径13厘米，最大腹径21.9厘米，底径9.3厘米（图110-9；图版11-2）。M3035出土的3件与前者大致相似，唯器形稍小，制作不够精致（图版11-3）。在鄂城江边发掘的古井中出土的灰陶罐与此式罐有发展演变关系，可用作参考（图 $110 - 10\sim 12$ ）。</p>
+<p>另外，还有3件罐略有不同，现分述之。M2086:1，器物外轮廓与1式相同，侈口，圆鼓腹，平底。肩部有变形的泥条式双系，器身满饰弦纹。泥质软陶，呈橙红色。通高13.6厘米，口径10厘米，最大腹径16厘米，底径9.4厘米。M2202:16，器物外形与2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+12</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图110 陶罐</p>
+<ol>
+<li>
+<p>I型1式（M3032:8）</p>
+</li>
+<li>
+<p>I型1式（M1005:2:1）</p>
+</li>
+<li>
+<p>I型1式（M2091:2）</p>
+</li>
+<li>
+<p>I型2式（M3009:4）</p>
+</li>
+</ol>
+<p>5.I型2式（M3034：5）</p>
+<ol>
+<li>
+<p>I型2式（M2215:31）</p>
+</li>
+<li>
+<p>I型2式（鄂钢古井：6）</p>
+</li>
+</ol>
+<p>8.I型3式（M3034：3）</p>
+<ol>
+<li>
+<p>I型3式（M2215:11）</p>
+</li>
+<li>
+<p>I型3式（鄂城江边古井：1）</p>
+</li>
+<li>
+<p>I型3式（鄂城江边古井：2）</p>
+</li>
+<li>
+<p>I型</p>
+</li>
+</ol>
+<p>3式（鄂城江边古井：3）</p>
+<p>式相同，口微外侈，扁圆腹，平底。肩部有宽扁的双横系。紫褐陶，质地松软。通高12.7厘米，口径10.8厘米，最大腹径16.8厘米，底径9.2厘米（图版11-4）。M3011：5，器形较特殊，大口，圆唇，折沿外侈，圆腹，大平底。上腹部有变形的泥条式横系，口沿上饰多道细弦纹，器身满饰方格纹，系际装饰弦纹一道。浅红色软陶。通高18厘米，口径22.5厘米，最大腹径24.5厘米，底径15厘米（图版11-5）。</p>
+<p>Ⅱ型94件。分别出自42座墓中。双系，低温釉陶。根据口、唇和整个器形特点，可分为三式。</p>
+<p>1式：54件。直口，圆唇，扁圆腹。器体较小。M1006:4:1，矮直口，口径小，小平底。肩部有泥条式双竖系，系际装饰弦纹两道。灰陶较硬，黄褐釉已脱落殆尽。通高10.3厘米，口径8.8厘米，最大腹径14厘米，底径6.8厘米（图111-1）。M1002:2、18、23，皆与前者相同造型，仅大小略有差别（图版 $12 - 1\sim 3$ ）。</p>
+<p>2式：21件。直口微侈，薄唇，扁圆腹。器体略大。M1018:2，口径较大，尖唇，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图111 陶罐</p>
+<p>1.Ⅱ型1式（M1006:4:1） 2.Ⅱ型2式（M4034:5） 3.Ⅱ型2式（M5004:15） 4.Ⅱ型2式（M2148:29）</p>
+<p>5.Ⅱ型3式（M2093:4）6.II型3式（M2094:5）7.II型3式（M2097:2）8.II型（M1002:4）9.II型</p>
+<p>(M2061:5) 10.Ⅱ型（M2061:4） 11.Ⅱ型（M3032:12） 12.Ⅱ型（M2183:1）</p>
+<p>小平底。肩部有一对泥条式系。通高14.5厘米，口径14.3厘米，最大腹径21厘米，底径11厘米（图版12-4）。M5004:15造型与前者相近，口微外侈，腹下部急收成小平底，底微内凹。通高13.2厘米，口径11.35厘米，最大腹径20.4厘米，底径8.8厘米（图111-3；图版12-5）。M2148:29，器物外形略同，制作稍精致，肩部装饰弦纹。通高13.4厘米，口径12.5厘米，最大腹径18.9厘米，底径9厘米（图111-4）。M4034:5，肩部装饰水波纹。通高8.4厘米，口径7.7厘米，最大腹径12.6厘米，底径6.4厘米（图111-2；图版12-6）。</p>
+<p>3式：10件。侈口，尖唇，矮扁腹。M2093:4，口径较大，腹较扁矮，小平底内凹。肩部有一对扁环式系。灰胎较坚硬，黄褐色釉部分脱落。通高13.2厘米，口径15.4厘米，最大腹径20.8厘米，底径10.4厘米（图111-5；图版13-1）。M2094:5，造型与前者略同。系际装饰弦纹。通高14.1厘米，口径16厘米，最大腹径21.8厘米，底径11厘米（图111-6；图版13-2）。M2097:2，矮口微侈，下腹较圆缓，小平底。通高15厘米，口径13.6厘米，最大腹径20.8厘米，底径9.6厘米（图111-7）。</p>
+<p>另有9件稍有不同，如有3件为双竖系，有6件为双横系，系的形式和口、唇及器腹形体也有一些区别。分别举几例说明如下。M1002:4，直口外侈，扁圆腹，平底内凹。肩部有双扁环式竖系，系孔内器壁向内凹进犹如I型罐的形式，系面装饰双线“十”字加斜线纹，系际装饰弦纹。灰胎较厚，质地坚硬，黄褐釉脱落殆尽。通高18.6厘米，口径19.4厘米，最大腹径26厘米，底径13.2厘米（图111-8；图版13-3）。M2061:5，侈口，圆唇，圆折肩，斜腹，小平底内凹。扁环式竖系，系面有蕉叶纹装饰，肩颈交界处有一道突棱装饰。灰胎略呈浅黄色，夹砂较坚硬，黄褐釉已脱落殆尽。通高14.8厘米，口径17.2厘米，最大腹径22.2厘米，底径9.4厘米（图111-9；图版13-4）。M2061:4，矮直口，圆唇，扁圆腹，小平底内凹。肩部有一对扁环式竖系，系面装饰蕉叶纹，系际装饰弦纹两道。灰胎，质地坚硬，黄褐釉大部分脱落。通高19.4厘米，口径18.8厘米，最大腹径28厘米，底径13.8厘米（图111-10；图版13-5）。M3032:12，矮直口，圆唇，扁圆腹。双泥条式横系。深灰色胎较坚硬，褐釉已脱落。通高10.2厘米，口径7.5厘米，最大腹径13厘米，底径8.8厘米（图111-11；图版13-6）。M2183:1，直口，圆腹，平底略内凹。肩有双横系，系际装饰弦纹，自弦纹以下器身满饰方格纹。通高13.6厘米，口径10厘米，最大腹径16厘米，底径9.4厘米（图111-12）。</p>
+<p>Ⅲ型89件。分别出自49座墓中。四系，高温釉陶。多具有高直口、厚肩和器身满饰麻布纹的共同特点。根据其腹部特征，可分为三式。</p>
+<p>1式：9件。矮鼓腹。整个器形较小，通高一般在15厘米以下。M1002:20，口微敛，圆唇，鼓腹甚矮，大平底。肩部有四个泥条式横系。口部以下满饰麻布纹。灰白胎，质地坚硬，黄褐釉大部分已脱落。通高10厘米，口径9厘米，最大腹径13.6厘米，底径9.8厘米（图112-1；图版14-1）。M2119:2，圆平唇，鼓腹稍高，平底。肩部有四泥条式横系。通高13.1厘米，口径9.1厘米，最大腹径14.6厘米，底径10厘米（图112-2）。M2098:5，与上述2件器形基本相似。唯器形显得较矮，腹径较大，底略内凹。通高12.1厘米，口径9.8厘米，最大腹径18厘米，底径10.6厘米（图112-3）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>20厘米<br />
+图112 陶罐<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅲ型1式（M1002:20） 2.Ⅲ型1式（M2119:2） 3.Ⅲ型1式（M2098:5） 4.Ⅲ型3式（M3046:1） 5.Ⅲ型3式（M1002:19） 6.Ⅲ型2式（M3014:1） 7.Ⅲ型2式（M2098:1） 8.Ⅲ型3式（M2041:1） 9.Ⅲ型3式（M2037:1） 10.Ⅲ型2式（M2175:2） 11.Ⅲ型2式（M2042:1） 12.Ⅲ型2式（鄂钢古井:4） 13.Ⅲ型3式（M3032:9）</p>
+<p>M3028左：1，造型与M1002：20基本相同（图版14-2）。</p>
+<p>2式：6件。高鼓腹，整个器形较前式略高大，通高一般在 $20\sim 25$ 厘米之间。M3014:1，矮直口微敛，圆唇，上腹较圆，下腹缓收，平底内凹。肩部有四泥条式横系，系际装饰弦纹，器身满饰麻布纹。灰白胎，黄褐釉，有流釉和缩釉现象。通高20.8厘米，口径12.8厘米，最大腹径24.8厘米，底径14.4厘米（图112-6；图版14-3)。M2098:1，腹径较大，最大腹径偏上，平底。四横系，系座略平。灰白胎，黄褐色釉略有脱落。通高22.1厘米，口径13.2厘米，最大腹径23厘米，底径14.4厘米（图112-7；图版14-4)。M2175:2，圆唇，厚肩渐消失，最大腹径略偏上，平底内凹。肩部有四泥条式横系，系际有弦纹，弦纹之上有花蕊纹装饰带。灰白胎，釉脱落殆尽。通高21.2厘米，口径12.5厘米，最大腹径24厘米，底径13.8厘米（图112-10)。M2042:1，基本风格与前者相同，下腹缓收。口壁外装饰弦纹。通高20.3厘米，口径13厘米，最大腹径21厘米，底径13.4厘米（图112-11；图版14-5)。此式罐，从其制作工艺看，已呈现出脱离高温釉陶阶段向瓷器转化的趋势。事实上，有些罐，无论是质地，还是造型，都已很难与瓷罐区别开来。</p>
+<p>3式：74件。长卵形腹。一般通高在15~25厘米之间。M1002:19，平唇，削肩，最大腹径在中部。四泥条式横系，系座较粗糙，有鳞爪状手抹粘接痕迹，系际装饰弦纹。灰白色胎，黄褐釉大部分已脱落。通高21.2厘米，口径9.1厘米，最大腹径17.6厘米，底径10厘米（图112-5）。此式罐往往1座墓出土多件，其基本造型大致相同，有的也存在细小的差别。如M3028同出4件，罐的外形相同外，有的为削肩，有的呈圆肩；有的腹呈橄榄形，有的则呈长圆形（图版14-6，图版15-1、2）。此式罐器身多数装饰麻布纹，但也有几件器身无麻布纹装饰，现分别简要叙述之。M3032:9，直口，圆肩，腹部圆鼓，最大径偏上。四泥条式系为二横二竖。灰胎夹砂，质粗而坚硬，褐色釉大部分已脱落。通高21.5厘米，口径11.8厘米，最大腹径22.7厘米，底径11.4厘米（图112-13；图版15-3）。M2041:1，矮口内敛，削肩，腹瘦长，平底略内凹。肩部有四横系，系座平整，系际有菱形回纹加弦纹的装饰带。灰胎，青褐釉有脱落现象。通高19.4厘米，口径11.2厘米，最大腹径21.3厘米，底径12.8厘米（图112-8；图版15-4）。M2037:1，大口，圆唇，腹径较小，显得很瘦，大平底。上腹部有四泥条式系。灰白胎坚硬，黄褐色釉有一定的光泽。通高17.9厘米，口径11.7厘米，最大腹径16.2厘米，底径11.6厘米（图112-9；图版15-5）。M2033:3与前者造型基本相同，口径显得更大，腹径小，几近直筒形，大平底。灰胎泛紫，釉已脱落。通高19.8厘米，口径17厘米，最大腹径20.6厘米，底径17.4厘米（图版15-6）。M3046:1，平唇外侈，平底略内凹。通高14.8厘米，口径9.8厘米，最大腹径17.8厘米，底径12厘米（图112-4；图版16-1）。此式罐，除了墓中出土较多外，在鄂钢发掘的一座孙吴古井中也曾有出土（图112-12）。</p>
+<p>Ⅳ型 10件。分别出自8座墓中。有四个及四个以上的系，器体高大，通高大多超过25厘米，亦是高温釉陶质。根据其腹部特点，可分为二式。</p>
+<p>1式：1件。扁圆腹。M2137:18，直口，平唇，最大腹径偏上，平底。肩部有六个</p>
+<p>泥条式横系，系座粗糙，系际有弦纹装饰。灰白胎，绿褐色釉，有一定光泽。通高19.4厘米，口径13.2厘米，最大腹径24.8厘米，底径13.4厘米（图113-1；图版16-2）。此式罐与洛阳烧沟汉墓M147所出的麻布纹高温釉陶四系罐①的外形极为相似。</p>
+<p>2式：9件。长卵形腹。M1002:92，圆唇，厚肩特突出，平底。肩部有六个泥条</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>0 10厘米<br />
+2 <br />
+图113 陶罐<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. IV型1式（M2137:18） 2. IV型2式（M1002:92）</p>
+<p>式横系，系座粗糙，系际有弦纹装饰。灰白胎，黄褐釉，大多已脱落。通高34.6厘米，口径14.1厘米，最大腹径30厘米，底径15.8厘米（图113-2；图版16-3）。M5010:1、M3009:1与前件造型相同。其中M5010:1保持较好的釉质釉色，呈褐绿色，有光泽（图版16-4）。M3009:1釉已脱落殆尽（图版16-5）。</p>
+<p>V型 14件。分别出自9座墓中。均无系，有大小差别，还有泥质软陶和高温釉陶的区别。根据口、腹及整个器形的不同特点，可分为三式。</p>
+<p>1式：6件。直口，平唇，扁圆腹。泥质软陶。M2148:4，小平底内凹。肩部有凹弦纹和菱形格子填短线纹装饰带。通高9.3厘米，口径8.4厘米，最大腹径13.8厘米，底径7.2厘米（图114-1；图版17-1）。</p>
+<p>2式：3件。侈口，平唇，长卵形腹。均为高温釉陶。M2060:4，卵形腹较矮，平底。器身满饰麻布纹。肩部有弦纹两道。灰褐色胎，质地坚硬，釉已脱落。通高16.2厘米，口径12.5厘米，最大腹径20厘米，底径12厘米（图114-2；图版17-2）。M1002:25，上腹圆鼓，下腹缓收较长，平底内凹。器身满饰斜方格纹。灰白胎，质地坚硬，黄褐釉已脱落殆尽。通高30厘米，口径13.8厘米，最大腹径24.6厘米，底径11.6厘米（图114-3；图版17-3）。M2058:9与前件造型略同（图版17-4）。</p>
+<p>3式：3件。侈口，圆唇，广肩，大圆腹，小平底或略凹底。整个器形硕大，器身满饰几何印纹。M2148:25，宽唇面有浅凹槽，上腹圆鼓，下腹急收成小平底。器身装饰双线菱形格子填来字纹。灰白色胎，黄褐色釉多已脱落。通高31.4厘米，口径20.1厘米，最大腹径40厘米，底径17厘米（图114-4）。M2112:9，上腹圆鼓，腹径较大，下腹急收，小平底内凹。腹部拍印圆圈内填“大开五十”字样的仿钱纹饰。灰褐色胎，质地坚硬，褐釉多已脱落。通高55厘米，口径42.4厘米，最大腹径65厘米，底径22.5厘米（图114-6）。M2215:10，造型略与上述2件相似，口微敛，明显有厚肩。器身拍</p>
+<p>图114 陶罐<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. V型1式（M2148:4） 2. V型2式（M2060:4） 3. V型2式（M1002:25） 4. V型3式（M2148:25）<br />
+5.V型3式（M2215:10） 6.V型3式（M2112:9） 7.V型（M2215:20） 8.V型（M2087:6）</p>
+<p>印双线方格纹填细网格纹。灰褐色胎，褐色釉多已脱落，有流釉和缩釉现象（图114-5；图版17-5）。</p>
+<p>另有2件造型较特殊，分述如下。M2215:20，敛口，圆唇，厚肩，扁腹，大平底内凹。肩腹部有弦纹间菱形格子填短线纹。灰色软陶。通高14厘米，口径18厘米，最大腹径28.8厘米，底径20厘米（图114-7；图版17-6）。M2087:6，敛口，长垂腹，平底内凹。器身满饰斜方格纹。灰褐色胎，质地坚硬。通高13.6厘米，口径9.2厘米，最大腹径16.4厘米，底径12厘米（图114-8）。</p>
+<p>VI型7件。分别出自5座墓中。双口罐，极似现今家用的泡菜罐。高温釉陶质。根据口、系和腹部的不同特点，可分为三式。</p>
+<p>1式：1件。内外口较深，内口高于外口，圆鼓腹，双竖系。M2215:23，内口较直，外口略弧，平底内凹。内外口壁有弦纹，器身饰麻布纹。通高24.6厘米，口径分别为11.2厘米和17.3厘米，最大腹径24.8厘米，底径14.2厘米（图115-1；图版18-1）。<br />
+2式：4件。双口皆深，外口略低于内口，长圆鼓腹，无系。M4008:11，底内凹。口壁外装饰弦纹，器身满饰麻布纹，上腹有一道弦纹装饰。灰胎，质地坚硬，黄褐色釉</p>
+<p>已脱落。通高28.6厘米，口径分别为12厘米和18厘米，最大腹径27厘米，底径16.2厘米（图115-5；图版18-5）。M2058同出3件，大致与前者接近。M2058:3，外口斜侈。通高20.2厘米，口径分别为13.1厘米和16.4厘米，最大腹径19.8厘米，底径12.2厘米（图115-3；图版18-3）。M2058:4，内口与外口几乎平齐，外口斜弧，底微内凹。通高18.4厘米，口径分别为10.9厘米和16.6厘米，最大腹径18厘米，底径13厘米（图115-2；图版18-2）。M2058:5，外口斜弧，其余与前2件相同（图115-4；图版18-4）。</p>
+<p>3式：2件。内外口较浅，内口敛，外口侈，小扁圆腹，双竖系。M2212:1，下腹急收，小平底。外口壁上有弦纹装饰。深灰色胎，黄褐色釉，有流釉和缩釉现象。通高13.6厘米，口径分别为8厘米和12.5厘米，最大腹径16厘米，底径7.8厘米（图115-6；图版18-6）。</p>
+<p>Ⅶ型 10 件。分别出自 10 座墓中。釜形罐，有灰色、红褐色夹砂硬陶和灰色、红色软陶之分。基本器形是折口，扁圆腹，圜底或平底。又根据口、沿、腹和底的特点，可分为三式。</p>
+<p>1式：4件。口径大于腹径，圆腹，圜底。M1002:98，口沿略呈凹弧形。器身满饰</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图115 陶罐<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.VI型1式（M2215:23）<br />
+2.VI型2式（M2058：4）<br />
+3.VI型2式（M2058：3）<br />
+4.VI型2式（M2058：5）<br />
+5.VI型2式（M4008：11）<br />
+6.VI型3式（M2212：1）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图116 陶罐<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅶ型1式（M1002:98）<br />
+2.Ⅶ型1式（M2115:21）<br />
+3.Ⅶ型1式（M2099：9）<br />
+4.Ⅶ型2式<br />
+(M2058:13) <br />
+5.Ⅶ型2式（M3032:10）<br />
+6.Ⅶ型3式（M2094：6）</p>
+<p>方格纹，中部有一道弦纹；底部饰麻布纹。灰白夹砂硬陶。通高8.8厘米，口径13厘米（图116-1；图版19-1）。M2215:21，口径较小，口沿平。上腹部有弦纹装饰。通高8.7厘米，口径12.6厘米（图116-2）。M2099:9，与前两例基本造型相同，唯口径较大。通高8.6厘米，口径14厘米（图116-3；图版19-2）。</p>
+<p>2式：5件。口径略与腹径相等，扁圆腹，平底。M5010:15，口沿较平。腹部有两道弦纹装饰。红色软陶。通高8.9厘米，口径13.6厘米，最大腹径13.6厘米，底径8.4厘米（图版19-3）。M2058:13，沿面呈凹弧状，小平底内凹。腹部装饰一道弦纹。通高10.1厘米，口径13.8厘米，最大腹径13.8厘米，底径6厘米（图116-4）。M3032:10，口沿稍弧，平底略凹。腹部有两道弦纹。通高10厘米，口径14.1厘米，最大腹径14.8厘米，底径8.2厘米（图116-5；图版19-4）。</p>
+<p>3式：1件。口沿较宽，口径大于腹径，矮扁垂腹，平底。M2094:6，宽沿略弧。腹部有两道弦纹装饰，底部有稀疏的绳纹。夹砂红陶较坚硬。通高11.4厘米，口径19.4厘米，最大腹径17.8厘米（图116-6；图版19-5）。</p>
+<p>Ⅷ型 1件。M3028:13，五联罐。是这批六朝墓中唯一的1件。灰色软陶（图版19-6）。</p>
+<ol>
+<li>盘口壶 21 件。分别发现于 18 座墓中。基本上是 1 座墓出土 1 件，仅有 2 座墓例外，M4022 出土 2 件，M2137 出土 3 件。在 21 件盘口壶中，1 件在整理时已不见器物，参加分型分式者 20 件；另外，还选择鄂钢古井：1 作为参考物。我们依据壶系和系的形式特点，可分为三型。</li>
+</ol>
+<p>I型9件。分别出自8座墓中。皆为双系。又根据壶的口、颈、腹的不同特点，可分为三式。</p>
+<p>1式：3件。喇叭状口，扁圆腹。M2083:1，整个器形显得矮胖。壶口外侈，颈部粗短，最大腹径偏上，大平底。肩部有一对泥条式竖系。腹部装饰麻布纹。灰褐色胎，质地坚硬，釉已脱落殆尽。通高20.4厘米，口径14厘米，最大腹径18.8厘米，底径12厘米（图117-1；图版20-1）。M4022:2，口壁略浅，口沿较厚呈子母口状，腹径较大，最大腹径靠中部，平底略内凹，系际装饰弦纹。灰胎夹砂，质地坚硬。通高18.7厘米，口径8.1厘米，最大腹径22.4厘米，底径11.8厘米（图117-2）。M2140:3，整个器物形体较高。壶口外侈，平折沿，盘口下部较直，使盘口形成两层；颈部较长，呈上细下粗状；下腹斜内收，整个器腹较长，小平底。肩部有双竖系，肩腹部装饰细密的弦纹。胎呈灰褐色，质地坚硬，酱黄色釉，部分已脱落。通高24.6厘米，口径11.4厘米，最大腹径19.5厘米，底径9.8厘米（图117-3；图版20-2）。与青瓷器中的M2148:21的造型和装饰风格基本相同（参见图131-1；图版39-1）。这2件盘口壶与浙江上虞、武义和江苏南京等地窑址、墓葬出土的同类盘口壶①十分相似，而不同于长江中游产品。因此，我们推断这类盘口壶是从长江下游地区输入的。</p>
+<p>2式：4件。盘状口，矮颈，圆鼓腹。M4022:18，盘口较浅，口径较小，最大腹径略大于高，小平底稍内凹。肩部有泥条式竖系，口壁外有弦纹两道。灰胎夹砂，质地坚硬，黄褐色釉，已脱落殆尽。通高17.1厘米，口径7.8厘米（图117-5；图版20-3）。M4026:1，盘口极浅小，初具盘口形状，束颈，广肩，腹径较大，最大腹径比高大近5厘米。肩部有一对扁环式系，系面装饰蕉叶纹，系际装饰弦纹类水波纹装饰带。灰褐胎坚硬，黄褐釉，有缩釉、流釉和釉层剥蚀现象。通高23.5厘米，口径9.9厘米，最大腹径28.6厘米，底径13.4厘米（图117-4；图版20-4）。M2078:6，盘口较大，口壁略深，颈较直，平底。肩部有宽扁式系，系际装饰弦纹，腹部满饰细方格纹。灰胎，釉已脱落。通高18.3厘米，口径13.6厘米，最大腹径20厘米，底径11厘米（图117-6）。</p>
+<p>3式：2件。细颈，圆球腹。M2137:4和M3031:5的口部均已残破。整个器形较小，壶颈极细，小平底。肩部有泥条状竖系，系际均有水波纹装饰带。胎质釉色均相同，灰褐色胎，质地粗糙多气泡，釉色褐绿，灰暗无光，流釉、缩釉严重。</p>
+<p>Ⅱ型7件。分别出自6座墓中。四系壶。根据壶口、颈和腹部的差异，可分为三式。</p>
+<p>1式：1件。喇叭状口，扁圆腹。M1002:24，壶口外侈，口壁略深，束颈较细，最大腹径在中部偏上，平底。肩部有四银锭式横系。口壁外有突棱装饰，系际有弦纹装饰，器身满饰麻布纹。灰白胎，青褐色釉，有脱釉现象。通高17.9厘米，口径9.6厘</p>
+<p>图117 陶盘口壶<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型1式（M2083:1） 2. I型1式（M4022:2） 3. I型1式（M2140:3） 4. I型2式（M4026:1） 5. I型<br />
+2式（M4022:18）6.I型2式（M2078:6）7.II型1式（M1002:24）8.II型2式（M2137:3）9.II型2式<br />
+（鄂钢古井：1）10.Ⅱ型3式（M2120右：11） 11.Ⅲ型（M2160右：5） 12.Ⅲ型（M2163：1）</p>
+<p>米，最大腹径17.2厘米，底径10.4厘米（图117-7；图版20-5）。</p>
+<p>2式：2件。小盘口，矮颈，扁腹略鼓。M2137:3，口浅小，初具盘口形状，口内底尚未形成台面，略似喇叭状，直颈较粗，上腹圆鼓，下腹略长，最大腹径偏上，平底。肩部有四横系，腹部装饰弦纹，器身满饰麻布纹。灰胎较坚硬，黄褐釉大部分已脱落。通高16.6厘米，口径7厘米，最大腹径16.6厘米，底径10.4厘米（图117-8）。相同质料和造型的盘口壶，在鄂钢发掘的一座孙昊古井中曾有出土①。古井：1基本造型与上述2件相似，只是器形稍大，口壁较直，平底略内凹，器身自系以下有方格纹装饰。通高20.8厘米，口径11厘米，最大腹径17.4厘米，底径12.6厘米（图117-9）。<br />
+3式：4件。大盘口，长颈，长圆腹。M2120右：11，器形较高大，口直且深，口内底已形成较平的台面，颈直，长圆腹呈卵形，最大腹径在中部稍偏上，平底，底径略小于口径。肩部有四横系。灰胎夹砂，质地坚硬，黄褐釉大部分已脱落。通高32厘米，口径15.2厘米，最大腹径25厘米，底径12.6厘米（图117-10；图版20-6）。M2049：1，口大较深，颈部细长，腹部瘦高，略呈椭圆形，平底。底径小于口径，肩部有四个方桥形横系。夹砂灰胎，露胎部分泛红色，胎质坚硬粗糙，黄褐釉大部分已脱落。通高31厘米，口径17.2厘米，最大腹径23.1厘米，径底12.2厘米（图版21-1）。</p>
+<p>Ⅲ型4件。分别出自4座墓中。双复系，有的还加一对横系，实际是六系。盘口较小，颈短，大高腹上部圆鼓，整个器形较高大。M2160右：5，口较深，口壁外侈，颈较细，腹径较大，平底微内凹。肩有泥条式双复系，壶口外壁装饰两道弦纹，壶身装饰麻布纹。灰胎夹砂，坚硬粗糙，黄褐色釉已脱落殆尽。通高27.3厘米，口径13厘米，最大腹径26厘米，底径14.6厘米（图117-11；图版21-2）。M2163:1，盘口较浅，口壁外侈，颈上粗下细，大高腹下部急收，小平底内凹。肩部有一对双复系和一对横系，壶身装饰麻布纹。灰胎夹砂，黄褐釉大部分已脱落。通高38.3厘米，口径15.9厘米，最大腹径36.2厘米，底径19厘米（图117-12）。</p>
+<ol>
+<li>盆 17 件。分别出自 13 座墓中。一般 1 座墓出土 1 件，有 2 座墓（M1002 和 M2215）各出 3 件。盆的造型一般是大口，浅斜腹，平底。明显可见是由青铜洗演变而来。除 M4026 所出 1 件因残破过甚，未予分型外，根据口沿的不同，可分为四型。</li>
+</ol>
+<p>I型9件。分别出自5座墓中。平折沿，泥质软陶。根据腹部的特点，可分为二式。</p>
+<p>1式：3件。斜腹较深。M2215:9，底内凹。腹壁装饰三道凹弦纹。器物制作规整。通高11.5厘米，口径30.8厘米，底径16.4厘米（图118-2；图版21-4）。M2215:16，宽平沿，平底。沿面装饰网格纹间短线纹。通高16.9厘米，口径38.2厘米，底径19厘米（图118-1；图版21-3）。</p>
+<p>2式：4件。浅弧腹，器体较小。M2148:17，宽平沿，弧腹，小平底。上腹部装饰宽弦纹三道。灰陶，火候充足，质地坚硬。通高5.8厘米，口径14厘米，底径6.6厘米（图118-3；图版21-5）。M1002:43，平沿较窄，平底微内凹。腹部有弦纹装饰。通高5.8厘米，口径16.4厘米，底径10厘米（图118-8；图版21-6）。</p>
+<p>另有2件较特殊，分述如下。M2115:3，口内敛，圆平唇，斜腹，底内凹。腹上部装饰弦纹和短线纹。灰黄软陶，质地松脆。通高12.4厘米，口径24.8厘米，底径14.4厘米（图118-4；图版21-7)。M2190:30，口微侈，圆唇，斜腹较深，平底。口沿下有弦纹装饰。深灰色软陶。通高8.6厘米，口径17厘米，底径10.6厘米(图118-5)。</p>
+<p>Ⅱ型3件。分别出自3座墓中。斜折沿。根据腹部的特点，可分为三式。</p>
+<p>1式：1件。斜沿略平，弧腹较深。M1002:93，平底略内凹。上腹部有弦纹。灰陶质地松软。通高9厘米，口径24厘米，底径12.4厘米（图118-6；图版22-1）。<br />
+2式：1件。斜沿较直，弧腹较浅。M2190:38，平底。腹部装饰三道凹弦纹。灰白胎，青绿釉，釉层较薄而不均匀。通高8.4厘米，口径24.1厘米，底径14.8厘米（图118-7；图版22-2）。<br />
+3式：1件。沿面凹弧，弧腹较浅。M1002:53，平底。底部有刻划文字，内容为“虽未言面簸（？）在久……”另在下腹近底处刻划一个“五”字。腹壁上饰三道宽凹弦纹装饰。灰白胎，质地坚硬，黄褐釉，釉层均匀有光泽。通高9.7厘米，口径23.4厘米，底径13厘米（图118-9；图版22-3）。</p>
+<p>Ⅲ型1件。侈口，圆唇，深弧腹。M2082:1，底内凹。内壁装饰水波纹三道，外</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>12 <br />
+图118 陶盆<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型1式（M2215:16） 2. I型1式（M2215:9） 3. I型2式（M2148:17） 4. I型（M2115:3） 5. I型<br />
+(M2190:30) 6.Ⅱ型1式（M1002:93） 7.Ⅱ型2式（M2190:38） 8.I型2式（M1002:43） 9.II型3式<br />
+(M1002:53) 10.Ⅲ型 (M2082:1) 11.IV型 (M2011:3) 12.IV型 (M2012:16)</p>
+<p>壁装饰弦纹夹栉齿纹间菱形格子填井字纹装饰带。灰白胎，质地坚硬，青黄釉已脱落。通高10厘米，口径24.6厘米，底径14.8厘米（图118-10；图版22-4）。</p>
+<p>IV型3件。分别出自3座墓中。折沿外弧，斜腹较深。M2011:3，沿面宽，小平底。灰黄软陶。通高13.2厘米，口径24厘米，底径13厘米（图118-11；图版22-5)。M2012:16，基本造型与前者相同，器体特大。通高20厘米，口径40.4厘米，底径17厘米（图118-12；图版22-6)。</p>
+<ol>
+<li>三足炉 9 件。发现于 9 座墓中。其中有 2 件因残破过甚，未予分型分式。盆形炉身，下附三足。根据炉口和足的形制，可分为三型。</li>
+</ol>
+<p>I型2件。敛口，斜折沿，宽扁足。M2148:13，沿面较宽，斜腹，平底内凹，三扁足。泥质陶较坚硬，制作较规整。通高14.3厘米，口径30.7厘米，底径22.3厘米（图119-1；图版22-7）。M2016:8，与前者造型基本相同，但制作工艺和质地稍差。通高14厘米，口径31厘米，底径21.5厘米（图119-2；图版22-8）。</p>
+<p>Ⅱ型2件。直口，厚唇，宽扁足。M5007:3，唇面有浅凹槽；弧腹较深；平底略内凹，宽扁足较矮。灰陶，质地较坚硬。通高14厘米，口径37.5厘米，底径26厘米（图119-3；图版23-1）。</p>
+<p>Ⅲ型3件。直口，平唇，柱形足或蹄形足。器形较小，显系象征性的明器。M2063:15，弧腹，平底稍凹，柱形足。灰色软陶。通高5厘米，口径9厘米（图119-4；图版23-2)。M2026:7，平唇较厚，浅弧腹，平底稍内凹，足较高近似蹄形足。灰陶。通高5.9厘米，口径13.2厘米（图119-5；图版23-3)。M2059:5与前者造型大致相同，下附三个蹄形足。上腹部装饰两道弦纹。灰白胎，釉已脱落殆尽。通高4.5厘米，口径11厘米（图119-6；图版23-4)。</p>
+<p>5.灯15件。分别出自14座墓中。除M2168有2件外，其他均为1座墓出土1件。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图119 陶三足炉</p>
+<ol>
+<li>I型（M2148:13）  </li>
+<li>I型（M2016:8）<br />
+3.Ⅱ型（M5007：3）<br />
+4.Ⅲ型（M2063：15）<br />
+5.Ⅲ型（M2026：7）<br />
+6.Ⅲ型（M2059：5）</li>
+</ol>
+<p>灯的基本造型主要由灯盏和承盘两部分组成。根据灯盏、承柱和承盘的形制特点，可分为三型。</p>
+<p>I型2件。分别出自2座墓中。高承柱。M2006:14、15，灯盏为侈口，扁圆腹；盏与承柱相通；承盘为侈口，厚唇，浅腹，平底。灯盏外壁装饰菱形附加堆纹类附加乳钉纹。灰陶，质地坚硬。通高16.8厘米，灯盏口径8.4厘米，承盘口径21.2厘米，底径18.4厘米（图120-1；图版24-1）。</p>
+<p>Ⅱ型8件。分别出自7座墓中。矮承柱或无承柱，斜腹承盘。根据灯盏和承盘的特点，可分为三式。</p>
+<p>1式：4件。灯盏敛口，弧腹；承盘斜腹较深。M3026:11，盘底微凹。通高4.5厘米，灯盏口径8.6厘米，承盘口径18厘米，底径15.4厘米（图120-2；图版24-2）。M2216:8，灯盏较浅，承盘略深。通高4.5厘米，灯盏口径7.8厘米，承盘口径18.1厘</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图120 陶灯、砚</p>
+<ol>
+<li>I型灯（M2006:14、15） 2. II型1式灯（M3026:11） 3. II型1式灯（M2216:8） 4. II型2式灯（M2047:3）</li>
+</ol>
+<p>5.Ⅱ型3式灯（M2161:5） 6.Ⅲ型1式灯（M2118:1） 7.Ⅲ型1式灯（M2120左:6） 8.Ⅲ型2式灯（M3023:4）</p>
+<p>9.Ⅲ型2式灯（M2066:1、2） 10.Ⅲ型3式灯（M3005:10、11） 11.I型2式砚（M2009:2） 12.I型1</p>
+<p>式砚（M3043:10） 13.Ⅰ型2式砚（M2001:1） 14.Ⅱ型砚（M2005:3） 15.Ⅱ型砚（M4003:2）</p>
+<p>16.Ⅲ型砚（M4001左：4）</p>
+<p>米，底径15.7厘米（图120-3；图版24-3）。<br />
+2式：3件。灯盏直口，弧腹，近底部收成极短的承柱；承盘斜腹较浅。M2047:3，灯盏腹较深，承盘甚浅。通高4.4厘米，灯盏口径7.4厘米，承盘口径14.2厘米，底径12.6厘米（图120-4；图版24-4）。<br />
+3式：1件。浅灯盏，无承柱，浅承盘。似乎是将灯盏直接放在承盘之上。M2161：5，灯盏为直壁，承盘斜壁甚浅。通高2.5厘米，灯盏口径7.4厘米，承盘口径14.4厘米，底径11.8厘米（图120-5；图版24-5）。<br />
+Ⅲ型5件。分别出自5座墓中。托盏形，无承柱，弧腹承盘。根据灯盏和承盘的特点，可分为三式。<br />
+1式：2件。灯盏较浅，承盘较深。M2118:1，灯盏弧腹，承盘弧腹，灯盏与承盘口几乎平齐，底内凹。通高3.9厘米，灯盏口径6.4厘米，承盘口径14.4厘米，底径8.6厘米（图120-6)。M2120左：6，造型与前件基本相同。通高4.5厘米，灯盏口径7.5厘米，承盘口径16.5厘米，底径12.4厘米（图120-7；图版24-6)。<br />
+2式：2件。灯盏较深，承盘较浅。M3023:4，灯盏直腹微弧，下部稍内缩；承盘弧腹，平底。通高5.5厘米，灯盏口径8.4厘米，承盘口径16.4厘米，底径10厘米（图120-8；图版24-7）。M2066:1、2，造型大致与前件相同。灯盏较深，承盘较浅。通高4.4厘米，灯盏口径6.8厘米，承盘口径14.6厘米，底径10厘米（图120-9）。<br />
+3式：1件。灯盏、承盘徒具形式，两者分体相合不相连。M3005:10、11，灯盏弧腹，底有一小假圈足；承盘弧腹，圜底，承盘内底正中突起一圈，为安放灯盏之托座，其大小恰恰适合灯盏之假圈足。通高5.9厘米，灯盏口径6.4厘米，承盘口径12.5厘米（图120-10；图版24-8）。<br />
+6. 砚 10 件。分别出自 10 座墓中。砚的基本形制为子母口浅盘状，内底隆起，下附三足，仅个别无足。根据砚足特点，可分为三型。<br />
+I型6件。蹄形足。根据砚口特点，可分为二式。<br />
+1式：2件。子母口外高内低。M3043:10，盘底较平。通高4.3厘米，口径19.2厘米（图120-12）。<br />
+2式：4件。子母口内外基本平齐。M2009:2，盘底较平，足较高，整个器形较大。通高6.4厘米，口径29.6厘米，底径26.4厘米（图120-11；图版23-5）。M2001:1，盘底隆起，三足较高。通高4.8厘米，口径20厘米，底径17.2厘米（图120-13；图版23-6）。<br />
+Ⅱ型3件。子母口已退化，柱形足。M2005:3，子母口已退化成凹弦纹，盘底较平，三足外撇。通高4.3厘米，口径18.6厘米（图120-14；图版23-7）。M4003:2，盘底隆起。通高3.4厘米，口径17.8厘米，底径18厘米（图120-15；图版23-8）。<br />
+Ⅲ型1件。无足。M4001左：4，子母口已退化，盘底较平。通高2.3厘米，口径16.6厘米，底径17.2厘米（图120-16）。<br />
+7. 盘 173 件。分别出自 45 座墓中。一般每座墓以 2、4、6、8 件不等的双数出现，有些墓仅出土 1 件；M2120 出土盘的数量则多达 11 件，是这批六朝墓中出土陶盘最多</p>
+<p>的。陶盘均为灰黄软陶。这些盘中，有8件整理时已不见器物，参加分型分式者为165件。根据盘口、腹壁及整个器形特点，可分为三型。</p>
+<p>I型42件。分别出自10座墓中。侈口，斜腹较深，器形较大，口径均在20厘米以上，制作较规整。M2167:4，盘壁较薄，平底略内凹。通高3.5厘米，口径24厘米，底径21.3厘米（图121-1；图版25-1）。M2227:7，与前者大致相似，盘底略平。通高3.2厘米，口径23.3厘米，底径20.2厘米（图121-2）。M2022:4，盘腹较直，略浅。通高2.6厘米，口径24.7厘米，底径22.2厘米（图121-3；图版25-2）。M2149:3，盘腹甚斜，较浅。内底有突弦纹。通高2.5厘米，口径23厘米，底径17.8厘米（图121-4；图版25-3）。M2051:14，基本与前者相同，盘底较厚。通高3.2厘米，口径22.7厘米，底径17.2厘米（图121-5；图版25-4）。M2143:1，与前者极为相似，盘腹甚斜且浅，底略内凹。通高2.6厘米，口径22.4厘米，底径16.4厘米（图版25-5）。</p>
+<p>Ⅱ型110件。分别出自31座墓中。均为侈口，斜腹较浅，器形较小，口径一般为15厘米左右，制作不如I型规整。少数无轮廓并且扭曲变形。M2120右：5，盘壁较薄，平底略内凹。通高2.4厘米，口径16厘米，底径13.6厘米（图121-6；图版25-6)。M2214:5，盘壁斜，盘显得略深，外底略凹。内底有凸弦纹。通高3.4厘米，口径16.7厘米，底径13.2厘米(图121-7；图版25-7)。M2214:4，略与前者相同，器形稍大。通高3.1厘米，口径18.4厘米，底径15.3厘米（图121-8；图版25-8)。M2214:10，器形较小，腹壁近直，平底较厚。通高2.6厘米，口径14.1厘米，底径9厘米（图121-9；图版26-1）。</p>
+<p>以上4例中，后3件盘出自1座墓中，但形制却存在一些差别。因此，同型陶盘，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图121 陶盘</p>
+<ol>
+<li>I型（M2167:4） 2. I型（M2227:7） 3. I型（M2022:4） 4. I型（M2149:3） 5. I型（M2051:14）</li>
+</ol>
+<p>6.Ⅱ型（M2120右：5） 7.II型（M2214:5） 8.II型（M2214:4） 9.II型（M2214:10） 10.II型</p>
+<p>(M2120左:2) 11.Ⅱ型 (M2211:5) 12.Ⅱ型 (M2012:14) 13.Ⅱ型 (M2165:7) 14.Ⅲ型</p>
+<p>(M2066:1) 15.Ⅲ型 (M3005:3)</p>
+<p>在总的价格上大体一致外，也有不少小的差别。如有的盘壁厚而浅，有的盘壁斜，有的盘壁向外卷。再举四例说明之。M2120左：2，盘壁浅，底厚略内凹。通高1.9厘米，口径15.6厘米，底径14.2厘米（图121-10；图版26-2）。M2211：5，略与前者同，唯盘径稍大。通高2厘米，口径17.8厘米，底径16.2厘米（图121-11；图版26-3）。M2012：14，盘壁斜，底略内凹。通高1.6厘米，口径16.2厘米，底径14.2厘米（图121-12；图版26-4）。M2165：7，盘壁厚而外卷，底略内凹。通高2厘米，口径15.8厘米，底径13.6厘米（图121-13）。</p>
+<p>Ⅲ型 13件。分别出自2座墓中。弧腹，圜底或假圜足底。器物形体变小，制作粗糙，仅具形式。M2066:1，深弧腹。通高2.6厘米，口径15.2厘米（图121-14；图版26-5）。M3005:3，浅弧腹，假圜足。通高3.2厘米，口径14厘米，底径5.2厘米（图121-15；图版26-6）。</p>
+<ol>
+<li>榷 49 件。分别出自 42 座墓中。一般是每座墓出土 1 件，有 7 座墓各出 2 件。陶椁的基本形制有长方形和圆形两种，质地为灰色和灰黄色软陶。这些陶椁中，有 1 件残破过甚，5 件整理时已不见器物，参加分型分式者有 43 件。根据其外形和足的特点，可分为三型。</li>
+</ol>
+<p>I型4件。分别出自3座墓中。长方形，圈足呈壶门状。M2087:2，子母口，橘面分为十三格，器形较大。通高5.4厘米，通长33.4厘米，通宽19.4厘米（图122-1；图版27-2）。M2051:26，基本造型相同，橘面分为九格，器形略小些，制作较粗糙。通高4.6厘米，通长24.7厘米，通宽19厘米（图122-2；图版27-1）。</p>
+<p>Ⅱ型29件。分别出自27座墓中。圆形，圈足。根据口和足的不同特点，可分为二式。</p>
+<p>1式：12件。子母口明显，圈足高且直，个别略外撇。器物显得较有轮廓。M2167:3，器形较大，制作较规整。椭面内圈间隔成三小格，呈“Y”字形，外圈分六格；圈足较高。通高5.5厘米，口径23.5厘米，底径25厘米（图122-3）。M2009:1，器形亦较大。椭面内圈间隔成三小格，外圈分为四格，格子较深；圈足稍矮。通高6.4厘米，口径25.8厘米，底径26.5厘米（图122-5；图版27-3）。M2118:1，风格与前者基本相似，器形较小。内圈分隔成三小格，呈“T”字形，外圈分为六格；圈足较矮。通高5.6厘米，口径20.6厘米，底径24.2厘米（图122-4；图版27-4）。M2226:1，略与前二者相同（图版27-5）。</p>
+<p>2式：17件。子母口已退化得较模糊，圈足较矮。M2120右:6，内圈分成两格，呈“V”字形，外圈分为五格，格子深；圈足矮略外撇。通高5.1厘米，口径20.6厘米，底径20.8厘米（图122-6；图版28-1）。M2130:5，略与前者相同，内圈间隔呈“Y”字形，外圈六格；圈足外撇。通高5厘米，口径22.2厘米，底径23厘米（图122-7；图版28-2）。M2054:2，分格较浅，圈足甚矮。通高4厘米，口径21.8厘米，底径22.7厘米（图122-8；图版27-6）。</p>
+<p>Ⅲ型 10件。分别出自8座墓中。圆形，平底。根据榻口、壁和榻面特点，可分为二式。</p>
+<p>1式：7件。子母口完全消失退化，变成直口，口壁较薄，椭面内圈高于外圈，平</p>
+<p>图122 陶桶<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型（M2087:2） 2. I型（M2051:26） 3. II型1式（M2167:3） 4. II型1式（M2118:1） 5. II型1式<br />
+(M2009:1) 6.Ⅱ型2式（M2120右：6） 7.Ⅱ型2式（M2130：5） 8.Ⅱ型2式（M2054：2）</p>
+<p>底或微凹底。M3023:2，内圈分隔成三格，呈“Y”字形，外圈六格；腹壁下部内收，厚平底略凹。通高5.1厘米，口径23.8厘米，底径21.6厘米（图123-1；图版28-3)。M2104:2，榻壁斜，平底。通高4.6厘米，口径22厘米，底径20.7厘米（图123-3；图版28-4)。M2120左：9，榻壁弧，平底略凹。通高4.8厘米，口径23厘米，底径20.8厘米（图123-2；图版28-5)。</p>
+<p>2式：3件。榻面平，外圈分隔成七格，榻壁厚，制作粗劣，是榻的退化形式。M3005:7，内圈呈“T”字形分成三小格，厚壁厚底，底平。制作粗简。通高4.5厘米，口径20.2厘米，底径19.4厘米（图123-4；图版28-6）。M2213:2，榻面内圈特小，呈“Y”字形分隔成三个窝状的小格；壁直而厚，底平且厚。通高4.2厘米，口径16.2厘米，底径15.3厘米（图123-5；图版28-7）。M5011:1，榻壁直而厚，榻面分成的格子仅是几个小窝；内圈呈“Y”字形；底平且厚。通高6厘米，口径26.6厘米，底径26.6厘米（图123-6；图版28-8）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图123 陶桶</p>
+<p>1.Ⅲ型I式（M3023：2）</p>
+<p>2.Ⅲ型1式（M2120左：9）</p>
+<p>3.Ⅲ型1式（M2104：2）</p>
+<p>4.Ⅲ型2式（M3005：7）</p>
+<p>5.Ⅲ型2式（M2213:2） 6.Ⅲ型2式（M5011:1）</p>
+<ol>
+<li>魁与勺 61 件。分别出自 32 座墓中。因为魁与勺常常是成套同出，故分件成套予以叙述。而单独出土的陶勺如 M3028 左：9，与魁、勺成套同出者的造型、用途应有差别。一般是魁、勺一套出土于 1 座墓中，有少数墓出土两套，如 M2221 和 M2226 即是；还有的是 1 座墓出土一魁两勺（如 M3023）和两魁一勺的（如 M2120）。魁、勺的质地多是灰色软陶和灰黄色软陶。这 61 件魁、勺中，有 9 件已残破太甚，有 2 件整理时不见器物。参加分型分式者共 50 件，我们主要根据魁的特点分型，有些墓单存魁、勺者，则采取对比成套共出的魁、勺者进行分型。现依魁的口、腹和底的特点，可分为四型。</li>
+</ol>
+<p>I型12件。分别出自7座墓中。其中魁、勺成套者5套10件，单魁2件。广口，浅腹，大平底。M2143:4、5，魁、勺成套出土。魁腹浅弧，魁柄弧长，柄首扁薄，平面呈三角形。魁口沿外有弦纹装饰。勺体呈椭圆形，柄已残断，断面呈圆形。魁即M2143:4，通高14.1厘米，口高7.3厘米，口径20.7厘米，底径14.8厘米；勺即M2143:5，残长12.7厘米（图124-1、2；图版29-1）。M2135:1、6，魁、勺成套伴出。魁口微敛，腹浅，魁柄较短，柄首扁薄，平面呈圆形。勺体呈圆形，柄斜长，上部微曲，断面呈圆形，柄首较薄。魁即M2135:1，通高9厘米，口高5.8厘米，口径15.4厘</p>
+<p>图124 陶魁、勺<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型魁（M2143:4） 2. I型勺（M2143:5） 3. I型魁（M2211:8） 4. I型魁（M2135:1）<br />
+5.I型勺（M2135:6） 6.Ⅱ型魁（M3026:2） 7.Ⅱ型勺（M3026:3）</p>
+<p>米，底径14厘米；勺即M2135:6，通长17.5厘米（图124-4、5）。M2211:8，单存魁。器形略与M2135:1相同。腹较深，魁柄呈短柱状，柄首扁薄，平面呈尖三角形。通高9.7厘米，口高6.8厘米，口径18厘米，底径13.5厘米（图124-3；图版29-2）。</p>
+<p>Ⅱ型17件。分别出自8座墓中。其中魁、勺成套者8套16件，单魁1件。广口，深弧腹，平底。M3026:2、3，魁、勺成套伴出。魁口微敛，柄斜，呈短柱状，柄首扁薄，平面呈菱形。魁口沿下装饰弦纹。勺体较深呈圆形，柄较直，上部已残断。魁即M3026:2，通高11.3厘米，口高7.7厘米，口径18.6厘米，底径12.4厘米；勺即M3026:3，残长12.2厘米（图124-6、7；图版29-3）。M2005:1、2，魁、勺成套出土。魁体较大，腹壁深弧，柄较短。魁口外饰弦纹。勺体呈圆形，柄斜，有明显的修削痕迹，柄首扁薄弯折。魁即M2005:1，通高11.4厘米，口高7.9厘米，口径21.4厘米，底径13厘米；勺即M2005:2，通长14.3厘米（图125-1、2；图版29-4）。M2218:12:1、2，魁、勺成套伴出。魁腹较深，平底较小，魁柄短直，柄首扁薄，平面呈桃形。勺体较圆，柄曲而长。魁即M2218:12:1，通高13.4厘米，口高8.7厘米，口径21.1厘米，底径13.5厘米；勺即M2218:12:2，通长16.2厘米（图125-3、4；图版29-5）。M2216:2:1、2，魁、勺成套出土。魁体较小，弧腹，魁柄短直，柄首弯曲较扁薄。勺体呈圆形，柄斜而长，柄首扁折。魁即M2216:2:1，通高11.4厘米，口高8厘米，口径16.7厘米，底径11.4厘米；勺即M2216:2:2，通长13.6厘米（图125-5、6；图版29-6）。</p>
+<p>Ⅲ型13件。分别出自6座墓中。其中魁、勺成套伴出者4套10件（1座墓出有2套，另有2座墓分别出有1魁2勺和2魁1勺)，还有单勺3件。皆广口，深斜腹，平底较小。M3023:7、8，1魁2勺成套伴出。魁腹斜直，魁柄较短，稍斜曲，柄首扁折，部分残缺。二勺相同，皆圆体，斜柄，柄首较小。魁即M3023:7，通高11.2厘米，口高8.4厘米，口径14.3厘米，底径8.7厘米；勺即M3023:8，通长14.7厘米（图125-7、8；图版29-7)。M2120右： $12\sim 14$ ，2魁1勺成套出土。2魁器形相同。魁腹斜直，底径较小，平底略凹；魁柄斜折，柄首扁薄，略呈菱形。口沿外有弦纹装饰。勺体近圆，斜柄，柄首弯曲呈桃形。魁即M2120右：13，通高10.8厘米，口高8.6厘米，口径16.1厘米，底径10厘米；勺即M2120右：14，通长17.5厘米（图125-11、12；图版29-8)。M2221:8、9，2魁2勺成套伴出，器形大致相同。魁腹较深，近底部内收；魁柄甚短，柄首呈圆形。勺体圆形，柄弧形上翘，柄首呈圆形。魁即M2221:9，通高11.1厘米，口高8.8厘米，口径17厘米，底径10.4厘米；勺即M2221:8，通长14.4厘米（图125-9、10；图版30-1)。</p>
+<p>Ⅳ型8件。分别出自4座墓中。魁与勺成套伴出。魁腹直而浅，制作工艺极为粗劣，已是此类器物的退化形式。M5011:2、3，魁、勺成套同出。器形极小，粗笨厚重。魁腹浅如平底盘，无柄。勺体长圆，短而直的柄。魁即M5011:2，通高4.4厘米，口径12.8厘米，底径11.8厘米；勺即M5011:3，通长12.6厘米（图125-13、14；图版30-2）。</p>
+<ol>
+<li>盏 19 件。分别出自 12 座墓中。一般每座墓出土 1 件，仅 M2186 出土 4 件，M2214 出土 3 件。灰色软陶。19 件陶盏，有 11 件整理时已不见器物，现就仅存的陶盏举例说明如下。M1002:44，敛口，斜腹，平底。通高 3.4 厘米，口径 10 厘米，底径 7</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图125 陶魁、勺</p>
+<p>1.Ⅱ型魁（M2005：1）</p>
+<p>2.Ⅱ型勺（M2005：2）</p>
+<p>3.Ⅱ型魁（M2218:12:1）</p>
+<p>4.Ⅱ型勺（M2218:12:2）</p>
+<p>5.Ⅱ型魁（M2216:2:1）</p>
+<p>6.Ⅱ型勺（M2216:2:2）</p>
+<p>7.Ⅲ型魁（M3023：7）</p>
+<p>8.Ⅲ型勺（M3023:8）</p>
+<p>9.Ⅲ型魁（M2221:9）</p>
+<p>10.Ⅲ型勺（M2221:8）</p>
+<p>11.Ⅲ型魁（M2120右：13）</p>
+<p>12.Ⅲ型勺（M2120右：14）</p>
+<p>13.Ⅳ型魁（M5011:2）</p>
+<p>14.N型勺（M5011：3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图126 陶盏、耳杯、熏<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5厘米1\~7.0 8.0 10厘米</p>
+<ol>
+<li>
+<p>盎（M1002:44）</p>
+</li>
+<li>
+<p>盎（M2054:3）</p>
+</li>
+<li>
+<p>盎（M2120左：11）</p>
+</li>
+<li>
+<p>盎（M2012:4） 5. 盎</p>
+</li>
+</ol>
+<p>(M2165:2)</p>
+<ol>
+<li>盏（M2026:8）</li>
+</ol>
+<p>7.耳杯（M2022:8）</p>
+<ol>
+<li>黑（M2215:12）</li>
+</ol>
+<p>厘米（图126-1；图版30-6）。M2054:3，直口，弧腹较深，平底。通高3.8厘米，口径8.5厘米，底径6.4厘米（图126-2；图版30-4）。M2120左：11，弧腹较浅。通高3.4厘米，口径8.6厘米，底径6.4厘米（图126-3）。M2012:4，敛口，弧腹，大平底。通高3.5厘米，口径7.2厘米，底径6.6厘米（图126-4；图版30-5）。M2026:8，直口，弧腹较深，平底较小。口沿下有弦纹装饰。通高3.9厘米，口径9厘米，底径5.2厘米（图126-6）。M2165:2，口微侈，浅弧腹，假圈足。通高3厘米，口径9厘米，底径7.2厘米（图126-5）。</p>
+<ol>
+<li>耳杯 15 件。分别出自 12 座墓中。一般每座墓出土 1 件，仅 M2219、M2162 和 M3052 三座墓中各出 2 件。这些耳杯中有 3 件系高温釉陶，其余全是灰黄软陶。15 件中有 1 件残破过甚，4 件整理时不见器物，留存的 7 件，其形制皆由漆耳杯演变而来。M2022:8，杯体椭圆形，口沿两端略向上翘，平底。通高 4.5 厘米，口径 12.1~9.6 厘米，底径 6~3.8 厘米（图 126-7；图版 30-7）。<br />
+12.熏1件。出自M2215。M2215:12，呈敛口扁腹罐形，腹壁上有三层圆形镂空，每层镂空数量分别是二十五、二十六和二十一个。镂空之间及肩部有弦纹间网格填线纹装饰。通高15.8厘米，口径18.6厘米，底径23.2厘米（图126-8；图版30-3）。  </li>
+<li>唾壶 1件。出自 M2263。灰黄软陶。勺已残破太甚，仅可辨形而已。</li>
+</ol>
+<p>总的看来，鄂城六朝墓葬中出土的陶质（含釉陶质）随葬品为我们研究六朝墓葬的断代分期以及葬制葬俗的变化，提供了丰富的资料。鄂城六朝墓葬中陶器的变化有两个明显的阶段，第一阶段是从汉末吴初到东晋前期，第二个阶段是东晋后期到南朝。主要的变化表现在以下两个方面。</p>
+<p>首先，从数量及质地的变化看。第一个阶段，陶器的数量是由多到少，并逐渐被青瓷器所取代。具体说来，在孙吴早中期墓葬中，陶器的数量要大大多于青瓷器，而且陶器质地类别也较多，有泥质灰色或红色软陶，少量夹砂硬陶，灰胎褐釉的低温釉陶和质量已接近于青瓷的高温釉陶等；孙吴中期以后，陶器数量逐渐减少；至吴末晋初，陶器已少于青瓷器；西晋至东晋前期，除了少数高温釉陶器外，质量差一些的陶器已非常少见。到了第二个阶段，陶器的数量又开始出现增加的趋势，但只有泥质灰色或深灰色软陶，在南朝中晚期墓葬中，陶器反而取代青瓷器而占了绝大多数。</p>
+<p>其次，从器类方面的变化来看，这两个阶段陶器的器类也有明显的不同。第一阶段中陶器的主要器类是各种型式的罐类，以及盘口壶、盆、三足炉、熏等，以罐、壶类存贮器的数量最多。这些陶质生活用具与六朝前期仍然流行的多室墓葬结构及大量的仓、厨模型明器等相配合，是两汉以来葬制及葬俗的延续。第二个阶段的陶质葬品与前一阶段相比有很大的变化，罐、壶类存贮器已基本消失，流行的是陶桶、盘、魁、勺以及灯、砚等一套祭奠用的酒器和文具。这一变化明显是由晋室南渡带来的，它与当时提倡的薄葬是相吻合的。</p>
+<p>陶器的类型分析已如上述，这里再将几种主要陶器器类的演变趋势作一概括说明，在此基础上我们可以对鄂城六朝墓葬进行较为准确地分期断代研究。</p>
+<p>在上述第一阶段流行的存贮器类中，盘口壶的一个较重要的变化是由喇叭口变成盘状口。鄂城发现的这类盘口壶，上承东汉的陶壶，下启六朝的青瓷盘口壶，具有明显的过渡性质，填补了壶类演变序列中的这一缺环。此后，陶质盘口壶的变化规律与青瓷盘口壶相同。陶罐的形式比较复杂多变，但绝大多数是在上述的第一个阶段。其中有几型罐，是明显的断代性较强的随葬品。例如，I型罐，主要流行于孙吴早中期墓中，孙吴晚期以后便很快消失。此型罐较多地继承东汉陶罐的特点。可资比较的资料有鄂城江边古井出土的几件陶罐，它们与湖北新洲汉墓出土的陶罐①造型完全相同。此外，Ⅱ型、Ⅲ型罐也是孙吴墓葬中最常见的断代性随葬品。孙吴晚期以后，Ⅱ型罐即迅速消失。Ⅲ型罐也发生变化，领变矮；厚肩和麻布纹渐消失，肩部出现装饰纹带。如果单从罐、壶类的系来看，也有由粗糙到精细小巧的变化趋势。孙吴早中期，系座部分很不规整，有明显的手抹按贴的痕迹——“蟹爪”纹。孙吴晚期以后，系座小而规整，“蟹爪”纹消失。Ⅶ型罐、盆和三足炉亦仅见于孙吴时期。孙吴西晋时期，陶灯大多有较高的承柱，即汉代已流行的高灯；东晋以后，灯上的承柱逐渐消失，演变成托盏的形式。陶砚主要流行于东晋和南朝，如前所述，陶榻、盘、魁与勺等都是东晋晚期及以后最流行的器物。它们总的变化规律是，制作得愈来愈简单、粗糙、厚重，愈来愈退化、形式化、明器化。</p>
+<h1 id="_38">（二）青瓷器</h1>
+<p>鄂城六朝墓出土的青瓷质生活用具有罐、盘口壶、鸡首壶、唾壶、碗、盏、盆、酒樽、盘、耳杯、勺、桶、盒、水盂、砚、灯、熏、虎子、插座等19类器物，共出土1440件。</p>
+<p>这些青瓷器中，约有 $90\%$ 左右的胎色白中微带灰黄，据理化测定表明（附录5），这是由于使用的原料是一种高硅（ $\mathrm{SiO_2}$ ）低铁（ $\mathrm{Fe_2O_3}$ ）的瓷土，其中又含有少量的钛（ $\mathrm{TiO_2}$ ），以及烧结程度不足所致。在经过理化测定的10个标本中（W1～W10），孙吴时期青瓷器胎的含硅量最高，在 $76.66\% \sim 80.10\%$ 之间，但含铁量最低，在 $0.85\% \sim 1.50\%$ 之间；两晋和南朝时期青瓷器胎的含硅量大体相近，在 $72.40\% \sim 76.64\%$ 之间，但含铁量的差别较大，两晋时期青瓷器胎的含铁量在 $1.70\% \sim 2.49\%$ 之间，而南朝时期青瓷器胎的含铁量则降至 $1.13\% \sim 1.85\%$ 之间。关于釉的情况，绝大多数的釉色都是青中带黄，其中孙吴西晋时期的釉层较薄，釉色黄绿，光泽度较差，至东晋南朝时期釉层变厚，釉色青中偏黄，光泽度和透明度均较好。据南朝青瓷器釉（W10）的测定数据（附录6）看来，作为主要着色剂铁的含量较低，仅为 $1.25\%$ ，而作为主要助熔剂的氧化钙（CaO）含量却高达 $20.70\%$ ，属于长江中下游青瓷器釉中氧化钙含量偏高的石灰釉，加以烧结程度不足，故胎釉结合很差，大部分青瓷器的釉层在出土时已剥落殆尽。从物理性能看，测试的数据表明，孙吴和西晋时期青瓷器的显气孔率和吸水率都偏高，显气孔率在 $13.25\% \sim 21.32\%$ 之间，吸水率在 $6.03\% \sim 10.45\%$ 之间，说明器胎的致密度还较差；至东晋南朝时期，显气孔率降低到 $5.32\% \sim 7.78\%$ 之间，只有个别的在 $10\%$ 以上，吸水率也降低到 $2.3\% \sim 3.54\%$ 之间，只有个别的为 $6.73\%$ （附录5），说明器胎的致密度已有较大的提高，但仍然没有达到完全烧结的程度。</p>
+<p>鄂城六朝墓出土的青瓷器中，还有一批约占总数 $10\%$ 左右的器物，其胎质致密，烧结程度较高，胎色淡灰，微泛红色，釉色青绿或青灰，胎釉结合良好，光泽度和透明度均较强，根据有关资料①（附录7）和我们在江浙地区从事六朝考古工作的体会，这一部分青瓷器应该是属于长江下游越窑系统的产品。</p>
+<p>鄂城六朝墓出土的青瓷器在制法上已广泛使用快轮拉坯法成型，如大多数碗、盏、罐、壶的外底上均遗留有从快轮切割下来的偏心轮锭纹。但少数大型的壶、罐、盆等器物，仍有用泥条盘筑法成型者，这类器物的外壁上常通体拍印有麻布纹或几何形纹饰。模制法在制造一些小型器物和器物附件方面应用较多，如模制蛙形水盂、兽形插座以及钮、鑾、流、系（耳）、足等附件。在有些器物的装饰性部位，如器盖的兽形钮，虎子的首尾和提梁，羊形器的角和尾，以及鸡首壶的首尾等，都是由手工捏塑或再加模印而成的。还有一些拍片成型的器物，如长方形桶，房屋和禽舍等模型器。由于圆形器占到</p>
+<p>青瓷器总数的 $90\%$ 以上，所以快轮拉坯法是鄂城六朝青瓷的主要制法，其成品造型工整，规格统一，生产量高。</p>
+<p>关于成型后的施釉方法，根据观察实物的结果，大部分是使用蘸釉法（亦称浸釉法），因为器物外壁的釉一般是施到下腹部的近底处，壶、罐等器的外壁釉层还延伸到口部内缘，而且釉面比较均匀。碗、盏、盆类器物以及盒、水盂、唾壶等器除外壁用蘸釉法施釉外，内壁可能是用荡釉法施釉。至于一部分内外通体满釉的器物，可能是外壁二次蘸釉，器内再用荡釉法。还有少数器形很大的盆、罐、壶等，可能是使用刷釉法在外壁施釉，所以表现出釉面不匀、釉色不纯、玻化不良和常见裂纹等缺陷。</p>
+<p>关于在窑内装烧和窑具的情况，我们在观察实物的过程中，发现壶、罐、盆和器形较大的碗类外底，常遗留有圆形垫圈的遗痕，垫圈的直径一般为10厘米左右；而大部分碗、盏、盘等器物的内底和外底上都常见等距离排列的支烧遗痕，这种遗痕有圆有方，有的稀疏，有的密集，可能代表了不同窑场的支烧方法。因此，我们至少可以确定这批青瓷在装烧时曾经使用过圆形垫柱以垫烧大型器物，使用大小不等的孟形带齿窑具来叠烧中型品物，还使用饼形三足支钉窑具或瓷土做成的托珠来间隔放置在较上层的叠烧小器。因为六朝时的窑场一般还没有使用匣钵，坯体在窑内都是明火烧造，所以在烧成质量上很不一致。但有一种值得注意的迹象，就是孙吴时期碗盏类的口沿多数都经过刮釉的手续，这类碗盏均未发现支烧的痕迹，是否意味着当时已经有了覆烧的工艺？同时，有些罐类的口沿亦有刮釉现象，是否也意味着其上再叠烧其他小型器物的需要？根据吴墓（M2063）出土的1件双口罐内口上粘附有仰烧的瓷盏的情况，说明后一种叠烧的方式是存在的。</p>
+<p>此外，从长江中下游已经发现的六朝瓷窑遗迹看来，鄂城六朝青瓷应该是在南方流行的“龙窑”中用还原焰烧成的产品①。</p>
+<p>鄂城六朝墓出土的青瓷器的造型和装饰，在六朝的各个阶段具有不同的特点。</p>
+<p>孙吴前期时受到东汉陶器和釉陶器的影响较大，器物种类简单，常见的只有四耳罐和碗、盏、虎子等数种，造型和装饰与同期的高温釉陶器几乎很少区别，例如罐类的直口厚肩和大部分扁腹的特点，盘口壶的小盘口和大扁腹的特点，罐壶类系的根部处理得很粗糙并留有类似“蟹爪”状的手捺痕迹，以及器腹外壁通体或部分地拍印麻布纹或划刻弦纹，耳部拍印蕉叶纹等等。</p>
+<p>鄂城的孙吴后期至西晋时期墓出土的青瓷器，在造型和装饰上的区别于高温釉陶的特点逐渐明显，器形以扁肥为主，类别和装饰趋于多样化。在数量上和质量上可以说全面地取代了釉陶器的作用，部分地取代了铜器和漆器的作用。一些原来用铜制或漆制的器物如酒樽、洗（盆）、香熏、唾壶、桶、盒等等，此期都改用青瓷制作，专作随葬用</p>
+<p>的仓厨明器和家禽畜圈等也有相当部分用青瓷制造，文具中的石砚，此时也改用瓷砚。一些新的器形如鸡首罐、鸡首壶、蛙形水盂和兽形插座等动物造型的器物陆续出现，而一些旧的工艺和装饰习惯如厚肩、“蟹爪”纹系座和通体拍印麻布纹等逐渐被淘汰。半环形系的系根部分已经修饰得较为圆整，双复系开始流行，作为加厚底部强度的圆饼形假圈足已在部分碗、盆类器物中出现。在装饰上，流行斜方格纹、菱格纹和花蕊纹等组成的纹饰带，并用凹弦纹二周分列纹饰带的上下。这种位于碗盏的外口沿下、壶罐的肩腹部以及盆类的内底和外口沿下的几何形纹饰带，与昔日几何印纹陶通体拍印纹饰的粗放风格已有很大的区别，它的图案结构细密，富于变化，在斜方格纹和菱格纹之内经常再填以纵横相交的若干道短线纹，或填以回纹。在纹饰带主体图案的上下方，还配置有凹弦纹各一周，或再用梯格纹、花蕊纹作为边饰，而连珠状的花蕊纹可以说是这一时期的新兴纹样。这种纹饰带的单体及组合纹样达五十种以上，其中斜方格填线纹、菱格填线纹和花蕊纹等还广泛用于装饰盒、砚、水盂和虎子等器物。在青釉器上再用含铁量较高的釉料点染有规则的酱褐色斑点状的装饰（以下简称“褐斑点彩”），在鄂城西晋青瓷中已有所发现，但应用范围不广，仅限于少数器物，如用来装饰一小部分碗和盘口壶的口沿。此外，常见于铜器的铺首和兽面蹄形足，熊形和龙虎形的装饰，此期也出现在瓷器上，还出现了佛像和辟邪等新的贴印装饰。所以，这一时期可以说是鄂城六朝青瓷造型和装饰的全盛时期。</p>
+<p>进入东晋时期，鄂城六朝墓出土青瓷的风格有了显著的变化，在造型上一般趋于圆润丰满，器腹由扁肥发展为圆鼓。工序复杂的动物造型器物逐渐少见，壶类的产量在此期有较大的增长，并且超过了罐类的比重，碗、盏、盘类的生产量也很大，并与盘口壶、鸡首壶、唾壶和罐类一起成为此期青瓷器中的主要品种。又由于此期着重釉层的晶莹美观，繁复的釉下拍印纹饰成为多余的工序，所以前期盛极一时的纹饰带就逐渐趋于消失，而改以素面为主。在壶、罐的肩腹部还余留有一至二道凹弦纹作装饰，兼作系、流的定位之用；而在碗、盏的外口沿下，则常有一道宽而深的凹弦纹作装饰。壶、罐类的双复系继续流行，并有六系器的发现，西晋以来的半环状耳虽然居于主流地位，但是新颖的方桥形耳在东晋前期即已出现在鸡首壶上。作为加厚器底机械强度而出现的圆饼状假圈足，已广泛地应用于碗、盏类器物上。此外，以褐斑点彩作为装饰的器物在东晋时比较多见，除施在碗、盏和盘口壶的口沿或系上外，在水盂、唾壶和鸡首壶的口部、腹部或系上也发现有这种装饰。</p>
+<p>鄂城南朝青瓷的造型和装饰比较单纯，南朝早期沿袭东晋作风，造型仍以圆润丰满为主，器形略趋修长；中晚期则以清瘦挺拔的造型居于主流地位。器物的系已以方桥形为多，但半环形系仍有一定数量，六系的器物比较流行，还出现了盘口下缘加二垂耳的盘口壶。在装饰上多素面，或只用简单的弦纹，褐斑点彩仅在少数碗、盏的口沿上出现，莲瓣纹装饰也只见于采集的瓷盘内底，个别南朝初年墓（M3026）曾发现过博山炉式熏，但因残缺过甚，不辨全形。从出土的品种看，南朝时仅有碗、盏、盘、罐、盘口壶、砚、熏七种，鸡首壶只有1件采集品。在长江中游其他地点常见的唾壶、细颈瓶、三足炉和莲瓣纹装饰的碗、罐、壶等均无发现，桶和灯盏仅见陶质者，这可能与南朝时</p>
+<p>古武昌地位的下降及该地区改而流行陶明器有关。</p>
+<p>因绝大部分器物的胎均为白中微带灰黄，釉色黄绿，釉层多半剥落，故在器形介绍中一般不予描述；少数胎色淡灰泛红，釉色青绿或青灰，胎釉结合良好，并带有长江下游越窑系特征者则予以指出。</p>
+<ol>
+<li>罐 181 件。分别出自 122 座墓中。一般是每座墓随葬 1、2 件，最多的 1 座墓随葬 6 件（M2184）。在整理时未见器物者 15 件，残破过甚者 4 件，故参加分型分式者为 160 件。根据罐的系、口、腹等方面的特点，可分为十型。</li>
+</ol>
+<p>I型20件。双系，敛口、侈口或直口，扁圆腹或高圆腹。按系、口、腹、底的变化，可分为四式。</p>
+<p>1式：3件。敛口，扁圆腹，平底稍向内凹，双竖系。M2148:24，双系大而宽，系的上缘高于器口。肩部有凹弦纹三道。釉色偏绿，施釉不匀。通高6.5厘米，口径4.9厘米，最大腹径10.8厘米，底径4.8厘米（图127-1；图版31-1）。</p>
+<p>2式：11件。侈口或直口，扁圆腹或高圆腹，平底或稍向内凹，肩部有较宽的双竖系。M5007:1，口稍外侈，扁圆腹，平底稍向内凹，双竖系作半环状。系上拍印有蕉叶纹，双系之间的器肩上拍印有斜方格纹装饰带一周。器内外均施釉，仅外底和外壁近底处露胎，釉色青黄，胎色灰白。器外底有用托珠支烧的痕迹。通高11.6厘米，口径10.0厘米，最大腹径17.4厘米，底径7.8厘米（图127-2；图版31-2）。M2217:3，侈口，扁圆腹，平底，双竖系亦作半环状。双系之间的器肩上拍印有连珠状的花蕊纹装饰带一周。胎釉情况同前者。通高12.2厘米，口径14.0厘米，最大腹径19.1厘米，底径10.0厘米（图127-3；图版31-3）。M2097:4，口稍侈，腹较高，平底，双竖系较宽，作银锭状。双系之间的器肩上拍印有菱格“十”字纹装饰带一周。通高11.8厘米，口径12.6厘米，最大腹径17.4厘米，底径10.0厘米（图127-4；图版31-4）。与上述三器的器形相似的青瓷罐，曾见于江苏镇江吴墓①和江西瑞昌马头吴晋之际墓②。M2138:3，口稍侈，圆腹，平底，双竖系作银锭状。系上拍印有简化蕉叶纹，器肩和短颈上有凹弦纹装饰。通高19.0厘米，口径16.7厘米，最大腹径24.5厘米，底径12.2厘米（图127-5；图版31-5）。M2035:3，直口，高圆腹，平底，双竖系作银锭状。双系之间的器肩上拍印有菱格“十”字纹装饰带一周。器底有圆形垫圈痕迹。通高17.4厘米，口径19.6厘米，最大腹径24.6厘米，底径13.8厘米（图127-6）。M3008:1带有覆盘式盖，盖钮作半环式。器肩及上腹部有三道凹弦纹。通高15.7厘米，口径12.9厘米，最大腹径18.2厘米，底径10.7厘米（图127-9）。这种器形的青瓷罐亦见于江苏镇江西晋墓③。</p>
+<p>3式：5件。口稍侈，扁圆腹，平底，双横系，器形均较小。M2217:4，通高8.1厘米，口径8.0厘米，最大腹径13.1厘米，底径6.6厘米（图127-7）。M2162:8出自吴</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图127 青瓷罐<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 10厘米<br />
+10. 20厘米</p>
+<ol>
+<li>
+<p>I型1式（M2148:24）</p>
+</li>
+<li>
+<p>I型2式（M5007:1）</p>
+</li>
+<li>
+<p>I型2式（M2217:3）</p>
+</li>
+<li>
+<p>I型2式（M2097:4）</p>
+</li>
+<li>
+<p>I型2式（M2138:3）</p>
+</li>
+<li>
+<p>I型2式（M2035:3）</p>
+</li>
+<li>
+<p>I型3式（M2217:4）</p>
+</li>
+<li>
+<p>I型3式（M2162:8）</p>
+</li>
+</ol>
+<p>9.I型2式（M3008:1）</p>
+<ol>
+<li>
+<p>I型3式（M2081:7）</p>
+</li>
+<li>
+<p>I型4式（M2116:7）</p>
+</li>
+</ol>
+<p>晋之际墓，在器肩部浅刻有三组“五石”和“石”字。通高10.1厘米，口径10.9厘米，最大腹径16.6厘米，底径8.8厘米（图127-8；图版31-6）。与上述二器形制相似的青瓷罐，曾见于江西南昌绳金塔西晋墓①和新干县西晋墓②。M2081:7，器形特大。器腹的中上部遍体拍印有“大开五十”钱纹的填线方格纹。通高26.8厘米，口径21.2厘米，最大腹径38.8厘米，底径19.6厘米（图127-10；图版32-1）。其器形和装饰可与鄂城吴墓以至东晋前期墓中出土的印纹釉陶大罐相比（参见图114-4、6）。</p>
+<p>4式：1件。侈口，广腹，小平底内凹。M2116:7，双竖系较宽，系上拍印有蕉叶纹。釉色深绿，胎釉结合良好，底部露胎处灰中泛红，并遗留有托珠垫烧的痕迹，为长</p>
+<p>江下游的越窑系窑场产品。通高14.9厘米，口径12.5厘米，最大腹径21.2厘米，底径9.0厘米（图127-11；图版32-2）。</p>
+<p>Ⅱ型68件。直口，方圆唇，短颈，扁圆腹，平底，肩部有四个横系，口唇部常见刮釉痕迹，器形矮小，高度一般不超过12厘米。根据肩和系的变化，可分为三式。</p>
+<p>1式：39件。常见厚肩，四横系的孔略呈方形，系根部的按捺痕较粗糙，与东汉晚期至孙吴时的高温釉陶四系麻布纹罐的系的制法很相近。M3034:7，与双系灰陶罐及四系麻布纹高温釉陶罐同出。口部已残，厚肩显著，器腹甚扁，小平底稍内凹。肩部仅有凹弦纹二道，四小横系安装在此弦纹带下。系孔略作圆形。釉色青绿，器内外均施釉，仅外底及外壁近底处露胎，胎釉结合良好，为长江下游越窑系窑场产品。此器残高5.1厘米，口径6.1厘米，最大腹径10.3厘米，底径5.3厘米（图128-8；图版33-6）。M3014:3，有厚肩，四横系制法粗糙。器底有圆形垫圈痕迹。茶绿色釉，但已剥落殆尽。器壁釉下还可见到拍印麻布纹后又用湿手抹平的痕迹，说明这种器形与高温釉陶麻布纹罐之间有密切关系。通高11.7厘米，口径10.8厘米，最大腹径18.1厘米，底径11.3厘米（图128-1；图版32-4）。M1002:3，有较显著的厚肩，四横系的做法稍工整。釉色黄绿，亦多剥落。通高6.9厘米，口径6.4厘米，最大腹径11.4厘米，底径6.4厘米（图128-2；图版32-3）。M2059:4，无厚肩，四横系的根部做法较圆润。器内外均满釉，仅外底及外壁近底处露胎，釉色黄绿，部分剥落。外底上浅刻隶书“曰武子”三字。通高6.85厘米，口径6.9厘米，最大腹径11.0厘米，底径6.9厘米（图版32-5）。与此器同墓所出的M2059:1，亦无厚肩，四横系的根部做法较粗糙。肩部有以菱格纹为主、梯格纹作边饰的装饰纹带。通高12.3厘米，口径8.8厘米，最大腹径17.1厘米，底径10.0厘米（图128-3；图版33-1）。M2075:1，无厚肩，系的做法仍粗糙，但系的根部已不见蟹爪状痕迹。肩部有菱格纹中填以小方格纹的装饰带一周。釉色黄绿，大部分剥落。通高12.1厘米，口径18.1厘米，最大腹径11.7厘米，底径10.9厘米（图128-4；图版33-2）。此式罐亦见于湖南望城县吴墓①，该墓也出有鄂城吴墓中常见的口唇经过刮釉的斜腹青瓷碗。</p>
+<p>2式：20件。四横系的孔略呈圆形，系根部的按捺痕较圆润，附着点较大。少数仍带厚肩，或在肩部饰以装饰纹带，并有部分带盖的小罐发现。M1018:5，无厚肩。肩部有连珠状的花蕊纹装饰带，四小横系附着于此装饰带上。通高7.4厘米，口径7.4厘米，最大腹径11.7厘米，底径6.5厘米（图128-5；图版33-3）。M2184:2:1，有笠帽式小盖，盖钮为半环式，盖外表有辐射状的连续水波纹一周，盖的子口呈凸榫状。颈稍高，无厚肩，小平底稍内凹。肩部有网格纹装饰带，四横系置于其下。连盖通高9.8厘米，口径7.7厘米，最大腹径12.0厘米，底径5.4厘米（图128-6；图版33-4）。M2129:6，有覆盘式小盖，钮作半环式，盖面无纹饰，盖的子口较小。肩部仅有凹弦纹二道，四横系安装在此弦纹带下。连盖通高10.0厘米，口径9.1厘米，最大腹径13.7厘米，底径7.4厘米（图128-7；图版33-5）。此式罐在长江中下游地区的孙吴晚期至</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图128 青瓷罐<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、3、4. 0 10厘米 2、5-11. 0 10厘米</p>
+<p>1.Ⅱ型1式（M3014:3） 2.Ⅱ型1式（M1002:3） 3.Ⅱ型1式（M2059:1） 4.Ⅱ型1式（M2075:1） 5.Ⅱ型2式（M1018:5） 6.Ⅱ型2式（M2184:2:1） 7.Ⅱ型2式（M2129:6） 8.Ⅱ型1式（M3034:7） 9.Ⅱ型3式（M2063:11） 10.Ⅱ型3式（M4032:2） 11.Ⅱ型3式（M2204:6）</p>
+<p>西晋墓中发现较多，如湖北武昌莲溪寺吴永安五年（公元262年）墓①，安徽和县西晋元康九年（公元299年）墓②和浙江宁波慈溪西晋太康元年（公元280年）墓③等。</p>
+<p>3式：9件。四横系的孔略呈三角形，系根部的按捺痕不显著，附着点很小。多数的器形为直口、厚肩，个别的为侈口、无厚肩。M4032:2，厚肩明显。釉色黄绿，部分剥落。通高6.85厘米，口径6.5厘米，最大腹径11.0厘米，底径6.3厘米（图128-10；图版34-2)。M2063:11及M2204:6，厚肩。釉色青绿，胎釉结合较好，胎釉之间</p>
+<p>有化妆土，可能是长江下游婺州窑的产品①。M2063:11，通高6.9厘米，口径5.7厘米，最大腹径11.0厘米，底径6.1厘米（图128-9；图版34-1）。M2204:6，通高6.6厘米，口径6.0厘米，最大腹径11.2厘米，底径6.0厘米（图128-11；图版34-3）。此式罐在湖南长沙吴晋墓②中亦有出土，唯所出都釉色黄绿，胎釉结合较差，与鄂城六朝墓所出的此式罐中的大多数相类似，而与类似浙江婺州窑早期产品的上述M2063:11和M2204:6两器有所区别。</p>
+<p>Ⅲ型8件。直口，短颈，圆鼓腹，平底或稍内凹，四横系，口唇部有刮釉的痕迹。根据器口、肩和系的变化，可分为三式。</p>
+<p>1式：1件。直口，方唇，厚肩，下腹部急收为内凹的小平底。肩腹交接处有水波纹装饰带一周，四横系即安装在此装饰带上，系孔稍向器壁内凹进。M3009:10，釉色青绿，胎釉结合良好，为浙江越窑的早期产品。通高17.5厘米，口径10.6厘米，最大腹径22.0厘米，底径10.5厘米（图129-1；图版34-4)。此式罐的残片曾在浙江上虞小仙坛东汉晚期窑址③中发现过。</p>
+<p>2式：4件。直口，方唇或圆唇，系孔略作方形，系根部的按捺痕如蟹爪状。M2115:11，有厚肩，器形较大。通高20.4厘米，口径13.3厘米，最大腹径25.0厘米，底径14.5厘米（图129-3；图版34-5）。M2040:9，无厚肩，肩部有连珠状的花蕊纹装饰带，系根部的按捺痕稍圆润。通高12.7厘米，口径10.5厘米，最大腹径17.0厘米，底径10.0厘米（图129-2；图版34-6）。</p>
+<p>3式：3件。直口、圆唇，或侈口、尖唇，无厚肩，平底稍内凹，器形矮小。釉色黄绿，胎釉结合较好。M3017:1，为直口、圆唇的四系小罐。通高8.5厘米，口径6.15厘米，最大腹径10.8厘米，底径6.0厘米（图129-5；图版35-1）。M3039:5，为侈口、尖唇的四系小罐。通高12.4厘米，口径7.6厘米，最大腹径13.4，底径8.3厘米（图129-4；图版35-2）。</p>
+<p>Ⅳ型37件。广口，短颈，高圆腹，平底或稍内凹，四横系，口径与底径的大小相近。根据口、腹、系的变化，可分为三式。</p>
+<p>1式：18件。直口或微敛，方唇或圆唇，高圆腹的弧度较大，系孔略作方形（图版35-4)。M2040:10，系根部的按捺痕较圆润。肩部有装饰纹带，为菱格纹中再用短线将菱格划分为十六等分。黄绿色釉，部分剥落。通高15.8厘米，口径10.7厘米，最大腹径16.8厘米，底径11.2厘米（图129-6；图版35-3）。</p>
+<p>2式：18件。直口，圆唇，高圆腹的弧度略小，下腹部内收较缓，系根部的按捺痕较圆润。M1013:1，平底稍内凹，肩部有装饰纹带，为简单的菱格纹中夹“十”字纹，上下方有短线纹作为边饰。通高14.9厘米，口径10.15厘米，最大腹径14.8厘米，底径9.6厘米（图129-7；图版35-5）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图129 青瓷罐<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1\~4、6\~8、12. 0 10厘米<br />
+5. 0 5厘米<br />
+9. 0 10厘米<br />
+10.11. 0 10厘米</p>
+<p>1.Ⅲ型1式（M3009:10） 2.Ⅲ型2式（M2040:9） 3.Ⅲ型2式（M2115:11） 4.Ⅲ型3式（M3039:5）<br />
+5.Ⅲ型3式（M3017:1） 6.IV型1式（M2040:10） 7.IV型2式（M1013:1） 8.IV型3式（M3007:3）<br />
+9.V型（M2016:16） 10.VI型1式（M5004:4） 11.VI型1式（M3019:2） 12.VI型2式（M1010:5）</p>
+<p>3式：1件。覆盘式盖，盖钮作半环式，器口稍小并略向外侈，高圆腹的弧度较大，系孔略呈三角形，系根部的附着点较小。M3007:3，肩部有凹弦纹二道。器内外均施黄绿色釉，仅外底及外壁近底处露胎。连盖通高15.8厘米，口径9.7厘米，最大腹径15.2厘米，底径9.8厘米（图129-8；图版35-6）。此型罐亦见于湖南资兴西晋墓①，广西梧州东晋墓②，四川忠县涂井六朝崖墓③，以及江苏句容郭庄西晋墓④。</p>
+<p>V型1件。出自孙吴前期墓，直口微敛，方唇带有刮釉痕，溜肩，高圆腹，系孔略作方形。M2016:16，器身有拍印麻布纹的痕迹，上釉前大部分被湿手抹去，再施黄绿色薄釉，釉大半已剥落。整个器形与四系麻布纹高温釉陶罐相近。通高28.9厘米，口径12.1厘米，最大腹径27.7厘米，底径14.4厘米（图129-9；图版36-1）。</p>
+<p>VI型5件。广口，圆唇，短颈，溜肩，直腹，平底或稍内凹，四横系作银锭状，可分为二式。</p>
+<p>1式：4件。器形较大，个别带盖，或平底内凹。肩部和腹部常见两组弦纹。施青黄色釉，外底亦满釉。M5004:4出自孙吴赤乌三年（公元240年）墓中，肩稍上耸，四横系的根部呈圆形，大平底内凹。通高17.7厘米，口径10.8厘米，最大腹径18.3厘米，底径15.8厘米（图129-10；图版36-2）。M3019:2，带覆盘式盖，溜肩较显著，四横系的根部呈长椭圆形，大平底。通高26.4厘米，口径12.8厘米，最大腹径23.8厘米，底径20.0厘米（图129-11；图版36-3）。M2027:1，器形较肥矮，大平底内凹，系根部呈长椭圆形。通高20.4厘米，口径12.4厘米，最大腹径21.4厘米，底径18.0厘米（图版36-4）。此式罐多见于湖广地区晋墓，如湖南长沙左家塘西晋墓和烂泥冲东晋宁康三年（公元375年）墓⑤，广东广州沙河顶西晋太熙元年（公元290年）墓、狮子岗西晋建兴四年（公元316年）墓、龙生岗东晋墓和东郊东晋墓⑥，以及广西梧州北山二号墓⑦和江西新干县酒厂西晋墓⑧等。</p>
+<p>2式：1件。器形较小，平底，肩部有一组弦纹装饰。M1010:5，通高13.9厘米，口径8.25厘米，最大腹径12.8厘米，底径10.0厘米（图129-12；图版36-5）。</p>
+<p>Ⅶ型7件。广口，扁腹，平底或稍内凹，四横系。根据口、颈、系的变化，可分为二式。</p>
+<p>1式：3件。敛口，圆唇，或有短颈，四横系根部的按捺痕较粗糙，下腹部内收后稍向外撇。M1003:5，无短颈，平底稍内凹。器内外均施黄绿色釉，器底露胎。通高10厘米，口径17.1厘米，最大腹径21.1厘米，底径13.7厘米（图130-1；图版37-1）。M2063:22，有短颈，平底。器内外均施黄绿色釉，胎釉结合良好。通高10.1厘米，口径16.8厘米，最大腹径22.4厘米，底径14.2厘米（图130-2；图版37-2）。</p>
+<p>2式：4件。直口或侈口，有短颈，下腹部内收较甚，四横系的根部按捺痕较圆润，肩部常见装饰纹带。M4035:2，直口，圆唇，平底较厚，肩部有网格纹装饰带，并有褐斑点彩装饰。通高6.3厘米，口径9.1厘米，最大腹径12.3厘米，底径6.8厘米（图130-4）。M3045:7，口稍外侈，平底稍向内凹。肩部的装饰带较细密，上方为菱格纹中填以细方格纹，下方为连珠状的花蕊纹。但胎釉结合较差，釉层已剥落殆尽。此器的器形较大。通高12.3厘米，口径20.4厘米，最大腹径25.9厘米，底径15.3厘米（图130-5；彩版1-1；图版37-3）。M2040:11，直口，圆唇，平底稍向内凹。肩部原拍印有很浅的花蕊纹装饰带，因施釉较厚，故不太清晰，仅见两道凹弦纹。器内外均施釉，仅外底及外壁近底处露胎，胎釉结合较好。通高14.1厘米，口径17.4厘米，最大腹径25.2厘米，底径13.7厘米（图130-3；图版37-4）。此型罐亦见于江苏南京板桥石闸湖西晋永宁二年（公元302年）墓①。</p>
+<p>Ⅷ型8件。大口，短颈，鼓腹，平底，由四竖系构成双复系，或再加二横系成为六系。口沿上常见褐斑点彩装饰，肩部有一至二道凹弦纹。根据系的变化，可分为二式。</p>
+<p>1式：4件。双复系。M2011:4，口稍外侈。口沿上有褐斑点彩的痕迹，肩部有凹弦纹一道。施黄绿色釉，器内外均满釉，仅外底及外壁近底处露胎，胎釉结合较差。出土时以一青瓷碗作盖。通高14.2厘米，口径15.1厘米，最大腹径20.6厘米，底径12.6厘米（图130-6；图版37-5）。M3007:1，器身稍高。肩部有两道凹弦纹装饰。施黄绿色釉，部分剥落。通高17.4厘米，口径15.0厘米，最大腹径22.3厘米，底径14.1厘米（图130-8；图版37-7）。此式双复系罐亦见于江西新建乐化晋墓②及江苏南京郎家山东晋墓（M4）③，唯郎家山东晋墓所出之双复系罐还有褐斑点彩装饰的覆盘式盖。</p>
+<p>2式：4件。六系。M2087:3，肩部有凹弦纹装饰二道。通高16.7厘米，口径13.35厘米，最大腹径21.8厘米，底径12.0厘米（图130-7；图版37-6）。此式六系罐亦见于江苏南京郎家山东晋墓（M4），唯郎家山所出者且带有覆盘式盖④。</p>
+<p>IX型4件。双口四系罐，类似近代的泡菜罐。根据口部的形状，可分为二式。</p>
+<p>1式：1件。M2063:17，内口较高，作直壁；外口较低，作向外侈出的弧壁。肩部</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>20厘米<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1~3、5~11、13、14. 0 5厘米<br />
+12. 0 10厘米</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图130 青瓷罐</p>
+<p>1.Ⅶ型1式（M1003：5）</p>
+<p>2.Ⅲ型I式（M2063:22）</p>
+<p>3.Ⅲ型2式（M2040:11）</p>
+<p>4.Ⅶ型2式（M4035：2）</p>
+<p>5.Ⅶ型2式（M3045：7）</p>
+<p>6.型1式（M2011：4）</p>
+<p>7.Ⅶ型2式（M2087：3）</p>
+<p>8.Ⅲ型1式（M3007：1）</p>
+<p>9.Ⅱ型1式（M2063：17）</p>
+<p>10.Ⅱ型2式（M2166:2）</p>
+<p>11.Ⅱ型2式（M4025:3）</p>
+<p>12.Ⅱ型2式（M2019：7）</p>
+<p>13.X型（M2059：6）</p>
+<p>14.X型（M1018:4）</p>
+<p>有四横系，系根部的按捺痕较粗糙，形如蟹爪状。外口沿下有三道凹弦纹，肩部亦有二道凹弦纹，腹部拍印有麻布纹。施黄绿色釉，胎釉结合较好，但施釉不匀。出土时在罐的内口上还置有曲腹盏1件，应是作为罐盖之用的。通高19.4厘米，外口径12.9厘米，内口径8.2厘米，最大腹径16.5厘米，底径10.0厘米（图130-9；彩版1-2；图版38-1）。</p>
+<p>2式：3件。内口稍敛，略高于外口；外口稍侈，呈斜壁状。器腹肥矮，平底或稍向内凹，四横系根部的按捺痕略粗糙。外口沿及肩部常见凹弦纹或菱格纹、回纹等装饰带。M2166:2，外口沿下及肩部均有凹弦纹装饰。通高15.7厘米，外口径14.2厘米，内口径8.0厘米，最大腹径19.2厘米，底径11.7厘米（图130-10；图版38-2）。M4025:3出自西晋前期墓。外口沿下有凹弦纹及回纹装饰带，肩部有凹弦纹装饰。通高16.65厘米，外口径15.2厘米，内口径9.1厘米，最大腹径19.6厘米，底径10.4厘米（图130-11；图版38-3）。M2019:7亦出自西晋前期墓。外口沿下及肩部均有菱格中填以细方格纹的装饰带。施黄绿色釉，大半剥落。通高19.8厘米，外口径17.1厘米，内口径11.6厘米，最大腹径24.6厘米，底径13.8厘米（图130-12；图版38-4）。</p>
+<p>X型2件。釜形罐。侈口，弧沿，袋形腹，小平底稍内凹。外口沿下及器腹外壁上有凹弦纹装饰。此型罐的器形由陶釜演变而来。M2059:6，通高9.3厘米，口径13.0厘米，最大腹径13.0厘米，底径7.4厘米（图130-13；图版38-5）。M1018:4，通高9.6厘米，口径13.5厘米，最大腹径12.8厘米，底径6.8厘米（图130-14；图版38-6）。</p>
+<ol>
+<li>盘口壶 182 件。出自 143 座墓中。一般是每座墓随葬 1 件，少数墓随葬 2 件，个别墓随葬 4 件（M4008）。在整理时器物已缺失者 18 件，残破过甚者 14 件，故参加分型分式者为 150 件。根据口、腹和系的变化，可分为六型。</li>
+</ol>
+<p>I型24件。盘口，扁圆腹或圆鼓腹，平底或稍内凹，双竖系或双横系。根据盘口、壶颈和双系的变化，可分为五式。</p>
+<p>1式：1件。盘口作碟形，有板沿，壶颈较细长，器腹上部丰满，下部急收为内凹的小平底，双竖系较宽。M2148:21，器形与同一墓地出土的高温釉陶盘口壶M2140:3（参见图117-3；图版20-2）完全相同，唯质地与釉料、釉色有别。器肩及上腹部有密集的同心圆式凹弦纹，应是轮制遗留的。系上拍印有蕉叶纹。施青灰色薄釉，胎釉结合较好，当为长江下游窑场的产品。通高22.0厘米，口径10.4厘米，最大腹径20.5厘米，底径9.4厘米（图131-1；图版39-1）。此式壶亦见于江苏南京幕府山孙吴五凤五年（公元254年）墓①和南京御道街标营M1②，以及浙江武义县孙吴墓③和上虞县帐子山的孙吴时期窑址④，唯上虞窑址中所出土的此式盘口壶为黑釉瓷。</p>
+<p>2式：5件。小盘口，细短颈，扁圆腹，平底或稍内凹，肩部有扁宽的双竖系。盘口及肩部均有凹弦纹装饰，系上常拍印有蕉叶纹。M4008:5，平底稍内凹。釉色黄绿，部分剥落。通高16.0厘米，口径8.35厘米，最大腹径19.7厘米，底径11.4厘米（图131-2；图版39-2)。M2058:11，上腹部稍鼓起，平底。胎壁上拍印有不甚清晰的麻布纹，双竖系上亦拍印麻布纹。釉色黄绿，胎釉结合较好。通高19.7厘米，口径10.6厘</p>
+<p>米，最大腹径24.2厘米，底径13.0厘米（图131-3；图版39-3）。此式盘口壶亦见于江苏南京赵士岗孙吴墓①，并与赤乌十四年（公元251年）铭文的青瓷虎子同出；江苏高淳县化肥厂孙吴墓②，浙江金华古方孙吴墓（M12及M28)③，以及江西南昌抚河都司前孙吴墓④和瑞昌马头吴晋之际墓⑤也有此式盘口壶发现。</p>
+<p>3式：8件。盘口较大，颈肥矮，扁圆腹或圆鼓腹，平底或稍内凹。盘口及肩部常见凹弦纹装饰，双竖系较扁宽，系上多无纹饰，或偶见简化的蕉叶纹。M2261:7，口沿上有褐斑点彩装饰。通高17.5厘米，口径12.3厘米，最大腹径19.2厘米，底径10.0厘米（图131-4；图版39-4）。M4033:2，颈稍细，腹稍高，平底稍内凹。釉色黄绿，部分剥落。通高20.0厘米，口径11.3厘米，最大腹径19.5厘米，底径12.2厘米（图131-5；图版39-5）。M2031:1，溜肩，圆腹，平底稍内凹。釉色黄绿，胎釉结合较好。通高16.25厘米，口径10.3厘米，最大腹径17.3厘米，底径11.1厘米（图131-7；图版39-6）。M2131:1，颈稍高，腹较圆鼓，平底内凹较甚。青绿釉，胎釉结合良好，露胎处泛红色，为长江下游越窑系的产品。通高27.0厘米，口径14.4厘米，最大腹径24.0厘米，底径11.6厘米（图131-6；图版40-1）。此式壶亦见于江西南昌市南郊丝网塘西晋墓⑥，以及江苏南京郎家山M5⑦和丹徒长岗水库西晋墓⑧。</p>
+<p>4式：6件。盘口较浅，或浅而小，颈较短，腹较扁，小平底，双横系亦细小。M2199:1，釉色青绿，胎釉结合较好，似为长江下游窑场的产品。通高11.4厘米，口径8.6厘米，最大腹径13.5厘米，底径7.0厘米（图131-9；图版40-2）。M3039:8，器形较小，釉色黄绿，部分剥落。通高9.1厘米，口径5.3厘米，最大腹径9.4厘米，底径5.0厘米（图131-8；图版40-3）。此式小盘口壶亦见于江西新干县酒厂西晋墓⑨及江苏镇江砖瓦厂西晋墓⑩。</p>
+<p>5式：4件。器腹较扁，平底较大，肩部双竖系之间各有一贴印的铺首装饰。M2058:8，颈稍高，盘口、肩部和腹部都有凹弦纹装饰。通高27.2厘米，口径13.0厘米，最大腹径28.4厘米，底径17.0厘米（图131-11；图版40-4）。M5012:9，颈较肥短，下腹部内收较甚，小平底内凹，双竖系已残，肩部有网格纹和花蕊纹组成的装饰带，一对铺首即置于此装饰带上。釉色青绿，胎釉结合较好，为长江下游越窑系窑场产品。通高23.2厘米，口径13.7厘米，最大腹径22.8厘米，底径10.7厘米（图131-</p>
+<p>① 江苏省文物管理委员会：《南京近郊六朝墓的清理》，《考古学报》1957年第1期。<br />
+② 镇江博物馆：《镇江东吴西晋墓》，《考古》1984年第6期。<br />
+③ 金华地区文管会：《浙江金华古方六朝墓》，《考古》1984年第9期。<br />
+④ 唐昌朴：《江西南昌东吴墓清理简记》，《考古》1983年第10期。<br />
+⑤ 江西省博物馆：《江西瑞昌马头西晋墓》，《考古》1974年第1期。<br />
+⑥ 江西省博物馆：《江西南昌市南郊汉六朝墓清理简报》，《考古》1966年第3期。<br />
+⑦ 江苏省文物管理委员会：《南京出土六朝青瓷》图19，文物出版社，1957年。<br />
+⑧ 镇江博物馆：《镇江东吴西晋墓》，《考古》1984年第6期。<br />
+⑨ 江西省文物工作队等：《江西新干县西晋墓》，《考古》1983年第12期。<br />
+⑩ 镇江博物馆：《镇江东吴西晋墓》，《考古》1984年第6期。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图131 青瓷盘口壶</p>
+<ol>
+<li>I型1式（M2148:21） 2. I型2式（M4008:5） 3. I型2式（M2058:11） 4. I型3式（M2261:7） 5. I型3式（M4033:2） 6. I型3式（M2131:1） 7. I型3式（M2031:1） 8. I型4式（M3039:8） 9. I型4式（M2199:1） 10. I型5式（M5012:9） 11. I型5式（M2058:8） 12. I型5式（M2030:13）</li>
+</ol>
+<p>10；图版40-5)。M2030:13，盘口较大，器腹稍高，颈亦较肥短。纹饰与前者相同，但胎釉结合稍差。通高25.0厘米，口径14.2厘米，最大腹径20.9厘米，底径10.0厘米（图131-12；图版40-6)。此式盘口壶亦见于江苏南京栖霞山甘家巷孙吴建衡三年（公元271年）墓①和句容石狮西晋元康四年（公元294年）墓②。</p>
+<p>Ⅱ型95件。短颈，扁圆腹或圆鼓腹，平底或稍内凹，四横系。根据盘口、颈部和腹部的变化，可分为六式。</p>
+<p>1式：10件。盘口较小，细短颈，扁圆腹，平底或稍内凹。四横系根部的按捺痕较粗糙，盘口及肩部均有凹弦纹装饰（图版41-1）。M4008:3，器形扁矮，平底稍内凹。通高13.7厘米，口径8.3厘米，最大腹径18.2厘米，底径11.0厘米（图132-1）。M1003:1，器腹较前者高。釉色黄绿，胎釉结合良好。通高23.4厘米，口径12.2厘米，最大腹径26.3厘米，底径13.0厘米（图132-2；图版41-2）。</p>
+<p>2式：51件。盘口较深，颈肥矮，扁圆腹或圆鼓腹，平底或稍内凹。四横系根部的按捺痕多数仍粗糙，少数圆润。肩部常见网格纹、菱格纹、回纹或花蕊纹组成的装饰纹带（图版41-3~5）。M2063:16，扁圆腹，平底稍内凹。肩部有菱格中夹“井”字纹的装饰带。釉色黄绿，部分剥落。通高17.7厘米，口径12.3厘米，最大腹径19.1厘米，底径11.5厘米（图版41-6）。M2170:3，扁圆腹，四系残缺。肩部有菱格回纹装饰带及褐斑点彩装饰。通高16.7厘米，口径9.6厘米，最大腹径19.0厘米，底径11.8厘米（图132-4）。M2040:16，器腹扁圆。肩部有网格纹装饰带。釉色青绿，胎釉结合良好，似为长江下游窑场产品。通高16.8厘米，口径12.1厘米，最大腹径18.9厘米，底径10.8厘米（图132-5；彩版2-1；图版42-1）。M2028:4，腹扁圆。肩部装饰纹带的上列为折线三角纹，下列为连珠状的花蕊纹。釉色黄绿，胎釉结合较差，釉层大部分剥落。通高14.4厘米，口径11.4厘米，最大腹径16.4厘米，底径9.5厘米（图132-6；图版42-3）。M2024:1，腹圆鼓。肩部装饰纹带的主纹为菱格中夹细方格纹，上下边饰用梯格纹。釉色黄绿，釉层已剥落殆尽。通高21.4厘米，口径13.0厘米，最大腹径22.6厘米，底径12.6厘米（图132-7；图版42-2）。此式盘口壶亦见于江苏南京赵士岗孙吴凤凰二年（公元273年）墓，南京郎家山西晋元康三年（公元293年）墓③，安徽和县戚镇西晋太康九年（公元288年）墓④以及江西瑞昌马头吴晋之际墓⑤。</p>
+<p>3式：12件。盘口较深，略呈喇叭状，短颈，圆鼓腹，平底或稍内凹。四横系根部的按捺痕较圆润，附着点较小。M2025:2，侈口，平底稍内凹。盘口外沿有凹弦纹装饰，肩部的装饰纹带上列为连珠状的花蕊纹，下列为梯格纹。通高18.7厘米，口径12.2厘米，最大腹径17.6厘米，底径11.0厘米（图133-1；图版42-5）。M3043:5，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图132 青瓷盘口壶<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1、3-6. 0 10厘米<br />
+2、7. 0 10厘米<br />
+8-11. 0 10厘米</p>
+<p>1.Ⅱ型1式（M4008：3）</p>
+<p>2.Ⅱ型1式（M1003：1）</p>
+<p>3.Ⅱ型2式（M2262：1）</p>
+<p>4.Ⅱ型2式（M2170:3）</p>
+<p>5.Ⅱ型2式（M2040:16）</p>
+<p>6.Ⅱ型2式（M2028：4）</p>
+<p>7.Ⅱ型2式（M2024：1）</p>
+<p>8.Ⅲ型2式（M5008：3）</p>
+<p>9.Ⅲ型1式（M2206：6）</p>
+<p>10.Ⅲ型1式（M2120:1）</p>
+<p>11.Ⅲ型2式（M2049：1）</p>
+<p>颈甚短，下腹部内收为较小的平底。肩部仅有一道凹弦纹装饰。通高16.4厘米，口径10.9厘米，最大腹径15.6厘米，底径9.4厘米（图133-2；图版42-4）。</p>
+<p>4式：2件。盘口较小，颈较细，肩部较宽，最大腹径偏上，下腹部缓收为较大的平底或稍内凹，四横系或四竖系。M4001:6，平底稍内凹，四横系为方桥形。通高18.4厘米，口径9.3厘米，最大腹径19.0厘米，底径11.6厘米（图133-4；图版43-1）。M2173:3，平底，四竖系。通高18.0厘米，口径9.7厘米，最大腹径19.4厘米，底径12.4厘米（图133-3；图版43-2）。</p>
+<p>5式：3件。盘口小而浅，短颈，折腹或圆鼓腹，小平底或稍向内凹。M2087:9，小平底稍向内凹。肩部的装饰纹带上列为花蕊纹，下列为网格纹加梯格纹。釉色青绿，胎釉结合良好，为长江下游窑场产品。通高7.7厘米，口径5.05厘米，最大腹径8.4厘米，底径6.0厘米（图133-5）。M2143:2，除肩部和肩腹交接处为弦纹装饰外，余同前者，为长江下游窑场产品。通高11.6厘米，口径7.0厘米，最大腹径12.0厘米（图133-6；图版43-3）。此式小盘口壶亦见于江西清江西晋墓①及江苏南京光华门外赵士岗工地②。</p>
+<p>6式：17件。盘口较大而深，颈肥短，器腹肥大，平底或稍内凹，四横系根部的按捺痕较圆润。M2160:8，平底内凹，器肩及上腹部均有弦纹装饰。釉色黄绿，部分剥落。通高28.4厘米，口径15.4厘米，最大腹径28.6厘米，底径14.8厘米（图133-7；图版43-4）。M2219:1，颈甚短，四横系上移至近颈处，器肩有弦纹装饰。通高28厘米，口径13.4厘米，最大腹径28.0厘米，底径14.0厘米（图133-8）。此式盘口壶亦见于湖南长沙金盆岭西晋永宁二年（公元302年）墓③、江苏南京光华门外赵士岗东晋墓④、江西南昌京山晋宋之际墓⑤。</p>
+<p>Ⅲ型9件。器形修长，盘口较大而深，颈细长，高圆腹，小平底或稍内凹。四横系向颈部靠拢，作半环形或方桥形，系根部与器肩的附着点小而圆润。根据系的变化，可分为二式。</p>
+<p>1式：5件。四横系作半环形，肩部常见凹弦纹一周（图版43-5）。M2206:6，釉色黄绿，剥落殆尽。通高23.0厘米，口径11.0厘米，最大腹径16.8厘米，底径10.8厘米（图132-9；图版43-6）。M2120:1，口径大于底径。施釉只及中腹部，釉色黄绿，胎釉结合较好。通高22.5厘米，口径12.8厘米，最大腹径15.0厘米，底径8.7厘米（图132-10；图版44-1）。</p>
+<p>2式：4件。四横系作方桥形。肩部多无纹饰，或仅见凹弦纹（图版44-2）。M2226:12，釉色黄绿，胎釉结合较好。通高27.5厘米，口径11.8厘米，最大腹径20.6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图133 青瓷盘口壶<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 0 厘米<br />
+6. 0 5厘米</p>
+<p>1.Ⅱ型3式（M2025:2）</p>
+<p>2.Ⅱ型3式（M3043：5）</p>
+<p>3.Ⅱ型4式（M2173：3）</p>
+<p>4.Ⅱ型4式（M4001：6）</p>
+<p>5.Ⅱ型5式（M2087：9）</p>
+<p>6.Ⅱ型5式（M2143·2）</p>
+<p>7.Ⅱ型6式（M2160:8）</p>
+<p>8.Ⅱ型6式（M2219:1）</p>
+<p>厘米，底径12.6厘米（图版44-3）。M2049:1，盘口径大于底径，平底稍内凹。釉色黄绿，施釉仅及中腹部，胎釉结合较差。通高31.0厘米，口径17.2厘米，最大腹径23.1厘米，底径12.2厘米（图132-11）。M5008:3，四桥形系较高，并更接近于颈部。下腹部内收后再直下为稍内凹的平底。釉色黄绿，剥落殆尽。通高20厘米，口径10.0厘米，最大腹径15.4厘米，底径9.7厘米（图132-8；图版44-4）。此式盘口壶亦见于湖北武汉周家大湾刘宋孝建二年（公元455年）墓①，江西吉安县南齐永明十一年（公元493年）墓②，以及湖南益阳县城关镇南齐建元四年（公元482年）墓③、资兴县旧</p>
+<p>市萧梁普通元年（公元520年）墓①等。</p>
+<p>Ⅳ型 15 件。盘口一般较大，颈肥短，扁圆腹或圆鼓腹，平底或稍内凹。双复系，一般作扁宽的银锭状。肩部常见凹弦纹装饰，或有装饰纹带。根据口、腹、底的变化，可分为三式。</p>
+<p>1式：9件。盘口较大，较浅，器腹多圆鼓。双复系以素面为主，偶见蕉叶纹装饰（图版44-5、6)。M2017:2，器腹扁鼓，平底稍内凹。肩部有回纹装饰带，双复系上拍印有蕉叶纹装饰。釉色黄绿，胎釉结合较差，釉层大多剥落。通高28.3厘米，口径18.8厘米，最大腹径29.8厘米，底径16.0厘米（图134-1；图版45-1)。M1010:4，器腹圆鼓，平底稍内凹，双复系稍窄，肩部及上腹部均有凹弦纹装饰。通高21.7厘米，口径12.5厘米，最大腹径21.5厘米，底径13.5厘米（图134-2；图版45-2)。此式盘口壶亦见于江西新干县酒厂西晋墓②及南京甘家巷东晋墓 $\mathrm{M}25^{\text{③}}$ 。</p>
+<p>2式：2件。盘口稍小，短颈，宽肩，扁腹，平底较大，似圆饼状假圈足。M2160:3，釉色黄绿，部分剥落，盘口和双复系上均有褐斑点彩装饰。通高18.0厘米，口径9.8厘米，最大腹径18.6厘米，底径12.8厘米（图134-3；彩版2-2)。同墓出土的M2160:4除无褐斑点彩外，器形和釉色完全相同，且胎釉结合较好（图版45-3）。此式盘口壶亦见于江苏南京东郊仙鹤门外吕家山东晋墓④、甘家巷东晋墓⑤和张家库东晋墓⑥。</p>
+<p>3式：4件。盘口底较大，器腹较高，下腹部较瘦并内收为较小的平底，且略向内凹。双复系较宽，系上常见蕉叶纹装饰。肩部常见网格纹装饰带。胎釉结合均较好，皆为长江下游窑场的产品。M2131:2，釉色青绿，胎釉结合良好。通高27.1厘米，口径14.8厘米，最大腹径24.2厘米，底径11.7厘米（图134-4；图版45-4）。此式盘口壶亦见于江苏南京的象山M7（东晋初年墓）⑦、象山东晋王兴之夫妇墓（葬于咸康七年即公元341年及永和四年即公元348年）⑧和王丹虎墓（葬于升平三年即公元359年）⑨，镇江市谏壁王家山东晋墓⑩，以及浙江杭州老和山东晋兴宁二年（公元364年）墓⑪。</p>
+<p>V型5件。盘口较深，颈较长，圆鼓腹或高圆腹，平底或稍内凹。六系，即两对</p>
+<p>① 湖南省博物馆：《湖南资兴晋南朝墓》，《考古学报》1984年第3期。<br />
+② 江西省文物工作队等：《江西新干县西晋墓》，《考古》1983年第12期。<br />
+③ 南京博物院等：《南京栖霞山甘家巷六朝墓群》，《考古》1976年第5期。<br />
+④ 南京市博物馆考古组：《南京郊区三座东晋墓》，《考古》1983年第4期。<br />
+⑤ 南京博物院等：《南京栖霞山甘家巷六朝墓群》，《考古》1976年第5期。<br />
+⑥ 石祚华等：《南京市郊张家库东晋墓清理》，《考古》1963年第6期。<br />
+⑦ 南京市博物馆：《南京象山5号、6号、7号墓清理简报》，《文物》1972年第11期。<br />
+⑧ 南京市文物保管委员会：《南京人台山东晋兴之夫妇墓发掘报告》，《文物》1965年第6期。<br />
+⑨ 南京市文物保管委员会：《南京象山东晋王丹虎墓和二、四号墓发掘简报》，《文物》1965年第10期。<br />
+⑩ 镇江博物馆 刘建国：《镇江东晋墓》，《文物资料丛刊》第8辑，文物出版社，1984年。<br />
+⑪ 浙江省文物管理委员会：《杭州晋兴宁二年墓发掘简报》，《考古》1961年第7期。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图134 青瓷盘口壶</p>
+<p>1.Ⅳ型1式（M2017:2）</p>
+<p>2.Ⅳ型1式（M1010:4）</p>
+<p>3.Ⅳ型2式（M2160:3）</p>
+<p>4.Ⅳ型3式（M2131：2）</p>
+<p>5.V型1式（M2163:3）</p>
+<p>6.V型2式（M3005：13）</p>
+<p>7.V型（M2054：16）</p>
+<p>8.V型1式（M1013：4）</p>
+<p>竖系和一对横系。根据口、腹、系的变化，可分为二式。</p>
+<p>1式：2件。盘口底较大，器腹圆鼓，下腹部缓收为较大的平底。六系均作银锭状。M2163:3，釉色青黄，部分剥落，口沿上有褐斑点彩装饰。通高25.8厘米，口径12.4厘米，最大腹径22.0厘米，底径14.0厘米（图134-5；图版46-1）。此式盘口壶亦见于江苏南京象山东晋王兴之夫妇合葬墓①及老虎山颜琳墓②。</p>
+<p>2式：3件。盘口外侈并较深，颈肥而高，腹修长，平底或稍内凹，六系均作方桥式。此式盘口壶流行于南朝时期。M3023:10，高圆腹，颈腹相交处及腹中部均有凹弦纹装饰。釉色黄绿，部分剥落。通高32.2厘米，口径14.4厘米，最大腹径23.0厘米，底径13.5厘米（图版46-2）。M3005:13，盘口较大，高圆腹，器腹上部丰满，下腹部急收为内凹之小平底。肩部有凹弦纹装饰。釉色青黄，胎釉结合较好。通高26.2厘米，</p>
+<p>口径13.4厘米，最大腹径17.5厘米，底径9.6厘米（图134-6；彩版1-3；图版46-3)。此式盘口壶亦见湖北武汉周家大湾南齐永明三年（公元485年）墓①和湖南长沙南郊烂泥冲南齐永元元年（公元499年）墓②。</p>
+<p>此外，M2054:16盘口下缘带有双垂耳的残件，口径为12.4厘米，盘口以下残缺（图134-7）。这种盘口下缘带有垂耳的壶多见于江西的南朝墓，如江西清江县山前南齐建武三年（公元496年）墓所出者，器肩有六个方桥形系，器腹修长，下腹部内收后再直下为平底③；又如永修县马口萧梁天监九年（公元510年）墓所出者，盘口径较大（13.6厘米），下垂双耳，器肩有六个方桥形系，下腹部内收后再略外侈成平底④，与鄂城M2054:16亦接近。</p>
+<p>VI型2件。盘口小而浅，圆鼓腹或大扁腹，小平底或稍内凹，无系。根据腹、底的不同，可分为二式。</p>
+<p>1式：1件。圆鼓腹，有厚肩，平底稍内凹。M1013:4，上腹部有凹弦纹装饰。釉色黄绿，剥落殆尽。通高16.75厘米，口径7.9厘米，最大腹径15.8厘米，底径9.0厘米（图134-8；图版45-5）。<br />
+2式：1件。大扁腹，腹径特大，小平底。M2158:3，釉色黄绿，胎釉结合较好，上腹部有褐斑釉点。通高12.8厘米，口径6.7厘米，最大腹径19.3厘米，底径10.0厘米（图版45-6）。<br />
+3. 鸡首壶 45 件。分别出自 36 座墓中。其中包括墓地采集品 8 件，一般每座墓出土 1 件。整理时未见实物者 4 件，残破过甚者 2 件，参加分型分式者为 39 件。根据口、颈、腹、底、系及鸡首的变化，可分为三型。</p>
+<p>I型2件。或称鸡首罐，直口，短颈，扁圆大腹，平底。器肩前后分别堆塑鸡首和鸡尾，鸡首皆为尖喙，无颈，中空，起着“流”的作用，鸡首与鸡尾之间的器肩左右各附一竖系。如M2058:7，鸡首上端稍残，颌下带息肉，鸡尾上有羽毛状刻划纹，二竖系略作银锭状，系根部的按捺痕较粗糙。通高21.7厘米，口径13.2厘米，最大腹径27.0厘米，底径14.3厘米（图135-1）。鄂城新化肥厂工地采集：01，鸡首较短，上颚稍残，鸡尾无纹饰，二竖系作银锭状，系上拍印有蕉叶纹装饰。通高21.2厘米，口径12.2厘米，最大腹径27.2厘米，底径14.5厘米（图135-2）。此型鸡首壶亦见于江苏南京梅家山、西善桥、凤凰山和赵士岗吴墓⑤以及高淳县化肥厂吴墓等，其中赵士岗M20所出者还带有瓜棱钮的笠帽式盖。</p>
+<p>① 湖北省博物馆：《武汉地区四座南朝纪年墓》，《考古》1965年第4期。<br />
+② 湖南省博物馆：《长沙两晋南朝隋墓发掘报告》，《考古学报》1959年第3期。<br />
+③ 清江县博物馆 傅冬根：《江西清江山前南朝墓》，《文物资料丛刊》第8辑，文物出版社，1984年。<br />
+④ 杨厚礼：《江西永修南朝梁墓》，《考古》1984年第1期。<br />
+⑤ a. 屠思华等：《南京梅家山六朝墓清理记略》，《文物参考资料》1956年第4期。<br />
+b.李蔚然：《南京西善桥六朝墓的清理》，《考古通讯》1958年第4期。<br />
+c. 魏正瑾等：《南京出土六朝青瓷分期探讨》，《考古》1983年第4期。<br />
+⑥ 镇江博物馆：《镇江东吴西晋墓》，《考古》1984年第6期。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图135青瓷鸡首壶<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型（M2058:7） 2. I型（鄂城新化肥厂工地采集：01） 3. II型2式（M2024:2） 4. II型1式（M4034:9）<br />
+5.Ⅱ型1式（M4021：2）</p>
+<p>Ⅱ型11件。盘口，有颈，无螯，器肩上分置鸡首、鸡尾和双系，鸡首为实心，不能起“流”的作用。根据口、颈、腹、系及鸡首的变化，可分为二式。</p>
+<p>1式：10件。小盘口，短颈，扁圆腹，平底略内凹，二竖系。鸡首较小，肩部常见装饰纹带（彩版3-1）。此式均为小型器，高度一般在10厘米以下，多数为长江下游窑场产品。M4034:9，二竖系的下部有羽毛状刻划纹以象征双翅，鸡尾亦有羽毛状的刻划纹。肩部有菱格中夹以“井”字形小方格装饰带。釉色青绿，胎釉结合良好。通高9.3厘米，口径4.75厘米，最大腹径10.3厘米，底径4.8厘米（图135-4）。M4021:2，肩部有花蕊纹和网格纹组成的装饰纹带。釉色青绿，胎釉结合良好。通高8.8厘米，口径4.6厘米，最大腹径9.7厘米，底径5.0厘米（图135-5）。这件小鸡首壶与波斯萨珊王朝产的磨花玻璃碗同出于1座墓。此式小鸡首壶亦见于江苏南京五台山西晋墓、六合草塘罗冲村西晋墓①以及宜兴周墓墩西晋墓②。<br />
+2式：1件。盘口较大，颈较高，二横系较扁宽。鸡首昂起，鸡冠高耸，尖喙有颈，鸡尾卷起，尾上有羽毛状刻划纹。M2024:2，出自西晋后期墓，盘口、器肩和器腹上均有褐斑点彩装饰，但胎釉结合甚差。通高19.2厘米，口径9.8厘米，最大腹径16.8厘米，底径9.6厘米（图135-3；图版46-4）。类似此式的无螯鸡首壶亦见于江苏镇江跑</p>
+<p>马山东晋墓①和浙江瑞安隆山西晋墓②，应是从无鳖到有鳖鸡首壶的过渡形式。</p>
+<p>Ⅲ型26件。带鳖鸡首壶，鸡首多数中空，可起“流”的作用。根据口、颈、腹、底、鳖和鸡首的变化，可分为三式。</p>
+<p>1式：8件。盘口稍大，颈稍细，鸡首作尖喙，器螯的弧曲度较大，扁圆腹或圆鼓腹，平底或稍内凹，以二横系者居多（图版46-5)，个别为二竖系或无系。M2079:1，盘口较浅，有板沿，器肩较宽，扁圆腹，平底稍向内凹。二竖系较窄，颈肩相交处的接痕较明显，并饰以多道弦纹，螯与盘口交接处有刻划纹装饰。釉色青绿，胎釉结合较好，为长江下游窑场的产品。通高22.5厘米，口径9.5厘米，最大腹径19.7厘米，底径9.7厘米（图136-1；图版46-6)。此器的口、腹、底部的造型与鄂城吴墓所出的I型1式青瓷盘口壶很相似（参见图131-1)。M2076:11，颈较短，圆鼓腹，二横系，颈肩相交处的接痕较明显。釉色灰绿，胎釉结合较差。通高22.1厘米，口径10.8厘米，最大腹径18.0厘米，底径10.0厘米（图136-2；图版47-1)。M5015:17，腹亦圆鼓，无系，鸡首稍短小。釉色黄绿，胎釉结合较好。通高20.7厘米，口径10.5厘米，最大腹径17.5厘米，底径10.2厘米（图136-3；图版47-2)。此外，在鄂城钢铁厂工地采集：01是基本器形与前述Ⅱ型2式无螯鸡首壶相同的有螯鸡首壶（鳖已残缺），二竖系，鸡首及螯与器肩的交接处均有羽毛状刻划纹装饰，肩部有菱格回纹装饰带。黄绿釉，胎釉结合差，釉层已大半剥落。通高19.8厘米，口径9.0厘米，最大腹径17.2厘米，底径9.5厘米(图版47-3)。此式鸡首壶亦见于湖北汉阳蔡甸一号墓③，该墓出有2件尖喙带螯鸡首壶，1件似鄂城M5015:17，为无系鸡首壶；另1件似上述鄂城钢铁厂工地采集：01，鸡首与器肩交接处亦有羽毛状的刻划纹装饰。此式鸡首壶还见于浙江瑞安隆山西晋墓 $\mathrm{M6}^{\text{④}}$ 。</p>
+<p>2式：16件。盘口稍深，颈较长，腹圆鼓，平底或稍内凹，个别为类似假圈足的圆饼形底。鸡首均为圆喙中空，鳖的弧曲度一般较小，多为二横系，个别无系。M3007：2，器形除鸡首为圆喙外，与上述Ⅲ型1式的M5015:17基本相同，为无系鸡首壶，唯其平底稍内凹。肩部有凹弦纹装饰。通高20.4厘米，口径10.0厘米，最大腹径17.8厘米，底径10.0厘米（图136-4）。M2008:3，盘口及颈较小，器腹相对硕大，肩较宽平。鸡首高耸，鸡冠距盘口甚近，圆喙下方附有息肉，鸡首与器肩交接处有羽毛状刻划纹。器鳖的弧曲度仍较大，鳖的上端与盘口交接处有刻划纹以表示鸡尾，下端与器肩交接处亦有羽毛状刻划纹，二横系略作方桥形，距壶颈较近。通高24.5厘米，口径8.9厘米，最大腹径21.2厘米，底径11.2厘米（图136-5）。M2149:8，盘口稍小，溜肩，圆腹，平底稍内凹，鸡冠高耸。器鳖作折角状，鳖的上端与盘口交接处有刻划纹以表示鸡尾。釉色黄绿，口沿及鸡首上有褐斑点彩装饰。通高24.4厘米，口径8.8厘米，最大腹径</p>
+<p>① 镇江博物馆 刘建国：《镇江东晋墓》，《文物资料丛刊》第8辑，文物出版社，1984年。<br />
+② 瑞安县文物馆：《浙江瑞安隆山晋墓清理简报》，《文物资料丛刊》第8辑，文物出版社，1984年。<br />
+③ 湖北省博物馆：《湖北汉阳蔡甸一号墓清理》，《考古》1966年第4期。<br />
+④ 瑞安县文物馆：《浙江瑞安隆山晋墓清理简报》，《文物资料丛刊》第8辑，文物出版社，1984年。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图136 青瓷鸡首壶</p>
+<p>1.Ⅲ型1式（M2079:1） 2.Ⅲ型1式（M2076:11） 3.Ⅲ型1式（M5015:17） 4.Ⅲ型2式（M3007:2）</p>
+<p>5.Ⅲ型2式（M2008:3） 6.Ⅲ型2式（M2149:8） 7.Ⅲ型2式（M2038:1） 8.Ⅲ型2式（M2033:1）</p>
+<p>9.Ⅲ型2式（M2027:10） 10.Ⅲ型3式（鄂城钢铁厂工地采集：02）</p>
+<p>21.2 厘米，底径 12.4 厘米（图 136-6；彩版 3-2；图版 47-5）。M2038:1，盘口稍小，器上部大体与盘口齐平，中下部较直，大体上与器颈平行，有类似假圈足的圆饼平底。黄绿釉，盘口的口沿上有褐斑点彩装饰，胎釉结合尚好，釉层小部分剥落。通高 23.0 厘米，口径 9.5 厘米，最大腹径 19.0 厘米，底径 11.0 厘米（图 136-7；图版 48-4）。M2033:1，盘口较小，亦有类似假圈足的圆饼形平底。器上的上部有二螭首状装饰，一螭首衔住盘口，一螭首向壑中部迴曲，二横系作方桥形。通高 18.3 厘米，口径 8.6 厘米，最大腹径 16.8 厘米，底径 9.6 厘米（图 136-8；图版 48-3）。M2027:10，肩较</p>
+<p>平宽，器鳖上部略高，系作扁宽的长方形，平底稍内凹。通高22.1厘米，口径8.7厘米，最大腹径18.5厘米，底径10.9厘米（图136-9；图版47-4）。还有2件鳖已残（图版48-1、2）。此式圆喙的带鳖鸡首壶常见于长江中下游和两广等地的东晋墓中，如南京象山M7（推定为王裒墓，卒于公元322年)①、南京大学北园大墓②、南京象山M5（王闽之墓，葬于升平二年，即公元358年)，湖南长沙烂泥冲东晋宁康三年（公元375年）墓③，广东广州沙河顶西晋太熙元年（公元290年）墓④，以及广西梧州富民坊西晋永嘉六年（公元312年）墓⑤等。</p>
+<p>3式：2件。盘口较深，颈细而高，器腹修长。鸡首为实心，上端高于盘口，中下部斜直，大体上与壶颈平行。鄂城钢铁厂工地采集：02，其下腹部内收后又直下为平底。釉色黄绿，胎釉结合较差，釉层大部分剥落。通高19.0厘米，口径8.0厘米，最大腹径13.0厘米，底径9.8厘米（图136-10；图版48-5）。此式壶亦见于浙江黄岩秀岭水库刘宋元嘉二十四年（公元447年）墓⑥，江西清江山前吴城村南朝墓⑦，湖南长沙雨花亭南朝墓⑧以及江苏句容春城南朝墓⑨等。<br />
+4. 唾壶 46 件。分别出自 42 座墓中。一般每座墓出土 1 件，少数墓出土 2 件。其中整理时未见实物者 3 件，残破过甚者 3 件，参加分型分式者为 40 件。根据口、腹和底足的变化，可分为二型。</p>
+<p>I型8件。喇叭形口，鼓腹或垂腹，一般均有矮圈足，个别的为假圈足。根据口、颈、圈足的不同，可分为三式。</p>
+<p>1式：5件。颈部一般不明显，溜肩，圈足的内底较平。M4019:1，垂腹，矮圈足外侈。肩部有菱格回纹装饰带，装饰带的下方还有二道凹弦纹。通高9.6厘米，口径8.7厘米，最大腹径12.7厘米，底径8.7厘米（图137-3；图版49-1）。M2203:1，鼓腹，器身较高，圈足亦稍高并外侈。肩部及圈足上均有凹弦纹装饰。通高10.8厘米，口径9.0厘米，最大的腹径12.4厘米，底径9.0厘米（图137-1；图版49-2）。M2030:2，颈部稍明显，垂腹，器腹较高，但圈足甚矮。肩部有弦纹及水波纹装饰带。通高13.2厘米，口径8.8厘米，最大腹径13.0厘米，底径10.0厘米（图137-2；图版49-3）。</p>
+<p>2式：2件。喇叭口稍具盘口形，颈部明显，鼓腹，或有厚肩，圈足稍高并外侈，内底鼓起。上腹部有拍印的装饰纹带及模印的朱雀、神人骑瑞兽、铺首以及佛像等装饰。釉</p>
+<p>色青绿，胎釉结合良好，均为长江下游越窑的产品。M2109:1，肩腹相交处有凹弦纹二道，其下方等距离配置模印的朱雀及神骑瑞兽三组，共六个，纹饰精致。外底满釉。通高14.8厘米，口径10.6厘米，最在腹径14.8厘米，底径10.3厘米（图137-5；彩版4-2）。M1021:1，有厚肩，肩上有凹弦纹四道，腹部上方拍印网格纹装饰带一周，其下等距离配置横印的铺首、朱雀、坐佛像及神人骑瑞兽各一个，其中神人骑瑞兽的图像在贴附时将上下方向误置为左右方向，圈足上还有一道凹弦纹装饰。外底露胎，胎色灰中泛红。通高10.0厘米，口径7.9厘米，最大腹径11.4厘米，底径8.0厘米（图137-4；彩版4-1）。此式唾壶亦见于江苏吴县狮子山西晋元康三年（公元293年）墓①和元康五年（公元295</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9.Ⅱ型1式（M2162:24）</p>
+<p>图137 青瓷唾壶</p>
+<ol>
+<li>
+<p>I型1式（M2203:1）</p>
+</li>
+<li>
+<p>I型1式（M2030:2）</p>
+</li>
+<li>
+<p>I型1式（M4019:1）</p>
+</li>
+<li>
+<p>I型2式（M1021:1）</p>
+</li>
+</ol>
+<p>5.I型2式（M2109：1）</p>
+<ol>
+<li>I型3式（M2062:3）</li>
+</ol>
+<p>7.Ⅱ型1式（M2258：1）</p>
+<p>8.Ⅱ型1式（M2204:5）</p>
+<p>年）墓①，句容县石狮西晋元康四年（公元294年）墓②，南京板桥镇石闸湖西晋永宁二年（公元302年）墓③、迈皋桥西晋永嘉二年（公元308年）墓④。</p>
+<p>3式：1件。颈部不明显，鼓腹，假圈足底向内凹进，上腹部有网格纹装饰带，其上等距离地配置模印的铺首三个。M2062:3，器内外满釉，釉色青绿，胎釉结合良好，为长江下游越窑系的产品。通高9.0厘米，口径8.0厘米，最大腹径10.0厘米，底径7.4厘米（图137-6）。</p>
+<p>Ⅱ型32件。有明显的盘口，或溜肩垂腹，或鼓腹，圈足或假圈足。根据圈足的变化，可分为二式。</p>
+<p>1式：11件。矮圈足，内底一般较平。M2258:1，盘口稍小，溜肩垂腹，腹部较扁宽，圈足外侈。肩部有凹弦纹二道。釉色黄绿，胎釉结合尚好。通高8.9厘米，口径7.4厘米，最大腹径12.2厘米，底径9.7厘米（图137-7；图版49-4）。M2204:5，盘口稍大，溜肩，垂腹。肩部有网格纹装饰带。釉色黄绿，胎釉结合较差，釉层大部分剥落。通高8.7厘米，口径8.5厘米，最大腹径9.6厘米（图137-8；图版49-5）。M2162:24，盘口较深，颈稍肥，腹扁鼓，小圈足稍外侈。肩部有三道凹弦纹。釉色黄绿，胎釉结合较好。通高9.2厘米，口径7.8厘米，最大腹径11.2厘米，底径6.1厘米（图137-9）。M2262:2，盘口较大而浅，颈较肥短，鼓腹，圈足稍高。肩部有凹弦纹及花蕊纹组成的装饰带，圈足上亦有凹弦纹装饰。釉色黄绿，胎釉结合尚好，釉层小部分剥落。通高11.0厘米，口径8.6厘米，最大腹径11.8厘米，底径8.6厘米（图138-1；图版49-6）。M2082:15，盘口较大而深，颈部不明显，溜肩，垂腹，圈足低矮。黄绿釉，胎釉结合较好。通高12.3厘米，口径10.5厘米，最大腹径13.3厘米，底径9.1厘米（图138-2；图版50-1）。M2044:2，器形与前者相似，唯底部较厚，圈足较矮，且附有一带孔之凹弧形盖。这种凹弧形带孔的唾壶盖也曾发现于江苏南京大学北园东晋大墓中⑤。此器釉色青绿，胎釉结合良好，为长江下游窑场产品。通高11.6厘米，口径9.4厘米，最大腹径11.8厘米，底径7.8厘米（图138-3；图版50-2）。此式壶亦见于江苏南京郎家山西晋元康三年（公元293年）墓⑥及宜兴周墓墩的西晋建兴四年（公元316年）至东晋太宁元年（公元323年）墓⑦中。</p>
+<p>2式：21件。假圈足，或溜肩垂腹，或鼓腹。溜肩垂腹的唾壶一般早于鼓腹的唾壶。M2007:3，盘口较大而浅，颈部较细，溜肩垂腹，假圈足大而矮并稍内凹。釉色黄绿，胎釉结合良好。通高10.4厘米，口径10.8厘米，最大腹径14.2厘米，底径12.3厘米（图138-4；图版50-3）。M2030:3，盘口较深，颈部不明显，溜肩垂腹，假圈足</p>
+<p>① 吴县文物管理委员会：《江苏吴县狮子山四号西晋墓》，《考古》1983年第8期。<br />
+② 南波：《江苏句容西晋元康四年墓》，《考古》1976年第6期。<br />
+③ 南京市文物保管委员会：《南京板桥镇石闸湖晋墓清理简报》，《文物》1965年第6期。<br />
+④ 南京市文物保管委员会：《南京迈皋桥西晋墓清理》，《考古》1966年第4期。<br />
+⑤ 南京大学历史系考古组：《南京大学北园东晋墓》，《文物》1973年第4期。<br />
+⑥ 江苏省文物管理委员会：《南京出土六朝青瓷》图37，文物出版社，1957年。<br />
+⑦ 南京博物院：《江苏宜兴晋墓的第二次发掘》，《考古》1977年第2期。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图138 青瓷唾壶</p>
+<p>1.Ⅱ型1式（M2262:2）</p>
+<p>2.Ⅱ型1式（M2082：15）</p>
+<p>3.Ⅱ型1式（M2044：2）</p>
+<p>4.Ⅱ型2式（M2007:3）</p>
+<p>5.Ⅱ型2式（M2030:3）</p>
+<p>6.Ⅱ型2式（M1016:1）</p>
+<p>7.Ⅱ型2式（M1012：7）</p>
+<p>8.Ⅱ型2式（M2051：31）</p>
+<p>稍内凹，器身较高。釉色青绿，器内外均满釉，胎釉结合良好，为长江下游窑场的产品。通高12.35厘米，口径9.6厘米，最大腹径13.3厘米，底径9.4厘米（图138-5；图版50-4）。M1016:1，盘口较深并外侈，短颈，扁鼓腹，假圈足较小且稍向内凹。通高10.4厘米，口径9.5厘米，最大腹径13.7厘米，底径8.9厘米（图138-6）。M1012:7，颈部明显，圆鼓腹，假圈足较高并略外侈。通高12.35厘米，口径8.2厘米，最大腹径11.8厘米，底径8.6厘米（图138-7；图版50-5）。M2051:31，盘口较深，颈部明显，器腹较扁，假圈足较低矮。釉色黄绿，胎釉结合尚好，釉层小部分剥落。通高12.0厘米，口径9.5厘米，最大腹径13.4厘米，底径8.9厘米（图138-8；图版50-6）。此式带假圈足的唾壶亦见于湖北汉阳蔡甸西晋晚期墓①，江苏南京象山东晋前期王</p>
+<p>氏大墓（M7)①，镇江阳彭山②、跑马山和黄山的东晋前期墓③，江西南昌东湖区东晋前期墓④，以及湖南长沙烂泥冲东晋宁康三年（公元375年）刘氏女墓⑤等。</p>
+<ol>
+<li>碗 368 件。分别出自 185 座墓中。一般是每座墓随葬 1 件或 2 件，少数墓随葬 3~6 件。在整理时器物已缺失 30 件，1 件残缺过甚，参加分型分式者为 337 件。根据口部、腹部和底部的变化，可分为七型。</li>
+</ol>
+<p>I型 121件。侈口，斜腹，平底，假圈足或极矮之圈足。根据口唇和纹饰的变化，可分为四式。</p>
+<p>1式：96件。方唇，唇部有刮釉痕迹，平底或稍内凹。外口沿下有一道较细的凹弦纹，胎面较粗糙，内底釉下常见明显的轮旋纹。胎色灰白或灰黄，釉层较薄，釉色黄绿，部分剥落（图版51-3、4）。为孙吴时期最常见的碗式。M3031:21，平底稍内凹。通高3.9厘米，口径12.1厘米，底径7.7厘米（图139-2；图版51-1）。M1002:54，平底稍内凹。通高5.7厘米，口径15.6厘米，底径9.8厘米（图139-1）。M2208:19，平底。通高5.8厘米，口径15.7厘米，底径10厘米（图139-3；图版51-2）。M1009:11，平底稍内凹。通高5.6厘米，口径16.0厘米，底径10厘米（图139-4）。同式碗亦见于湖北武昌任家湾吴黄武六年（公元227年）墓⑥和宜昌一中吴墓⑦，江西南昌吴高荣墓⑧。</p>
+<p>2式：5件。方唇，外口沿下有一二道较细的凹弦纹，其下有拍印的纹饰带一周，平底或稍内凹（图版51-6）。M2006:6，平底内凹。上腹部有类似太阳纹的连珠状纹饰带，纹饰带的上方还有褐斑点彩装饰。通高5.9厘米，口径为16.3厘米，底径9.8厘米（图139-5；图版51-5）。M2138:2，平底。上腹部的纹饰带为菱格回纹。通高5.6厘米，口径15.7厘米，底径9.4厘米（图139-6）。M4032:1，平底稍内凹。上腹部的纹饰带为网格纹。通高5.7厘米，口径15.7厘米，底径10.3厘米（图139-7）。此式碗亦见于江西鄱阳北关西晋太康三年（公元282年）墓⑨。</p>
+<p>3式：19件。圆唇，外口沿下有一道较宽、较深的凹弦纹，平底或有低矮的假圈足（图版51-8）。M2151:3，假圈足。唇部有褐斑点彩装饰。通高6.2厘米，口径18.2厘米，底径10.1厘米（图139-9；图版51-7）。M2008:1，平底。唇部有褐斑点彩装饰。通高6.2厘米，口径18.8厘米，底径11.2厘米（图139-10）。M5015:10，平底。通高</p>
+<p>① 南京市博物馆：《南京象山5号、6号、7号墓清理简报》，《文物》1972年第11期。<br />
+② 镇江市文物管理委员会：《镇江阳彭山东晋墓》，《考古》1963年第2期。<br />
+③ 镇江博物馆 刘建国：《镇江东晋墓》，《文物资料丛刊》第8辑，文物出版社，1984年。<br />
+④ 江西省博物馆：《江西南昌晋墓》，《考古》1974年第6期。<br />
+⑤ 湖南省博物馆：《长沙两晋南朝隋墓发掘报告》，《考古学报》1959年第3期。<br />
+⑥ 武汉市文物管理委员会：《武昌任家湾六朝初期墓葬清理简报》，《文物参考资料》1955年第12期。<br />
+⑦ 湖北省博物馆：《宜昌市一中三国吴墓清理简报》，《江汉考古》1983年第2期。<br />
+⑧ 江西省历史博物馆：《江西南昌市东吴高荣墓的发掘》，《考古》1980年第3期。<br />
+⑨ 唐山：《江西波阳西晋纪年墓》，《考古》1983年第9期。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图139 青瓷碗</p>
+<ol>
+<li>
+<p>I型1式（M1002:54）</p>
+</li>
+<li>
+<p>I型1式（M3031:21）</p>
+</li>
+<li>
+<p>I型1式（M2208:19）</p>
+</li>
+<li>
+<p>I型1式（M1009:11）</p>
+</li>
+</ol>
+<p>5.I型2式（M2006：6）</p>
+<ol>
+<li>
+<p>I型2式（M2138:2）</p>
+</li>
+<li>
+<p>I型2式</p>
+</li>
+<li>
+<p>I型3式（M5015:10）</p>
+</li>
+<li>
+<p>I型3式（M2151:3）</p>
+</li>
+<li>
+<p>I型3式（M2008）</p>
+</li>
+<li>
+<p>I型4式（M2076:13）</p>
+</li>
+</ol>
+<p>5.0 厘米，口径 14.4 厘米，底径 8.1 厘米（图 139-8）。此式碗在江苏南京①、镇江②和江西南昌③的西晋晚期至东晋时期墓中常有发现。</p>
+<p>4式：1件。腹较深，具有圆饼状假圈足。M2076:13，器内外均满釉。通高6.8厘米，口径18.6厘米，底径10.8厘米（图139-11）。</p>
+<p>Ⅱ型63件。器壁上部较直，下部略内收成为大平底或稍向内凹。根据器壁或器底的变化，可分为三式。</p>
+<p>1式：12件。器壁陡直，近底处稍弧收为大平底或略内凹，余同I型1式碗。M3035:5，大平底。通高5.6厘米，口径为14.4厘米，底径11.8厘米（图版52-1）。M2156:1，大平底稍内凹。通高5.7厘米，口径为13.9厘米，底径11.5厘米（图140-1)。此式碗亦见于江西南昌孙吴高荣墓④、清江县西晋墓⑤和新建县望城晋墓⑥，湖南</p>
+<p>长沙吴墓①，以及江苏江宁县秣陵关西晋太康四年（公元283年）墓②。</p>
+<p>2式：13件。器壁下部呈斜弧状。外口沿下有纹饰带，余同1式。M3046:5，大平底。有网格纹装饰带。通高6.0厘米，口径16.6厘米，底径11.8厘米（图140-2；图版52-2）。M2035:1，大平底。有菱格填线纹的纹饰带和褐斑点彩的装饰。通高5.9厘米，口径16.8厘米，底径11.8厘米（图140-3）。此式碗亦见于湖北汉阳西晋墓③，江西新干西晋墓④以及湖南浏阳西晋墓⑤。<br />
+3式：38件。圆唇，腹较深，仅外口沿下有凹弦纹装饰（图版52-4）。M2131:3，通高6.0厘米，口径14.3厘米，底径10.8厘米（图140-4；图版52-3）。M2142:6，口径16.8厘米，底径10.6厘米（图140-5）。此式碗亦见于江西南昌八一大道东晋墓⑥和清江洋湖晋墓⑦，以及江苏丹徒长岗西晋墓⑧和句容陈家村西晋墓⑨。</p>
+<p>Ⅲ型64件。直口或敛口，弧腹或曲腹，较小的平底或稍内凹。根据纹饰的变化，可分为二式。</p>
+<p>1式：55件。直口或微敛口，唇部仍有刮釉痕迹，或为圆唇，口沿外壁有一至三道凹弦纹。M2184:6，直口，弧腹，小平底。外口沿下有二道凹弦纹。釉层甚薄，大半剥落。通高4.4厘米，口径11.6厘米，底径6.6厘米（图140-6；图版52-5）。M1009：15，口微敛，曲腹，平底稍内凹。外口沿下有二道凹弦纹，釉层亦剥落。通高6.0厘米，口径15.2厘米，底径8.8厘米（图140-7；图版52-6）。M4034:4，敛口，曲腹，平底稍内凹。外口沿下有三道凹弦纹。釉色黄绿，釉层保存较好。通高5.6厘米，口径17.2厘米，底径9.8厘米（图140-8；图版52-7）。此式碗在江西南昌①，湖南长沙和浏阳①，以及江苏南京②和镇江③的孙吴后期至西晋墓中亦有发现。</p>
+<p>2式：9件。器形特征与1式相同，但外壁上除有口沿下的一至三道凹弦纹外，还具有装饰纹带，或再加饰褐斑点彩。M4032:2，直口，弧腹，平底内凹显著。外壁上有菱格填线纹的装饰带。通高5.3厘米，口径17.2厘米，底径9.3厘米（图140-9；图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图140 青瓷碗</p>
+<p>1.Ⅱ型1式（M2156：1）</p>
+<p>2.Ⅱ型2式（M3046：5）</p>
+<p>3.Ⅱ型2式（M2035：1）</p>
+<p>4.Ⅱ型3式（M2131：3）</p>
+<p>5.Ⅱ型3式（M2142:6）</p>
+<p>6.Ⅲ型1式（M2184:6）</p>
+<p>7.Ⅲ型1式（M1009：15）</p>
+<p>8.Ⅲ型1式（M4034：4）</p>
+<p>9.Ⅲ型2式（M4032：2）</p>
+<p>10.Ⅲ型2式（M2124：1）</p>
+<p>11.Ⅲ型2式（M2088:4）</p>
+<p>12.Ⅲ型2式（M4024：9）</p>
+<p>版52-8)。M2124:1，敛口，曲腹，平底稍内凹。外壁上有菱格回纹装饰带，装饰带上方的凹弦纹上还有褐斑点彩装饰。通高5.5厘米，口径15.6厘米，底径9.4厘米（图140-10；图版53-1）。M2088:4，直口，弧腹，平底。外壁上有菱格“十”字纹装饰带。通高5.8厘米，口径15.6厘米，底径9.4厘米（图140-11；图版53-2）。M4024:9，直口，弧腹，平底稍内凹。外壁上有花蕊状的联珠纹和网格折线纹的装饰带。通高5.2厘米，口径15.5厘米，底径10厘米（图140-12）。此式碗在长江中下游的西晋墓中发现较多①。</p>
+<p>IV型74件。直口，弧腹，腹较深，下腹缓收成平底或稍内凹，部分器物的平底为圆饼状的低矮假圈足或作圈足形。根据口、腹、底和纹饰的变化，可分为四式。</p>
+<p>1式：25件。方唇或圆唇，唇部有刮釉痕迹，外口沿下有一至三道凹弦纹。M2209：9，平底。外口沿下有二道凹弦纹。釉层较薄，多半剥落。通高5.2厘米，口径14.5厘米，底径8.8厘米（图141-3；图版53-3）。M4002:2，低矮的假圈足。外口沿下有三道凹弦纹。通高5.6厘米，口径15.2厘米，底径为10.0厘米（图141-2）。M2014:1，有低矮的假圈足。外口沿下有一道较细的凹弦纹。釉色黄绿，部分剥落。通高5.8厘</p>
+  </div>
+</div>
+
+<div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)"><a href="./宝鸡北首岭.html" style="color:var(--muted);text-decoration:none">← 宝鸡北首岭</a><a href="./京山屈家岭.html" style="color:var(--muted);text-decoration:none">京山屈家岭 →</a></div>
+</div>
+
+<div class="toc-float" id="tocPanel">
+  <h4>目录</h4>
+  <div id="tocContent">正在生成...</div>
+</div>
+</div>
+<footer class="site-footer">
+<div class="footer-inner">
+  <p>中国考古学专刊·丁种 实体标注知识库 &copy; 2026</p>
+  <p class="footer-links">
+    <a href="https://github.com/CrossTheOcean/archaeology-report-kb" target="_blank">GitHub</a> ·
+    <a href="../about.html">关于本站</a>
+  </p>
+</div>
+</footer>
+<script>
+
+// Generate TOC from headings
+setTimeout(function() {
+  const body = document.getElementById('reportBody');
+  const headings = body.querySelectorAll('h1, h2, h3');
+  const toc = document.getElementById('tocContent');
+  if (headings.length === 0) {
+    toc.innerHTML = '<span style="color:var(--muted)">无标题</span>';
+    return;
+  }
+  toc.innerHTML = '';
+  headings.forEach((h, i) => {
+    h.id = 'heading-' + i;
+    const a = document.createElement('a');
+    a.href = '#heading-' + i;
+    a.textContent = h.textContent;
+    a.style.paddingLeft = (h.tagName === 'H3' ? '12px' : '0');
+    toc.appendChild(a);
+  });
+}, 500);
+
+</script>
+</body>
+</html>

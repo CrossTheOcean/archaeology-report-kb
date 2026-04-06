@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>河南信阳楚墓出土文物图录 — 中国考古学专刊·丁种 — 实体标注知识库</title>
+<meta name="description" content="基于70份考古学专刊·丁种发掘报告的实体标注与结构化知识库">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏺</text></svg>">
+<style>
+:root {
+  --bg: #0f1117;
+  --card: #1a1d27;
+  --border: #2a2d3a;
+  --text: #e4e4e7;
+  --muted: #8b8fa3;
+  --accent: #f59e0b;
+  --accent2: #ec4899;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* Navigation */
+.topnav {
+  background: rgba(15, 17, 23, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.nav-links a.active { color: var(--accent); background: rgba(245,158,11,0.08); }
+
+/* Layout */
+.container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+.hero {
+  text-align: center;
+  padding: 48px 20px 32px;
+}
+.hero h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.hero .subtitle { color: var(--muted); font-size: 1.05rem; }
+
+/* Stats */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin: 28px 0 36px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 28px;
+  text-align: center;
+  min-width: 150px;
+  flex: 1;
+  max-width: 200px;
+}
+.stat-card .num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.stat-card .label { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
+
+/* Grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+}
+.card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  background: var(--card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.82rem;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+thead th:hover { color: var(--text); }
+tbody td { padding: 10px 14px; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+tbody tr { transition: background 0.15s; }
+tbody tr:hover { background: rgba(245, 158, 11, 0.04); }
+
+/* Tags */
+.era-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.ebar {
+  display: inline-block;
+  height: 6px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Report detail page */
+.report-header {
+  margin-bottom: 28px;
+}
+.report-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.report-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.report-meta span {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+.report-body h2 { font-size: 1.3rem; margin: 32px 0 16px; color: var(--accent); }
+.report-body h3 { font-size: 1.1rem; margin: 24px 0 12px; }
+.report-body p { margin-bottom: 12px; }
+.report-body ul, .report-body ol { margin: 12px 0 12px 24px; }
+.report-body li { margin-bottom: 4px; }
+.report-body table { margin: 16px 0; }
+.report-body table th { background: var(--card); }
+.report-body table td, .report-body table th {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+}
+.report-body pre {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.report-body code {
+  background: rgba(245,158,11,0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* Image placeholder */
+.img-placeholder {
+  display: inline-block;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+/* Entity chips */
+.entity-section { margin: 20px 0; }
+.entity-section h4 { color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; }
+.echip {
+  display: inline-block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  margin: 2px 3px;
+}
+
+/* Report card (for list page) */
+.report-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.report-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.report-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.report-card .rc-meta { color: var(--muted); font-size: 0.84rem; }
+.report-card .rc-entities { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-top: 6px; }
+
+/* Search & filter */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+.search-input {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 260px;
+  outline: none;
+}
+.search-input:focus { border-color: var(--accent); }
+.filter-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(245,158,11,0.08);
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  margin-top: 60px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.footer-inner { text-align: center; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.footer-links { margin-top: 8px; }
+.footer-links a { color: var(--accent); text-decoration: none; }
+.footer-links a:hover { text-decoration: underline; }
+
+/* About page */
+.about-section { margin: 28px 0; }
+.about-section h2 { font-size: 1.3rem; margin-bottom: 12px; color: var(--accent); }
+.about-section p { margin-bottom: 12px; color: var(--muted); }
+.about-section ul { margin: 8px 0 8px 20px; color: var(--muted); }
+
+/* Download page */
+.dl-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.dl-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.dl-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; }
+.dl-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #000;
+  padding: 8px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.dl-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.dl-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.dl-btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Map page */
+.map-container {
+  text-align: center;
+  margin: 24px 0;
+}
+.map-container img {
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .stats-row { gap: 10px; }
+  .stat-card { min-width: 120px; padding: 14px 16px; }
+  .stat-card .num { font-size: 1.5rem; }
+  .nav-links a { padding: 6px 10px; font-size: 0.82rem; }
+  .search-input { width: 100%; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+}
+@media (max-width: 480px) {
+  .nav-links { gap: 0; }
+  .nav-links a { padding: 6px 8px; font-size: 0.78rem; }
+  .container { padding: 16px; }
+}
+
+
+.toc-float {
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.8rem;
+  max-width: 220px;
+  z-index: 50;
+}
+.toc-float h4 { color: var(--muted); margin-bottom: 8px; }
+.toc-float a { color: var(--muted); text-decoration: none; display: block; padding: 2px 0; }
+.toc-float a:hover { color: var(--accent); }
+@media (max-width: 1024px) { .toc-float { display: none; } }
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<nav class="topnav">
+<div class="nav-inner">
+  <a href="../index.html" class="logo">🏺 考古知识库</a>
+  <div class="nav-links">
+<a href="../index.html">总览</a>
+<a href="../reports.html" class="active">报告列表</a>
+<a href="../map.html">遗址地图</a>
+<a href="../download.html">数据下载</a>
+<a href="../about.html">关于</a>
+  </div>
+</div>
+</nav>
+<div class="container" style="display:flex;gap:24px">
+<div style="flex:1;min-width:0">
+<div class="report-header">
+  <a href="../reports.html" style="color:var(--muted);font-size:0.88rem;text-decoration:none">← 返回报告列表</a>
+  <h1 style="margin-top:8px">河南信阳楚墓出土文物图录</h1>
+  <div class="report-meta">
+    <span class="era-tag" style="background:#f59e0b22;color:#f59e0b">夏商周</span>
+    <span>189 页</span>
+    <span>51.0 MB</span>
+    <span>199 个实体</span>
+    <span>密度 1.1</span>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:24px">
+  <h3>🏷️ 实体标注</h3>
+  <div class="entity-section"><h4>测量数据 (193)</h4><div><span class="echip">5</span><span class="echip">3</span><span class="echip">35</span><span class="echip">68</span><span class="echip">9</span><span class="echip">58</span><span class="echip">25</span><span class="echip">18</span><span class="echip">1</span><span class="echip">94</span><span class="echip">36</span><span class="echip">6</span><span class="echip">43</span><span class="echip">528</span><span class="echip">091</span><span class="echip">19</span><span class="echip">42</span><span class="echip">807</span><span class="echip">072</span><span class="echip">302</span><span class="echip">17</span><span class="echip">254</span><span class="echip">148</span><span class="echip">2445</span><span class="echip">1405</span><span class="echip">211</span><span class="echip">12</span><span class="echip">2005</span><span class="echip">191</span><span class="echip">104</span><span class="echip">179</span><span class="echip">98</span><span class="echip">1695</span><span class="echip">89</span><span class="echip">1585</span><span class="echip">802</span><span class="echip">149</span><span class="echip">739</span><span class="echip">1293</span><span class="echip">64</span><span class="echip">08</span><span class="echip">39</span><span class="echip">245</span><span class="echip">93</span><span class="echip">26</span><span class="echip">95</span><span class="echip">11</span><span class="echip">4218</span><span class="echip">84</span><span class="echip">485</span><span class="echip" style="color:var(--muted)">+143 更多</span></div></div>
+<div class="entity-section"><h4>陶器 (3)</h4><div><span class="echip">陶豆</span><span class="echip">陶鬲</span><span class="echip">豆</span></div></div>
+<div class="entity-section"><h4>玉器 (2)</h4><div><span class="echip">玉璧</span><span class="echip">玉璜</span></div></div>
+<div class="entity-section"><h4>铜器 (1)</h4><div><span class="echip">戈</span></div></div>
+
+</div>
+
+<div class="card">
+  <h3>📖 报告全文</h3>
+  <div class="report-body" id="reportBody">
+    <h1 id="_1">序言</h1>
+<p>信陽位于河南省南部、大别山的北麓，北臨淮河，四周羣山环抱，地勢起伏，風景秀丽，土地肥沃，一向有豫南“魚米之鄉”之称。信陽北部的長台关，形勢險要，自古以來即为南北交通咽喉。根据解放后十年來的考古調查与發掘証明：远从四五千年以前的新石器時代起，就有人类在这个地区進行劳动生產，并遺留下來許多珍貴的歷史文物。</p>
+<p>春秋中叶，信陽屬於楚民族的活动範圍，并為當時楚国的北方重鎮之一。战国初年，楚國威力强大，先后吞佪江淮流域各国，擴地數千里，疆土遛闊，北與韓、魏、宋、齐爲鄰；南达蒼梧（湖南南部）与百粵相接；西迄黔中（湖南沅陵）、巫郡（四川巫山）与秦国毗連；东抵海濱。在这廣大的国境内，雜居着漢族和其他許多少數民族。隨着政治、經濟的發展和文化的交流，逐漸形成了具有独特風格的楚國文化。楚國都城隨政治的变革，由郢（湖北江陵）經郡（湖北宜城东南）而陈（河南淮陽），复至鉅陽（安徽太和），最后迁到壽春（安徽壽縣）。當時的文化中心也从現在的湖北西部，經鄂北、豫南，最后到达皖西。</p>
+<p>楚文物不僅分佈廣泛，而且地下埋藏也是相当丰富多彩的。解放前僅在湖南长沙和安徽寿縣兩地發現过一部分銅器和木漆器，但多被帝国主义分子盜往国外，致使我国的文物遭受到不可彌补的損失！</p>
+<p>一九四九年全国解放后，人民当家作主，掌握了政权，随着全国基本建设工程的开展，在党和政府的領導下，在長沙和寿縣進行了科学的考古發掘工作，其中尤以長沙的考古發掘范圍較大，所獲楚文物也最为丰富。一九五八年以前，在長沙郊区仰天湖、楊家灣、左家公山等地，發掘了大批战国时代的墓葬。它們多是以方木為標，標</p>
+<p>內有棺，棺櫛之間隨葬着大批器物。其中銅質的有鏡、帶鈞、劍、削、天秤与砝碼、帶桿的銅鐵等；竹質的有竹簡、筐、弓、毛筆和筆筒；木漆器有羽鱉、盒、畜；木質的有俑、梳、篤、瑟、盾、戟、劍槓、方壺等；陶質的有鼎、敦、壺、盤、匣、燦爐；絲質的有帛、皮甲和皮盾牌等等。这些珍貴的文物反映了当时楚国的經濟基礎和居民的生活風尚，以及他們在文化藝術生活方面的巨大成就。</p>
+<p>信陽一号楚墓的發掘，為我們更進一步研究楚國的政治、經濟和文化，提供了豐富而珍貴的資料。它是我国考古史上的重要發現之一。一九五六年三月，信陽縣長台关“五一”農業社在小刘庄西北崗發現了这座規模宏大的木標墓后，遂報請信陽縣人民委員会，經派員調查，即轉報河南省文化局处理。一九五七年三月由河南省文化局文物工作隊会同信陽專署及信陽縣人民委員會組成信陽楚墓發掘委員会，進行考古發掘工作。</p>
+<p>此墓是一座保存较完整的大型木椁墓。墓廣口長14.5米、寬12.3米，廣深10.35米。东边还有一个長14米、寬4—5.2米的斜坡墓道。它的面積比長沙一般楚墓（長3.68米、寬2.68米）約大二十八倍。全墓共分七室（主、前、北側、南側、后中、后北、后南等七室），系用方木砌成，除主室为三層櫻木外，其余皆为單層櫻木；共用方形櫻木五百根左右，这种浩大的櫻木数量是以前未發現过的。方木的制作都相当匀称規整、棱角分明、扣縫精密，由于兩端臥有榫和槽，因而各室四隅都是犬牙交錯，互相箝制，結合得異常嚴密牢固，尤以主室四隅的榫卯套扣，最为精巧。</p>
+<p>墓内随葬器物的数量也相当丰富，共計八百余件。漆器之富丽多彩，实为其它地区楚墓出土遺物之所不及。从这批随葬器物的内容看，主要的有乐器、竹簡、木漆器、銅器、玉器、鐵器、陶器和絲織品、竹簾、葉核等等。</p>
+<p>乐器中，計有編鐘一套（共十三件，附木質鐘鍾二件，殘鐘架一件），大木瑟兩件，漆繪錦瑟一件和漆彩繪大、小鼓各一件。部分編鐘在出土时駕列于鐘架上；1号。</p>
+<p>編鐘有銘文十二字：“住（惟）習箫屈染晉人，救戎于楚兢（境）。”我們根据实物复原了鐘架，井依鐘的大小順序懸掛在复制的鐘架上，經中央音樂學院民族音樂研究所的工人員用仿制的鐘鐘測音，証明音律至今准确悠揚。特別是他們还能用这套二千多年前的古老編鐘，演奏出悠美的“东方紅”歌曲。兩件大木瑟的形制相同，都是用厚木板雕鑾而成，但已殘缺。二号楚墓出土之大型木瑟，形制与此大体相同，而且部件基本完整，因而附入加以印証。此墓出土的乐器中，以漆繪錦瑟最为奇特，瑟側和瑟面用金、朱紅、石黃、赭紅、灰綠等色，描繪出射獵、舞蹈、奏乐、烹調、餐飲、巫神等各种豔丽的圖案。井有人面獸身、蛇身獸头，或双手各持一蛇、或拱手持棒（似祭器）、或單列緩行、或張弓欲射、或負獸而归等美妙形象。彩繪大、小鼓，形制相近。大鼓置放于彩繪連尾的伏虎上，鼓側还附有对称的鋼鏽鋪首衛环，鼓壁繪以極為規矩匀称的彩色圖案。</p>
+<p>竹簡分兩組，一組置于后北室，計二十八只，共約千余字，系墨書于竹板上。每簡字數多少不一，一般在四十字左右，个别也有不足二十字的。它記載着隨葬器物的种类、名称和数量，乃是“遺策”；另一組放在前室，已成殘簡斷片，計有八十余根，約五百余字。根据竹簡文字推測，可能是一篇記載死者生平的竹書。</p>
+<p>木漆器，数量較多，約三百余种。其中較为精緻的器物計有彩繪的鎮墓獸、漆案、棺板、床和木俎、羽鱉、杯豆、車蓋以及浮雕精巧的小漆几等。</p>
+<p>銅器主要有鼎、壺、匣、盤、敦、箕、奮、鏡和長把的銅勺（匕）等。銅器毫无銹蝕。值得注意的是：出有裝滿木炭的銅爐、彩繪銅鏡、鑰孔獸紋竄形器，和削制竹簡的工具（如刀、削、鋸、錐）、毛筆、竹簡等。</p>
+<p>玉器全部放置在主室内，計有璧、璜、佩、管、帶鈞等。玉質滋潤，半透明而有光澤。</p>
+<p>鐵帶鈉共發現五件，其中錯金嵌玉的兩件極為精細，帶鈉边沿錯有金銀綠的云雷紋，中部嵌有金質龍形浮雕四枚和碧玉三塊。</p>
+<p>陶器有鼎、豆、盤、方鑑、圓鑑、籃、甕、壺及箕、鉤、刀、勺等。其中以彩繪壺最为精彩。</p>
+<p>絲織品的織法与現在常見的棉織品相同，不過經線較粗，而緯線稍細。</p>
+<p>竹席六条，均系用竹青編制而成，篩条繡細，編制精巧，文飾均称，以絹镶边。</p>
+<p>葉类有栗子、杏核、柿核和花椒等。它们的外壳还相当坚硬。栗子和杏核出土时放置在羽餾、杯豆和陶方鼎內。花椒多出現在主室椰頂的板縫內。</p>
+<p>綜合所述，信陽楚墓墓室規模之大，出土文物之多，为我国考古史上所罕見。竹簡的出土，不僅对研究我国古文字提供了重要材料，而且是研究我国歷史的珍貴文字資料；毛筆的出現，矯正了史籍所載秦代蒙恬造筆的謬誤；鐘、鼓、瑟等的出土，是我国目前所發現的唯一較成套的古乐器；木漆器的彩繪圖案，为研究我国美術史增添了不少新的資料；櫊室結構是研究我国古代木構建筑的实物例証。</p>
+<p>二号楚墓在該墓之东，是一九五八年七月發掘清理的，其形制結構与此墓大体相同，出土的珍貴文物也相当丰富。</p>
+<p>我隊为了滿足全国考古界、史學界和廣大文物爱好者的需要，茲將一号楚墓中出土的主要器物，選編成圖錄出版。由于我們的水平所限，以及編輯時間短促，錯誤之处在所难免，敬希讀者予以指正。</p>
+<p>河南省文化局文物工作隊</p>
+<p>一九五九年三月</p>
+<h1 id="_2">图次</h1>
+<p>一、信陽楚墓外景<br />
+二、木梯盖板<br />
+三、七室分佈情況<br />
+四、外棺出土情形<br />
+五、内棺棺板（部分）<br />
+六、彩繪棺板（彩色華繪圖）<br />
+七、內棺棺板彩繪部分圖案<br />
+八、編鐘及殘鐘架<br />
+九、鐘及鐘架墜<br />
+一〇、复原后的鐘架及編鐘（彩色版）<br />
+一一、編鐘插肖<br />
+一二、1号編鐘之右前側<br />
+一三、1号編鐘之左前側<br />
+一四、1号編鐘之右后側<br />
+一五、1号編鐘之左后側<br />
+一六、1号編鐘正面拓片<br />
+一七、1号编罐背面拓片<br />
+一八、1号編鐘之舞部<br />
+一九、1号編鐘之舞部拓片<br />
+二〇、2—3号編鐘<br />
+二一、4-5号編鐘<br />
+二二、6-7号编罐<br />
+二三、8-9号编罐<br />
+二四、10—11号编罐<br />
+二五、12—13号編鐘<br />
+二六、大鼓残片与鼓环<br />
+二七、大鼓紋样复原圖（彩色摹繪圖）<br />
+二八、大鼓鼓座（伏虎）</p>
+<p>二九、大鼓鼓座（伏虎）侧面<br />
+三〇、复原后之大鼓与鼓座（正面）<br />
+三一、复原后之大鼓与鼓座（侧面）<br />
+三二、大鼓鼓环（彩色版）<br />
+三三、小鼓殘片<br />
+三四、复原后之小鼓<br />
+三五、小鼓殘片（彩色摹繪圖）<br />
+三六、大型木瑟（正面及侧面）<br />
+三七、大型木瑟尾部、木柄及瑟碼<br />
+三八、二号楚墓出土之大型木瑟<br />
+三九、锦瑟殘片<br />
+四〇、錦瑟紋飾复原展开圖<br />
+四一、锦瑟殘片（彩色版）<br />
+四二、锦瑟残片（彩色版）<br />
+四三、錦瑟殘片（彩色摹繪圖）<br />
+四四、锦瑟殘片（彩色摹繪圖）<br />
+四五、1号銅鼎<br />
+四六、1号銅鼎盖<br />
+四七、2-3号銅鼎<br />
+四八、4—5号銅鼎<br />
+四九、銅鼎鈞<br />
+五〇、銅盃<br />
+五一、銅盞細部<br />
+五二、三足銅敦<br />
+五三、三足銅敦細部<br />
+五四、铜爐及木炭<br />
+五五、木爐架<br />
+五六、镂孔彌形器<br />
+五七、镶孔盒形器圖案展开圖(半面。彩色彙繪圖)<br />
+五八、双环铜壶</p>
+<p>五九、高足銅壺</p>
+<p>六〇、銅鑰</p>
+<p>六一、双环铜教</p>
+<p>六二、銅盤</p>
+<p>六三、銅匝及銅箕</p>
+<p>六四、木柄銅勺（銅匕）及木柄上之丈字</p>
+<p>六五、銅勺（銅匕）及細柄銅勺</p>
+<p>六六、銅車軸头</p>
+<p>六七、銅車軸头及軸头插肖</p>
+<p>六八、銅車軸头</p>
+<p>六九、銅車軒</p>
+<p>七〇、車馬銅飾物</p>
+<p>七一、銅馬街</p>
+<p>七二、贴金木当罐</p>
+<p>七三、貼金木当韆背面之文字</p>
+<p>七四、車欄及車飾</p>
+<p>七五、五支形車飾及銅構</p>
+<p>七六、复原后之車蓋</p>
+<p>七七、車盖弓及弓帽</p>
+<p>七八、銅戈及木鞘</p>
+<p>七九、銅戈秘及鑄</p>
+<p>八C、錯銀銅飾物</p>
+<p>八一、彩繪銅鏡（彩色版）</p>
+<p>八二、錯金嵌玉鐵帶鈎</p>
+<p>八三、錯金嵌玉鐵帶鈉（彩色展开圖）</p>
+<p>八四、錯金嵌玉鐵帶鈎</p>
+<p>八五、錯金銀鐵帶鈉</p>
+<p>八六、料珠、铜鋪首銜环及小銅环</p>
+<p>八七、玉璧</p>
+<p>八八、玉璧</p>
+<p>八九、玉璧 <br />
+九0、玉璧<br />
+九一、龍形玉飾<br />
+九二、龍形玉佩<br />
+九三、透花玉佩<br />
+九四、透花玉佩（彩色摹繪圖）<br />
+九五、王璜<br />
+九六、長条形玉管、花料珠及玉帶鈎<br />
+九七、鎮墓獸（正面。彩色版）<br />
+九八、鎮墓歌（背面。彩色版）<br />
+九九、鎮墓默（右面。彩色版）<br />
+一〇〇、鎮墓歌（左面。彩色版）<br />
+一〇一、跪俑<br />
+一〇二、俑<br />
+一〇三、舞蹈俑（正面及侧面）<br />
+一〇四、舞蹈俑（正面及背面）<br />
+一〇五、俑<br />
+一〇六、臥榻式床<br />
+一〇七、臥榻式床細部<br />
+一八、臥榻式床腿<br />
+一九、枕<br />
+一一0、木影花几<br />
+——、金銀彩繪漆案（正面及側面）<br />
+一一二、木组<br />
+一一三、复原后之木几<br />
+一一四、复原后之木案<br />
+一一五、彩繪憑几座<br />
+一一六、彩繪方座<br />
+一一七、复原后之大型彩繪方盒<br />
+一一八、复原后之小型彩繪方盒</p>
+<p>一一九、小型彩繪方盒殘片<br />
+一二〇、彩繪木俎<br />
+一二一、彩繪木組之細部<br />
+一二二、复原后之彩繪木絉<br />
+一二三、鸟首木豆（附盖）<br />
+一二四、圓盤彩繪木豆<br />
+一二五、圓盤彩繪木豆（彩色摹繪展开圖）<br />
+一二六、耳杯豆<br />
+一二七、耳杯豆上視<br />
+一二八、耳杯豆（彩色摹繪展开圖）<br />
+一二九、复原后之彩繪木匝<br />
+一三O、耳杯（正面及背面）<br />
+一三一、彩繪木勺（木匕）<br />
+一三二、彩繪木璋<br />
+一三三、复原后之木鈉<br />
+一三四、残漆器及文具箱<br />
+一三五、銅削<br />
+一三六、刻刀、錐把<br />
+一三七、锯、锛<br />
+一三八、夹刻刀及刀鞘<br />
+一三九、竹簡<br />
+一四〇、竹簡<br />
+一四一、竹簡<br />
+一四二、竹簡<br />
+一四三、竹簡<br />
+一四四、竹簡<br />
+一四五、竹簡<br />
+一四六、彩繪陶壶<br />
+一四七、帶蓋彩繪陶壶<br />
+一四八、彩繪陶壺（彩色華繪圖）</p>
+<p>一四九、陶圆鑰<br />
+一五O、陶圆<br />
+一五一、陶圆<br />
+一五二、陶方鑑<br />
+一五三、高足陶壶<br />
+一五四、绳纹陶囊<br />
+一五五、大國鼎<br />
+一五六、平底鼎<br />
+一五七、圈底鼎<br />
+一五八、小口鼎<br />
+一五九、陶孟<br />
+一六0、方鼎<br />
+一六一、陶爐<br />
+一六二、空桂盤及陶瓿 <br />
+一六三、陶盤及陶组<br />
+一六四、陶箕、陶刀及陶勺<br />
+一五六、陶豆<br />
+一六六、陶禺<br />
+一六七、陶筮<br />
+一六八、陶鏽、陶鈞及尖狀器<br />
+一六九、莫核<br />
+一七0、絹<br />
+一七一、網 <br />
+一七二、綱<br />
+一七三、綱<br />
+一七四、綵<br />
+一七五、綱<br />
+一十六、椰頂板上鋪席<br />
+一七七、后北室之竹廪細部<br />
+一七八、竹筩（底部）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一、信陽楚墓外景</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_3">二、木榔盖板</h1>
+<p>长8.9米，宽7.58米，高2.5米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+三、七室分佈情況</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_4">四、外棺出土情形</h1>
+<p>长2.25米，宽1.18米，高1.1米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+五、内棺棺板（部分）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_5">六、彩繪棺板（彩色摹繪圖）</h1>
+<p>上：长1.94米，宽0.36米；下：长1.6米，宽0.43米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>七、內棺棺板彩繪部分圖案</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>八、編鐘及殘鐘架</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_6">九、鐘鍾及鐘架墩</h1>
+<p>上：柄长0.528米，锤长0.091米；</p>
+<p>下：长0.35米，宽0.3米，高0.19米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一〇、复原后的鐘架及編鐘（彩色版）<br />
+横梁长2.42米，通高0.807米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一一、編鐘插肖</p>
+<p>长0.072米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="1">一二、1号編鐘之右前側</h1>
+<p>通高0.302米，鐵間0.17米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一三、1号編鐘之左前側</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一四、1号編鐘之右后側</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一五、1号編鐘之左后側</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一六、1号編鐘正面拓片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一七、1号編鐘背面拓片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一八、1号編鐘之舞部</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一九、1号編鐘之舞部拓片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="23">二〇、2—3号編鐘</h1>
+<p>左：通高0.254米，铁間0.148米；</p>
+<p>右：通高0.2445米， 銖間0.1405米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="67">二二、6—7号編鐘</h1>
+<p>左：通高0.211米，铁間0.12米；</p>
+<p>右：通高0.2005米， $1.1205$ 米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="89">二三、8—9号編鐘</h1>
+<p>左：通高0.191米，铁間0.104米；</p>
+<p>右：通高0.179米， 鐵間0.98米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="1011">二四、10—11号編鐘</h1>
+<p>左：通高0.1695米， 銖間0.89米；</p>
+<p>右：通高0.1585米，鐵間0.802米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="1213">二五、12—13号編鐘</h1>
+<p>左：通高0.149米，铁間0.739米；</p>
+<p>右。通高0.1293米，鐵間0.64米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+二六、大鼓残片与鼓环</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+二八、大鼓鼓座（伏虎）<br />
+长1.08米，高0.39米，宽0.245米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>二九、大鼓鼓座（伏虎）侧面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_7">三〇、复原后之大鼓与鼓座（正面）</h1>
+<p>鼓直径0.93米，厚0.26米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+三一、复原后之大鼓与鼓座（侧面）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_8">三二、大鼓鼓环（彩色版）</h1>
+<p>通高0.12米，宽0.95米，环径0.11米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>三三、小鼓残片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_9">三四、复原后之小鼓</h1>
+<p>直径0.4218米，厚0.12米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+三五、小鼓殘片（彩色摹繪圖）</p>
+<p>約为实物的3/5。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_10">三六、大型木瑟（正面及侧面）</h1>
+<p>长1.84米，宽0.485米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>三七、大型木瑟尾部、木柄及瑟碼</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>三九、錦瑟殘片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>四一、錦瑟殘片（彩色版）</p>
+<p>約放大1/3。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_11">四二、錦瑟殘片（彩色版）</h1>
+<p>約放大1/4。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>四三、錦瑟殘片（彩色摹繪圖）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+約原大。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_12">四四、錦瑟殘片（彩色摹繪圖）</h1>
+<p>约为实物的1/2强。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="1_1">四五、1号銅鼎</h1>
+<p>通高0.393米，口径0.32米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+四六、1号銅鼎盖</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>四七、2—3号銅鼎</p>
+<p>左：通高0.33米；右：通高0.33米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>四八、4—5号銅鼎</p>
+<p>左：通高0.242米；右：通高0.246米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>四九、銅鼎鈞</p>
+<p>长0.235米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_13">五〇、銅盃</h1>
+<p>通高0.245米，口径0.109米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+五一、銅盃細部</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_14">五二、三足銅敦</h1>
+<p>通高0.266米，口径0.213米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+五三、三足銅敦細部</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>五四、銅爐及木炭</p>
+<p>爐高0.09米，口径0.338米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_15">五五、木爐架</h1>
+<p>高0.365米，上口径0.405米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>五六、镶孔囊形器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+通高0.14米，口径0.117米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>五八、双环銅壺</p>
+<p>通高0.381米，口径0.091米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>五九、高足銅壺</p>
+<p>高0.2245米，口径0.088米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>六〇、銅鑰</p>
+<p>通高0.185米，口径0.1米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_16">六一、双环铜敦</h1>
+<p>通高0.201米，口径0.314米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>六二、銅盤<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+高0.109米，口径0.486米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_17">六三、銅匝及鋼箕</h1>
+<p>左：通长0.26米，高0.08米；右：长0.25米，前宽0.24米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>六四、木柄銅勺（銅匕）及木柄上之文字</p>
+<p>通长1.439米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>六六、銅車軸头</p>
+<p>长0.051米，粗端直径0.0515米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_18">六九、銅車軒</h1>
+<p>上：通长0.179米，直径0.08米；</p>
+<p>下：通长0.157米，直径0.085米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_19">七一、銅馬街</h1>
+<p>上：通长0.21米；下：通长0.215米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_20">七二、貼金木当韆</h1>
+<p>长径0.115米，短径0.096米，高0.07米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>七三、貼金木当韆背面之文字</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_21">七四、車欄及車飾</h1>
+<p>車栏：長1.099米，寬0.22米；車飾：高0.782米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>七五、五支形車飾及銅構</p>
+<p>左：长0.124米；右：长0.055米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_22">七六、复原后之車盖</h1>
+<p>长1.82米，宽1.36米，高0.84米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+七七、車盖弓及弓帽<br />
+通长0.87米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_23">七八、銅戈及木鞘</h1>
+<p>戈：长0.205米，援长0.131；木鞘：援长0.134米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>七九、銅戈秘及鑄</p>
+<p>通长1.6米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_24">八一、彩繪銅鏡（彩色版）</h1>
+<p>直径0.14米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+八二、錯金嵌玉鐵帶鈞</p>
+<p>长0.224米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+八三、錯金嵌玉鐵帶鈉（彩色展开圖）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+八四、錯金嵌玉鐵帶鈉</p>
+<p>长0.215米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>八五、錯金銀鉄帶鈎 <br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+左：长0.224米；中：长0.166米；右：长0.094米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>八六、料珠、銅鋪首衝环及小銅环</p>
+<p>銅鋪首銜环：直徑0.026米；小銅环：直徑0.013米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>八七、玉璧</p>
+<p>外径0.151米，厚0.004米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>八、玉璧</p>
+<p>外径0.136米，厚0.009米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>八九、玉璧</p>
+<p>外径0.111米，厚0.0065米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="o">九O、玉璧</h1>
+<p>上左：外径0.099米，厚0.0045米；右：外径0.09米，厚0.005米；</p>
+<p>下左：外径0.052米，厚0.0045米；右：外径0.05米，厚0.0035米。</p>
+<p>九一、龍形玉飾<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+长0.144米，厚0.003米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_25">九二、龍形玉佩</h1>
+<p>长0.1003米，厚0.005米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_26">九三、透花玉佩</h1>
+<p>上：长0.086米，厚0.0035米；中：长0.077米，厚0.003米；</p>
+<p>下：长0.078米，宽0.0035米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>九四、透花玉佩（彩色摹繪圖）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+九五、玉璜</p>
+<p>自上而下：1.长0.126米，厚0.005米；2.长0.131米，厚0.005米；</p>
+<p>3.长0.141米，厚0.0045米；4.长0.151米，厚0.005米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>九六、長条形玉管、花料珠及玉帶鈞</p>
+<p>左：长0.088米，厚0.005米；中：长0.018米，径0.013米；</p>
+<p>右：长0.069米，厚0.022米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_27">九七、鎮墓獸（正面。彩色版）</h1>
+<p>通高1.35米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+九八、鎮墓獸（背面。彩色版）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+九九、鎮墓獸（右面。彩色版）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一〇〇、鎮墓獸（左面。彩色版）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一〇一、跪俑</p>
+<p>高0.385米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_28">一〇二、俑</h1>
+<p>左：高0.775米；右：高0.814米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_29">一〇三、舞蹈俑（正面及侧面）</h1>
+<p>高0.64米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一〇四、舞蹈俑（正面及背面）</p>
+<p>高0.627米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一〇五、俑<br />
+高0.465米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一〇六、臥榻式床</p>
+<p>长2.182米，宽1.39米，通高0.613米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一〇七、臥榻式床細部</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一〇八、臥榻式床腿</p>
+<p>高0.19米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一〇九、枕</p>
+<p>长0.26米，高0.124米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一一O、木影花几</p>
+<p>长0.604米，高0.48米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一一一、金銀彩繪漆案（正面及側面）</p>
+<p>长1.5米，宽0.72米，通高0.124米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一一二、木俎</p>
+<p>通高0.98米 长0.96米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_30">一一三、复原后之木几</h1>
+<p>通高0.57米，长0.45米，宽0.186米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一一四、复原后之木案</p>
+<p>高0.23米，长0.99米，宽0.432米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_31">一一五、彩繪憑几座</h1>
+<p>残高0.232米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一一六、彩繪方座</p>
+<p>高0.045米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一一七、复原后之大型彩繪方盒</p>
+<p>通高0.345米，口长0.31米，口宽0.27米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一一八、复原后之小型彩繪方盒</p>
+<p>通高0.325米，口长0.265米，口宽0.22米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一一九、小型彩繪方盒殘片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_32">一二〇、彩繪木俎</h1>
+<p>高0.144米，面长0.245米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一二一、彩繪木俎之細部</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_33">一二二、复原后之彩繪木俎</h1>
+<p>高0.1米，长0.238米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_34">一二三、鸟首木豆（附盖）</h1>
+<p>高0.271米，盘径0.161米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_35">一二四、圓盤彩繪木豆</h1>
+<p>高0.193米，盘径0.191米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（图士）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_36">一二六、耳杯豆</h1>
+<p>高0.175米，长径0.179米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一二七、耳杯豆上視</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一二八、耳杯豆（彩色摹繪展开圖）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_37">一二九、复原后之彩繪木匝</h1>
+<p>高0.085米，口长径0.19米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一三一、彩繪木勺（木七）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+通长0.67米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_38">一三二、彩繪木璋</h1>
+<p>通长0.41米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_39">一三三、复原后之木鈺</h1>
+<p>通高0.805米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_40">一三四、残漆器及文具箱</h1>
+<p>下：长0.359米，宽0.161米，高0.147米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一三五、銅削</p>
+<p>长0.231米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_41">一三六、刻刀、錐把</h1>
+<p>刻刀：左长0.23米，中残长0.213米；锥：通长0.094米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一三七、锯、锛</p>
+<p>上：通长0.293米，下：通长0.278米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_42">一三八、夹刻刀及刀鞘</h1>
+<p>通长0.206米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一三九、竹簡</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一四O、竹簡</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一四一、竹簡</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一四二、竹簡</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一四三、竹簡</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一四四、竹簡</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一四六、彩繪陶壶</p>
+<p>高0.393米，口径0.114米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一四七、帶蓋彩繪陶壺</p>
+<p>通高0.42米，口径0.114米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一四八、彩繪陶壺（彩色摹繪圖）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一四九、陶圓鑑</p>
+<p>高0.324米，口径0.468米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一五〇、陶圓鑑</p>
+<p>高0.313米，口径0.316米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_43">一五一、陶圆鑑</h1>
+<p>高0.324米，口径0.468米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_44">一五二、陶方鑑</h1>
+<p>高0.313米，口径0.355米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_45">一五三、高足陶壶</h1>
+<p>通高0.268米，口径0.05米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一五四、繩紋陶褒</p>
+<p>高0.386米，口径0.228米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一五五、大圆鼎</p>
+<p>高0.351米，口径0.474米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一五六、平底鼎</p>
+<p>通高0.291米，口径0.275米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一五七、圆底鼎</p>
+<p>通高0.236米，口径0.153米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一五八、小口鼎通高0.294米，口径0.105米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一五九、陶盍</p>
+<p>通高0.316米，口径0.1米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一六〇、方鼎</p>
+<p>通高0.182米，长0.466米，宽0.186米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一六一、陶爐</p>
+<p>通高0.145米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_46">一六二、空柱盤及陶瓿</h1>
+<p>左：高0.101米，口径0.289米；右：高0.185米，口径0.099米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_47">一六三、陶盤及陶俎</h1>
+<p>上：高0.0765米，口径0.096米；下：高0.085米，长0.195米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一六四、陶箕、陶刀及陶勺</p>
+<p>左：长0.204米，口宽0.206米；中：长0.294米，前宽0.052米；</p>
+<p>右：长0.133米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_48">一六五、陶豆</h1>
+<p>左：高0.256米，口径0.174米；右：高0.18米，口径0.142米，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一六六、陶鬲</p>
+<p>高0.127米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一六九、葉核</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一七0、絹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一七一、絹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一七二、絳</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一七三、絹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一七四、絹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一七五、絹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一七六、標頂板上鋪席</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>一七七、后北室之竹簾細部</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一七八、竹箐（底部）</p>
+<p>[General Information]</p>
+<p>书名 = 河南信阳楚墓出土文物图录</p>
+<p>作者 = 河南省文化局文物工作队编</p>
+<p>页数 $= 178$</p>
+<p>SS号=10320171</p>
+<p>出版日期 = 1959 年 09 月第 1 版</p>
+  </div>
+</div>
+
+<div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)"><a href="./长沙发掘报告.html" style="color:var(--muted);text-decoration:none">← 长沙发掘报告</a><a href="./青海柳湾.html" style="color:var(--muted);text-decoration:none">青海柳湾 →</a></div>
+</div>
+
+<div class="toc-float" id="tocPanel">
+  <h4>目录</h4>
+  <div id="tocContent">正在生成...</div>
+</div>
+</div>
+<footer class="site-footer">
+<div class="footer-inner">
+  <p>中国考古学专刊·丁种 实体标注知识库 &copy; 2026</p>
+  <p class="footer-links">
+    <a href="https://github.com/CrossTheOcean/archaeology-report-kb" target="_blank">GitHub</a> ·
+    <a href="../about.html">关于本站</a>
+  </p>
+</div>
+</footer>
+<script>
+
+// Generate TOC from headings
+setTimeout(function() {
+  const body = document.getElementById('reportBody');
+  const headings = body.querySelectorAll('h1, h2, h3');
+  const toc = document.getElementById('tocContent');
+  if (headings.length === 0) {
+    toc.innerHTML = '<span style="color:var(--muted)">无标题</span>';
+    return;
+  }
+  toc.innerHTML = '';
+  headings.forEach((h, i) => {
+    h.id = 'heading-' + i;
+    const a = document.createElement('a');
+    a.href = '#heading-' + i;
+    a.textContent = h.textContent;
+    a.style.paddingLeft = (h.tagName === 'H3' ? '12px' : '0');
+    toc.appendChild(a);
+  });
+}, 500);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>巩县铁生沟 — 中国考古学专刊·丁种 — 实体标注知识库</title>
+<meta name="description" content="基于70份考古学专刊·丁种发掘报告的实体标注与结构化知识库">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏺</text></svg>">
+<style>
+:root {
+  --bg: #0f1117;
+  --card: #1a1d27;
+  --border: #2a2d3a;
+  --text: #e4e4e7;
+  --muted: #8b8fa3;
+  --accent: #f59e0b;
+  --accent2: #ec4899;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* Navigation */
+.topnav {
+  background: rgba(15, 17, 23, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.nav-links a.active { color: var(--accent); background: rgba(245,158,11,0.08); }
+
+/* Layout */
+.container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+.hero {
+  text-align: center;
+  padding: 48px 20px 32px;
+}
+.hero h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.hero .subtitle { color: var(--muted); font-size: 1.05rem; }
+
+/* Stats */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin: 28px 0 36px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 28px;
+  text-align: center;
+  min-width: 150px;
+  flex: 1;
+  max-width: 200px;
+}
+.stat-card .num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.stat-card .label { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
+
+/* Grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+}
+.card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  background: var(--card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.82rem;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+thead th:hover { color: var(--text); }
+tbody td { padding: 10px 14px; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+tbody tr { transition: background 0.15s; }
+tbody tr:hover { background: rgba(245, 158, 11, 0.04); }
+
+/* Tags */
+.era-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.ebar {
+  display: inline-block;
+  height: 6px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Report detail page */
+.report-header {
+  margin-bottom: 28px;
+}
+.report-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.report-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.report-meta span {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+.report-body h2 { font-size: 1.3rem; margin: 32px 0 16px; color: var(--accent); }
+.report-body h3 { font-size: 1.1rem; margin: 24px 0 12px; }
+.report-body p { margin-bottom: 12px; }
+.report-body ul, .report-body ol { margin: 12px 0 12px 24px; }
+.report-body li { margin-bottom: 4px; }
+.report-body table { margin: 16px 0; }
+.report-body table th { background: var(--card); }
+.report-body table td, .report-body table th {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+}
+.report-body pre {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.report-body code {
+  background: rgba(245,158,11,0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* Image placeholder */
+.img-placeholder {
+  display: inline-block;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+/* Entity chips */
+.entity-section { margin: 20px 0; }
+.entity-section h4 { color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; }
+.echip {
+  display: inline-block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  margin: 2px 3px;
+}
+
+/* Report card (for list page) */
+.report-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.report-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.report-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.report-card .rc-meta { color: var(--muted); font-size: 0.84rem; }
+.report-card .rc-entities { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-top: 6px; }
+
+/* Search & filter */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+.search-input {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 260px;
+  outline: none;
+}
+.search-input:focus { border-color: var(--accent); }
+.filter-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(245,158,11,0.08);
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  margin-top: 60px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.footer-inner { text-align: center; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.footer-links { margin-top: 8px; }
+.footer-links a { color: var(--accent); text-decoration: none; }
+.footer-links a:hover { text-decoration: underline; }
+
+/* About page */
+.about-section { margin: 28px 0; }
+.about-section h2 { font-size: 1.3rem; margin-bottom: 12px; color: var(--accent); }
+.about-section p { margin-bottom: 12px; color: var(--muted); }
+.about-section ul { margin: 8px 0 8px 20px; color: var(--muted); }
+
+/* Download page */
+.dl-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.dl-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.dl-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; }
+.dl-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #000;
+  padding: 8px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.dl-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.dl-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.dl-btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Map page */
+.map-container {
+  text-align: center;
+  margin: 24px 0;
+}
+.map-container img {
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .stats-row { gap: 10px; }
+  .stat-card { min-width: 120px; padding: 14px 16px; }
+  .stat-card .num { font-size: 1.5rem; }
+  .nav-links a { padding: 6px 10px; font-size: 0.82rem; }
+  .search-input { width: 100%; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+}
+@media (max-width: 480px) {
+  .nav-links { gap: 0; }
+  .nav-links a { padding: 6px 8px; font-size: 0.78rem; }
+  .container { padding: 16px; }
+}
+
+
+.toc-float {
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.8rem;
+  max-width: 220px;
+  z-index: 50;
+}
+.toc-float h4 { color: var(--muted); margin-bottom: 8px; }
+.toc-float a { color: var(--muted); text-decoration: none; display: block; padding: 2px 0; }
+.toc-float a:hover { color: var(--accent); }
+@media (max-width: 1024px) { .toc-float { display: none; } }
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<nav class="topnav">
+<div class="nav-inner">
+  <a href="../index.html" class="logo">🏺 考古知识库</a>
+  <div class="nav-links">
+<a href="../index.html">总览</a>
+<a href="../reports.html" class="active">报告列表</a>
+<a href="../map.html">遗址地图</a>
+<a href="../download.html">数据下载</a>
+<a href="../about.html">关于</a>
+  </div>
+</div>
+</nav>
+<div class="container" style="display:flex;gap:24px">
+<div style="flex:1;min-width:0">
+<div class="report-header">
+  <a href="../reports.html" style="color:var(--muted);font-size:0.88rem;text-decoration:none">← 返回报告列表</a>
+  <h1 style="margin-top:8px">巩县铁生沟</h1>
+  <div class="report-meta">
+    <span class="era-tag" style="background:#ef444422;color:#ef4444">秦汉</span>
+    <span>67 页</span>
+    <span>29.9 MB</span>
+    <span>228 个实体</span>
+    <span>密度 3.4</span>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:24px">
+  <h3>🏷️ 实体标注</h3>
+  <div class="entity-section"><h4>器物编号 (101)</h4><div><span class="echip">T14:31</span><span class="echip">T14:23</span><span class="echip">T10:19</span><span class="echip">T2:21</span><span class="echip">T2:20</span><span class="echip">T16:5</span><span class="echip">T6:15</span><span class="echip">T5:8</span><span class="echip">T4:2</span><span class="echip">T10:7</span><span class="echip">T5:46</span><span class="echip">T12:9</span><span class="echip">T5:19</span><span class="echip">T8:3</span><span class="echip">T5:48</span><span class="echip">T5:26</span><span class="echip">T18:24</span><span class="echip">T6:9</span><span class="echip">T16:18</span><span class="echip">T12:7</span><span class="echip">T4:1</span><span class="echip">T8:1</span><span class="echip">T5:20</span><span class="echip">T5:24</span><span class="echip">T8:2</span><span class="echip">T8:22</span><span class="echip">T13:1</span><span class="echip">T10:9</span><span class="echip">T14:25</span><span class="echip">T13:4</span><span class="echip">T10:8</span><span class="echip">T10:11</span><span class="echip">T10:16</span><span class="echip">T12:19</span><span class="echip">T17:33</span><span class="echip">T16:31</span><span class="echip">T17:42</span><span class="echip">T17:43</span><span class="echip">T17:36</span><span class="echip">T17:41</span><span class="echip">T17:40</span><span class="echip">T16:32</span><span class="echip">T17:39</span><span class="echip">T17:35</span><span class="echip">T17:32</span><span class="echip">T17:38</span><span class="echip">T16:30</span><span class="echip">T17:30</span><span class="echip">T17:44</span><span class="echip">T17:53</span><span class="echip" style="color:var(--muted)">+51 更多</span></div></div>
+<div class="entity-section"><h4>测量数据 (60)</h4><div><span class="echip">0.2</span><span class="echip">0.4</span><span class="echip">0.75</span><span class="echip">2.2</span><span class="echip">300</span><span class="echip">9</span><span class="echip">03</span><span class="echip">8</span><span class="echip">4</span><span class="echip">5</span><span class="echip">1</span><span class="echip">40</span><span class="echip">3.5</span><span class="echip">6</span><span class="echip">32</span><span class="echip">59</span><span class="echip">78</span><span class="echip">48</span><span class="echip">0.8</span><span class="echip">05</span><span class="echip">2</span><span class="echip">0.24</span><span class="echip">15</span><span class="echip">54</span><span class="echip">88</span><span class="echip">01</span><span class="echip">7</span><span class="echip">98</span><span class="echip">3</span><span class="echip">25</span><span class="echip">95</span><span class="echip">0.25</span><span class="echip">31</span><span class="echip">7.9</span><span class="echip">20</span><span class="echip">16</span><span class="echip">0.62</span><span class="echip">38</span><span class="echip">0.08</span><span class="echip">0.38</span><span class="echip">65</span><span class="echip">24</span><span class="echip">67</span><span class="echip">69</span><span class="echip">14</span><span class="echip">99</span><span class="echip">82</span><span class="echip">1.5</span><span class="echip">2.7</span><span class="echip">8.6</span><span class="echip" style="color:var(--muted)">+10 更多</span></div></div>
+<div class="entity-section"><h4>遗迹编号 (31)</h4><div><span class="echip">AH</span><span class="echip">T1</span><span class="echip">T2</span><span class="echip">T3</span><span class="echip">K590306</span><span class="echip">K590307</span><span class="echip">K590308</span><span class="echip">T12</span><span class="echip">T14</span><span class="echip">K590309</span><span class="echip">K590310</span><span class="echip">K590311</span><span class="echip">K590312</span><span class="echip">T8</span><span class="echip">T10</span><span class="echip">T16</span><span class="echip">T13</span><span class="echip">T17</span><span class="echip">T6</span><span class="echip">T5</span><span class="echip">T4</span><span class="echip">T18</span><span class="echip">T7</span><span class="echip">H22</span><span class="echip">T1104</span><span class="echip">II</span><span class="echip">H292</span><span class="echip">VI</span><span class="echip">T9</span><span class="echip">XT</span><span class="echip">T19</span></div></div>
+<div class="entity-section"><h4>探方编号 (18)</h4><div><span class="echip">T1</span><span class="echip">T2</span><span class="echip">T3</span><span class="echip">T12</span><span class="echip">T14</span><span class="echip">T8</span><span class="echip">T10</span><span class="echip">T16</span><span class="echip">T13</span><span class="echip">T17</span><span class="echip">T6</span><span class="echip">T5</span><span class="echip">T4</span><span class="echip">T18</span><span class="echip">T7</span><span class="echip">T1104</span><span class="echip">T9</span><span class="echip">T19</span></div></div>
+<div class="entity-section"><h4>陶器 (9)</h4><div><span class="echip">陶盆</span><span class="echip">陶壶</span><span class="echip">陶罐</span><span class="echip">盆</span><span class="echip">瓮</span><span class="echip">壶</span><span class="echip">缸</span><span class="echip">罐</span><span class="echip">釜</span></div></div>
+<div class="entity-section"><h4>遗存类型 (3)</h4><div><span class="echip">木炭</span><span class="echip">采集品</span><span class="echip">兽骨</span></div></div>
+<div class="entity-section"><h4>铜器 (1)</h4><div><span class="echip">剑</span></div></div>
+<div class="entity-section"><h4>材质 (1)</h4><div><span class="echip">铁器</span></div></div>
+<div class="entity-section"><h4>地层 (1)</h4><div><span class="echip">表土层</span></div></div>
+<div class="entity-section"><h4>保存状况 (1)</h4><div><span class="echip">残缺</span></div></div>
+<div class="entity-section"><h4>地理位置 (1)</h4><div><span class="echip">村</span></div></div>
+<div class="entity-section"><h4>发掘信息 (1)</h4><div><span class="echip">科学出版社</span></div></div>
+
+</div>
+
+<div class="card">
+  <h3>📖 报告全文</h3>
+  <div class="report-body" id="reportBody">
+    <h1 id="_1">中国田野考古报告集</h1>
+<p>考古学專刊</p>
+<p>丁种第十三号</p>
+<h1 id="_2">巩县铁生沟</h1>
+<p>河南省文化局文物工作队</p>
+<p>中国科学院考古研究所編輯</p>
+<p>文物出版社出版</p>
+<h1 id="_3">中国田野考古报告集</h1>
+<p>考古学專刊</p>
+<p>丁种第十三号</p>
+<h1 id="_4">巩县铁生沟</h1>
+<p>河南省文化局文物工作队</p>
+<h1 id="_5">中国田野考古报告集</h1>
+<p>考古学專刊</p>
+<p>丁种第十三号</p>
+<h1 id="_6">巩县铁生沟</h1>
+<p>河南省文化局文物工作队</p>
+<p>中国科学院考古研究所編輯</p>
+<p>文物出版社出版</p>
+<h1 id="_7">内容提要</h1>
+<p>1958—1959年間，河南省文化局文物工作队在巩县铁生沟发掘了一处汉代冶铁遗址。此报告扼要地介绍了遗址中的矿坑、冶炼工場、居住址以及从开采矿石到制出成品的全部生产設備的遺迹和遺物。</p>
+<p>这处冶铁遗址的冶炼设备，已經能炼出质量較高的低炭鋼，并且已能将原煤和煤勅用于冶炼工业。这足以説明汉代劳动人民在冶鐵技術方面的伟大成就。它是研究我国冶炼技術史的重要參考資料。</p>
+<h1 id="x3hahbckoe-ipobnhchnajibhoe-bipo-kjbtypbi">X3HAHbCKOE IPOBnHcHnAJIbHOE BIPO KJbTYPbI</h1>
+<h1 id="apxeojiohuecka-3kceiiinha">APXEOJIOHUECKA 3KCEIIINHA</h1>
+<h1 id="telii3hroybyhcrahe">TELII3HroyBΓYHCRAHE</h1>
+<p>（Cpe3HomeHa aHJINHckOM 13bIke）</p>
+<p>IoppeaakneH</p>
+<p>HCTHTyta apxeoJorHH AH KHTa</p>
+<p>H3aTeJIbCTBO «BbBy»</p>
+<p>$\Pi \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa \kappa$ 1962</p>
+<h1 id="tieh-sheng-kou-kung-hsien">TIEH SHENG KOU, KUNG HSIEN</h1>
+<p>(With An English Abstract)</p>
+<p>by</p>
+<p>The Archaeological Team, Bureau of Culture</p>
+<p>Honan Province</p>
+<p>Edited by</p>
+<p>The Institute of Archaeology, Academia Sinica</p>
+<p>Published by</p>
+<p>The Wen Wu Press</p>
+<p>Peking·1962</p>
+<h1 id="_8">目 录</h1>
+<p>一、前言 (1)<br />
+二、发掘概述 (2)<br />
+三、矿山、矿井和矿石 (5)</p>
+<p>（一）矿山和矿井 (5)<br />
+（二）矿石 (6)<br />
+（三）矿石加工 (6)</p>
+<p>四、炼炉及其有关的遗迹、遗物 ………………………………………… (8)</p>
+<p>（一）炼炉的构造 ………………………………………… (8)<br />
+（二）建炉用的耐火材料 (17)<br />
+（三）燃料 (18)<br />
+（四）藏铁坑和铁块 (20)<br />
+（五）炼渣 (21)<br />
+（六）其他 (22)</p>
+<p>五、熔炉、锻炉及其有关的遗迹、遗物 (23)</p>
+<p>（一）熔炉、铸造坑和铸造坑 ………………………………………… (23)<br />
+（二）锻炉 (26)</p>
+<p>六、居住遗迹和建筑材料 (27)</p>
+<p>（一）居住遗迹 (27) <br />
+（二）建筑材料 (28)</p>
+<p>七、出土遗物 (30)</p>
+<p>（一）铁器 (30)<br />
+（二）陶器 (34)<br />
+（三）其他 (36)</p>
+<p>八、結 語 ………………………………………… (38)</p>
+<h1 id="_9">插图目录</h1>
+<p>一 河南巩县铁生沟位置示意图· (2)<br />
+二巩县铁生沟汉代冶铁遗址位置图· （3）<br />
+三 探方16南壁剖面图 (4)<br />
+四 鐵生沟冶铁遗址总平面图· (4)<br />
+五 海綿錫炉炉14平面、剖面图· (8)<br />
+六 海綿鐵炉炉12平面、剖面图· (9)<br />
+七 海棉铁炉炉13平面、剖面图· (9)<br />
+八 圆形炼炉炉18平面、剖面图· (10) <br />
+九 房基1与排炉(7—11)平面、剖面图 ………………………………………… (12)</p>
+<p>一○ 低温炒鍋炉炉17平面、剖面图 (13)<br />
+—— 炼炉15平面、剖面图 ………………………………………… (14)<br />
+一 二 探方12平面图 (15)<br />
+一三 砖坏及鼓风管 (17)<br />
+一四 配料池平面、剖面图 (22)<br />
+一五 熔炉炉4平面、剖面图 (23)<br />
+一六 探方2平面图 (24)<br />
+一七 煅炉炉20平面、剖面图 (25)<br />
+一八 房基1与房基3平面图 (27)<br />
+一九 坑19平面、剖面图 (28)<br />
+二〇 砖、瓦紋飾拓本 (29)<br />
+二一 铁器 (31)<br />
+二二 铁器· (327)<br />
+二三 陶器上的文字拓本· (34<br />
+二四 陶器· (35<br />
+二五 陶器· (36)<br />
+二六 銅 錢· (36)</p>
+<h1 id="_10">图版目录</h1>
+<p>壹 铁生沟汉代冶铁遗址全景</p>
+<p>贰北庄、罗汉寺发现的汉代采矿区遗址</p>
+<p>参 炼炉、房基等遗迹</p>
+<p>肆 排炉与长方形炼炉</p>
+<p>伍 鍍炉与熔炉</p>
+<p>陆汉代的各种炼炉</p>
+<p>塗 炉壁残块及耐火砖</p>
+<p>耐火砖、木炭等</p>
+<p>玖 耐火砖坏及大铁块等</p>
+<p>拾 鑫造坑、藏铁坑遗址与泥范</p>
+<p>拾壹 鼓风管等</p>
+<p>拾贰 铁器</p>
+<p>拾参 铁 器</p>
+<p>拾肆 陶器上的刻文</p>
+<p>拾伍 砖、瓦及陶器上的刻文</p>
+<p>拾陆 陶、铜、石器</p>
+<h1 id="_11">一、前言</h1>
+<p>1958年的秋季，在河南省巩县铁生沟、南阳瓦房庄、临汝夏店、滕店等地，曾先后发现了古代冶铁遗址。其中巩县铁生沟是一处非常重要的汉代冶铁遗址。同年10月，我队派人前往巩县铁生沟作实地调查，认为遗址本身具有重要的学术价值，对于研究汉代的冶铁工业和生产力发展的情况，可以提供丰富的材料，因此，决定进行发掘。</p>
+<p>发掘工作分两个阶段进行。第一段为試掘，从1958年12月开始至1959年元月結束。發現了不少重要的遺迹和遺物，進一步確定遺址的年代，幷計劃作較大面积的发掘。1959年2月25日起，开始了第二階段的发掘，直到同年9月20日結束。发掘工作是在河南省文化局領導下進行的。巩县党政領導會給以大力支持；涉村公社第一生产队也會給以協助，使我們完成了发掘任务。巩县人民文化館會派人安排工地生活、組織勞力，並且參加了試掘工作。我們在此謹表謝意。</p>
+<p>在发掘期間，我們對地層、遺物和遺跡的关系問題，是比較注意的。但是，由于初次发掘冶鐵遺址，缺乏工作經驗、缺乏治鐵知識，而工作又是在边學边作的基础上進行的，雖然尽了最大的努力，缺点还是存在的。倘希讀者批評、指正。</p>
+<p>前后两次参加发掘工作的有赵青云、赵国璧、董群、倪自立、李永青、王明瑞、尚兴奎、高群发等同志。报告由赵青云、赵国璧二同志負責編写，王兆文同志負責照相，李永青、高秋菊二同志負責繪图。报告編成后，曾經我队買峨同志进行了全部的校閲工作。中国科学院硅酸盐化学与工学研究所周仁所长和北京鋼鐵學院胡庶华教授对報告曾进行了审閱，提出了不少寶貴的意见，特在此致以謝意。</p>
+<h1 id="_12">二、发掘概述</h1>
+<p>鐵生沟村位于巩县西南29公里，北距隕海鐵路孝义韋車站約20公里，水陸交通便利。村南的塗罗河注入洛水，溯洛水而上可抵洛阳；順洛水而下可入黄河。有新修的孝(义)上(庄)公路可通孝义。村西北15公里处有隋代洛口仓遺迹，村西南有唐代創建的罗汉寺(图一、二)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一 河南巩县铁生沟位置示意图</p>
+<p>这里四山环抱，风景佳丽，矿藏丰富。冶铁遗址就座落在铁生沟村附近的南地（图版壹，1）。</p>
+<p>遗址的西边是金牛山，东边和北边是青龙山。它们与我国著名的中嶺嵩山遥相对峙。南边紧靠噶罗河。冶鐵場的中心就在噶罗河的第四层台地上。这里地勢平坦，附近又富煤鐵矿藏，这些都构成設置冶鐵工場所在地的有利条件。</p>
+<p>遗址的面积，东西长约180，南北宽约120米，总共约达21600平方米。遗址周围的断崖上，暴露出不少的炼渣、矿石末、烧土和黑灰。</p>
+<p>在冶炼場附近的南北两山上，发现了汉代采矿場的遺迹。冶炼場西南3公里的罗汉寺和西北的罗泉、北庄，发现了采矿井和巷道。在塗罗附近的塗罗河沿岸，曾发现仰韶文化遗址，証明远在四、五千年以前，人类就在这一带生活着。涉村东地和夹津口，曾发现大批的汉墓群，証明这个富饑的山区，在汉代已有不少居民。</p>
+<p>遗址的地势是西北高而东南低的缓斜坡，文化层的堆积同地势的倾斜相反，一般厚度</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二巩县铁生沟汉代冶铁遗址位置图</p>
+<p>約在1.5米左右，最厚者有超过3米的。</p>
+<p>我們共开十九个探方。探方的面积,最大的有180平方米,最小的是60平方米,一般是100平方米。总共发掘面积是2000平方米。文化层堆积的厚薄各有不同,以探方16为例说明如下(图三):</p>
+<ol>
+<li>表土层 即农耕土层。土色黄灰，厚0.1—0.2米。包含现代瓦磚。  </li>
+<li>抚土层 近代人为的垫土层。土色灰褐, 深 0.45-0.65, 厚 0.3-0.4 米。其中混入少量的汉代炼渣、磚瓦和陶片。</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图三 探方16南壁剖面图</p>
+<ol>
+<li>黄炭土层 汉代文化层。上部比较平坦，可能是近代垫土前所取平。土色黄灰，土质较松，深0.5—1.35，厚0.05—0.75米。其中包含大量的炼渣、炉灰和耐火磚碎块，还有铁制生产工具，陶缶、盆、瓮、壶、瓦片等。  </li>
+<li>灰黑土层也是汉代层。色灰黑，密度很松。其中夹有大量的炉渣和耐火磚。深1.25—2.6，厚0.6—2.2米。包含有铁块、磚瓦和鐵犁、鏃、鏽、刀、劍等，还有矿石末、陶盆、瓮、壶和陶片。</li>
+</ol>
+<p>在黄灰土层和灰黑土层之間，有一层硬土面，这可能是灰黑土层形成之后，经过人的活动践踏所致，后来又经过一个时期的堆积，形成了黄灰土层。不过，这两个层次中出土的遗物完全相同，有些陶片还可以粘对成为完整的器物，由此說明这两层的堆积时间相距不会很长。</p>
+<p>在发掘的2000平方米范围内，发现的重要遗迹有炼炉十八座、熔炉一座、锻炉一座、藏铁坑七个、矿石坑一个、配料池一个、房基四座和生产场地一处，遗物有铁器166件，陶器233件，以及耐火材料、建筑材料、铸造等共1000多件(图四)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四 铁生沟冶铁遗址总平面图</p>
+<h1 id="_13">三、矿山、矿井和矿石</h1>
+<h1 id="_14">（一）矿山和矿井</h1>
+<p>铁生沟汉代冶铁遗址中所采用的矿石均开采于遗址附近南北两山上。北山名青龙山，属于嵩山的支脉，盛产褐铁矿。南山名少室山，盛产赤铁矿。这些矿山都有道路与冶铁场相通。采矿区的遗迹至今犹存。</p>
+<p>我們在青龙山的南麓发现两处汉代采矿場的遺迹。一处位于罗泉村的正北方，距村200米。这是一道起伏不平的高岭，当地人称該山为“鐵古嶃”。1958年在这里采矿时发现了古代开采矿石的“巷道”。这个巷道的遺迹因年久損毀，高度不明，寬达3米左右。內墳碎石渣和粘土。發現鐵鑰一件。另一处采矿場位于北庄(村)的东北部和西北部，距村200—300米(图版壹,2)。这里发现遺迹較多，有圓形和方形的采矿井，以及當時采矿者寄居的窖洞。方形矿井長1,寬0.9米，因沒有进行发掘，尚不知其深度(图版贰,1)。据發現矿井的同志介紹，當他們向下挖10米左右時，發現开采矿井是順着矿床平行掘進的。圓形矿井位于北庄西北方。井口直径1.03米，現有深度2.8米(图版贰,2)。矿井內壁崗有开凿时斜挖的礦痕遺迹。井內已填滿亂石。这两种矿井，均系豎井。在矿井的附近，也發現有古代采矿时所挖的巷道，寬約3米，底部成斜坡形。巷道內墳碎石渣。</p>
+<p>窑洞开挖在方形矿井附近的耐火土层上，洞顶呈弧形，周壁垂直，有縷痕(图版贰，3)。进深(残)2.1，頂高2.2，寬1.4米，距現在地表深1.5米。在洞內發現鐵鐘和鐵剪各一件。鐵鐘系圓柱形，腰間有长方形盞眼，可納木柄。鐵剪已殘缺，但仍可看出中間无軸。这些工具和我們在鐵生沟汉代冶炼場中所发掘出來的鐵鐘和鐵剪的形制是相同的。</p>
+<p>在南山，1958年时，当地群众因寻找矿源，结果在距冶炼場3.5公里的罗汉寺西南的山巅上，发现了古代的采矿巷道。当时发现者就沿着斜坡形的巷道往下掘，并进入矿床。事后我們做了調查，发現在巷道的南壁上还遗留有少量的淤土(图版贰，4)。据調查了解，初發現時曾出有鐵錘、鐵、五銖和一件长达1米的鐵劍。目前仅存的尚有錐形鐵器1件，长16厘米，一端呈尖状，另一端有圓盞，并有木柄遺迹。</p>
+<p>由于上述两处采矿场、矿井和巷道的遗迹发现，推知当时的采矿范围是很广阔的，采矿方法也相当复杂。当时的采矿者利用各种不同的方法进行采矿。例如在北庄发现的圆形和方形的矿井，各采矿区所共有的步井(斜坡井)，这些都能说明他们对不同的矿床采用了不同的采掘方法进行开采。如暨井的开采方法可以掘进至矿床的中央或旁侧，以开采质量较高的矿石。斜井用来开采缓倾斜矿床，可依山势向内凿井采掘。这在当时可能是一种比较进步的采矿技术。</p>
+<p>这处鐵矿的产地可能远在战国时代就被我們的祖先发现了。《山海經·五藏山經》中載有：“少室之山，其下多鐵”。少室即今嵩山的西部，在今登封县西北，与我們發現的鐵矿位置正相符合。这个采矿区所出的遺物和鐵生沟冶炼場所出土的遺物，有許多是相同的。同时，我們將采矿区和冶炼場所出的矿石进行化驗对比的結果，它們的化学成分也是相同的。這証明采矿区是鐵生沟汉代冶鐵遗址的采矿場是沒有問題的。</p>
+<h1 id="_15">（二）矿石</h1>
+<p>在冶炼場，曾发掘出不少的矿石(图版參,1)，有赤鐵矿和褐鐵矿。以赤鐵矿为多。为了搞清采矿区和冶炼場的关系，把两处出土的矿石标本，請中南煤田地质勘探局化驗室、郑州鋼厂、巩县第一鋼厂化驗室等單位，做了化驗分析，証明它們的质量極接近。其化驗結果如下表(表一)：</p>
+<p>表一  </p>
+<table><tr><td>化验室</td><td>矿石</td><td rowspan="2">矿石名称</td><td rowspan="2">内含三氧化二铁</td><td colspan="3">熔点测定定</td><td rowspan="2">化验单位</td></tr><tr><td>编号</td><td>来源</td><td>T1℃变形温度</td><td>T2℃软化温度</td><td>T3℃熔融温度</td></tr><tr><td></td><td>冶炼探方7</td><td>碎矿石末</td><td>44.91%</td><td></td><td></td><td></td><td>郑州钢厂化验室</td></tr><tr><td></td><td>罗采矿山寺区</td><td>赤铁矿</td><td>39.27%</td><td></td><td></td><td></td><td>巩县第一钢厂化验室</td></tr><tr><td>K590306</td><td>冶炼探方6</td><td>赤铁矿</td><td>76.00%</td><td>1380℃</td><td>1390℃</td><td>1400℃</td><td>中南煤田地质勘探局化验室</td></tr><tr><td>K590307</td><td>冶炼探方12</td><td>褐铁矿</td><td>65.86%</td><td>1360℃</td><td>1400℃</td><td>1400℃</td><td>中南煤田地质勘探局化验室</td></tr><tr><td>K590308</td><td>北采矿区</td><td>褐铁矿</td><td>64.48%</td><td>1300℃</td><td>1320℃</td><td>1350℃</td><td>中南煤田地质勘探局化验室</td></tr></table>
+
+<p>表一説明：<br />
+(1) T 是温度代号。<br />
+(2）C是摄氏寒暑表的代号。<br />
+(3)°是度的代号。<br />
+(4) T1 是标本加热后开始变形，这时锥体（取标本时取成锥体状）的顶部变圆，或有较显著的倾斜。<br />
+T2是标本软化，即锥体标本逐渐弯曲至锥托或接近锥托或成海绵状。 <br />
+T3 标本全熔，錐体显著熔融状态有时呈液体在錐托流溢，或錐体熔成平铺状态。</p>
+<h1 id="_16">（三）矿石加工</h1>
+<p>遺址的北半部(探方15—19)，發現大量的矿石末和許多砸矿石时所用的“石砧”，還有傾倒矿石末的窖坑(如坑22、21、10)。證明这里是一处矿石加工場。</p>
+<p>矿石末是在碎矿石时堆积起来的。堆积甚厚, 有的厚达 1 米。砸矿石用的石砧, 其质料多为石灰岩, 未经细致加工。有的利用鹅卵石, 有的利用碎石块。一般长 30-40 厘米, 形状颇不規則。上面都有因久砸矿石而打磨成的圓凹形的窝, 直径在 9-10 厘米之間, 深 3-3.5 厘米(图版捌, 6)。有些石砧的旁边还放有石块, 这些石块可能是在碎矿石时用作</p>
+<p>垫座之用的。</p>
+<p>当时对矿石颗粒大小的要求是严格的。发现的大量矿石末，状如麦粒。在探方7的东北部接近炼炉7的地方，发现了一堆筛过的矿石，粒度大小在3厘米左右，沒有碎末，显然是为装炉冶炼而准备好的原料(图版叁，1)。由此推测当时已经掌握了多方面的经验。可能已经認識到粉碎的矿石末入炉，因其颗粒小，密度大，会使炉中温度分布不均匀而堵塞炉腔，降低温度，甚至会使炉中温度骤然下降，熔体凝固结底，造成冶炼过程中的严重事故。所以，在装炉之前，被砸碎了的矿石可能都經筛子筛过。</p>
+<p>在冶炼遗址南边约50米处，还保存很大一堆砸好的矿石。据当地群众介绍，这堆矿石高约2米，直径在5米左右。因此，我们推测遗址的南边也应是矿石加工場的一部分。</p>
+<p>当时人們还不能把这些碎矿石末利用烧结成“团矿”的办法，进行加工，继续冶炼。因之，大量的矿石末被遗留下来，并与炼渣或残磚块堆积在一起。有的被用于填塞土坑，如坑22就堆滿矿末(图版叁,3)；或利用矿石末以少量的泥土鋪成地面(图版捌,5)；有的則故意挖坑埋藏。</p>
+<p>除了发现碎矿的石砧、碎矿石、矿石粉末外，还发现采矿工具，如铁、铁锤等。铁作圆锥状，一端有尖，另一端有在开矿时锤砸的痕迹。长10厘米，后部直径5厘米。铁质良好。推测这种铁的用法是将它插入矿石上或矿石块的裂隙内，然后以铁锤打击，这就可以把矿石破裂成碎块。铁锤有方柱形和圆柱形两种，均铸造。中間都有长方形盎眼，可按木柄。圆柱形锤长9.7，直径4—5厘米，中部盎眼长2.5，宽1.6厘米（图二一，2；图版抬叁，4）。方柱形锤长8，宽6.4厘米，中部方已残缺(图二一，1)。</p>
+<p>鐵和鐵的發現，說明采矿使用鐵制工具，砸击矿石可能也有部分使用鐵。</p>
+<h1 id="_17">四、炼爐及其有关的遺迹、遺物</h1>
+<p>炼炉共发现18座。集中分布在发掘范围内的中部和西部。保存不甚完整。依据炉型的不同，我們暫時把它分为海綿鐵炉、長方形煉炉、圓形煉炉、排炉、反射炉、低溫炒鍋炉等六種。这六种炉型的构造及其建炉所用的原料各有不同。</p>
+<h1 id="_18">（一）炼炉的构造</h1>
+<p>炼炉的建造，一般是选择在地面较平坦的地方，先向地下挖掘成长方形或圆形土坑，然后再用耐火磚疊砌，并在炉壁抹以耐火泥。炉門多向南。茲将各种炼炉的結構分述如下（見表二）。</p>
+<h1 id="1">1. 海綿鐵炉</h1>
+<p>共发现三座，編号为炉12、炉13、炉14。分布在探方8的西北部，間隔均不超过10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图五 海绵铁炉炉14平面、剖面图</p>
+<p>米。以炉14为例(图五；图版陆，4)：建炉前先把地面夯实，然后从夯打的地面上向下挖成长方形的坑。坑深0.5，长0.69，宽0.32米。周壁涂耐火泥一层。在坑口周围砌有灰色耐火砖。炉腔中部用三块侧磚，纵砌于前后两壁之間，作为炉齿。炉齿之間以及它与坑底之間都保留一定的空間。另外在炉身的</p>
+<p>东南方开挖一沟，作为火門。沟底呈斜坡状，长0.82，寬0.25，最深处0.59米，用以燃火或通风。炉齿周围之地平面上，有当时建造炉身填隙所用的泥，已被火烧成紅色。根据炉基周围之痕迹觀察，推知此炉呈圓形，上部原有大口高出地面約1米左右，長1.18，寬0.78米。在炉底(炉齿的下面)發現有很多黑色灰爐和冶炼时剝落的小鐵块。在火門附近還發現有原煤块和“海綿鐵块”。</p>
+<p>炉12和炉13的结构与炉14基本相同，惟炉12的火門向东，炉型較小(图六)；炉13的火門向北，炉底呈長方形(图七；图版陆,3)。</p>
+<p>根据现在的相似炉型推测，这种炉的冶炼过程比较简单，温度不高，不能炼出铁来，主要使矿石还原而已。其炼法可能是先在炉齿的下部装满木柴或木炭（从炉门装），然后将</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图六 海綿鐵炉炉12平面、剖面图</p>
+<p>原煤块——白煤(无烟煤)和铁矿石从上部炉口分层装入炉腔，然后在火门处点火燃烧。由于火道处可以自然通风，加上炉口的抽力和火道对流，就可以保证炉内火力的旺盛。炉火熄灭后，铁矿石即还原而成为海绵状的“海绵铁”了。在冶炼过程中，这种炼炉，起着第一道冶炼工序备料的作用。</p>
+<h1 id="2">2. 长方形炼炉</h1>
+<p>发现两座，編号为炉1、炉3。位于探方2的西部和南部。以炉1为例（图版肆，3)：此炉建在較平坦的夯土面上，較附近冶炼場地面高0.48米，上有明显的夯窝，夯窝直径12，深4厘米。炉身残毁过甚，只保存长方形炉基。炉基东西长1.33，南北寬0.62—0.8米。炉底內堆有黑色灰爐和一些殘碎磚头。炉壁的砌法虽已損毀，但由炼炉的周圍所發現紅色和灰色的殘耐火磚块看，可以証明炉壁是利用耐火磚建造的。炉底內有被火烧的痕迹。在炉的西北角处，堆积有一堆黑色灰末，其中还发现有两三块白煤。附近还发现长方形或多边形的坑，有的坑中放有大鐵块，估計这种坑在當時是用来藏鐵的。我們暫名之為“藏鐵坑”。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图七 海绵铁炉炉13平面，剖面图</p>
+<h1 id="3">3. 圆形炼炉</h1>
+<p>共发现六座。編号为炉2、炉5、炉6、炉16、炉18、炉19。分布在探方2、3、4、12等四个探方內。其中炉2、炉5、炉6三座是建筑在經過夯打較高的硬土面上。殘毀極甚，結構已不可辨。仅能見到當時被火烧成紅色、深蓝色或留有煉渣的圓形炉底痕跡（图版陆，5）。炉16、炉18、炉19是由原地面向下挖掘成的長方形深坑。体积一般較大。損毀嚴重。茲就現有遺迹，以炉16、炉18为例分別敘述如下：</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图八 圆形炼炉炉18平面、剖面图</p>
+<p>炉16，位于探方12的南部。圆形，用紅色耐火磚砌造。發現时，炉內有很多紅色的殘炉壁磚。根據炉內高达1.5米的海綿鐵块推知炉体徑約為1.8米。在海綿鐵块中还可以看出原来的煤块以及半熔解的矿石，炉底并發現有屑小石子的煤块。煤块的下边被火烧成紅色。</p>
+<p>炉18(图八)，位于探方2的东边28米处。炉門向南。炉壁已残。炉底成缶形，被火烧成青灰色，呈琉璃状。炉壁上部的残口距现在地表为2.05米。残高1.04，直径1.6米。炉的南面，挖一长方形的炉道，长3.4，宽0.9米，距原来地面深1.6米。炉道低于炉底约0.5米，炉道的两壁被火烧成红色，估計当时是在这里出鐵的。在炉道的北端，有一片经过夯打过的很堅硬的地面前，距炼炉很近，这里应是往炉內装料的地点。另外值得特別注意的是，在炉底的南半部（即靠近炉道的地方），曾发现有草拌耐火泥烧制的鼓风管，呈圓筒状，残长0.16，内径0.08，外径0.2米。証明这种炼炉是有鼓风設備的。</p>
+<p>这两座炼炉的炉膛内都堆积着</p>
+<p>大量的炼渣、铁块、耐火砖、煤块和青石块等。炼炉附近以及在整个冶炼场的堆积中，还发</p>
+<p>現許多很厚的大型耐火磚，或三、四层耐火磚粘結在一起，构成弧形的炉壁(图版柒,1、6)。这些遺物都应是炼炉損毀后的現象。若按其弧度复原，炉身直徑約在1.3—1.5米之間。推測这种圓形的煉炉是小型的高炉。</p>
+<p>这种圆形炼炉，目前在河南地区的土法炼铁中，仍被广泛采用，称为“土高炉”。在豫西和豫北一带也叫“阳城土高炉”；豫南信阳一带，定名为“大肚炉”等。各地定名不同，但炉型大体类似。它的结构共分炉喉、炉身、炉腰、炉缸、鼓风口等五部份。炉体呈圆形，分上下两节，上为圆锥状，下为圆柱形。内腔空間上小下大，如灯罩形。这种土高炉的特点是，炉型巨大，有鼓风设备，用料广泛，出铁快，操作设备简单，产量高。有时能炼出熟铁。</p>
+<h1 id="4">4. 排炉</h1>
+<p>共发现五座，編号为炉7、炉8、炉9、炉10、炉11(图九；图版章，1)。位于探方5和探方6的中間。这五个炉子南北并列成一排，故称“排炉”。都受严重損毀。从炉7的北壁和东壁的殘迹看，知道这种炼炉的建造方法和圆形煉炉大体相同，也是先在地面上挖成大型的长方坑，靠着东側的坑壁建炉，周壁用土夯筑，并在內壁砌有耐火磚作為炉壁，壁外并涂一层草拌耐火泥。炉7是这排炼炉最北部的一座，也是其中最大的一座。炉身作長方形，用夯土筑壁。北壁和东壁上并砌有紅色的耐火磚，磚上涂有草拌耐火泥。而西南壁全部損毀。炉底被火烧成紅色或青色，硬如陶质。根據火烧的痕迹測知，炉的东西長約2.6，南北寬1.6米。东壁的正中靠近底部，用紅磚砌有方孔，孔口長寬均为0.14，深0.6米。內部呈彎形，被火焰成紅色。方孔和炉后的烟囱相通，烟囱高出炉后的地面，上口呈彎圓形，残高0.7，口径0.17—0.24米。在上口的东部砌有灰磚一排，略呈弧形，圍繞烟囱口。</p>
+<p>炉7的西北部，发现一增加过工的碎矿石。粒度均匀，一般在2—3厘米之間。当是这排炼炉所儲備的原料(图版叁,1)。</p>
+<p>这种排炉，同目前在河南禹县一带冶铁生产中的“地下高炉群”有点相似。它的特点是：建造快，效率高，添料方便；各炉的烟囱互相贯通，抽气力更大，因之炉内的火力旺盛，温度增高。</p>
+<h1 id="5">5. 低温炒铜炉</h1>
+<p>仅发现一座，編号为炉17(图一；图版陆，2)。骸炉是鐵生沟群眾建房時發現的，位于冶炼場的中心偏北約150米處。上部已損毀。炉基建在堅硬的紅色生土層上，炉体很小，建造也較簡單，就原地面向下挖成“缶底”状坑作为空腔，然后在炉膛內边涂一层耐火泥。炉門向西，長0.37，寬0.28，殘高0.15米。炉壁被烧成黑色。炉內尚有未經炒煉的鐵块。同樣的炉型，在河南方城县赵河村的汉代冶鐵遺址中也發現六个。</p>
+<p>这种炼炉同1958年土法炼铁时修建的低温炒钢炉相似，故暂以今名名之。目前在河南各地采用的低温炒钢炉的建造方法及其冶炼过程，系确定炉基的位置后，向下挖一长方形的土坑，用黄土回填，并用夯逐层夯实。然后挖成橘子状的炉缸，腹径60厘米左右，口径31，深31厘米。周壁涂耐火泥一层。另外在一側又挖有炉門。再用黃土層 $40\%$ 的</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图九 房基1与排炉(7—11)平面、剖面图（左上；北剖面，下；东剖面）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+北</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一 低温炒焖炉炉17平面、剖面图</p>
+<p>粗砂，制成圆形炉盖，然后把炉盖糊于炉口之上。炉盖中央有通风孔，由上向下鼓风。炒炼时，先将碎木柴装入炉内，点火燃烧，等火烧到旺盛时，再将需要炒炼的生铁碎块装入炉内，堵塞炉门，鼓风燃烧，待生铁熔化，炉内呈白色时，以铁棍用力搅拌，使铁变为豆腐渣状，铁中的渣滓就分解成液体流出。然后把炉内的铁团结成块，最后用铁钳取出，放在铁砧上锤打，锤打到渣子挤出，就成为结实的熟铁了。</p>
+<ol>
+<li>反射炉</li>
+</ol>
+<p>仅发现一座，编号为炉</p>
+<p>15（图一一；图版陆，1）。位于探方12的中部偏北(图一二)。长方形，长3.47，宽0.83，最深处0.8米。炉门向南。顶部已经塌陷，但炉基保存较好。此炉西部打破汉代堆积层，但根据炉内所出的板瓦片、甑片、残铁犁、铁釜(底部)等，均系西汉遗物，同时它座落在汉代堆积层中（这处遗址的文化堆积层都属西汉时期），因而这座炼炉属西汉时期无疑。可是炉的西部又打破了早先的堆积层，所以其年代应为西汉晚期。炉身全用耐火砖砌成。其结构可分熔池、炉膛、炉门和烟囱四部。它的结构是铁生沟所出土的炼炉中最为复杂的一座。细部结构分述如下：</p>
+<p>熔池 长方形,长1.47,宽0.83,深0.8米,位于反射炉的后半部。它高于炉膛0.54米。炉壁的结构分内外两层。外壁即建炉时所挖的长方坑,坑壁涂抹一层草拌泥。熔池上口长1.65,北端宽1.10,南端宽0.88米。东西两壁向内倾斜,因而炉底北端宽1.17,南端宽1.01米。内壁及炉底是用薄长方耐火砖砌而成。内壁和外壁之间留出宽约8厘米的空間(底部也同样是双层),其間并以紅色耐火磚砌成条状空洞。空洞的南端和炉膛相連接,并砌有洞口。若从炉膛向北看,底部形成为四个长方形洞。东壁洞口残存有三个,西壁洞口残存有两个。这些条状空洞的北端与烟囱相連。根据炉的内壁两侧残存弧度推測,上頂应为拱形。熔池内长1.47,南寬0.74,北寬0.83,殘深0.8米。內壁被火烧成褐色。炉周地面亦被烧成紅色。</p>
+<p>炉膛在炉的南半部，低于熔池0.54米，膛壁用红色耐火砖平臥交錯墊砌。磚上涂</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图—— 炼炉15平面、剖面图</p>
+<p>有草拌耐火泥，被火烧成綠色，如玻璃状。炉膛平面作长方形，长2，寬0.61—1，殘深0.78米。底部鋪一层白石灰。根據我們在炉內所發現的拱形耐火磚，推知頂部為拱形。壁磚長27，寬13.5，厚7厘米。拱形磚長30—34，寬16.7，厚8，弧度2.7厘米。</p>
+<p>炉門即进料口，同时也是鼓风的地方。它在炉膛的南端。因炉膛的南半部損毀較甚，故門已不存，仅在炉門处发现了长25，寬20厘米的长方形鐵板一块。</p>
+<p>烟囱 位于炉的最北端，它是就地掏挖成两个并列的烟囱，卤内上方下圆，井墩有耐火泥。烟囱下部和熔池内两层炉壁間之空洞相通，起通风的作用。烟囱的上口已残，东边的一个，口部长0.13，宽0.12，下部直径0.12，由口至底部深0.98米。西边的一个口长0.18，宽0.1，下部直径0.1米。</p>
+<p>清理时炉内堆满残破的耐火磚，看来都是从炉頂塌陷下来的，并有不少板瓦片和鋼片；另外还发现兩件殘骸，一件鐵釜底殘片。炉門外向南1米的地方堆有一片木炭灰，因之估計这个炉的燃料中有一部份是木炭。</p>
+<p>根据目前河南各地土法建造的“反射炉”原理，推测这座炼炉的冶炼方法是在炉膛内</p>
+<p>图一二 探方12平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+北</p>
+<p>装燃料, 将要炼的生铁同海绵铁放于熔池内, 然后在炉门处点火鼓风, 使炉膛内产生大量的热能, 反射到熔池内, 并穿过熔池的内外两壁之间的空洞; 同时在炉门鼓风, 使炉内产生的煤气与烟囱形成对流, 炉内热力旺盛, 温度持久不变。这种炼炉由于燃料和冶炼材料不在一起, 可直接减去碳素, 并且运用煤气反射作用, 从而可以炼出质量较高的熟铁 (低炭钢)。我们曾委托北京钢铁学院金相热处理教研组对发掘出来的一件熟铁块做了金相检</p>
+<p>单位：米  </p>
+<table><tr><td rowspan="2">型</td><td rowspan="2">炉号</td><td rowspan="2">结构</td><td rowspan="2">形状</td><td colspan="3">尺寸</td><td rowspan="2">特 点(根据目前河南地区土法炼炉的相似炉型的原理推测)</td><td rowspan="2">出土位置</td><td rowspan="2">备 注</td></tr><tr><td>长</td><td>宽</td><td>高</td></tr><tr><td>海棉铁炉</td><td>12</td><td></td><td>长方</td><td>1.41</td><td>0.24</td><td>底深0.5</td><td>建造容易,利用自然通风,只能炼海绵铁。</td><td>T 8</td><td></td></tr><tr><td>海绵铁炉</td><td>13</td><td></td><td>长方</td><td>0.76</td><td>0.42</td><td>底深0.4</td><td>建造容易,利用自然通风,只能炼海绵铁。</td><td>T 8</td><td></td></tr><tr><td>海绵铁炉</td><td>14</td><td>耐 火 砖</td><td>椭圆</td><td>0.69</td><td>0.32</td><td>残 0.5</td><td>建造容易,利用自然通风,只能炼海绵铁。</td><td>T 8</td><td></td></tr><tr><td>长方形炼炉</td><td>1</td><td>耐 火 砖</td><td>长方</td><td>1.33</td><td>0.620.8</td><td>?</td><td>能炼出生铁。</td><td>T 2</td><td></td></tr><tr><td>长方形炼炉</td><td>3</td><td>耐 火 砖</td><td>长方</td><td>1.3</td><td>1</td><td>?</td><td>能炼出生铁。</td><td>T 2</td><td></td></tr><tr><td>圆形炼炉</td><td>2</td><td>耐 火 砖</td><td>圆形</td><td></td><td>径1.15</td><td>?</td><td></td><td>T 2</td><td></td></tr><tr><td>圆形炼炉</td><td>5</td><td>耐 火 砖</td><td>圆形</td><td></td><td>径约1.65</td><td>?</td><td></td><td>T 3</td><td></td></tr><tr><td>圆形炼炉</td><td>6</td><td>耐 火 砖</td><td>圆形</td><td></td><td>径约0.78</td><td>?</td><td></td><td>T 4</td><td></td></tr><tr><td>圆形炼炉</td><td>16</td><td>耐 火 砖</td><td>圆形</td><td></td><td>径1.8</td><td>残 1.5</td><td>炉体高大,温度高,可炼出质量高的生铁,有时直接炼成熟铁,甚至成钢。</td><td>T 12</td><td>当地群众就是用这种炉中炼的铁制成刀、锄等用具。</td></tr><tr><td>圆形炼炉</td><td>18</td><td>耐 火 砖</td><td>圆形</td><td></td><td>径1.6</td><td>残 1.04</td><td>炉体高大,温度高,可炼出质量高的生铁,有时直接炼成熟铁,甚至成钢。</td><td>在T2东边28米处</td><td>当地群众就是用这种炉中炼的铁制成刀、锄等用具。</td></tr><tr><td>圆形炼炉</td><td>19</td><td>耐 火 砖</td><td>圆形</td><td>?</td><td>?</td><td>?</td><td>炉体高大,温度高,可炼出质量高的生铁,有时直接炼成熟铁,甚至成钢。</td><td>在T4东边</td><td>当地群众就是用这种炉中炼的铁制成刀、锄等用具。</td></tr><tr><td>排炉</td><td>7</td><td>夯土筑壁,内砌耐火砖。</td><td>长方形</td><td>2.6</td><td>1.6</td><td>残 0.98</td><td>能炼出生铁。</td><td>T 5</td><td></td></tr><tr><td>排炉</td><td>8</td><td>已殘,只見夯土。</td><td>长方形</td><td>約0.8</td><td>0.52</td><td>殘 0.62</td><td>能炼出生铁。</td><td>T 6</td><td></td></tr><tr><td>排炉</td><td>9</td><td>已殘,只見夯土。</td><td>长方形</td><td>約1.24</td><td>0.34</td><td>殘 0.32</td><td>能炼出生铁。</td><td>T 6</td><td></td></tr><tr><td>排炉</td><td>10</td><td>已殘,只見夯土。</td><td>长方形</td><td>約0.66</td><td>0.54</td><td>殘 0.32</td><td>能炼出生铁。</td><td>T 6</td><td></td></tr><tr><td>排炉</td><td>11</td><td>已殘,只見夯土。</td><td>长方形</td><td>約1.24</td><td>0.82</td><td>殘 0.28</td><td>能炼出生铁。</td><td>T 6</td><td></td></tr><tr><td>低温炒鋼炉</td><td>17</td><td>土筑,內涂耐火泥。</td><td>圆形</td><td></td><td>径0.28-0.37</td><td>残 0.15</td><td>用木柴作燃料能炒成钢。</td><td>在距冶炼中心偏北150米处</td><td></td></tr><tr><td>反 射 炉</td><td>15</td><td>耐 火 砖</td><td>长方形</td><td>3.47</td><td>1.17</td><td>残 0.78</td><td>利用反射原理炼出质量较高的熟铁(低炭钢)。</td><td>T 12</td><td></td></tr></table>
+
+<p>有?号者,系不知其高度。</p>
+<p>查。檢查証明它的含碳量大約是 $0.34\%$</p>
+<h1 id="_19">（二）建炉用的耐火材料</h1>
+<p>主要有耐火磚、耐火草拌泥、耐火土三种，而以耐火磚最为重要。耐火草拌泥系耐火土拌草而成，涂于炼炉内壁，或作为鋪砌耐火磚的粘接剂(图版玖，6)。耐火土仅发现于炉8—11和炉15的底部，用以增加炉底的耐火度，經測定，其最高熔点是 $1240^{\circ}\mathrm{C}$ （見表三）。</p>
+<p>耐火磚是耐火粘土制成的，其中併層有石英石和綠色岩石。种类很多，主要有紅色長方形耐火磚、青色長方形耐火磚、青色拱形耐火磚、紅色耐火磚塗和小磚塞等（图版玖，5</p>
+<p>左)。其中为数最多的是紅色长方形耐火磚和紅色耐火磚坯。</p>
+<p>紅色長方形耐火磚，出土較多，一般質量较差，如T12:2，长27，寬13.5厚7厘米(图版捌，2)；少数燒成深紅色，堅硬如石(图版柒，3）。</p>
+<p>青色长方形耐火砖，制作工整。一般长宽是 $27\times 14$ 厘米，但厚薄不一。厚的7厘米，出土较少(图版捌，1；图版玖，5右)；薄的厚度仅3厘米，出土较多(图版柒，2、4)。此外，有作拱形的。出土数量很少，质量很高，比一般青色长方磚稍大。一般长30—34，宽16—17，厚8，弧度径2.7厘米（图一三，3;图版柒，5）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一三 砖坏及鼓风管</p>
+<ol>
+<li>紅色耐火砖坯(T 12:1) 2. 红色耐火砖坯(T 5:2)</li>
+</ol>
+<p>3.青色拱形耐火砖（T12：3） 4.鼓风管（T14：23）</p>
+<ol>
+<li>陶鼓风管(T14:31) (1.为1/20, 2、3.为1/16,</li>
+</ol>
+<p>4、5.为1/4)</p>
+<p>紅色耐火磚坯，系用耐火泥放在模内夯打而成。未經入窑煅烧。有长方形和方形两种。长方形磚坯，如T5:2(图一三，2；图版玖，3)，残长47，寬27，厚7厘米。坯上夯窩稍大，夯窩直径約8厘米。另一种有的泥中摻草，夯窩較小，直径約4.5厘米。如T12:1，残长50,寬34,厚14.5厘米(图一三，1；图版玖，1)。</p>
+<p>为了了解耐火材料的化学原素及其最高熔点(即耐火度), 我們挑选了一些标本, 委託中南煤田地质勘探局化驗室作了化学分析, 其化驗報告見表三。</p>
+<p>根据表三所列的各种原素的比例，我們可以看出，二氧化砂含量最多，三氧化二铝較少，其他的原素更少。不过其中的三氧化二鐵的成分則比現在耐火磚含量為大，因而质量沒有現代耐火磚高。茲将地方国营巩县耐火材料厂烧制的粘土磚和高鋼磚的化学原素及熔点測定表附后，借作比較(見表四)。</p>
+<p>通过表三、表四的对比結果，我們可以看出三氧化二鋁的含量多少，直接影响着耐火磚的质量。而三氧化二鐵的含量，也与其质量有很大关系，因此三氧化二鋁的含量越高，</p>
+<p>1959年7月24日</p>
+<p>表三 中南煤田地质勘探局化验室分析报告表  </p>
+<table><tr><td rowspan="2">化验室 编 号</td><td rowspan="2">器物名称</td><td colspan="5">各种化学原素的百分比</td><td colspan="3">熔点测定</td><td rowspan="2">坑位</td></tr><tr><td>二氧化砂 SiO2</td><td>三氧化二铝 Al2O3</td><td>三氧化铁 Fe2O3</td><td>氧化钙 CaO</td><td>氧化镁 MgO</td><td>变形温度 T1°C</td><td>软化温度 T2°C</td><td>熔融温度 T3°C</td></tr><tr><td>K590309</td><td>深红色耐火砖</td><td>69.27</td><td>15.81</td><td>6.14</td><td>0.70</td><td>0.25</td><td>1250</td><td>1280</td><td>1330</td><td>T 6</td></tr><tr><td>K590310</td><td>薄长方耐火砖</td><td>61.16</td><td>13.85</td><td>6.06</td><td>3.05</td><td>0.59</td><td>1040</td><td>1110</td><td>1180</td><td>T 6</td></tr><tr><td>K590311</td><td>拱形耐火砖</td><td>70.57</td><td>12.94</td><td>4.35</td><td>3.02</td><td>0.34</td><td>1150</td><td>1180</td><td>1240</td><td>T 12</td></tr><tr><td>K590312</td><td>熔炉底的耐火土</td><td>25.75</td><td>5.83</td><td>2.67</td><td>34.11</td><td>1.89</td><td>1180</td><td>1200</td><td>1240</td><td>T 6</td></tr></table>
+
+<p>表四 河南省巩县耐火材料厂化验室分析报告表  </p>
+<table><tr><td rowspan="2">品名</td><td colspan="6">各 种 化 学 原 素 的 百 分 比</td><td rowspan="2">熔点测定</td></tr><tr><td>二氧化砂 \( {\mathrm{{SiO}}}_{2} \)</td><td>三氧化二铝 \( {\mathrm{{Al}}}_{2}{\mathrm{O}}_{3} \)</td><td>三氧化二铁 \( {\mathrm{{Fe}}}_{2}{\mathrm{O}}_{3} \)</td><td>氧化钙 CaO</td><td>氧化镁 MgO</td><td>灼 减</td></tr><tr><td>粘土砖</td><td>44.09</td><td>40.35</td><td>1.89</td><td>1.12</td><td>0.35</td><td>12.10</td><td>\( {1710} - {1730}^{ \circ  }\mathrm{C} \)</td></tr><tr><td>高 铝 砖</td><td>14.01</td><td>67.13</td><td>2.12</td><td>1.01</td><td>0.79</td><td>14.75</td><td>\( {1770}^{ \circ  }\mathrm{C} \)</td></tr></table>
+
+<p>相反三氧化二鐵的含量越低，磚的质量越好，熔点就越高。鐵生沟汉代冶鐵遺址中，所發現的耐火磚，由于其中三氧化二鋁含量較低，三氧化二鐵的含量都較之現代的耐火磚為高，所以耐火度只達到 $1240^{\circ}\mathrm{C}$ 至 $1330^{\circ}\mathrm{C}$ 之間，低于現代耐火磚的熔点。當時在这里炼鐵的人們，在实际經驗中，可能已經覺察到這個問題，因此，採取就地挖坑建炉，在炉的內壁都涂耐火泥，借以保持耐火度。</p>
+<p>由于各种炼炉的功用不同，所使用的耐火材料也有差别。深紅色耐火磚，一般用于砌造圓形煉炉的內壁。青色薄長方形耐火磚，主要用于砌疊熔池（即炉缸）內壁。青色拱形耐火磚，發現于炉15，在海綿鐵炉的附近也有發現，可能又用于“海綿鐵”煉炉的壁上。青色长方形耐火磚，主要用于長方形煉炉、海綿鐵炉的炉算上，也用于砌磚“排炉”的炉壁。紅色長方形耐火磚，主要用于反射炉、排炉和長方炉壁上。紅色耐火磚坯，主要用于圓形煉炉的外壁上。</p>
+<h1 id="_20">（三）燃料</h1>
+<p>铁生沟汉代冶铁遗址的发掘中曾发现了不少的煤块、木炭块和木炭灰。炼渣中也遗留有木柴的痕迹。在煤块中不仅发现有白煤，而且还有经过加工的煤餅。在木炭附近还发现有大堆的木炭末。</p>
+<p>原煤和煤餅在各个煉炉的附近都有發現。煤餅的出土地点以探方12、探方11为最多，特别是在煉炉16周圍堆积有大量的煤餅。根據觀察，其制法可能是利用煤末層以粘土和白色的石英或青色的石灰石顆粒，然后加水攪拌，最后拓成餅状，形状不規則，直径</p>
+<p>在0.5—1厘米之間。</p>
+<p>原煤块在探方3、5和探方8中出土較多。發現于炉5、炉7的附近；炉13、炉14的炉膛中以及坑8內。这些煤块多数經過火烧，有些未燒透。有的外部灼成白色，也有極少数未經火烧。煤块一般的长度在6—13厘米之間。</p>
+<p>探方2北部有一片较冶炼場低的地面，地表为黑色，且有一层黑色的灰末，可能是堆积煤炭的地方。探方8的东部还堆放着有石子的碎煤。石子与煤的比例是1:4。这可能是当时为制作煤砖所贮备的原料。在这堆煤砖原料西南6米处，有一个砖砌的配料池（是供冶炼場装炉时配料用的池子），也可能是制造煤餅时配料的地方。</p>
+<p>木炭也是冶炼場內所发现的主要燃料之一。木炭块堆积在炉7—11(排炉)附近和探方8、探方12的堆积层中。出土时上边都有铁锈(图版捌,3)。在大的炼渣块中也经常发现夹有木炭的痕迹,特别是在探方3发现的一块炼渣中,木炭痕迹特别明显(图版捌,4)。在炉15的南边和炼炉16的东边,堆放有一堆木炭末,它的厚度达到60厘米左右。</p>
+<p>由于当时的木柴不易保存，所以我们在这里发现木柴较少，但炼渣上常带有木柴痕迹，同时在炼炉11—14的底部和坑12内都发现有很多黑灰，应是木柴燃烧后的遗存。</p>
+<p>从上述的三种燃料的出土位置推测，可能它们是分别用于不同形制的炼炉来冶铁的。看来木炭和煤饼主要用于圆形或长方形的炼炉和排炉及反射炉。这些炉子的炉体庞大，建造复杂，炼出铁的质量较高，所需的热能也较高。我们在炉7（长方形炉)的西南曾发现了燃烧过的煤渣，在炉16(圆形炉)的南部发现了成堆的木炭碎末，在探方11的堆积层中还出有曾经熔化过的铁块和煤烧结在一起。</p>
+<p>原煤块主要用于海绵鐵炉。炉14曾发现有原煤块,并在它的火門处还遺留有原煤和海绵鐵烧結在一起的遺物。</p>
+<p>木柴可能只用于炉17（低溫炒鋼炉），或者作为各种炼炉的引火材料。</p>
+<p>为了了解这里出土的煤的质量及其化学元素，我們特請中南煤田地质勘探局化驗室将鐵生沟出土的标本进行了化驗，他們測定的結果如下(表五)：</p>
+<p>表五 中南煤田地质勘探局綜合試驗室分析報告表  </p>
+<table><tr><td rowspan="2">試驗室編号</td><td rowspan="2">标本坑位</td><td rowspan="2">标本名称</td><td colspan="4">原煤工业分析</td><td colspan="4">元素分析</td></tr><tr><td>分析水分Waa%</td><td>无水基水分Ac%</td><td>无水无灰基挥发分Vf%</td><td>无水基硫SbBn%</td><td>无水无灰基碳Cr%</td><td>无水无灰基氮Hr%</td><td>无水无灰基氮Np%</td><td>无水无灰基氯、硫O2+Sr%</td></tr><tr><td>592449</td><td>T8</td><td>原煤块</td><td>0.55</td><td>96.00</td><td>72.36</td><td>痕迹</td><td>56.87</td><td>7.78</td><td>8.29</td><td>27.14</td></tr><tr><td>592450</td><td>T12</td><td>覆有石子的煤</td><td>0.78</td><td>93.67</td><td>84.71</td><td>痕迹</td><td>50.16</td><td>3.34</td><td>1.11</td><td>45.39</td></tr></table>
+
+<p>从上表所得出的数据看，可燃基(Vr)在70—80%以上，碳(Gr)在50%以上，其含碳量只相当于“褐煤”含碳量的成分。按“褐煤”虽不能炼焦，但无烟褐煤则可以炼铁，而铁生沟</p>
+<p>附近所出产的“白煤”，都属无烟煤，现在仍被采用以炼铁。由于化驗室所化驗的标本在汉代曾经过燃燒，所以含灰分(Ac)的百分比較高，而碳素百分比相对的降低。因此，我們认为化驗報告表所得的結果是合乎客观事实的。</p>
+<h1 id="_21">(四) 藏鐵坑和鐵块</h1>
+<p>遗址中出土有大量的海綿鐵堆、鐵板、大鐵块，丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶丶</p>
+<ol>
+<li>藏鐵坑 共發現7个。完全集中在冶鐵場的西部探方2、探方3之中，大都为长方形。除坑2和坑3是空坑外，其他各坑都存有鐵块。坑附近有煉炉遺迹。这几个坑的藏鐵总量估計約3万斤左右。舉坑6、坑7、坑10介紹如下：</li>
+</ol>
+<p>坑6位于探方2的东南部。长方形，长1.45，宽0.35，深约1.2米。从坑口周围的断面上，显然可以看出它是从冶铁场的红烧土地面上向下挖成的。坑口的上部掩盖着较松的矿石末；坑内放着大大小小铁块，估計有一万斤左右。铁的质量优劣不一，但大块的质量很高，有的已达到低炭鋼的成分，它们的含碳量，我們會請河南省冶金局中心實驗室进行过分析，其結果如下(表六)：</p>
+<p>表六河南省冶金局中心試驗室原材料分析報告書  </p>
+<table><tr><td>本室编号</td><td>原号</td><td>样品名称</td><td>硫S%</td><td>磷P%</td><td>锰Mn%</td><td>硒Si%</td><td>碳C%</td></tr><tr><td>0420</td><td>T12.21</td><td>海绵铁块</td><td>0.022</td><td>0.024</td><td>0.017</td><td>0.231</td><td>1.288</td></tr><tr><td>0421</td><td>T1.22</td><td>优质铁</td><td>0.012</td><td>0.154</td><td>微量</td><td>2.35</td><td>0.048</td></tr></table>
+
+<p>坑7在探方2的南边。长方形, 长1.85, 宽1.4, 深1.3米(图版拾, 3)。坑壁大部损毁, 西、南两壁尚完整。坑内放一巨大的铁块, 高达1.25米, 体积和坑的大小相同, 估計重量达万斤以上。坑口东边有一座炼炉的遗迹。</p>
+<p>坑10位于探方3的西北部，紧靠着炉5。长方形，长1.44，宽0.7，深1.95米。它打破炉5的铁渣底部。内藏铁块两块，重约两千斤以上。</p>
+<p>藏铁坑中，铁块的质量差别很大。有的铁块杂有炼渣、木炭。</p>
+<ol>
+<li>鐵板 共发现三块。一块发现于藏铁坑1,长1.25,宽0.1—0.25米(图版玖,4)。两块发现于探方2北边约30米处。长98,宽72,厚5厘米,重约500余斤。铁板四周被厚达0.1米的碎矿石末所包裹,外面有一层黄土。推测它是利用炼出来的铁汁灌铸成的。质地柔韻,用锤敲击,卷而不折(图版拾壹,2)。另外在各探方中发现許多小型铁板,特别是在锻炉20和炉7附近发现有大小不一的铁块,一般厚度在1.5—3厘米之間。  </li>
+<li>海绵铁堆 各探方内皆有少量出土(图版拾, 1), 其中以炉 16 西北的海绵铁堆最大。海绵铁状如海绵, 铁质不高, 击之即碎(图版拾壹, 5)。断面呈白色。重量约 7500 余公斤。<br />
+4.大铁块在探方1(图版玖，2)和炉16各发现一块。它们都是炼炉废棄后遺留下</li>
+</ol>
+<p>來的。炉16的鐵块,高約1.5,径約1.9米。質量不高,鐵、矿石、炼渣、煤等都燒結在一起。靠近炉底的部分是屑有碎石子的碎煤与黑灰。估計它的重量約10000公斤左右。在大鐵块的周圍發現大批的耐火砖和殘破的煉炉壁。探方1的鐵块,已殘,殘高1.8,直径1.7米。質量較高。重量估計約有4万公斤左右。不久以前鐵生沟居民还利用这里遺存的鐵块制造鐵、鐵勦、鐵刀等工具,可見當時遺存的数量是很惊人的。</p>
+<h1 id="_22">（五）炼渣</h1>
+<p>矿石在炼炉内經過高溫融化后所分解出来的脉石(非鐵杂质)及燃料中的灰分的化合物就是炼渣。炼渣分布最广,遗址及其附近的断崖上到处皆是,特别是冶炼場的东边的天然水沟旁堆积更多。它的面积南北长75,东西宽43米。暴露在断崖上的炼渣层,最厚处达到4.9米。据鐵生沟村老年人談,从前这里是高大的炼渣堆,后来因为开辟农田,把大批炼渣填入沟中,任水冲走了。現在剩下的已不及当时所見的二分之一。</p>
+<p>冶鐵場西北部的煉渣也是靠近水沟堆积起來的，現在所保存下來的是一小部分。</p>
+<p>在发掘过程中,发现的炼渣也很多。有的和残砖堆积在一起,有的单独堆积成一堆,甚至还有填塞于房基内的。例如房基3就堆满了炼渣。在探方6和探方13还发现炼渣层,颗粒大小一般在0.5—2厘米间,显然是经过加工而成的。</p>
+<p>这里发现的炼渣除堆积在冶炼場或遺棄在堆积坑中外，质量都非常純淨。特別是厚基4內所發現的炼渣，沒有混入黃土，顆粒均勻，長寬一般在3—13厘米之間。但也有些黑色发亮的大块，质地頗象岩石，这是炼炉內溫度达到最高熔点时所流出来的炼渣凝固后的特征。在探方3坑11所出土的一块橧圓形煉渣，长达0.71，寬0.45，厚0.31米，狀如蜂窩，內部并夹有木炭和木柴的痕跡(图版捌,4)。</p>
+<p>炼渣顏色发黑，頗似琉璃，含鐵量少。雖然埋藏地下年久，但是很少發生鐵鏽。經過我們的觀察，當時已有一定的造渣經驗，并能掌握炼渣的熔化性和流动性。雖然他們不可能掌握炼渣的化学成分及物理性能，但是在冶鐵時可能已經知道加入一定數量的碱性熔剂(石灰石或石灰)。我們在遺址中發現不少的石灰，經過化驗，知道其中含CaO(氧化鈇)41.927%，MgO(氧化鎂)3.229%。証明煉渣質量还不坏。另外，在出土的煤块中，發現屬有不少的石子，它的作用當与石灰相同。这里所出的煉渣很明顯都是凝固而成的。煉渣必須有高大的煉炉和一定的熱力才可以使它與鐵分解而成為渣。由此，我們可以估計到當時冶炼技術是相当复杂的。当然，也往往由于炉內的低溫，煉渣的粘度較大不易流出，造成棚料、悬料甚至发生凍結等事故。在探方1和探方12發現的鐵块和鐵渣，就是凍結后遺留下來的(图版玖，2)。</p>
+<p>炼渣在当时是当作废物处理的。在炼渣的利用方面，曾把砸碎了的炼渣用于铺垫炉底(如炉15)，或者入耐火砖中，甚至和耐火泥搅拌后涂于炼炉壁上。碎末的用处可能更广，例如铺路、铺冶炼場地面。我們曾发现有加过工的炼渣堆。另外房甚3所保存的炼渣，块度均匀，并且比較純凈，很可能另有用途。</p>
+<p>从发现的大量炼渣推测到当时的冶铁产量是相当惊人的。我们曾根据这里现存的炼渣体积对于当时的冶铁产量作了一个估算：冶铁场东部炼渣堆长75，宽43，厚1.9米，其体积应为6127.5立方米；场区西北部炼渣堆长8，宽3，厚0.9米，其体积为21.6立方米；房基4内堆存的炼渣长10.8，宽5.85，厚1.1米，其体积应为69.498立方米。场区内所发现的散存炼渣估斟约100立方米。上述四个数字的总和6318.598立方米。经过秤称每立方炼渣重量为833公斤。若按1公斤炼渣出0.5公斤铁估算，应得出生铁2631696.067公斤。如果加上被流水冲刷流失的炼渣，则总产量当不止此数。</p>
+<h1 id="_23">（六）其他</h1>
+<p>在冶铁場，与煉炉有关的，除了燃料、炼渣和鐵块等有大量發現外，還有配料池、鼓风管、石夯等的發現。</p>
+<p>配料池发现于炉12东南边。池作簸箕形，北宽南稍窄。其东、西、北三面皆用砖斜砌成池壁，南为缺口。东西长1.28—1.56，南北宽1.2，深0.2米。砌池用的小砖一般长27，宽12，厚0.5厘米。推测是为配制熔剂而设的(图一四；图版伍,4)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一四 配料池平面、剖面图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>鼓风管共发现6件，皆残缺。可分作三种：</p>
+<p>第一种，发现2件。用耐火土屑草筋做成。以T18:3为例（图版拾壹，4），外部经火烧，甚坚硬；管内较光滑，制作粗糙。从断面上可以看出泥胎中有很大的空隙。这种风管发现于炼炉18（圆形炼炉）附近，残长16，内径8，外径20厘米。</p>
+<p>第二种, 发现 3 件。用耐火土和耐火砖碎末制成。圆筒形, 陶胎比第一种细薄。已残。以 T14:23 为例 (图一三, 4; 图版拾壹, 1、3), 通体为双层, 残长 7.5, 复原后内径 5.1, 外径 7.9 厘米。另一种 T10:19 为单层的。</p>
+<p>第三种，仅1件(T14:31)。状如筒瓦，表面有绳纹，管内有布纹，因被火烧已变形。残长18.5,复原直径7.5厘米(图一三,5;图版拾壹,6)。</p>
+<p>石夯, 用于夯打炉基或夯筑地面。共发现 5 件。其中 T2:21 与 T2:20 甚完整, 同出于探方 2 的西南角 (图版拾陆, 7、8)。皆淡绿色的坚石凿成。上部断面方形, 每边长 16-20 厘米。其上凿有长方孔, 用来装柄。下部断面作圆柱形, 径 12-16 厘米。夯面较平。经过长期的使用, 夯面稍残。全长 0.62 米。另有 磁石一件 (T16:5), 上窄下宽, 宽端有厚刃, 并有磨砸痕迹, 状如石斧, 当为磨砸铁器所用 (图版拾陆, 5)。</p>
+<h1 id="_24">五、熔炉、锻炉及其有关的遗迹、遗物</h1>
+<p>在已发掘的冶鐵場遗址中，除發現18座煉炉外，还發現熔炉、锻炉各1座，铸造坑8个，以及供鑄造的陶范和各樣的鑰件、锻件。</p>
+<h1 id="_25">（一）熔炉、铸造坑和铸范</h1>
+<p>熔炉1座，編号为炉4。位于探方2之内。炉身圆形，深1.2，直径1.01米(图一五；图版伍，2)。炉内壁有一层烧土台，宽度不大，且向炉底部斜伸，底近圆形(图版伍，3)。在北壁的硬土台上还遗留有三块側立的紅砖，可能是砖砌的炉齿。这些遺迹皆呈火紅色。炉身南部有长方形的炉道，长0.8，宽0.56，深0.38米。底部平坦，壁上尚有鐵痕。南端放有青石一块。炉道之南，向东挖有一个方坑并与炉道相通。坑很浅，长0.8，宽0.6，深0.1米(图版伍，2)。</p>
+<p>清理时，发现炉内填有黑色灰土，出土有几片绳紋瓦片。炉道的底部鋪有碎矿石子，炉周围的地面系利用細泥、碎矿石末和黃土鋪成，并且經過夯打，异常坚实。在靠近熔炉外的地面上粘結有一片厚約2厘米的鐵渣。</p>
+<p>在1958年大办鋼鐵运动中，禹县群众創造的鐵制小熔炉和上述这种鐵鉤熔炉的形制近似。它們之間的差別是：禹县的熔炉是鐵鑄的，炉底也同样是圓底，燃料也是装在炉盆里，从炉門点火，以熔鐵鑄器。</p>
+<p>铸造坑共8个，发现于熔炉的周围和探方2的西北部(图一六)。大小不同，都作长方形小坑。靠近熔炉南边的三个和探方2西北角的</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一五 熔炉炉4平面、剖面图</p>
+<p>三个都很小(图版拾, 2), 内壁皆呈火红色。其中最大者长 0.6, 宽 0.55, 深 0.08 米; 最小者长 0.4, 宽 0.18, 深 0.38 米。坑内填有矿石末和少量黑灰。举铸造坑 4、坑 5 为例说明之。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一六 探方2平面图</p>
+<p>铸造坑4，在熔炉西3.2米处，作不規則形。坑壁上都被火烧成紅色，底部烧成青色。坑壁有蹶痕。坑长1.3，最寬处1米，南端深0.3米。坑南放有一块方柱形的青石。坑内填有矿石末。</p>
+<p>铸造坑5，在熔炉西1.05米处，作长方形。东西两壁略呈弧形，周壁被火烧成青灰色，非常坚硬。壁上也留有缴痕。底部北高南低。坑长1.25，宽0.65，深0.65米。在坑南部近口处向东挖一小沟，底部呈圆形，深0.16，长0.6米。沟底有很多的铁渣和锈，显然可以看出沟内曾经流过铁汁。坑南放着三块薄青石(石灰岩)。坑内也填有碎矿石末和少量的黑灰(图版伍,2)。</p>
+<p>在熔炉和铸造坑的附近，发现一批不同形式的泥范。都作单合范。惜皆残缺。较完整的泥范有：</p>
+<p>圓形泥范 共2件。細泥制。中部有圓形深窩，窩內被火烧成紅色，平底。制作細致，壁甚光滑。T13:10直径9.5,高4.6厘米。凹窩中部深2.4,直径7厘米(图版拾，5)。</p>
+<p>T17:8与T13:10的器形完全相同，但尺寸稍有差异。</p>
+<p>六棱器泥范(T6:15) 1件。草拌泥制成，非常細致。內部用水磨光，外部呈圓形，平底，上面有帶棱角的模印，因殘缺過甚，不能看出器形。直径8.5,高3.4,模深3.4厘米(图版拾,6)。</p>
+<p>椭圆形泥范(T5:8) 1件。泥质, 制作細致工整, 表面平而光滑, 被烧成紅色。全部是椭圆形的薄片, 当为单合范另一面的平板。全长16.9, 宽8.3, 厚1.3厘米。周边用刀削成斜形(图版拾, 4)。</p>
+<p>从各坑堆存的矿石末观察，这些矿石末都直接受过高温，有的已凝结成矿石末块。由此推知这批泥范可能是用矿石末屑黄土制成的。由于采取一范一器的铸法，所以保存下</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一七 锻炉炉20平面、剖面图</p>
+<p>来的泥范不多。此外，在探方16发现礦石1件，石灰岩质，青色。未經細致加工。状如石斧，有磨礦鎘件的痕迹。长13.5，寬3—5.5，厚1.3厘米。</p>
+<h1 id="_26">（二）锻炉</h1>
+<p>锻炉1座，编号为炉20(图一七；图版伍，1)。发现于探方4的东南部。炉基为白色夯土，每层厚8厘米，有平夯痕迹，相当坚实。此炉系利用红色耐火砖和红色耐火土坯建造。炉腔近圆形，直径0.36，高0.24米。底部平坦。南有火門，炉北有一道高0.43米的土台。锻炉依台砌成。炉西挖有长方形土坑，长0.56,宽0.26,深0.3米。</p>
+<p>炉西发现有不少的小铁块、薄铁片，以及铁、铁条等物，皆为锻制。炉南出有陶罐、陶盆残片，还有五铢钱3枚。在炉北的土台上，有一片被火灼烙的遗迹，深灰色，中間高而四周略低，当与锻炉有密切关系。</p>
+<h1 id="_27">六、居住遗迹和建筑材料</h1>
+<h1 id="_28">(一)居住遗迹</h1>
+<p>共发现房基四座，灰坑十个。房基3、房基4是半地穴式的建筑，房基1、房基2建在地上，并砌有砖墙。房顶全毁，仅存部分墙基。分述如下：</p>
+<p>房基1发现于探方5内紧靠“排炉”处(图版肆，2)。其东北角叠压在房基3的西南角上(图九；图版叁，4)。所以这座房基应晚于房基3，其年代属西汉晚期。房基平面作长方形，长2.5，宽1.5米。居住面系黄土屧炼渣垫成，厚10厘米。磚砌墻壁，东壁和北壁較完整，残高1.67米。东壁下部用灰色磚砌至1.03米的高度后，再用紅色磚坯疊砌。磚的砌法为平臥錯縫。南壁和西壁已不存在。房基的西北角和西南角，各有圓形柱窩一个，口径0.18，深約0.5米。靠近东壁的中間，用小磚砌一方池，口小于底，四壁向外逐漸傾斜，口部每边长0.38，底部每边长0.48，口至底深0.69米。池內堆滿草木灰。在房基东北角，放一大型陶盆。</p>
+<p>房基2位于探方6的西南部，靠近排炉西南的斜坡上。仅保留一堵墙壁，是用小磚砌成。砌法和房基1相同。墙残高0.39，东西长2.48，厚0.14米。距墙基的北边1.15米处，发现有柱窝一个，径約0.3，深約0.5米。</p>
+<p>房基3 发现于探方5内，其西南角被房基1打破(图一八)。房作半地穴式长方坑。利用坑壁作墙，四壁垂直规整。房内地面平整。房基东西长10.8，南北宽5.5米。墙残高</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一八 房基1与房基3平面图</p>
+<p>1米，壁面尚有开挖时的镶痕。房基内堆满了炼渣。房基1的东壁和北壁即建于炼渣之上。</p>
+<p>房基4位于探方16的西南角。半地穴式，平面近长方形。唯西北部向房内凹入，没有挖成正角，东壁向西南斜伸，颠不整齐。南壁已残，仅存西部一小部份，在拐角处，砌有小磚六层。西壁和北壁保存尚好，在其北壁上还保留有原来挖掘的鏽痕(图版叁，2)。房基内地面平坦，西北角留有一硬土台，长2.2,宽1.8,高0.5米，但不甚規則。房基内东西的宽度不等，南部3.9，北部3.99米。南北的长度也不等，西部5.34，东部4.82米。清理时房基内堆滿灰土、耐火磚和炼渣等。</p>
+<p>在这四座房基中，都发现不少磚、瓦、瓦当等建筑材料，在房基3内堆积的炼渣中还发现铁磚1件。此外，在探方17、探方18的汉代文化层中发现門軸磚3件。</p>
+<p>根据在房基内发现的柱瓦和很多板瓦、筒瓦等遗物来推测，这些房子应为木结构。又因其建筑在冶炼场的中心地带，年代与炼炉同一时期，由此推测，这些房屋可能是冶炼者的临时住所。</p>
+<p>灰坑 共发现10座，分布在探方10、探方13、探方14内。坑口均在汉代文化层的堆</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一九 坑19平面、剖面图</p>
+<p>积中，坑底座落在生土层上，坑内堆积有灰土、炉渣、耐火磚以及陶器残片和瓦片等。灰坑形状都不甚規則，以灰坑19为例。灰坑19位于探方14的中部偏南，呈不規則的圓形，直径約3.5米。團底，深2.1米。坑內堆积黃灰土，其中有汉代的磚、瓦块、陶盆、罐的殘片和碎鉄块等(图一九)。</p>
+<h1 id="_29">（二）建筑材料</h1>
+<ol>
+<li>磷</li>
+</ol>
+<p>可分为长方形小磚、薄方磚、空心磚等三种。</p>
+<p>长方形小磚 多素面, 少數飾繩紋。有青色和紅色两种。房基 1 和房基 2 的墻壁上, 均砌青色素面小磚。制作規整, 质量較好。紅</p>
+<p>色磚數量較少，質量較差。不論青色磚或紅色磚，大小差不多，一般長26，寬13，厚6厘米。</p>
+<p>薄方磚 仅在探方17內發現兩块。每边長37，厚4.5厘米。灰色，正面模印四叶蒂花紋图案，背面飾細絳紋(图二〇,7;图版拾伍,6)。</p>
+<p>空心磚 出土不多，皆残。正面均印有几何形紋或四瓣花紋組成的图案（图二〇，8、9;图版拾伍,7)。</p>
+<ol>
+<li>瓦</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二〇 砖、瓦紋飾拓本</p>
+<p>出土数量最多。可分板瓦、筒瓦和瓦当三种。制作规整，多为青灰色。</p>
+<p>板瓦 都是残片, 绳紋較疏朗, 有斜行绳紋和直行绳紋之分。瓦内作斜方格紋或布紋 (图版拾伍,3)。</p>
+<p>筒瓦 外表有粗绳紋和細繩紋，里面作布紋或方格紋。如T18:33，长35.6，头寬12.4，末寬11.2，厚1.2厘米(图版拾伍,4)。有的在靠近瓦唇处飾弦紋數道。如T18:10，長36.2，寬15.4，厚1.6厘米。</p>
+<h1 id="3_1">3. 瓦当</h1>
+<p>共出10件，都是圆形瓦当。皆残缺。其中“延年益寿”瓦当4件，云纹瓦当6件。这两类瓦当，大小略同，一般直径10—15，厚1—1.5厘米(图二〇，1—6；图二四，7；图版拾伍，8—13)。</p>
+<h1 id="4_1">4. 門軸磚</h1>
+<p>发现3件。均用半截长方磚制成，上面挖出小圓凹，直径4.5—6.5，深1—2.7厘米。其中T17:22,有二次用过的痕迹。</p>
+<h1 id="_30">七、出土遗物</h1>
+<p>与炼炉、熔炉、锻炉和居住遗迹的有关遗物已于上述各节中叙述。这里介绍的是铁器和主要是陶制的容器和炊具。铁器多发现于熔炉和锻炉的周围，大致可以认作是这处冶炼場的产品，陶制的容器和炊具，則可看成是冶炼者的生活用具，自然有一部分容器也可能是冶铁生产中的用具。</p>
+<h1 id="_31">（一）铁器</h1>
+<p>共出土166件。生产工具多鏽件，生活用器多锻件。生产工具共90件，其中又分手工业生产工具和农具两大类。属农具者有鐵、鐵双齿、鐵、鐵、鐵、鐵等，属手工业工具的有鐵、鐵、鐵、鐵等。生活用具共34件，其中有鐵刀、鐵釘、鐵鉤、鐵环等。另外还有兵器2件，以及不知用途的鐵器40件。</p>
+<h1 id="1_1">1. 生产工具</h1>
+<p>铁锤 3 件。探方 4 和探方 10 各出一件, 另一件为采集品。有方柱形和圆柱形的两种, 均双合范管制。器形可分二式:</p>
+<p>I式:1件(T4:2)。腰間有长方，用以按装木柄。长方附近周围较粗，锤面有使用过的痕迹。残长8厘米(图二一,1)。</p>
+<p>Ⅱ式：2件。T10:4锤身为圆柱形。直径5，残长6厘米。中部也有长方盔，盔宽1.4厘米。另一件是采集品(图二一,2;图版拾叁,4)。</p>
+<p>铢1件。系采集品，锻制。圆锥形，一端有尖，另一端平整，并有使用遗迹。长10厘米，后部直径5厘米。</p>
+<p>铁凿 2 件。形状相同。皆双合范制，一端中空，可以按柄。柄部近长方形。其中 T10:7, 残长10, 宽2.7厘米(图二一, 4)。</p>
+<p>铁锛 8 件。以 $\mathrm{T}8:3$ 为例, 微残。锛制。长方形, 刃部呈弧形, 并且宽于器身。上部有长方盔, 壹内有木痕。残长 10.5, 刃部宽 8.6 厘米 (图二一, 3)。另有小锛 1 件 (T5:46), 残长 5.5, 刃宽 2.7 厘米 (图二一, 6)。</p>
+<p>鐵錐 1件(T12:9)。锻制。上有环。全长14厘米。</p>
+<p>鐵錫 11件。可分三式：</p>
+<p>I式：仅1件(T5:19)。为双合范铸造。刃部较宽而薄，后部有长方形，盔内尚有木柄痕迹。刃为半圆形，有使用磨卷的痕迹。在房基3与房基4的墙上及“铸造坑”的四壁，均发现有这类工具的痕迹。长23，刃部宽7，盔长7.2，宽2.8厘米(图二二,2;图版拾式,7)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二一 鐵器</p>
+<ol>
+<li>I式踵(T4:2) 2. II式踵(采集：1) 3. 铸(T8:3) 4. 凿(T10:7) 5. 型(T5:48)   </li>
+<li>小篆(T5:46) 7. 箭头(T5:26) 8. Ⅲ式鑼(T18:24) 9. 錃形器(T6:9) 10. 剑(T16:18) <br />
+11.Ⅲ式(采集：2) 12.犁(T12:7) 13.双齿( $\mathrm{T}10:3$ ） 14.Ⅱ式( $\mathrm{T}12:5)$</li>
+</ol>
+<p>Ⅱ式：共出8件。均为双合范鐩制。其中七件断面成长方形。頂端有长方形直盞，可按柄，韆身作楔状。T4:1长20.6,寬6.8,寔深6.5厘米(图二二,1;图版拾式,2)。只有T12:5断面成正方形，并在按木柄处特鑄有釘眼，以鐵釘貫入使木柄与器身結合牢固。长16.5,寬6.2厘米(图二一,14;图版拾式,1)。这种鐵釘與河北兴隆發現的战国鐵釘鑄范</p>
+<p>图二二 铁器 $(\%)$ <br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ式（T4:1）2.Ⅰ式（T5:19）3.（T8:1）4.（T5:20）<br />
+5. 鍾(T5:24) 6. 鍾(T8:2) 7. 鍾(T8:22) 8. 鍾(T13:1)</p>
+<p>相同1,在湖南衡阳2、河南洛阳的东周墓3中也有发现。</p>
+<p>Ⅲ式：2件。双合范制。凹字形，刃部呈弧状，两角向上起，后部中空，可以嵌入木柄。T18:24, 刃宽5.8厘米(图二一, 8)。另一件系采集品，长19.8, 刃部宽13.5, 后部宽</p>
+<p>1)郑紹宗：《热河兴隆发现的战国生产工具鑄范》，《考古通訊》1956年1期33頁圖四。</p>
+<p>2)湖南省文物工作队：《长沙、衡阳出土战国时代的铁器》，《考古通訊》1956年1期77頁，图版拾捌，5。</p>
+<p>3)中国科学院考古研究所：《洛阳中州路(西工段)》34頁，鐵鑄M2722:01、02，图版貳拾，1。科学出版社，1959年。</p>
+<p>11厘米(图二一,11;图版拾式,6)。器形曾見于耀县战国墓<sup>1)</sup>。四川广汉汉墓所出的陶俑中,有一俑所持铁口也与此相似<sup>2)</sup>。</p>
+<p>双齿6件。以T10:3为例(图二一, 13; 图版拾式, 8), 一面平直, 知为单合范铸造。顶端有方盘, 以装木柄。锄齿上宽下窄, 壶形厚重。长21.5, 两齿相距5厘米。</p>
+<p>鐵鈇8件。皆殘。雙合范鑄制。鈇身作五边形，上部有横盞可按木柄。据T8:1复原測知，長11.5，刃部寬20厘米(图二二，3;图版拾式，5)。</p>
+<p>鐵勅(柄) 1件。采集品(图版拾叁,9),锻制。前端有一愿咀形小鈉,用以与勅头套合;后部有圓盔,整个器身略弯曲。残长50,直径3.5厘米。</p>
+<p>铁犁 共出23件。都作V形。以T12:7为例(图二一,12;图版拾叁,8),单合范铸造,刃端隆起。两翼各长24.6,宽3.8,腹距22.5厘米。T5:48的一翼上铸“河三”两字(图二一,5)。</p>
+<p>铁鏃共26件。器形有二。一种作横长方形，直刃，有鑑。这种共出12件。如T5:20(图二二,4;图版拾式,4),长19,宽4.5厘米。鑑内尚留有木痕。另一件T5:24(图二二,5),刃部略向外呈弧形。另一种作鏃形。共出14件。其中十二件刃部平直(图二二,6,7;图版拾叁,1-3),二件刃部略呈弧形(图二二,8;图版拾叁,6)。以T3:2为例(图二二,6;图版拾叁,3),长13.5,刃宽11厘米。裤上“河三”两字。</p>
+<h1 id="2_1">2. 生活用具</h1>
+<p>鉄刀 2 件。以 T10:9 为例,背部較厚,一边有刃,柄已殘。長 13.3,寬 1.2 厘米。</p>
+<p>鍍鈞 1件(T14:25)。锈蝕較甚，殘長21.1厘米(图版拾參,11)。</p>
+<p>钦釘 28件。分三式：</p>
+<p>I式：2件。两头圆有尖，釘身横断面作横长方形。如T12:10(图版拾叁,10),长78.厘米。</p>
+<p>Ⅱ式：21件。尖端，釘身横断面方形。T13:4,长14.3厘米。</p>
+<p>Ⅲ式：5件。頂部彎曲，釘身橫断面作长方形。T10:8，长9厘米。</p>
+<p>环1件(T10:11)。残缺，断面圆形。直径3.5厘米。</p>
+<p>圆筒状器 1件(T10:16)。已残，直径6.4，高6.2，厚0.6厘米。用途不明(图版拾式,3)。</p>
+<p>釜底 1件(T12:19)，发现于炉15内。铸制。平底，斜壁。底径约20，残高7厘米。底部有烟熏痕，应为实用的炊具。</p>
+<h1 id="3_2">3. 铁兵器</h1>
+<p>箭头 1件（T5:26）。铸制。圆锥形。有。长3.5厘米（图二一，7；图版拾叁，7）。</p>
+<p>劍1件(T16:18)。锻制。已殘。环首、雙刃、有脊。残長30厘米(图二一,10)。</p>
+<h1 id="4_2">4. 其他</h1>
+<p>共40多件。腐朽极甚。器名、用途大都不可辨。能看出器形的有铁条2件、器足2件、楔形器1件、弧形器1件、鳞形器1件等(图二一,9;图版拾叁,5)。</p>
+<h1 id="_32">（二）陶器</h1>
+<p>大部分发现于16、17、18等三个探方中。这三个探方位于炼铁場的东北，矿石加工場的所在。陶器主要是炊具和容器。泥质灰陶为主，夹砂粗紅陶仅見陶釜。輪制，器表上大多有輪旋紋。小型的陶器，底部常有刀削的痕迹。素面为主，紋飾不多。仅陶釜作繩紋。缸、盃等少数器物上，偶尔飾绳紋或斜方格紋。值得重視的是帶字的陶器。文字大多是在陶器烧成后刻划上去的，这种文字多見于陶盆的口沿上或底部，有用白粉书写在大瓮的肩部。也有的是在陶胎上拍印的印文，这种印文見于陶盆的底部。陶文都很簡短。其中有姓氏，有与生产活动有关的文字，有吉祥語，但更多的是用意不明的单字。与生产活动有关的，如“鼓石”刻写在三件器物之上。T17:41和T17:36，刻在陶盆口沿上，T17:30粉书于陶瓷的肩部(图二三,5、6、14；图版拾肆,8;图版拾伍,2)。刻姓氏的有“李”、“大赵”、“史”等字。隶书，分别刻于T17:37、T17:33、T17:35等三件陶盆口沿上（图二三,3、10；图版拾</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二三 陶器上的文字拓本</p>
+<p>1—10. 陶盆口沿刻文 (T16:31, T17:42, T17:33, T17:43, T17:36, T17:41,</p>
+<p>T17:40,T16:32,T17:39,T17:35) 11.陶盆内壁刻文（T17:32） 12.陶</p>
+<p>盆底部刻文(T17:38) 13. 陶盆底部印文(T16:30) 14. 陶瓮肩部粉书写</p>
+<p>的文字(T17:30) 15. 陶盆底内的刻文(T17:44)</p>
+<p>肆,2、3、5)。有一件陶盆(T17:38)的底面上刻“母口圜母圓”,可能是吉祥語(图二三,12;图版拾肆,10)。另一件陶盆(T17:42)的口沿上刻“大赦”(图二三,2;图版拾肆,7),显然是铁工所作,从而推知当时在这里冶铁生产的有一部分是“刑徒”。用意不明的单字有“服”、“舍”(?)、“舌”、“謂”等。后者系印文,見于T16:30、T16:26二件盆底上,余皆刻划(图二三,4、7、9、11、13;图版拾肆,4、6、9、11;图版拾伍,5)。还有的口沿上刻有横紋和盆底內有刻紋(图二三,1、8、15;图版拾肆,1;图版拾伍,1)。</p>
+<p>器形有盆、罐、壶、瓮、缸、釜、甑等。其中以陶盆占绝大多数，瓮和釜次之，罐、壶、甑三种为数较少。出土时大多残缺。下面叙述的件数，系根据可复原的件数统计。</p>
+<p>陶釜共7件。分两式：I式2件。夹砂紅陶。直口，斜肩，圓腹，圜底。腹与底飾有粗绳紋，两肩上有对称穿孔。底部有熏烟，T17:53，残高11.5厘米(图二四，6；图版拾陆，4)。Ⅱ式5件。唇向外折，腹較扁圓，施有細絹紋。余同I式。T12:45，高10.5厘米（图二四，5；图版拾陆，1)。</p>
+<p>图二四 陶器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ式盆(T17:19) 2.I式盆(T5:4) 3.I式盆(T17:23) 4.Ⅱ式盆(T17:20) 5.II式釜(T12:45) 6.I式釜(T17:53) 7.瓦当(T2:22)(除2.为 $\frac{1}{2}$ ，3.为 $\frac{1}{2}$ ，余皆 $\%$ )</p>
+<p>陶甑 仅发现器底。器形与 I 式盆同。孔径约 3 厘米。</p>
+<p>陶盆 16件。分两式。I式, 出土数量最多, 可复原者11件。敞口, 唇向外折。深腹, 平底。有的向附着铁液或石灰的痕迹。T17:23, 高21.3厘米(图二四, 2、3; 图版拾陆, 2)。Ⅱ式5件。直口, 深腹。腹壁很厚。其上印有不規則绳紋, 平底。T17:19, 高16厘米(图二四, 1)。有的口部略内收。如T17:20, 高12厘米(图二四, 4; 图版拾陆, 3)。</p>
+<p>陶壶 3件。皆残。口外侈，长颈圆腹（图二五，4）。常見于洛阳战国晚期及西汉早期的墓中。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二五 陶器</p>
+<p>1.Ⅱ式（T7：7）2.Ⅰ式缸（T7：18）3.Ⅱ式缸（H22：3）</p>
+<p>4.壶（T17:7）5.I式罐（T14:1）6.I式罐（T17:52）</p>
+<p>7.Ⅱ式罐（T17:50） 8.Ⅱ式罐（T17:49）</p>
+<p>（除1.2.为，3.为%，余皆%）</p>
+<p>陶瓷出土的残片很多。器形较大，分两式：I式作直口沿，折屑，腹部斜直收成平底（参阅《洛阳烧沟汉墓》图版式式，1、2)。Ⅱ式口沿外卷，斜屑，鼓腹(图二五，1；并参阅《洛阳烧沟汉墓》图版式式，5、6)。这两种陶瓷，都常见于洛阳西汉墓中。I式始见于西汉中期，盛行于西汉晚期，东汉则少见1）。Ⅱ式始见于西汉中期以后，盛行于西汉晚期及东汉2)。</p>
+<p>陶缸皆残片。分两式：I式外折平口沿。口沿宽达9.2厘米。腹部厚1.6厘米，上</p>
+<p>有绳紋(图二五,2)。Ⅱ式作青灰色。唇外侈。口径达80多厘米,胎厚約1厘米(图二五,</p>
+<p>3)。这两种陶缸曾见于洛阳西汉中期到晚期的墓葬中(参阅《洛阳中州路》图版式叁,2、3)。</p>
+<p>陶罐皆残片。分二式：I式口较小，唇外折，細頸，圓腹(图二五,5、6；并參閱《洛阳烧沟汉墓》图四九,5)。Ⅱ式唇略內卷，腹部較修长(图二五,7、8；并參閱《洛阳烧沟汉墓》图四九,7、8)这两种陶罐都是洛阳西汉墓葬中主要的隨葬品之一。</p>
+<p>汲水罐 皆残,发现4件器底。其模型器常見于洛阳汉代墓出土的陶水井模型中,《洛阳中州路》汉代的房屋基址中,則发现过实物3)。</p>
+<p>陶紉輪 1件(T17:3)。系利用板瓦片磨制，中有孔。径5厘米。</p>
+<p>有銅錢、兽骨、桃核和采集的銅鱉斗1件(图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（三）其他</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span>  </p>
+<p>2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8 <br />
+图二六 銅钱 $(\frac{1}{2})$</p>
+<ol>
+<li>
+<p>T6:14 2. T7:14 3. T8:8 4. T4:9</p>
+</li>
+<li>
+<p>T4:9 6. T3:21 7. T18:7 8. T10:17</p>
+</li>
+</ol>
+<p>版拾陆,6)。</p>
+<p>銅錢共17枚。分別出于探方3、4、5、6、10、15、18等探方中。其中十六枚是西汉时期的五铢錢，一枚是新莽时期的“大泉五十”(图二六)。兽骨出土不少，見于探方3、5、6、8、9、14等探方中，可能是猪骨和牛骨。桃核1枚，发现于砖坯上，系制坯时混入，已烧成黑色，保存完好，长1.8，寬1.5厘米。銅鏽斗器身扁圓形，圜底，有流，附有鐵柄。高10.5厘米(图版拾陆,6)。可能也是当时冶鉄場的遺物。</p>
+<h1 id="_33">八、結 語</h1>
+<p>巩县铁生沟附近的铁矿，发现颇早，《山海經·中山經》說：“少室之山……其下多鉄……。”又說：“后山上，多白金，多鉄。”“大驅之山，其阴多鉄。”按少室山位于河南省登封县嵩山之西部，北距巩县铁生沟仅12.5公里。后山位于郑州之西。大驅山約在今日荥阳、密县之間。根據我們在鐵生沟訪間所得到的材料証明：鐵生沟附近的鐵矿和荥阳、密县鐵矿實为一体。鐵生沟鐵矿区位置，正处于上述文献所指出的范围之内。由于《山海經》是战国时代的著作，足見这里的鐵矿在战国时代已为人們所發現。</p>
+<p>关于这处冶铁遗址的年代問題，从出土的各种遺物可以看出梗概。这里的文化层堆积，虽然中間隔有一层地面，但地面上下的两个灰层中所出土的陶器有些是可以粘对成完整的器物，可見它們的年代不会相距很远。冶铁遗址的各种遺迹都座落在这层地面之上，或者打破了这层地面。</p>
+<p>遗址中出土的陶器,有許多和《洛阳中州路(西工段)》所出土的器物是相似的。例如:这里出的I式陶缸(T7:18),与中州路Ⅱ式陶缸(M633上)器形相同;Ⅱ式陶缸(H22:3)与中州路Ⅲ式陶缸(M1807上)相同;I式陶瓮(T16:33)与中州路Ⅱ式陶瓮(M1807上)相似;Ⅱ式陶瓮(T7:7)与中州路I式瓮(M1422上)相近;I式尖底罐(T14:28)与中州路尖底罐(M1904上:01)相似;I式陶盆(T1:33)与中州路Ⅱ式大口罐(M804上:01)相同;Ⅱ式陶盆(T5:4)与中州路I式大口罐(T1104:026)相同;陶罐(T14:1)与中州路Ⅱ式陶罐(M1549上:05)相同。此外所出的小砖亦与中州路所出西汉小砖相似;空心砖常見于洛阳的西汉墓中,倚瓦、板瓦、云紋瓦当、“延年益寿”瓦當常見于西安、洛阳汉代遗址中。各种鐵器尤其是各種鐵制生产工具大部分與輝县、洛阳等地战国或西汉遺址與墓葬所出土的鐵制生产工具相同。所出土的銅錢又都是西汉时期的。根据上述各種实物証據,初步断定巩县鐵生沟冶鐵遺址的年代是西汉中期至西汉晚期(武帝至新莽)。</p>
+<p>通过本遗址的发掘，可以概括为下列几点收获：</p>
+<p>（一）铁生沟冶铁遗址出土的手工工具和农业生产工具，大多是双合范铸造，如铁锤、铁凿、条形、直裤、凹形、铁锤、箭头等。单合范铸造的只有双齿和铁犁。<br />
+（二）鐵生沟各种冶炼炉內及其附近地面所出的煤块、煤餅和煤渣，无可雄辯地證明了我国在西汉时期以煤冶鐵的事实。<br />
+（三）鐵生沟汉代冶鐵遗址的总面积为21600平方米，我們共发掘2000平方米。并且发现了炼炉、熔炉和锻炉共20座，鐵器166件。由这个数字可以看出遺址的規模是不小的。象这样大的冶鐵工場一定拥有相当数量的冶鐵者。对于这些冶鐵者的身份的探討是个頗有意义的問題。</p>
+<h1 id="tieh-sheng-kou-kung-hsien_1">Tieh Sheng Kou, Kung Hsien</h1>
+<p>by</p>
+<p>The Archaeological Team of the Bureau of Culture, Honan Province</p>
+<p>(An Abstract)</p>
+<p>Between 1958 and 1959, excavations conducted by the Archaeological Team of the Bureau of Culture, Honan Province at T'ieh Sheng Kou, twenty nine kilometres southwest of Kung Hsien, Honan brought to light the remains of a Han dynasty iron smithy. Extending over an area of 120 (north-south) by 180 (east-west) metres, its surface is covered with a considerable amount of ore dusts, slags, burnt clay and ashes. Within an excavated area of 2,000 square metres, the excavators uncovered the remains of seventeen smelting furnaces, a low temperature roasting oven, a melting furnace and a fining hearth. There are also remains of buildings, ore-dressing grounds, and pits for casting, quenching, compounding and storage. Among the objects unearthed are iron hammers, picks, hoes, ploughheads and arrowheads, as well as clay tuyeres, refractory bricks and various implements used in mining and crushing ores.</p>
+<p>Of the seventeen smelting furnaces, two are retangular while six are circular in shape. Five others are neatly arranged in a single row and there is also a reverberatory furnace. The furnaces are built of different refractory bricks, and their structures vary according to their shapes. But the interiors are all lined with a layer of refractory clay mixed with straw.</p>
+<p>The reverberatory furnace consists of two parts, one for smelting the ore and the other for the feul. The bottom of the former is covered with a layer of lime while its walls are built of bluish refractory bricks which is further strengthened by a layer of refractory clay. The large amount of vault-shaped refractory bricks found in the furnace indicate that it had a vaulted top. Around the furnace are blooms of low carbon steel of a rather high quality. Metallographical studies show that one of them has a carbon content of about $0.35\%$ .</p>
+<p>Around a melting furnace the excavators found eight casting pits with many clay moulds scattered nearby. In the vicinity of a fining hearth is a quenching pit and some iron implements made through forging. Most of the implements unearthed at the site were cast in double moulds, which feat is a considerable advance over the single mould casting of most of the Warring States iron implements. Moreover, the use of quenching is also a signal achievement in the forging technique of the Han people.</p>
+<p>Among the feul unearthed at the site are charcoal, coal and coal cakes. The latter was made of coal dusts, clay and quartz. The fact that not only coal but also coal cakes were used seems to suggest that by then coal must have been used for a very long period of time. In addition to providing material evidence for the use of coal in Han times, their discovery</p>
+<h1 id="_34">巩县.铁生沟</h1>
+<p>is a good indication that the use of coal may be pushed back to an even earlier date.</p>
+<p>The pottery unearthed at the site are similar in shape to those of the Western Han excavated at Chung Chou Lu, Loyang. The wu chu and ta ch'uan wu shih coins found here also show that the remains probably date from the reign of Emperor Wu Ti through the end of Western Han.</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版壹（I）<br />
+1. 钱生沟遗址全景（由南向北）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.北庄汉代采矿区全景（在此发现有圆形矿井）</p>
+<p>铁生沟汉代冶铁遗址全景</p>
+<h1 id="ii">图版贰(II)</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.北庄汉代采矿区发现的方形矿井</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.北庄汉代采矿区发现的圆形矿井</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.北庄汉代采矿区发现的古代窑洞</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 罗汉寺汉代采矿区发现的巷道（巷道内堆满淤泥）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 原因</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 原书1(甲西向东)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.在护7附近加工的碎石堆</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.推矿石末的机（H292）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（1-7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（护1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 原第1与排护之关系<br />
+排护与长方形缘护</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 配料池<br />
+股与格</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+0</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版陆(VI)<br />
+1. 反射炉（炉15）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 低温炒鍋炉（炉17）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.海绵铁炉（炉13）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.海绵铁炉（炉14）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 圆形炼炉（炉2）<br />
+汉代的各种炼炉</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版染(VII)<br />
+1. 炉壁残块</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.薄长方形耐火砖（T6：19）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.深红色长方形耐火砖（T16:35）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 薄长方形耐火砖(T6:20)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.青色拱形耐火砖（T12：3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 炉壁残块</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.青色长方形耐火砖(T5:30)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 红色长方形耐火砖(T12:2)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 木炭(T14:3)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 带有木炭痕迹的炼渣块</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 用“石末铺”的地面（在T2）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 础矿石用的石砧（T9:7）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 紅色耐火砖坯(T12:1)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.T1发现的大铁块</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 紅色耐火砖坯(T5:2)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 藏铁坑（坑1）内的铁板</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 绿色耐火砖塞 (左 T7:17) 和青色长方形耐火砖(右 T5:30)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 耐火草拌泥块(T 6:18)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版拾（X）<br />
+1. T12 海綫鐵堆</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. T2西北角的三个葛造坑</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.藏铁坑（坑7）内的火铁块</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 橘形泥范(T5:8)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.圆形泥范（T13:10）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.六棱器泥范(T6:15)</p>
+<h1 id="xt">图版拾壹(XT)</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.鼓风管（T14:23内面）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.大铁板</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.鼓风管（T14：23外面）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.鼓风管（T18:3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 海綫鐵(T8:21)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 陶鼓风管(T14:31)</p>
+<h1 id="_35">鼓风管等</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版拾贰(XII)<br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<h1 id="_36">鐵器</h1>
+<p>1.Ⅱ式（T12:5）2.Ⅱ式（T4:1）3.国筒状器(T10:16）4.（T5:20）<br />
+5. 勃(T8:1) 6. Ⅲ式(采:2) 7. I式( T5:19) 8. 双齿( T10:3)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版拾叁(XIII) <br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<h1 id="_37">钦器</h1>
+<ol>
+<li>鍾(T5:18) 2. 鍾(T8:22) 3. 鍾(T8:2) 4. 鍾(采：1)   </li>
+<li>铸形器(T6:9) 6. 锥(T13:1).7. 箭头(T5:26) 8. 型(T12:7)   </li>
+<li>鍾柄(朵:4) 10. I式钉(T12:10) 11. 鍾(T14:25)</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版拾肆(XIV)<br />
+陶器上的刻文</p>
+<p>1-9.陶盆口沿刻文(T16:32,T17:33,T17:35,T17:40,T17:37,T17:43,T17:42,</p>
+<p>T17:41,T17:39) 10. 陶盆底部刻文(T17:38) 11. 陶盆内壁刻文(T17:32)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+砖、瓦及陶器上的刻文</p>
+<p>1、2. 陶盆口沿刻文(T16:31,T17:36) 3. 板瓦(T19:41) 4. 筒瓦(T18:33)</p>
+<ol>
+<li>陶盆底部印文(T16:30) 6. 薄方砖(T17:2) 7. 空心砖残片(T8:11)</li>
+</ol>
+<p>8-13.瓦当(T5:3,T3:24,T7:9,T5:3,T2:22,T6:17)</p>
+<h1 id="xvi">图版拾陆(XVI)</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ式陶釜（T12:45）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. I式陶盆(T17:23)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅱ式陶盆（T17：20）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. I式陶釜(T17:53)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 磁石（T16:5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7. 石夯(T2:21)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8. 石芬(T2:20)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 铜鑾斗（采集：6）</p>
+<h1 id="_38">陶、铜、石器</h1>
+<h1 id="_39">考古学专刊</h1>
+<p>丁种第十三号</p>
+<h1 id="_40">砚县铁雀沟</h1>
+<p>河南省文化局文物工作队編著</p>
+<p>中国科学院考古研究所編輯</p>
+<p>*</p>
+<p>文物出版社出版</p>
+<p>（北京景山前街故宫内）</p>
+<p>北京市印刷一厂印刷</p>
+<p>新华书店北京发行所发行</p>
+<p>各地新华书店經售</p>
+<p>$787\times 1092$ 1/16 44/16印张</p>
+<p>1962年12月第一版第一次印刷</p>
+<p>统一书号：7068·196</p>
+<p>印数：（精）1—500 （平）1—700</p>
+<p>定价：（精）3.90元（平）2.60元</p>
+<p>统一书号：7068·196</p>
+<p>定价：精装3.90元平装2.60元</p>
+  </div>
+</div>
+
+<div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)"><a href="./南宋官窑1996FB-271-17.html" style="color:var(--muted);text-decoration:none">← 南宋官窑</a><a href="./江陵雨台山楚墓.html" style="color:var(--muted);text-decoration:none">江陵雨台山楚墓 →</a></div>
+</div>
+
+<div class="toc-float" id="tocPanel">
+  <h4>目录</h4>
+  <div id="tocContent">正在生成...</div>
+</div>
+</div>
+<footer class="site-footer">
+<div class="footer-inner">
+  <p>中国考古学专刊·丁种 实体标注知识库 &copy; 2026</p>
+  <p class="footer-links">
+    <a href="https://github.com/CrossTheOcean/archaeology-report-kb" target="_blank">GitHub</a> ·
+    <a href="../about.html">关于本站</a>
+  </p>
+</div>
+</footer>
+<script>
+
+// Generate TOC from headings
+setTimeout(function() {
+  const body = document.getElementById('reportBody');
+  const headings = body.querySelectorAll('h1, h2, h3');
+  const toc = document.getElementById('tocContent');
+  if (headings.length === 0) {
+    toc.innerHTML = '<span style="color:var(--muted)">无标题</span>';
+    return;
+  }
+  toc.innerHTML = '';
+  headings.forEach((h, i) => {
+    h.id = 'heading-' + i;
+    const a = document.createElement('a');
+    a.href = '#heading-' + i;
+    a.textContent = h.textContent;
+    a.style.paddingLeft = (h.tagName === 'H3' ? '12px' : '0');
+    toc.appendChild(a);
+  });
+}, 500);
+
+</script>
+</body>
+</html>

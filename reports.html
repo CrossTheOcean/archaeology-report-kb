@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>报告列表 — 中国考古学专刊·丁种 — 实体标注知识库</title>
+<meta name="description" content="基于70份考古学专刊·丁种发掘报告的实体标注与结构化知识库">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏺</text></svg>">
+<style>
+:root {
+  --bg: #0f1117;
+  --card: #1a1d27;
+  --border: #2a2d3a;
+  --text: #e4e4e7;
+  --muted: #8b8fa3;
+  --accent: #f59e0b;
+  --accent2: #ec4899;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* Navigation */
+.topnav {
+  background: rgba(15, 17, 23, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.nav-links a.active { color: var(--accent); background: rgba(245,158,11,0.08); }
+
+/* Layout */
+.container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+.hero {
+  text-align: center;
+  padding: 48px 20px 32px;
+}
+.hero h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.hero .subtitle { color: var(--muted); font-size: 1.05rem; }
+
+/* Stats */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin: 28px 0 36px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 28px;
+  text-align: center;
+  min-width: 150px;
+  flex: 1;
+  max-width: 200px;
+}
+.stat-card .num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.stat-card .label { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
+
+/* Grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+}
+.card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  background: var(--card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.82rem;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+thead th:hover { color: var(--text); }
+tbody td { padding: 10px 14px; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+tbody tr { transition: background 0.15s; }
+tbody tr:hover { background: rgba(245, 158, 11, 0.04); }
+
+/* Tags */
+.era-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.ebar {
+  display: inline-block;
+  height: 6px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Report detail page */
+.report-header {
+  margin-bottom: 28px;
+}
+.report-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.report-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.report-meta span {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+.report-body h2 { font-size: 1.3rem; margin: 32px 0 16px; color: var(--accent); }
+.report-body h3 { font-size: 1.1rem; margin: 24px 0 12px; }
+.report-body p { margin-bottom: 12px; }
+.report-body ul, .report-body ol { margin: 12px 0 12px 24px; }
+.report-body li { margin-bottom: 4px; }
+.report-body table { margin: 16px 0; }
+.report-body table th { background: var(--card); }
+.report-body table td, .report-body table th {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+}
+.report-body pre {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.report-body code {
+  background: rgba(245,158,11,0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* Image placeholder */
+.img-placeholder {
+  display: inline-block;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+/* Entity chips */
+.entity-section { margin: 20px 0; }
+.entity-section h4 { color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; }
+.echip {
+  display: inline-block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  margin: 2px 3px;
+}
+
+/* Report card (for list page) */
+.report-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.report-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.report-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.report-card .rc-meta { color: var(--muted); font-size: 0.84rem; }
+.report-card .rc-entities { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-top: 6px; }
+
+/* Search & filter */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+.search-input {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 260px;
+  outline: none;
+}
+.search-input:focus { border-color: var(--accent); }
+.filter-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(245,158,11,0.08);
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  margin-top: 60px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.footer-inner { text-align: center; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.footer-links { margin-top: 8px; }
+.footer-links a { color: var(--accent); text-decoration: none; }
+.footer-links a:hover { text-decoration: underline; }
+
+/* About page */
+.about-section { margin: 28px 0; }
+.about-section h2 { font-size: 1.3rem; margin-bottom: 12px; color: var(--accent); }
+.about-section p { margin-bottom: 12px; color: var(--muted); }
+.about-section ul { margin: 8px 0 8px 20px; color: var(--muted); }
+
+/* Download page */
+.dl-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.dl-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.dl-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; }
+.dl-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #000;
+  padding: 8px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.dl-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.dl-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.dl-btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Map page */
+.map-container {
+  text-align: center;
+  margin: 24px 0;
+}
+.map-container img {
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .stats-row { gap: 10px; }
+  .stat-card { min-width: 120px; padding: 14px 16px; }
+  .stat-card .num { font-size: 1.5rem; }
+  .nav-links a { padding: 6px 10px; font-size: 0.82rem; }
+  .search-input { width: 100%; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+}
+@media (max-width: 480px) {
+  .nav-links { gap: 0; }
+  .nav-links a { padding: 6px 8px; font-size: 0.78rem; }
+  .container { padding: 16px; }
+}
+
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<nav class="topnav">
+<div class="nav-inner">
+  <a href="./index.html" class="logo">🏺 考古知识库</a>
+  <div class="nav-links">
+<a href="./index.html">总览</a>
+<a href="./reports.html" class="active">报告列表</a>
+<a href="./map.html">遗址地图</a>
+<a href="./download.html">数据下载</a>
+<a href="./about.html">关于</a>
+  </div>
+</div>
+</nav>
+<div class="container">
+<div class="hero"><h1>📄 报告列表</h1><p class="subtitle">共70份考古学专刊·丁种发掘报告</p></div>
+<div class="filter-bar">
+  <input type="text" class="search-input" id="searchInput" placeholder="搜索报告名称...">
+  <button class="filter-btn active" data-era="all" onclick="filterEra('all',this)">全部</button>
+  <button class="filter-btn" data-era="新石器时代" onclick="filterEra('新石器时代',this)">新石器时代(18)</button>
+  <button class="filter-btn" data-era="青铜时代" onclick="filterEra('青铜时代',this)">青铜时代(3)</button>
+  <button class="filter-btn" data-era="夏商周" onclick="filterEra('夏商周',this)">夏商周(23)</button>
+  <button class="filter-btn" data-era="秦汉" onclick="filterEra('秦汉',this)">秦汉(12)</button>
+  <button class="filter-btn" data-era="魏晋南北朝" onclick="filterEra('魏晋南北朝',this)">魏晋南北朝(3)</button>
+  <button class="filter-btn" data-era="隋唐" onclick="filterEra('隋唐',this)">隋唐(4)</button>
+  <button class="filter-btn" data-era="宋元明清" onclick="filterEra('宋元明清',this)">宋元明清(3)</button>
+  <button class="filter-btn" data-era="边疆考古" onclick="filterEra('边疆考古',this)">边疆考古(4)</button>
+</div>
+<div class="grid-3" id="cardGrid"></div>
+</div><footer class="site-footer">
+<div class="footer-inner">
+  <p>中国考古学专刊·丁种 实体标注知识库 &copy; 2026</p>
+  <p class="footer-links">
+    <a href="https://github.com/CrossTheOcean/archaeology-report-kb" target="_blank">GitHub</a> ·
+    <a href="./about.html">关于本站</a>
+  </p>
+</div>
+</footer>
+<script>
+
+const reports = [{"name": "定陵", "slug": "定陵", "era": "宋元明清", "entities": 2095, "pages": 593}, {"name": "蒙城尉迟寺", "slug": "蒙城尉迟寺2001FB-269-11皖北新石器时代聚落遗存的发掘与研究中国社会科", "era": "新石器时代", "entities": 2041, "pages": 489}, {"name": "滕州前掌大墓地", "slug": "滕州前掌大墓地", "era": "夏商周", "entities": 1978, "pages": 840}, {"name": "南邠州·碾子坡", "slug": "南邠州-碾子坡", "era": "夏商周", "entities": 1962, "pages": 747}, {"name": "偃师二里头：1959—1978年考古发掘报告", "slug": "偃师二里头-1959-1978年考古发掘报告", "era": "夏商周", "entities": 1792, "pages": 615}, {"name": "北魏洛阳永宁寺", "slug": "北魏洛阳永宁寺", "era": "魏晋南北朝", "entities": 1651, "pages": 378}, {"name": "张家坡西周墓地", "slug": "张家坡西周墓地1999FB-263-51", "era": "夏商周", "entities": 1606, "pages": 712}, {"name": "山东王因 新石器时代遗址发掘报告", "slug": "山东王因新石器时代遗址发掘报告2000FB-260-29", "era": "新石器时代", "entities": 1336, "pages": 629}, {"name": "枣阳雕龙碑", "slug": "枣阳雕龙碑", "era": "新石器时代", "entities": 1291, "pages": 615}, {"name": "师赵村与西山坪", "slug": "师赵村与西山坪", "era": "新石器时代", "entities": 1262, "pages": 525}, {"name": "澧西发掘报告", "slug": "澧西发掘报告1963FB-263-3", "era": "夏商周", "entities": 1221, "pages": 310}, {"name": "沣西发掘报告", "slug": "沣西发掘报告", "era": "夏商周", "entities": 1218, "pages": 309}, {"name": "蒙城尉迟寺", "slug": "蒙城尉迟寺", "era": "新石器时代", "entities": 1197, "pages": 705}, {"name": "庙底沟与三里桥", "slug": "庙底沟与三里桥", "era": "新石器时代", "entities": 1158, "pages": 235}, {"name": "安阳殷墟花园庄东地商代墓葬", "slug": "安阳殷墟花园庄东地商代墓葬2007", "era": "夏商周", "entities": 1139, "pages": 496}, {"name": "洛阳发掘报告 1955-1960年洛阳涧滨考古发掘", "slug": "洛阳发掘报告1955-1960年洛阳涧滨考古发掘资料", "era": "夏商周", "entities": 961, "pages": 311}, {"name": "大甸子—夏家店下层文化遗址与墓地", "slug": "大甸子-夏家店下层文化遗址与墓地", "era": "青铜时代", "entities": 934, "pages": 517}, {"name": "夏县东下冯", "slug": "夏县东下冯1988FB-262-52", "era": "夏商周", "entities": 900, "pages": 369}, {"name": "临猗程村墓地", "slug": "临猗程村墓地2001FB-262-71", "era": "夏商周", "entities": 893, "pages": 486}, {"name": "郑州二里岗", "slug": "郑州二里岗", "era": "夏商周", "entities": 884, "pages": 171}, {"name": "洛阳中州路", "slug": "洛阳中州路", "era": "夏商周", "entities": 837, "pages": 268}, {"name": "安阳殷墟郭家庄商代墓葬", "slug": "安阳殷墟郭家庄商代墓葬", "era": "夏商周", "entities": 828, "pages": 294}, {"name": "宝鸡北首岭", "slug": "宝鸡北首岭", "era": "新石器时代", "entities": 785, "pages": 303}, {"name": "鄂城六朝墓", "slug": "鄂城六朝墓", "era": "魏晋南北朝", "entities": 716, "pages": 600}, {"name": "京山屈家岭", "slug": "京山屈家岭", "era": "新石器时代", "entities": 708, "pages": 153}, {"name": "武功发掘报告", "slug": "武功发掘报告浒西庄与赵家来遗址", "era": "新石器时代", "entities": 672, "pages": 284}, {"name": "徐家碾寺洼文化墓地", "slug": "徐家碾寺洼文化墓地2006", "era": "青铜时代", "entities": 666, "pages": 366}, {"name": "青龙泉与大寺", "slug": "青龙泉与大寺1991FM-2001-10-60", "era": "新石器时代", "entities": 658, "pages": 318}, {"name": "西安半坡", "slug": "西安半坡", "era": "新石器时代", "entities": 591, "pages": 545}, {"name": "双砣子与岗上 辽东史前文化的发现和研究", "slug": "双砣子与岗上辽东史前文化的发现和研究1996FB-277-16", "era": "青铜时代", "entities": 558, "pages": 284}, {"name": "昌都卡若", "slug": "昌都卡若", "era": "新石器时代", "entities": 540, "pages": 263}, {"name": "胶县三里河", "slug": "胶县三里河", "era": "新石器时代", "entities": 514, "pages": 302}, {"name": "汉长安城未央宫", "slug": "汉长安城未央宫", "era": "秦汉", "entities": 481, "pages": 660}, {"name": "陕县东周汉墓", "slug": "陕县东周汉墓1994FB-261-59", "era": "夏商周", "entities": 453, "pages": 360}, {"name": "汉杜陵陵园遗址", "slug": "汉杜陵陵园遗址1993FB-263-52-汉杜陵陵园遗址-中国社会科学院考古研究", "era": "秦汉", "entities": 444, "pages": 115}, {"name": "敖汉赵宝沟：新石器时代聚落", "slug": "敖汉赵宝沟-新石器时代聚落", "era": "新石器时代", "entities": 423, "pages": 362}, {"name": "安阳殷墟小屯建筑遗存", "slug": "安阳殷墟小屯建筑遗存", "era": "夏商周", "entities": 394, "pages": 236}, {"name": "北庭高昌回鹘佛寺遗址", "slug": "北庭高昌回鹘佛寺遗址1991ONORDER", "era": "边疆考古", "entities": 388, "pages": 308}, {"name": "曾侯乙墓", "slug": "曾侯乙墓", "era": "夏商周", "entities": 378, "pages": 530}, {"name": "宁夏灵武窑发掘报告", "slug": "宁夏灵武窑发掘报告", "era": "宋元明清", "entities": 369, "pages": 410}, {"name": "西汉礼制建筑遗址", "slug": "西汉礼制建筑遗址", "era": "秦汉", "entities": 357, "pages": 387}, {"name": "元君庙仰韶墓地", "slug": "元君庙仰韶墓地", "era": "新石器时代", "entities": 347, "pages": 226}, {"name": "西安郊区隋唐墓", "slug": "西安郊区隋唐墓", "era": "隋唐", "entities": 314, "pages": 113}, {"name": "哈克遗址 2003-2008年考古发掘报告", "slug": "哈克遗址2003-2008年考古发掘报告", "era": "新石器时代", "entities": 299, "pages": 295}, {"name": "丁種第一_辉县发掘报告", "slug": "丁種第一_辉县发掘报告", "era": "夏商周", "entities": 269, "pages": 279}, {"name": "辉县发掘报告", "slug": "辉县发掘报告", "era": "夏商周", "entities": 269, "pages": 279}, {"name": "广州汉墓", "slug": "广州汉墓1982", "era": "秦汉", "entities": 268, "pages": 729}, {"name": "南宋官窑", "slug": "南宋官窑1996FB-271-17", "era": "宋元明清", "entities": 243, "pages": 156}, {"name": "巩县铁生沟", "slug": "巩县铁生沟", "era": "秦汉", "entities": 228, "pages": 67}, {"name": "江陵雨台山楚墓", "slug": "江陵雨台山楚墓", "era": "夏商周", "entities": 221, "pages": 291}, {"name": "胶东半岛贝丘遗址环境考古", "slug": "胶东半岛贝丘遗址环境考古1999FB-260-32", "era": "新石器时代", "entities": 219, "pages": 268}, {"name": "西汉南越王墓", "slug": "西汉南越王墓", "era": "秦汉", "entities": 217, "pages": 74}, {"name": "新疆考古发掘报告", "slug": "新疆考古发掘报告", "era": "边疆考古", "entities": 216, "pages": 224}, {"name": "长沙发掘报告", "slug": "长沙发掘报告", "era": "秦汉", "entities": 208, "pages": 302}, {"name": "河南信阳楚墓出土文物图录", "slug": "河南信阳楚墓出土文物图录", "era": "夏商周", "entities": 199, "pages": 189}, {"name": "青海柳湾", "slug": "青海柳湾", "era": "新石器时代", "entities": 199, "pages": 654}, {"name": "北京大葆台汉墓", "slug": "北京大葆台汉墓1989FB-259-26", "era": "秦汉", "entities": 181, "pages": 267}, {"name": "汉长安城武库", "slug": "汉长安城武库", "era": "秦汉", "entities": 175, "pages": 289}, {"name": "长沙马王堆一号汉墓发掘报告", "slug": "长沙马王堆一号汉墓发掘报告", "era": "秦汉", "entities": 166, "pages": 169}, {"name": "三门峡漕运遗迹", "slug": "三门峡漕运遗迹", "era": "秦汉", "entities": 149, "pages": 189}, {"name": "殷墟妇好墓", "slug": "殷墟妇好墓", "era": "夏商周", "entities": 149, "pages": 0}, {"name": "殷虚妇好墓", "slug": "殷虚妇好墓", "era": "夏商周", "entities": 149, "pages": 388}, {"name": "磁县湾张北朝壁画墓", "slug": "磁县湾张北朝壁画墓", "era": "魏晋南北朝", "entities": 130, "pages": 425}, {"name": "唐长安大明宫", "slug": "唐长安大明宫", "era": "隋唐", "entities": 127, "pages": 154}, {"name": "上村岭虢国墓地", "slug": "上村岭虢国墓地", "era": "夏商周", "entities": 106, "pages": 177}, {"name": "唐长安城郊隋唐墓", "slug": "唐长安城郊隋唐墓", "era": "隋唐", "entities": 94, "pages": 216}, {"name": "前蜀王建墓", "slug": "前蜀王建墓", "era": "隋唐", "entities": 52, "pages": 201}, {"name": "满城汉墓", "slug": "满城汉墓", "era": "秦汉", "entities": 30, "pages": 314}, {"name": "塔里木盆地考古记", "slug": "塔里木盆地考古记", "era": "边疆考古", "entities": 19, "pages": 329}, {"name": "吐鲁番考古记", "slug": "吐鲁番考古记", "era": "边疆考古", "entities": 4, "pages": 202}];
+const EC = {"新石器时代": "#10b981", "青铜时代": "#8b5cf6", "夏商周": "#f59e0b", "秦汉": "#ef4444", "魏晋南北朝": "#6366f1", "隋唐": "#ec4899", "宋元明清": "#14b8a6", "边疆考古": "#f97316"};
+let currentEra = 'all';
+
+function filterEra(era, btn) {
+  currentEra = era;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards();
+}
+
+document.getElementById('searchInput').addEventListener('input', function(e) {
+  renderCards(e.target.value.toLowerCase());
+});
+
+function renderCards(search) {
+  search = search || '';
+  const grid = document.getElementById('cardGrid');
+  const filtered = reports.filter(r => {
+    if (currentEra !== 'all' && r.era !== currentEra) return false;
+    if (search && !r.name.toLowerCase().includes(search)) return false;
+    return true;
+  });
+  grid.innerHTML = filtered.map(r => {
+    const c = EC[r.era] || '#666';
+    return '<a href="./report/' + r.slug + '.html" class="report-card">' +
+      '<h3>' + r.name + '</h3>' +
+      '<div class="rc-meta"><span class="era-tag" style="background:' + c + '22;color:' + c + '">' + r.era + '</span> · ' + r.pages + '页</div>' +
+      '<div class="rc-entities">' + r.entities.toLocaleString() + ' 个实体</div>' +
+      '</a>';
+  }).join('');
+}
+renderCards();
+
+</script>
+</body>
+</html>

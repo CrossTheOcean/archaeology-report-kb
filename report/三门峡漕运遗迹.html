@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三门峡漕运遗迹 — 中国考古学专刊·丁种 — 实体标注知识库</title>
+<meta name="description" content="基于70份考古学专刊·丁种发掘报告的实体标注与结构化知识库">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏺</text></svg>">
+<style>
+:root {
+  --bg: #0f1117;
+  --card: #1a1d27;
+  --border: #2a2d3a;
+  --text: #e4e4e7;
+  --muted: #8b8fa3;
+  --accent: #f59e0b;
+  --accent2: #ec4899;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* Navigation */
+.topnav {
+  background: rgba(15, 17, 23, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.nav-links a.active { color: var(--accent); background: rgba(245,158,11,0.08); }
+
+/* Layout */
+.container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+.hero {
+  text-align: center;
+  padding: 48px 20px 32px;
+}
+.hero h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.hero .subtitle { color: var(--muted); font-size: 1.05rem; }
+
+/* Stats */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin: 28px 0 36px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 28px;
+  text-align: center;
+  min-width: 150px;
+  flex: 1;
+  max-width: 200px;
+}
+.stat-card .num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.stat-card .label { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
+
+/* Grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+}
+.card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  background: var(--card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.82rem;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+thead th:hover { color: var(--text); }
+tbody td { padding: 10px 14px; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+tbody tr { transition: background 0.15s; }
+tbody tr:hover { background: rgba(245, 158, 11, 0.04); }
+
+/* Tags */
+.era-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.ebar {
+  display: inline-block;
+  height: 6px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Report detail page */
+.report-header {
+  margin-bottom: 28px;
+}
+.report-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.report-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.report-meta span {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+.report-body h2 { font-size: 1.3rem; margin: 32px 0 16px; color: var(--accent); }
+.report-body h3 { font-size: 1.1rem; margin: 24px 0 12px; }
+.report-body p { margin-bottom: 12px; }
+.report-body ul, .report-body ol { margin: 12px 0 12px 24px; }
+.report-body li { margin-bottom: 4px; }
+.report-body table { margin: 16px 0; }
+.report-body table th { background: var(--card); }
+.report-body table td, .report-body table th {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+}
+.report-body pre {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.report-body code {
+  background: rgba(245,158,11,0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* Image placeholder */
+.img-placeholder {
+  display: inline-block;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+/* Entity chips */
+.entity-section { margin: 20px 0; }
+.entity-section h4 { color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; }
+.echip {
+  display: inline-block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  margin: 2px 3px;
+}
+
+/* Report card (for list page) */
+.report-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.report-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.report-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.report-card .rc-meta { color: var(--muted); font-size: 0.84rem; }
+.report-card .rc-entities { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-top: 6px; }
+
+/* Search & filter */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+.search-input {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 260px;
+  outline: none;
+}
+.search-input:focus { border-color: var(--accent); }
+.filter-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(245,158,11,0.08);
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  margin-top: 60px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.footer-inner { text-align: center; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.footer-links { margin-top: 8px; }
+.footer-links a { color: var(--accent); text-decoration: none; }
+.footer-links a:hover { text-decoration: underline; }
+
+/* About page */
+.about-section { margin: 28px 0; }
+.about-section h2 { font-size: 1.3rem; margin-bottom: 12px; color: var(--accent); }
+.about-section p { margin-bottom: 12px; color: var(--muted); }
+.about-section ul { margin: 8px 0 8px 20px; color: var(--muted); }
+
+/* Download page */
+.dl-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.dl-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.dl-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; }
+.dl-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #000;
+  padding: 8px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.dl-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.dl-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.dl-btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Map page */
+.map-container {
+  text-align: center;
+  margin: 24px 0;
+}
+.map-container img {
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .stats-row { gap: 10px; }
+  .stat-card { min-width: 120px; padding: 14px 16px; }
+  .stat-card .num { font-size: 1.5rem; }
+  .nav-links a { padding: 6px 10px; font-size: 0.82rem; }
+  .search-input { width: 100%; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+}
+@media (max-width: 480px) {
+  .nav-links { gap: 0; }
+  .nav-links a { padding: 6px 8px; font-size: 0.78rem; }
+  .container { padding: 16px; }
+}
+
+
+.toc-float {
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.8rem;
+  max-width: 220px;
+  z-index: 50;
+}
+.toc-float h4 { color: var(--muted); margin-bottom: 8px; }
+.toc-float a { color: var(--muted); text-decoration: none; display: block; padding: 2px 0; }
+.toc-float a:hover { color: var(--accent); }
+@media (max-width: 1024px) { .toc-float { display: none; } }
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<nav class="topnav">
+<div class="nav-inner">
+  <a href="../index.html" class="logo">🏺 考古知识库</a>
+  <div class="nav-links">
+<a href="../index.html">总览</a>
+<a href="../reports.html" class="active">报告列表</a>
+<a href="../map.html">遗址地图</a>
+<a href="../download.html">数据下载</a>
+<a href="../about.html">关于</a>
+  </div>
+</div>
+</nav>
+<div class="container" style="display:flex;gap:24px">
+<div style="flex:1;min-width:0">
+<div class="report-header">
+  <a href="../reports.html" style="color:var(--muted);font-size:0.88rem;text-decoration:none">← 返回报告列表</a>
+  <h1 style="margin-top:8px">三门峡漕运遗迹</h1>
+  <div class="report-meta">
+    <span class="era-tag" style="background:#ef444422;color:#ef4444">秦汉</span>
+    <span>189 页</span>
+    <span>39.5 MB</span>
+    <span>149 个实体</span>
+    <span>密度 0.8</span>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:24px">
+  <h3>🏷️ 实体标注</h3>
+  <div class="entity-section"><h4>测量数据 (59)</h4><div><span class="echip">284.8</span><span class="echip">5</span><span class="echip">11</span><span class="echip">7</span><span class="echip">30</span><span class="echip">2</span><span class="echip">285.5</span><span class="echip">13.3</span><span class="echip">7.3</span><span class="echip">286.57</span><span class="echip">6</span><span class="echip">4</span><span class="echip">15</span><span class="echip">27</span><span class="echip">1.5</span><span class="echip">8</span><span class="echip">284.7</span><span class="echip">7.6</span><span class="echip">3.4</span><span class="echip">2.5</span><span class="echip">284.9</span><span class="echip">3</span><span class="echip">5.6</span><span class="echip">2.9</span><span class="echip">26</span><span class="echip">23</span><span class="echip">2.1</span><span class="echip">284.5</span><span class="echip">9.15</span><span class="echip">3.6</span><span class="echip">05</span><span class="echip">285.4</span><span class="echip">1</span><span class="echip">6.5</span><span class="echip">2.4</span><span class="echip">44</span><span class="echip">60</span><span class="echip">286.5</span><span class="echip">41.9</span><span class="echip">55</span><span class="echip">1.3</span><span class="echip">80</span><span class="echip">6.2</span><span class="echip">54</span><span class="echip">287</span><span class="echip">17</span><span class="echip">7.5</span><span class="echip">43</span><span class="echip">1.1</span><span class="echip">1.4</span><span class="echip" style="color:var(--muted)">+9 更多</span></div></div>
+<div class="entity-section"><h4>遗迹编号 (42)</h4><div><span class="echip">T3</span><span class="echip">VI</span><span class="echip">T5</span><span class="echip">T12</span><span class="echip">T27</span><span class="echip">T30</span><span class="echip">II</span><span class="echip">IX</span><span class="echip">T1</span><span class="echip">T2</span><span class="echip">T4</span><span class="echip">T6</span><span class="echip">T7</span><span class="echip">T8</span><span class="echip">T9</span><span class="echip">T10</span><span class="echip">T11</span><span class="echip">T13</span><span class="echip">T14</span><span class="echip">T15</span><span class="echip">T16</span><span class="echip">T17</span><span class="echip">T18</span><span class="echip">T19</span><span class="echip">T20</span><span class="echip">T21</span><span class="echip">T22</span><span class="echip">T23</span><span class="echip">T24</span><span class="echip">T25</span><span class="echip">T28</span><span class="echip">T29</span><span class="echip">T31</span><span class="echip">T32</span><span class="echip">T33</span><span class="echip">T34</span><span class="echip">T35</span><span class="echip">T36</span><span class="echip">T37</span><span class="echip">T38</span><span class="echip">XI</span><span class="echip">T26</span></div></div>
+<div class="entity-section"><h4>探方编号 (38)</h4><div><span class="echip">T3</span><span class="echip">T5</span><span class="echip">T12</span><span class="echip">T27</span><span class="echip">T30</span><span class="echip">T1</span><span class="echip">T2</span><span class="echip">T4</span><span class="echip">T6</span><span class="echip">T7</span><span class="echip">T8</span><span class="echip">T9</span><span class="echip">T10</span><span class="echip">T11</span><span class="echip">T13</span><span class="echip">T14</span><span class="echip">T15</span><span class="echip">T16</span><span class="echip">T17</span><span class="echip">T18</span><span class="echip">T19</span><span class="echip">T20</span><span class="echip">T21</span><span class="echip">T22</span><span class="echip">T23</span><span class="echip">T24</span><span class="echip">T25</span><span class="echip">T28</span><span class="echip">T29</span><span class="echip">T31</span><span class="echip">T32</span><span class="echip">T33</span><span class="echip">T34</span><span class="echip">T35</span><span class="echip">T36</span><span class="echip">T37</span><span class="echip">T38</span><span class="echip">T26</span></div></div>
+<div class="entity-section"><h4>年代 (3)</h4><div><span class="echip">公元150年</span><span class="echip">公元577年</span><span class="echip">公元589年</span></div></div>
+<div class="entity-section"><h4>石器 (2)</h4><div><span class="echip">石斧</span><span class="echip">石刀</span></div></div>
+<div class="entity-section"><h4>地理位置 (2)</h4><div><span class="echip">省</span><span class="echip">县</span></div></div>
+<div class="entity-section"><h4>陶器 (1)</h4><div><span class="echip">陶灶</span></div></div>
+<div class="entity-section"><h4>层位关系 (1)</h4><div><span class="echip">打破</span></div></div>
+<div class="entity-section"><h4>土样特征 (1)</h4><div><span class="echip">灰土</span></div></div>
+
+</div>
+
+<div class="card">
+  <h3>📖 报告全文</h3>
+  <div class="report-body" id="reportBody">
+    <h1 id="_1">中國田野考古報告集</h1>
+<h1 id="_2">考古學專刊</h1>
+<p>丁種第八號</p>
+<h1 id="_3">三门峡漕通道跡</h1>
+<p>(黄河水库考古隊報告之一)</p>
+<p>中國科學院考古研究所編著</p>
+<p>科学出版社出版</p>
+<h1 id="_4">中國田野考古報告集</h1>
+<h1 id="_5">考古學專刊</h1>
+<p>丁種第八號</p>
+<h1 id="_6">三門峡漕運遺跡</h1>
+<p>(黄河水库考古隊報告之一)</p>
+<p>中國科學院考古研究所編著</p>
+<p>科學出版社出版</p>
+<h1 id="_7">中國田野考古報告集</h1>
+<h1 id="_8">考古學專刊</h1>
+<p>丁種第八號</p>
+<h1 id="_9">三門峡漕運遺跡</h1>
+<p>（黄河水库考古报告之一）</p>
+<p>中國科學院考古研究所編著</p>
+<p>科學出版社出版</p>
+<p>1959年9月</p>
+<h1 id="_10">内容提要</h1>
+<p>三門峡水流湍激，是黄河航程中一個十分危險的地方。漢、唐時代，需要漕運關東、江淮等地区的粮食來供應國家機講的龐大開交。當年爲了征服三門大險，使漕舟、運車能比較順利地通過這裏，曾在三門峡一帶開轎樞道，運渠、道路和修建粮仓；在這些修建工程中以及歷代來此遊覽的人們，還遺留下許多摩崖題刻。本書詳細記錄了這些漕運遺跡，是研究我國漕運歷史的重要資料。</p>
+<p>中國田野考古報告集</p>
+<p>名古學專刊</p>
+<p>種第八號</p>
+<h1 id="_11">三門峡漕運遺跡</h1>
+<p>（黄河水库考古报告之一）</p>
+<table><tr><td>編著者</td><td>中國科學院考古研究所</td></tr><tr><td>出版者</td><td>科學出版社
+北京朝陽門大街117號
+北京市書刊出版業營業務许可证字第061號</td></tr><tr><td>印刷者</td><td>中國科學院印制廠</td></tr><tr><td>總經售</td><td>新華書店</td></tr></table>
+
+<p>1959年9月第 一版</p>
+<p>1950年8月第一次印刷</p>
+<p>道：1-500</p>
+<p>（只） 轮：1--1，250</p>
+<p>書號：1855</p>
+<p>字数：129,003</p>
+<p>開本：787×1092 1 to</p>
+<p>印张：51/4 插印：57</p>
+<p>精装本4.50元</p>
+<p>定價：報紙本3.49元</p>
+<h1 id="_12">目錄</h1>
+<h1 id="1-2">前言· 1-2</h1>
+<h1 id="_13">一、古楼道</h1>
+<p>1 人門棧道 3<br />
+2. 鬼門棧道 30<br />
+3.下游楼道 32</p>
+<h1 id="33">二、開元新河 33</h1>
+<p>1.新門 33<br />
+2.兩岸建築遺跡 34</p>
+<h1 id="38">三、北岸陸道與東西倉址 38</h1>
+<ol>
+<li>龍岩(集津仓)遗址 38<br />
+2.下倉(鹽倉)遺址 38<br />
+3.十八里隧道 39</li>
+</ol>
+<h1 id="41">四、摩崖題刻與碑記 41</h1>
+<ol>
+<li>人門棧道摩崖題刻 41<br />
+2.開元新河兩岸摩崖題刻 46 <br />
+3.神門島摩崖題刻 53 <br />
+4.砥柱石摩崖题刻 53 <br />
+5.獅子頭摩崖題刻 53 <br />
+6.杜家莊棧道摩崖題刻 55 <br />
+7.禹王廟碑記 53  </li>
+<li>亡佚石刻 58</li>
+</ol>
+<h1 id="61">結束語· 61</h1>
+<h1 id="62">附錄一：三門峽漕運簡史 62</h1>
+<p>1.地名沿革 62 <br />
+2. 西漢至北朝 63</p>
+<p>3.隋唐時期 66<br />
+4.北宋以後 71</p>
+<h1 id="76">附錄二：河心諸島的仰韶、龍山與殷代文化遺存 76</h1>
+<ol>
+<li>鬼門島遺址 76<br />
+2.張公石島遺址 76</li>
+</ol>
+<h1 id="_14">圖版目錄</h1>
+<p>壹 三門峽全景</p>
+<p>贰 三門峽全景</p>
+<p>叁 人門棧道全景</p>
+<p>肆 人I至人V段栈道全景及開元新河與人Ⅲ段至人V段的關係</p>
+<p>伍人I、Ⅱ段棧道及開元新河</p>
+<p>陸人I、Ⅱ段棧道全景</p>
+<p>柴人I、Ⅱ段棧道側景</p>
+<p>捌八門棧道上的壁孔及底孔</p>
+<p>玫 八門棧道上的方形壁孔</p>
+<p>拾 人Ⅲ至人 $\nabla$ 段棱道上的底孔及题刻</p>
+<p>拾壹 人IV至V段栈道</p>
+<p>拾贰 人VI段棧道全景</p>
+<p>拾叁 人VI段栈道上的题刻</p>
+<p>拾肆 人V、V、V段棱道</p>
+<p>拾伍 人Ⅶ段栈道及题刻</p>
+<p>拾陸 人Ⅷ段棲道上繡繩磨渤痕跡</p>
+<p>拾柒 人Ⅲ段至人X段栈道全景</p>
+<p>拾捌 人Ⅷ、Ⅻ段栈道</p>
+<p>拾玖 人Ⅸ段栈道上的底孔</p>
+<p>贰拾 人X段至人Ⅲ段棱道</p>
+<p>贰壹 鬼I、Ⅱ段全景及狮子頭題刻</p>
+<p>贰贰 七里溝以束黄河北岸古棱道全景</p>
+<p>武叁 杜家莊黃河北岸古棧道</p>
+<p>武肆 黄河狮子口全景及兩岸古棧道</p>
+<p>式伍 黄河狮子口北岸古栈道</p>
+<p>武陸 七里溝以束黄河南岸的古棧道</p>
+<p>武柒 七里溝以西黄河南岸古棲道被黃沙淤埋的情況</p>
+<p>武捌 開元新河全景</p>
+<p>贰玖 開元新河南、北端出入口及中段</p>
+<p>奎拾 開元新河及其東壁棧道</p>
+<p>參壹開元新河西岸基址I全景及開元新河東、西壁上的孔眼</p>
+<p>參貳 開元新河西岸基址工柱穴</p>
+<p>參參 開元新河西岸題刻</p>
+<p>參肆 開元新河東岸題刻</p>
+<p>參伍 開元新河東岸題刻</p>
+<p>叁陸 禹王廟全景及碑刻</p>
+<p>叁柒 黄河北岸龍岩村的集津倉遗址</p>
+<p>參捌 鹽倉遺址及下倉村西黄河岸邊的亂石堆</p>
+<p>叁玖 下仓村以西河滩旁被繩索磨趵的痕跡及下仓村附近的出土物</p>
+<p>肆拾 三門左岸唐代開鑿的山道及現在的小道</p>
+<p>肆壹 鬼門島仰韶、龍山遺物</p>
+<p>肆贰 張公石島龍山、殷代遺物</p>
+<h1 id="_15">插圖目錄</h1>
+<p>一 三門峽形勢圖·<br />
+二 牛鼻形壁孔度量辦法 4<br />
+三 方形壁孔與底孔用途復原圖 4<br />
+四 方形壁孔度量辦法 4<br />
+五 底孔度量辦法· 5<br />
+六 棱道木構想像圖· 6 <br />
+七人I段平面、立面、剖面圖· 6<br />
+八人Ⅱ段平面、立面、剖面圖· 8 <br />
+九 人Ⅲ段平面圖· 10<br />
+一〇 人V、V段平面、立面圖 …………………………………………11<br />
+人Ⅶ段平面、立面、剖面圖<br />
+一二 人Ⅷ段平面、立面圖 …………………………………………17<br />
+一三 人Ⅲ段平面、立面、剖面圖 ………………………………………… 19<br />
+一四 人Ⅱ段棱道底孔23平面及縱剖面圖 ……………………21<br />
+一五 人Ⅱ段棱道底孔23横剖面圖 21<br />
+一六 人Ⅱ段棱道底孔23用途想像圖 22<br />
+一七 人Ⅱ段棱道底孔23用途想像圖 22<br />
+一八人Ⅱ段棱道底孔第14-23號一帶的木構想像圖 22<br />
+一九 人Ⅱ段平面、立面圖 …………………………………………22<br />
+二〇 人X段平面、立面圖 …………………………………………24<br />
+二 人Ⅱ段平面圖· 26<br />
+二三 人Ⅲ段平面、立面圖 …………………………………………28<br />
+二三 鬼I段平面、立面圖 30<br />
+二四 鬼Ⅱ段平面、立面圖 31<br />
+二五開元新河基址I及棧道平面圖 34<br />
+二六開元新河基址Ⅱ平面圖· 35<br />
+二七 龍岩遗址殘瓦當(一) … 38<br />
+二八 龍岩遗址残瓦當(二) 38</p>
+<h1 id="_16">拓片錄目錄</h1>
+<p>人門棧道I段摩崖題刻… 81<br />
+二、三 人門棧道Ⅱ段摩崖題刻… 81<br />
+四——四 人門棧道V段摩崖題刻… 82—84<br />
+一五——二五 人門棧道VI段摩崖題刻… 85—90<br />
+二六——三二 人門棧道Ⅶ段摩崖題刻… 90—93<br />
+三三 人門棧道Ⅲ段摩崖題刻… 91<br />
+三四、三五 人門棧道Ⅱ段摩崖題刻… 91、94<br />
+三六--四○ 人門棧道Ⅲ段摩崖題刻… 91、94<br />
+四一一五三 開元新河西岸摩崖題刻 95-102<br />
+五四——九〇 開元新河東岸摩崖題刻… 102-119<br />
+九一、九二 神門島摩崖題刻 119、120<br />
+九三一九八 狮子頭摩崖題刻… 121-124<br />
+九九、一〇〇 杜家莊棧道摩崖題刻 125<br />
+一〇一一一〇三 禹王廟碑記· 126-128<br />
+附一 杜家莊棧道摩崖所刻佛象 129<br />
+附二 人門棧道V段摩崖所刻馬畫象… 129</p>
+<h1 id="_17">前言</h1>
+<p>三門峽是黄河在河南陝縣縣城下游二十多公里的地方。黄河自潼關以東至孟津的一段，兩岸夾山，是峽谷的形勢。到三門峽，由於堅硬的岩層暴露在地層表面，黄河雖然在這堅硬的岩石上衝出了河槽，却留下許多大石屹然柱立河心：有些在河面以下，成爲暗礁；一部份則高出河面成爲島嶼。最大的是鬼門、神門、人門三島，其中人門島原來與河岸相連，是半島的形狀，只是在唐代開鑿了開元新河後才和鬼、神二島一樣，孤立於河心。在開元新河沒有開鑿以前，鬼、神二島並列河心，恰似山嶺給黄河開了三座大門，所以人們稱此地為三門，又分別把東邊的河道叫做人門，中間的叫神門，西邊的叫鬼門（黃河碰到這裏堅硬的岩石，沒有筆直衝出河槽，微折向南，出三門峽後始復東流，故黃河兩岸在此為東、西岸，人們又往往把東岸稱作左岸）。人門以東的開元新河又名娘娘河。在其南口外聳立一島，名梳莊台；梳莊台西還有張公石、砥柱石二座小島。北起神門、鬼門、人門三島，南迄梳莊台等三島，這就是三門峽的區域（圖版壹、貳；圖一）。</p>
+<p>三門峽區域由於河床突然狹窄，所以水流終年湍激，還由於河床深淺懸殊(淺處如鬼門，在水涸時期連河床都乾露在外；深處如神門，達數十米)，暗礁又多，形成了許多漩渦。因而，三門峽遂成爲黃河航行中最危險、最困難的地方，行船者視爲畏途。</p>
+<p>西漢以來,為了漕運糧食,曾在這裏開鑿棧道與運河(開元新河),用拉繡的辦法幫助船隻通過這裏;還曾在北岸開鑿山路,修建糧倉,用陸路運輸來迴避三門的危險。這些遺跡,一直保存到修建三門峽水庫欄河大壩以前[1]。</p>
+<p>1955年10月24日，黃河水庫考古工作隊在三門峽水庫區進行調查時，考古研究所夏鼐副所長發現了人門古棧道;當時因時間倉促,不克詳查而返。12月11日，王極慶、俞偉超二人在此找到和平、甘露、景明、貞觀、總章、垂拱、政和、興定等年代的摩崖題刻，進一步瞭解古棧道的時代。隨後，黃河水庫考古工作隊即派魏善臣、王振江、李進、張國柱、王極慶、張子明、俞偉超七人赴三門峽進行全面調查。這次工作從1956年1月9日起至2月8日止，進行了測繪、攝影、叢拓、做模型等記錄工作;其中測繪工作是在黃河三門峽工程局王文斌、王萬能、張延正協助下完成的。同年10月27日至11月4日，王極慶、王其騰、俞偉超三人重至三門峽補攝一些照片，並調查了北岸的下倉、龍岩遺址。1957年3月26日至6月16日，因欄河壩基礎工程積極進行，全部漕運遺跡將被炸毀，故又派張明善、張子明、王其騰、唐士和、俞偉超等前往工作;其間，俞偉超於4月8日先期離開。這次工作主要是重拓全部題刻，並選擇重要者翻製模型和鑲下保存。另外，又發現了一些題刻和</p>
+<p>鬼門島、張公石島上面的仰韶、龍山、殷代的文化遺存。</p>
+<p>鑿取的題刻共13塊，其編號爲人VI段T1、人VI段T2、人VI段T3、人VI段T4、人VI段T5、人VI段T6、人VI段T7、人VI段T8、人VI段T9、人VI段T11、人VII段T3、開西T2、開東T3（參見下文“摩崖題刻與碑記”）。另外，還鑿取了3個牛鼻形壁孔和2個方孔。由於石質堅硬而又易於破碎，所以有7塊曾經碎裂。</p>
+<p>調查報告分為“古棧道”、“開元新河”、“北岸陸道與東西倉址”、“摩崖題刻與碑記”四章，加上“前言”、“結束語”共六部分。另外還有兩個附錄，即附錄一：“三門峽漕運簡史”；附錄二：“河心諸島的仰韶、龍山與殷代文化遺存”。“摩崖題刻與碑記”由邵友誠、俞偉超執筆；附錄二：“河心諸島的仰韶、龍山與殷代文化遺存”由安志敏執筆；其餘皆係俞偉超執筆。此外，夏鼐曾審閱初稿，指正一些錯誤；北京大學孫貫文在資料方面，曾給予不少指示，特別如“已佚石刻”一節；還有北京大學宿白和考古研究所徐蘋芳、劉觀民等都曾給予不少的幫助。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖一 三門峽形勢圖</p>
+<h1 id="_18">一、古楼道</h1>
+<p>三門之中，鬼門的水勢最險惡，神門也很湍急，祇有人門比較平緩，船隻主要從此通過[1]。因此，自漢代以來在三門峽開鑿的棧道，其主要部分是在人門左岸，此外只鬼門右岸有短短的一段。三門而東，仍爲峽谷，險阻尚多，有如水經注(涵芬樓景印武英殿聚珍本)卷四所說：“自砥柱以下，五戶以上，其間一百二十里，合有一十九灘，水流濬急，勢同三峽，破害舟船，自古所患”。又如後漢紀獻帝紀（康熙蔣氏刊本）所述：“自此東有三十六灘”，也是指這種險難的形勢而言。三門下游的這些水勢險惡，行船困難的地方，也往往有古棧道遺存。</p>
+<p>下面，將這些古棧道分爲人門、鬼門及下游三部分敘述。</p>
+<h1 id="1">1. 人門棧道</h1>
+<p>人門棧道開鑿在人門的左岸,其南端起自梳桩台附近,向北經過人門全島,斷斷續續地延長625米左右。人門島一帶河岸的高程在283—298米之間(用黃河流域規劃委員會1955年標高)。岸邊壁立,棧道開鑿在它的半腰,形似一條大凹槽。棧道底部的高程在282.7—287米之間,平日露出於河面上,夏季洪水時期則被淹沒,而水枯時則在岸邊露出一片沙灘。黃河河岸彎曲不齊,在河岸半腰鑿出的棧道被迫於這種地形,常當中間斷開,當時是架木成橋,把斷開的棧道連接起來,而現在木構不存,因而分成為許多不相連屬的段落。我們將各段棧道,根據輓船時從南向北行走的次序,依次編號,計12段(人I段至人Ⅲ段),逐次敘述於後(圖版參、肆;圖一)。</p>
+<h1 id="1i">（1）人I段</h1>
+<p>人I段在梳桩台的東側,是全部棧道的南端。這裏河岸與水面的距離,假如以秋季的水面在282米左右為標準,達10多米,所以在岸上無法拉縈輓舟,只能在貼近水面的斷崖上,開鑿棧道。棧道是在陡立的石壁上,鑿出一條狹窄的走道,再加設木構而成;遠處望去好似在陡壁半腰鑿出一條大橫槽。人I段全長約48米。底部鑿得很平,高程為284.5—284.8米;寬度為0.2—2米間,一般在1.2米左右;寬度僅20厘米的地方大概是由於一部分綠河的岩石崩落所致,原來可能稍寬。頂部鑿成弧形,它和棧道底的距離一般在2.5米</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖二 牛鼻形壁孔度量辦法</p>
+<p>左右。走道鑿出後，側壁表面修平，頂部則不再修鑿，所以岩石錯落的形狀，疑欲下墜（圖版伍，2；圖版陸，1、3；圖版柒，1、2、3）。一部分地方棧道好似一級台階，沒有懸頂，這是由於當地河岸微呈坡形，在此開造棧道時，就只要對側壁及底部加以修鑿。</p>
+<p>在棱道的底部及側壁上，還有多孔眼，大別之共有三類：① 牛鼻形壁孔：鑿在側壁上。從正面看是一個鶴形孔穴在</p>
+<p>中間被一根豎梁隔成兩半，實際上兩孔在內部穿通，好似可以穿環的牛鼻。這是一種供繫結繩索使用的孔穴（圖版捌，1、3；並參同版2、4）。這類孔眼共7個，都高出底面約1米，各孔的間距為3—11米。當時可能是在各孔間橫繫繩索，懸於側壁上，以備輓夫們縈引船隻時，把持使力(參見圖二、六)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖三 方形壁孔與底孔用途復原圖（據人Ⅱ段5號方形壁孔與7、8號底孔剖面闢）</p>
+<p>人工段牛鼻形壁孔登記表（各孔量法參開圖二，單位爲厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>說明</td></tr><tr><td>1</td><td>20</td><td>12</td><td></td></tr><tr><td>2</td><td>30</td><td>15</td><td></td></tr><tr><td>3</td><td>23</td><td>11</td><td></td></tr><tr><td>4</td><td>28</td><td>14</td><td></td></tr><tr><td>5</td><td>18</td><td>7</td><td>見圖版捌,3。中間梁已折斷。</td></tr><tr><td>6</td><td>14</td><td>9</td><td>見圖版捌,1。</td></tr><tr><td>7</td><td>31</td><td>15</td><td></td></tr></table>
+
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖四 方形壁孔度量辦法</p>
+<p>$②$ 方形壁孔：是鑿在棱道側墊上的方形孔，全段共有25個，大都緊靠棱道底，個別的稍高（圖版捌，5、7）。棱道既狹窄，又很滑溜，必須加設木構，才可減少墜落河中的危險。這種壁孔，大約是供安放一種橫置的木條使用，木條的一端插入孔內，便可把位置固定，不會輕易轉動。各孔間距一般在2米左右，但逢棱道彎曲處距離即縮短，如14、15、16三孔就只在1.4米的長度內；間距最大的如孔1與孔2，為3.7米。</p>
+<p>根據其它各段棧道上未完成的方形壁孔，它的開鑿過程是：先鑿一方形或“田”字形的外框，然後在其一邊或角隅開鑿，其過程略如圖版玖，1一6所示。這些未鑿完的孔眼大約</p>
+<p>是由於位置不當，中途放棄而遺存下來（參見圖三、四）。</p>
+<p>人工段方形壁孔登记表（各孔量法参見闢四，單位爲厘米）  </p>
+<table><tr><td>編號</td><td>高</td><td>寬</td><td>深</td><td>說 明</td><td>編號</td><td>高</td><td>寬</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>10</td><td>14</td><td>10</td><td>對正底孔 4。</td><td rowspan="2">14</td><td>14</td><td>18</td><td>8</td><td>對正底孔 13、14。</td></tr><tr><td>2</td><td>20</td><td>12</td><td>13</td><td rowspan="2">三孔相鄰,見圖版摺,5。</td><td>15</td><td>13</td><td>19</td><td>12</td></tr><tr><td>3</td><td>15</td><td>14</td><td>14</td><td>16</td><td>11</td><td>17</td><td>14</td><td>對正底孔 15。</td></tr><tr><td>4</td><td>6</td><td>22</td><td>9</td><td>對正底孔 5。</td><td>17</td><td>22</td><td>15</td><td>20</td><td></td></tr><tr><td>5</td><td>14</td><td>14</td><td>14</td><td></td><td>18</td><td>10</td><td>14</td><td>18</td><td>對正底孔 16。</td></tr><tr><td>6</td><td>11</td><td>14</td><td>18</td><td></td><td>19</td><td>15</td><td>17</td><td>5</td><td></td></tr><tr><td>7</td><td>8</td><td>12</td><td>8</td><td></td><td>20</td><td>10</td><td>9</td><td>5</td><td></td></tr><tr><td>8</td><td>18</td><td>14</td><td>20</td><td></td><td>21</td><td>12</td><td>13</td><td>8</td><td>對正底孔 18。</td></tr><tr><td>9</td><td>11</td><td>13</td><td>9</td><td rowspan="5">對正底孔 10、11,見圖版摺,7。</td><td>22</td><td>10</td><td>12</td><td>6</td><td></td></tr><tr><td>10</td><td>19</td><td>19</td><td>13</td><td>23</td><td>12</td><td>11</td><td>8</td><td>高出樣道底 30 厘米。</td></tr><tr><td>11</td><td>12</td><td>13</td><td>6</td><td>24</td><td>31</td><td>30</td><td>20</td><td>未鑿完,見圖版玖,2。</td></tr><tr><td>12</td><td>15</td><td>19</td><td>9</td><td>25</td><td>12</td><td>14</td><td>10</td><td></td></tr><tr><td>13</td><td>8</td><td>12</td><td>7</td><td></td><td></td><td></td><td></td><td></td></tr></table>
+
+<p>③ 底孔: 是在棱道底向下開鑿的孔眼。全段共 18 個, 有兩種形狀: 一種是長方形的凹槽, 位置都在山石的隙口、棱道中斷處的邊上, 凹槽的一端皆在隙口的斷壁邊, 而每每與隙口對面的另一個凹槽對正。推測當時是在隙口間架放木條, 鍊設木板, 載者即可凌登而過, 這種凹槽就是安放木梁的榫口。另一種是方形或長方形的小孔, 大都各自對正一個</p>
+<p>方形壁孔，或二、三個在一起共同與一個壁孔對成一直線（圖版捌，7）。當初在棧道底上橫置的木條，雖然一頭已插入方形壁孔內，稍有管束，但尾部很長，如不在中間插下一、二個小椿，極易挪動脫落，這些小底孔大約就是那些小椿的榫眼，這就是它們和壁孔對正的道理(圖三)。其中，有的鑿在凹槽底(如孔2)，用途亦同（參見圖三）。</p>
+<p>根據遺存的這三類孔眼，試將棱道上的木構與繫繩的情況作一示意圖（圖六）。水經注上記載三國時期褒斜棱</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖五 底孔度量辦法</p>
+<p>道的木構,是在河心立柱承托横梁[1],在人Ⅲ、V、VII、IX等段各有一些底孔鑿在低於棧道底部的地方,似即爲植立木柱,承托棧道底的木梁、木板,情況大概相同,所以這張復原圖只能表示一部分棧道的結構。</p>
+<p>此外，在棱道側壁上還有大約是北朝時期的題名刻字一段。這種側壁上的石刻題記在其它各段尚多，都是在棱道鑿成後才刻上的，它們可以幫助我們瞭解棱道修鑿的時間。石刻題記的内容都集中在下面“摩崖題刻與碑記”一章內敘述，此外從略(以下各段同此)。</p>
+<p>人工段底孔登記表（各孔量法參見圖五，單位爲厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>說明</td><td>編號</td><td>徑</td><td>深</td><td>說明</td></tr><tr><td>1</td><td>28×21</td><td>10</td><td>是凹槽,28是長,21是寬。</td><td>10</td><td>8</td><td>5</td><td rowspan="3">二孔相並,與壁孔10對正。見圖版挪,7。</td></tr><tr><td>2</td><td>9</td><td>7</td><td>位底孔1內。</td><td>11</td><td>9</td><td>8</td></tr><tr><td>3</td><td>7</td><td>10</td><td></td><td>12</td><td>10</td><td>16</td></tr><tr><td>4</td><td>10</td><td>11</td><td>與壁孔1對正。</td><td>13</td><td>10</td><td>14</td><td rowspan="2">二孔同與壁孔14對正。</td></tr><tr><td>5</td><td>10</td><td>10</td><td>與壁孔2、3、4對正。</td><td>14</td><td>9</td><td>5</td></tr><tr><td>6</td><td>8</td><td>10</td><td></td><td>15</td><td>9</td><td>10</td><td>與壁孔16對正。</td></tr><tr><td>7</td><td>11</td><td>15</td><td></td><td>16</td><td>13×7</td><td>11</td><td>與壁孔18對正。</td></tr><tr><td>8</td><td>40×20</td><td>7</td><td>是凹槽,與底孔9相對。</td><td>17</td><td>11</td><td>10</td><td></td></tr><tr><td>9</td><td>19</td><td>23</td><td>是凹槽,與底孔8相對。</td><td>18</td><td>11</td><td>8</td><td>與壁孔21對正。</td></tr></table>
+
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+現存情況（平面）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+當時鋪板情況（平面）<br />
+（侧面） 楼道底<br />
+圖六 棱道木構想像圖</p>
+<p>全段的實測情況見圖七。</p>
+<h1 id="2ii">（2）人Ⅱ段</h1>
+<p>在人I段以北20米左右。棱道邊的沙灘上有許多崩落的亂石，似原來和人I段相連，因爲山石的崩裂而斷開（圖版伍，1)。本段形狀同上段（圖版陸，2、4；圖版柒，4）。全長54米。棱道底寬0.2-2米，一般在1.2米左右；高程爲284—285.5米。頂高2.5米左右。</p>
+<p>全段共有牛鼻形壁孔10個，間距為2.4—13.3米。</p>
+<p>方形壁孔25個,間距為0.3-7.3米。其間距在4米以上的,中間必有需順架木梁才能越過的小缺口,也就是說各根橫置的木梁,一般的間距在4米以內。</p>
+<p>底孔共27個。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圜七 人I段平面、立面、剖面圆</p>
+<p>人Ⅱ段牛鼻形壁孔登記表（單位為厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>說明</td><td>編號</td><td>徑</td><td>深</td><td>說明</td></tr><tr><td>1</td><td>19</td><td>10</td><td rowspan="5">借凸出的岩石,從兩旁鑿通而成。</td><td>6</td><td>15</td><td>16</td><td></td></tr><tr><td>2</td><td>24</td><td>10</td><td>7</td><td>16</td><td>12</td><td></td></tr><tr><td>3</td><td>14</td><td>16</td><td>8</td><td>17</td><td>9</td><td></td></tr><tr><td>4</td><td>18</td><td>9</td><td>9</td><td>26</td><td>11</td><td></td></tr><tr><td>5</td><td>17</td><td>14</td><td>10</td><td>25</td><td>12</td><td></td></tr></table>
+
+<p>人Ⅱ段方形壁孔登記表（單位為厘米）  </p>
+<table><tr><td>編號</td><td>高</td><td>寬</td><td>深</td><td>說 明</td><td>編號</td><td>高</td><td>寬</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>10</td><td>13</td><td>10</td><td></td><td>14</td><td>16</td><td>16</td><td>15</td><td>對正底孔21。</td></tr><tr><td>2</td><td>10</td><td>13</td><td>9</td><td>對正底孔1。</td><td>15</td><td>8</td><td>9</td><td>7</td><td></td></tr><tr><td>3</td><td>11</td><td>13</td><td>14</td><td></td><td>16</td><td>16</td><td>12</td><td>6</td><td></td></tr><tr><td>4</td><td>14</td><td>15</td><td>9</td><td></td><td>17</td><td>14</td><td>13</td><td>14</td><td>對正底孔22。</td></tr><tr><td>5</td><td>12</td><td>14</td><td>15</td><td>對正底孔7、8。</td><td>18</td><td>14</td><td>19</td><td>16</td><td></td></tr><tr><td>6</td><td>30</td><td>30</td><td>6</td><td>未鑿完,僅三邊稍凹入。</td><td>19</td><td>12</td><td>14</td><td>9</td><td></td></tr><tr><td>7</td><td>18</td><td>14</td><td>8</td><td></td><td>20</td><td>32</td><td>30</td><td>2</td><td>稍稍鑿進,剛顯露出形狀。</td></tr><tr><td>8</td><td>10</td><td>11</td><td>13</td><td></td><td>21</td><td>25</td><td>27</td><td>4</td><td>同 上</td></tr><tr><td>9</td><td>11</td><td>12</td><td>11</td><td></td><td>22</td><td>28</td><td>35</td><td>15</td><td>右上角未鑿完,成凸形。</td></tr><tr><td>10</td><td>14</td><td>15</td><td>9</td><td></td><td>23</td><td>14</td><td>14</td><td>6</td><td></td></tr><tr><td>11</td><td>12</td><td>13</td><td>7</td><td>對正底孔19。</td><td>24</td><td>32</td><td>14</td><td>9</td><td></td></tr><tr><td>12</td><td>12</td><td>12</td><td>8</td><td></td><td>25</td><td>30</td><td>32</td><td>32</td><td></td></tr><tr><td>13</td><td>14</td><td>14</td><td>8</td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table>
+
+<p>人Ⅱ段底孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>說明</td><td>編號</td><td>徑</td><td>深</td><td>說明</td></tr><tr><td>1</td><td>9</td><td>11</td><td>與壁孔2對正。</td><td>15</td><td>11</td><td>9</td><td></td></tr><tr><td>2</td><td>10</td><td>10</td><td></td><td>16</td><td>8</td><td>13</td><td>是凹槽。</td></tr><tr><td>3</td><td>29</td><td>8</td><td>是凹槽。</td><td>17</td><td>8</td><td>6</td><td></td></tr><tr><td>4</td><td>9</td><td>13</td><td>位底孔3的中心。</td><td>18</td><td>90×30</td><td>8</td><td>是凹槽。</td></tr><tr><td>5</td><td>7</td><td>9</td><td></td><td>19</td><td>8</td><td>5</td><td>與壁孔11對正。</td></tr><tr><td>6</td><td>12</td><td>12</td><td></td><td>20</td><td>9</td><td>12</td><td></td></tr><tr><td>7</td><td>11</td><td>11</td><td rowspan="2">}與壁孔5對正。</td><td>21</td><td>8</td><td>5</td><td>與壁孔14對正。</td></tr><tr><td>8</td><td>11</td><td>11</td><td>22</td><td>10</td><td>12</td><td>與壁孔17對正。</td></tr><tr><td>9</td><td>10</td><td>8</td><td></td><td>23</td><td>14</td><td>9</td><td>是凹槽。</td></tr><tr><td>10</td><td>9</td><td>7</td><td></td><td>24</td><td>7</td><td>9</td><td></td></tr><tr><td>11</td><td>125×15</td><td>12</td><td>是凹槽,南北長。</td><td>25</td><td>82×23</td><td>14</td><td>是凹槽,東西長。</td></tr><tr><td>12</td><td>6</td><td>5</td><td>位底孔11的北端,是其榫眼。</td><td>26</td><td>8</td><td>11</td><td>位底孔25的西端,是其榫眼。</td></tr><tr><td>13</td><td>9</td><td>8</td><td></td><td>27</td><td>10</td><td>5</td><td>在本段槎道北端低於槎道底的一堆石頭上。</td></tr><tr><td>14</td><td>8</td><td>4</td><td></td><td></td><td></td><td></td><td></td></tr></table>
+
+<p>側壁上有題刻2段，其一屬三國時期。</p>
+<p>從本段北端繼續向北約30餘米即抵開元新河南口。這一帶是較平緩的斜坡，輓夫們</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖八 人Ⅱ段平面、立面、剖面圖</p>
+<p>引船至此即可踏上斜坡而行，故栈道中斷。</p>
+<p>全段的實測情況見圖八。</p>
+<h1 id="3iii">（3）人Ⅲ段</h1>
+<p>人門島平面略成三角形,自島心向南端逐漸傾斜,這一段棱道就在人門島南端。棱道所在部分的高程為283.12—286.57米，大體與人Ⅱ段的棱道底相同，所以這裏只需在緊靠河沿的島面上,稍加修整,鑿一些安放梁架的孔眼即成(圖版拾,1、2)。如果把有孔眼的部分算作棱道的範圍,全段長約36米,遺存底孔29個。中間有缺口處,缺口兩旁都有凹槽形式的底孔。</p>
+<p>人Ⅲ段底孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>長</td><td>寬</td><td>深</td><td>說明</td></tr><tr><td>1</td><td>23</td><td>22</td><td>9</td><td>形狀似方形壁孔,應當是按放向南伸出的木條。</td></tr><tr><td>2</td><td>8</td><td>8</td><td>5</td><td></td></tr><tr><td>3</td><td>7</td><td>7</td><td>11</td><td></td></tr><tr><td>4</td><td>11</td><td>11</td><td>4</td><td></td></tr><tr><td>5</td><td>約30</td><td>約25</td><td>約20</td><td rowspan="4">這4個孔眼鑿在一處缺口的斷崖陡壁上,孔5距島頂的地面為1.6米,孔6為1.4米,孔7為1.15米,孔8為1.6米,都是只在壁上略為鑿進,形似腳窝。當時大約藉此直立木柱,支撑上面的木板。孔眼的尺寸係目測估計而得。見圖版拾,2。</td></tr><tr><td>6</td><td>約30</td><td>約25</td><td>約20</td></tr><tr><td>7</td><td>約30</td><td>約25</td><td>約20</td></tr><tr><td>8</td><td>約30</td><td>約25</td><td>約30</td></tr><tr><td>9</td><td></td><td></td><td></td><td rowspan="3">這3個孔的所在位置、形狀,略同上面的4孔。各孔略成半圓形,因未登上,未曾測得尺寸,孔徑大略为10厘米餘。</td></tr><tr><td>10</td><td></td><td></td><td></td></tr><tr><td>11</td><td></td><td></td><td></td></tr><tr><td>12</td><td>9</td><td>9</td><td>7</td><td>見圖版拾,1。</td></tr><tr><td>13</td><td>115</td><td>25</td><td>20</td><td rowspan="2">雨孔都是南北向的凹槽,互相對正,兩孔間是一隙口。孔13見圖版拾,1。</td></tr><tr><td>14</td><td>45</td><td>16</td><td>13</td></tr><tr><td>15</td><td>30</td><td>20</td><td>17</td><td>是凹槽,南北長。</td></tr><tr><td>16</td><td>38</td><td>12</td><td>3</td><td>是凹槽,槽底成半圓形,是爲安放圓形木梁而鑿。</td></tr><tr><td>17</td><td>9</td><td>9</td><td>9</td><td></td></tr><tr><td>18</td><td>8</td><td>8</td><td>7</td><td>爲孔19內的榫眼。</td></tr><tr><td>19</td><td>20</td><td>15</td><td>8</td><td>是凹槽,南北長。其底部的北端爲孔18。</td></tr><tr><td>20</td><td>14</td><td>11</td><td>7</td><td>是凹槽,南北長,与孔19平行。</td></tr><tr><td>21</td><td>7</td><td>7</td><td>9</td><td></td></tr><tr><td>22</td><td>7</td><td>7</td><td>6</td><td></td></tr><tr><td>23</td><td>8</td><td>8</td><td>9</td><td></td></tr><tr><td>24</td><td>15</td><td>15</td><td>15</td><td></td></tr><tr><td>25</td><td>7</td><td>7</td><td>8</td><td></td></tr><tr><td>26</td><td>33</td><td>30</td><td>43</td><td>爲方形壁孔的形狀,係借近側高起的岩石的壁面而鑿出。</td></tr><tr><td>27</td><td></td><td>23</td><td>18</td><td>用途略如方形壁孔,但這只是在一块岩石上把石面鑿出23×18的一片平面,並未形成孔眼。</td></tr><tr><td>28</td><td>約25</td><td>約25</td><td>約25</td><td>與孔29對正。未登上詳測,尺寸係估計。</td></tr><tr><td>29</td><td>約8</td><td>約8</td><td>約8</td><td>與孔28對正。未登上詳測,尺寸係估計。</td></tr></table>
+
+<p>全段的實測情況見圖九。</p>
+<h1 id="4iv">（4）人Ⅳ段</h1>
+<p>在人Ⅲ段的西北方, 相距 27 米。人門島自此向北逐漸高起, 故棧道仍開鑿在河岸陡</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>壁的牛腰。其形状與人I、Ⅱ段相同(圖版拾，5；圖版拾壹，4)。全段長僅5米餘。底寬0.8—1.5米，高程在284.5米左右。頂部不顯著，高約1.5米。全段沒有孔眼和題刻。</p>
+<p>其實測情況見圖一〇。</p>
+<h1 id="5-nabla">(5) 人 $\nabla$ 段</h1>
+<p>在人Ⅳ段西北，相隔只1米多。形狀同人I段。全段長為25米。底寬一般在1.2—1.4米左右，東頭的一部分較寬，達2.8米，而最窄的地方僅0.2米。其高程為284—284.7米。頂高自1至3.8米不等。棧道中間有一段3米多的缺口，兩旁各有凹槽(底孔7—12)，</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一O 人IV、V段平面、立面图</p>
+<p>是架梁的遺跡。缺口以東的棧道爲階形，無頂部（圖版拾，4;圖版拾壹，1、2）。</p>
+<p>全段共有牛鼻形壁孔7個，間距0.9-7.6米。</p>
+<p>人V段牛鼻形壁孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>說明</td><td>編號</td><td>徑</td><td>深</td><td>說明</td></tr><tr><td>1</td><td>23</td><td>12</td><td rowspan="4">中梁已斷。</td><td>5</td><td>28</td><td>10</td><td>中梁已斷。</td></tr><tr><td>2</td><td>23</td><td>12</td><td>6</td><td>28</td><td>10</td><td></td></tr><tr><td>3</td><td>18</td><td>7</td><td>7</td><td></td><td></td><td>未登臨詳測,尺寸大略同上。</td></tr><tr><td>4</td><td>29</td><td>12</td><td></td><td></td><td></td><td></td></tr></table>
+
+<p>方形壁孔共17個，各孔間距0.5—3.4米。</p>
+<p>人V段方形壁孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>高</td><td>寬</td><td>深</td><td>說明</td><td>編號</td><td>高</td><td>寬</td><td>深</td><td>說明</td></tr><tr><td>1</td><td>16</td><td>13</td><td>10</td><td></td><td>10</td><td>14</td><td>14</td><td>18</td><td>對正底孔18。</td></tr><tr><td>2</td><td>32</td><td>32</td><td>12</td><td></td><td>11</td><td>12</td><td>13</td><td>14</td><td>對正底孔20。</td></tr><tr><td>3</td><td>15</td><td>20</td><td>15</td><td></td><td></td><td></td><td></td><td></td><td>未完成,剛鑿好下半,並在上部劃一直綫,似爲下一步將開鑿的部份,見圖版玖,5。</td></tr><tr><td>4</td><td>33</td><td>31</td><td>16</td><td rowspan="3">三孔相鄰,孔5打破了孔4、6,孔4、6僅稍凹入,孔5也未完全鑿完。孔5見圖版玖,4。</td><td>12</td><td>31</td><td>31</td><td>6</td><td></td></tr><tr><td>5</td><td>21</td><td>26</td><td>17</td><td>13</td><td>30</td><td>30</td><td>25</td><td>對正底孔25、26。</td></tr><tr><td>6</td><td>18</td><td>30</td><td>2</td><td>14</td><td>13</td><td>13</td><td>11</td><td></td></tr><tr><td>7</td><td>8</td><td>8</td><td>8</td><td></td><td>15</td><td>13</td><td>15</td><td>24</td><td></td></tr><tr><td>8</td><td>14</td><td>15</td><td>16</td><td>對正底孔14、15、16,見圖版捌,6。</td><td>16</td><td>12</td><td>13</td><td>9</td><td></td></tr><tr><td>9</td><td>29</td><td>29</td><td></td><td>剛刻畫出一方框,僅右上角開鑿了一點。</td><td>17</td><td>28</td><td>29</td><td>7</td><td></td></tr></table>
+
+<p>底孔共31個。</p>
+<p>人 $\nabla$ 段底孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>說 明</td><td>編號</td><td>徑</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>9</td><td>9</td><td></td><td>17</td><td>155×32</td><td>19</td><td>是凹槽,南北長(稍偏),安放的木條向西北伸出。</td></tr><tr><td>2</td><td>10</td><td>13</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>3</td><td>33×23</td><td>16</td><td>是凹槽,東西長,安放的木條向西北支出。</td><td>18</td><td>7</td><td>8</td><td>與壁孔10對正。</td></tr><tr><td>4</td><td>11</td><td>9</td><td></td><td>19</td><td>9</td><td>16</td><td></td></tr><tr><td>5</td><td>48×20</td><td>13</td><td>是凹槽,東西長,安放的木條向西北支出。</td><td>20</td><td>6</td><td>6</td><td>與壁孔11對正。</td></tr><tr><td>6</td><td>30×17</td><td>16</td><td>同上。</td><td>21</td><td>9</td><td>5</td><td>圓形。</td></tr><tr><td>7</td><td>53×24</td><td>20</td><td>同上。</td><td>22</td><td>10</td><td>7</td><td></td></tr><tr><td>8</td><td>20×17</td><td>5</td><td>同上。</td><td>23</td><td>11</td><td>6</td><td></td></tr><tr><td>9</td><td>36×17</td><td>14</td><td>位缺口的腳壁上,為方形墻孔的形狀,在此直立木柱以支撐上面所架木板。</td><td>24</td><td>12</td><td>10</td><td></td></tr><tr><td></td><td></td><td></td><td></td><td>25</td><td>10</td><td>8</td><td>\}與壁孔13對正。</td></tr><tr><td></td><td></td><td></td><td></td><td>26</td><td>13×8</td><td>9</td><td></td></tr><tr><td>10</td><td>15×20</td><td>30</td><td>同上。</td><td>27</td><td>18</td><td>6</td><td>似爲安放向北方伸出的木條的凹槽。</td></tr><tr><td>11</td><td>28×26</td><td>10</td><td>同上。</td><td></td><td></td><td></td><td></td></tr><tr><td>12</td><td>約100</td><td>約7</td><td>位缺口北側,是好幾個凹槽壓痕成一片,安放的木梁都向缺口對岸(南)伸出。</td><td>28</td><td>13</td><td>2</td><td></td></tr><tr><td></td><td></td><td></td><td></td><td>29</td><td>10</td><td>11</td><td>位樓道底以下的陡壁上,供安放向上支撐的木柱之用。</td></tr><tr><td>13</td><td>7</td><td>7</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>14</td><td>9</td><td>7</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>15</td><td>10</td><td>8</td><td>\}三孔在一直綫上,與墻孔8對正。見圖版捌,6。</td><td>30</td><td>11</td><td>9</td><td>同上。</td></tr><tr><td>16</td><td>10</td><td>19</td><td></td><td>31</td><td>10</td><td>12</td><td>圓形,其餘同上。</td></tr></table>
+
+<p>棲道側壁及棲道下河灘中的岩石上有題刻11段，上起西晉太康(圖版拾壹,3)，下迄北宋政和。並有陰線刻劃的立馬畫像一幅，潦草粗陋，約是石工們信手所作。它的造型與一般西晉墓中出土的陶馬模型近似(拓片錄附二)。</p>
+<p>全段的實測情況見圖一〇。</p>
+<h1 id="6-vi">(6) 人VI段</h1>
+<p>在人 $\nabla$ 段以西20餘米。這一帶的河岸向北凹進一段，在河岸下的沙滩上有很多崩落的石塊，似乎地形變化較大，所以 $\nabla$ 、VI二段棧道原來的連接情況不清。</p>
+<p>本段形狀同上。全長22米，大部分地方成東西直線，僅東端彎曲向北。棧道的底部很平整，寬為0.15—2.5米，大部分在1.5米左右；高程為284.5—284.9米。棧道頂高2.5—3米，其西端長約3.5米的一段沒有頂部，其餘地方頂部保存較好(圖版拾贰)。</p>
+<p>全段共有牛鼻形壁孔3個，間距為5.3—5.6米。</p>
+<p>人VI段牛鼻形壁孔登記表（單位為厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>說</td><td>明</td></tr><tr><td>1</td><td>30</td><td>10</td><td rowspan="3" colspan="2">見圖版捌,2。</td></tr><tr><td>2</td><td>34</td><td>10</td></tr><tr><td>3</td><td>29</td><td>10</td></tr></table>
+
+<p>方形壁孔共17個，各孔間距0.55—2.9米。</p>
+<p>人VI段方形壁孔登記表（單位爲厘米）  </p>
+<table><tr><td>標號</td><td>高</td><td>寬</td><td>深</td><td>說 明</td><td>編號</td><td>高</td><td>寬</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>12</td><td>14</td><td>5</td><td rowspan="3">對正底孔 2。</td><td>9</td><td>13</td><td>13</td><td>14</td><td>對正底孔 8。</td></tr><tr><td>2</td><td>12</td><td>14</td><td>13</td><td>10</td><td>14</td><td>13</td><td>15</td><td>對正底孔 9。</td></tr><tr><td>3</td><td>13</td><td>15</td><td>9</td><td rowspan="2">11</td><td rowspan="2">30</td><td rowspan="2">30</td><td rowspan="2">7</td><td rowspan="2">高出樓道底 26 厘米。極淺,似未鑿完。</td></tr><tr><td>4</td><td>12</td><td>11</td><td>11</td><td>對正底孔 5。</td></tr><tr><td>5</td><td>18</td><td>19</td><td>12</td><td>高出樓道底 23 厘米。</td><td>12</td><td>12</td><td>13</td><td>15</td><td></td></tr><tr><td>6</td><td>14</td><td>13</td><td>12</td><td rowspan="3">打破 T3 (甘露五年——公元 260 年題刻)的下方,知此孔的開鑿时代晚于 T3。</td><td>13</td><td>13</td><td>13</td><td>16</td><td>對正底孔 10、11。</td></tr><tr><td></td><td></td><td></td><td></td><td>14</td><td>30</td><td>30</td><td>7</td><td>未完成,借鑿去右下角,此孔高出 楁道底 23 厘米。</td></tr><tr><td></td><td></td><td></td><td></td><td>15</td><td>13</td><td>16</td><td>3</td><td></td></tr><tr><td>7</td><td>12</td><td>14</td><td>17</td><td></td><td>16</td><td>14</td><td>15</td><td>17</td><td>對正底孔 12。</td></tr><tr><td>8</td><td>30</td><td>32</td><td>11</td><td>未鑿完。其左上角未鑿去。</td><td>17</td><td>14</td><td>16</td><td>18</td><td></td></tr></table>
+
+<p>底孔共13個。</p>
+<p>側壁上有東漢和平、三國甘露、西晉太康、北魏景明、唐代貞觀、總章、開元等時代的題刻11段(圖版拾叁)，記載了有關修繫棧道及航行的情況。</p>
+<p>全段的實測情況見圖一一。</p>
+<p>人VI段底孔登記表（單位為厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>說 明</td><td>編號</td><td>徑</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>9</td><td>5</td><td rowspan="4">與壁孔2對正。</td><td>8</td><td>10</td><td>13</td><td rowspan="3">與壁孔10對正。</td></tr><tr><td>2</td><td>10</td><td>12</td><td>9</td><td>13</td><td>14</td></tr><tr><td>3</td><td>6</td><td>5</td><td>10</td><td>13</td><td>16</td></tr><tr><td>4</td><td>12</td><td>12</td><td>11</td><td>9</td><td>9</td><td>二孔共同與壁孔13對正。</td></tr><tr><td>5</td><td>7</td><td>5</td><td rowspan="3">與壁孔4對正。</td><td>12</td><td>6</td><td>3</td><td rowspan="3">與壁孔16對正。</td></tr><tr><td>6</td><td>13</td><td>10</td><td>13</td><td>15</td><td>9</td></tr><tr><td>7</td><td>11</td><td>10</td><td></td><td></td><td></td></tr></table>
+
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+入VI段平面、立面、剖面</p>
+<h1 id="7v">（7）人V段</h1>
+<p>人門島的平面略似三角形，一端伸向河心，從這尖端的中心處轉向西北的一段棱道為人Ⅷ段，轉向東南即爲本段(圖版拾肆，1)。這二段棱道原本接連一起，調查時爲了測繪、製圖的方便，分爲二段記錄，現仍依此。人Ⅷ段的東端距人Ⅵ段6米，二段之間原約架木成橋，本段東端的方形壁孔1、2號口向人Ⅵ段末尾，就是當時安放木梁的遺迹。</p>
+<p>全段長35米，形狀同上段。中間有一段長約4.5米的缺口（圖版拾肆，2)，其兩側有底孔6、7、8與9、10相對，約為連通兩端的木構的榫眼。棧道底寬為0.2—2.1米，一般在1.2米左右；高程爲283.5—284.5米。全段西半部爲階形，無頂部，其餘部分頂部的高度自0.6米起至3米不等（圖版拾肆，2、3；圖版拾伍，1、2、3）。在西端拐角處，側壁上有許多被縛繩磨湧的痕跡，這些繩痕一般約高出棧道底1.5米(參見圖版拾陸)，正和當時輓夫們把縛繩摺負在肩上的高度符合。</p>
+<p>全段共有牛鼻形壁孔6個，各孔間距3.55—9.15米。另有一牛鼻形孔在棧道底，編入底孔類。</p>
+<p>人V段牛鼻形壁孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>說 明</td><td>編號</td><td>徑</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>12</td><td>11</td><td>孔內被繩磨洩的痕迹清楚, 磨損痕迹寬約 3 厘米。</td><td>4</td><td>21</td><td>10</td><td></td></tr><tr><td>2</td><td>19</td><td>11</td><td></td><td>5</td><td>28</td><td>13</td><td></td></tr><tr><td>3</td><td>20</td><td>10</td><td></td><td>6</td><td>40</td><td>17</td><td>孔外壁有被縫繩磨損的痕迹,</td></tr></table>
+
+<p>方形壁孔共25個，間距為0.2-3.6米。</p>
+<p>人V段方形壁孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>高</td><td>寬</td><td>深</td><td>說 明</td><td>編號</td><td>高</td><td>寬</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>45</td><td>28</td><td>17</td><td rowspan="2">口向東,插入的木條約搭向人Ⅵ段。</td><td>14</td><td>11</td><td>14</td><td>12</td><td>對正底孔18。</td></tr><tr><td>2</td><td>12</td><td>13</td><td>14</td><td>15</td><td>25</td><td>23</td><td>23</td><td></td></tr><tr><td>3</td><td>12</td><td>15</td><td>9</td><td>對正底孔1、2。</td><td>16</td><td>12</td><td>13</td><td>12</td><td>對正底孔20。</td></tr><tr><td>4</td><td>15</td><td>14</td><td>12</td><td>對正底孔5。</td><td>17</td><td>20</td><td>26</td><td>21</td><td>對正底孔23。</td></tr><tr><td>5</td><td>13</td><td>16</td><td>9</td><td></td><td>18</td><td>11</td><td>12</td><td>9</td><td>對正底孔26。</td></tr><tr><td>6</td><td>23</td><td>14</td><td>23</td><td></td><td>19</td><td>22</td><td>26</td><td>24</td><td>對正底孔27。</td></tr><tr><td>7</td><td>14</td><td>13</td><td>12</td><td>在孔6之上,並與之相連。</td><td>20</td><td>20</td><td>25</td><td>18</td><td>對正底孔28、29。</td></tr><tr><td>8</td><td>30</td><td>32</td><td>34</td><td rowspan="3">三孔相靠,見圖一二。8、9兩孔高出棱道底30厘米,孔10剛鑿出一輪廓。</td><td>21</td><td>9</td><td>9</td><td>16</td><td>高出棱道底約1.5米。</td></tr><tr><td>9</td><td>11</td><td>14</td><td>12</td><td>22</td><td>47</td><td>40</td><td>8</td><td>對正底孔32、33。</td></tr><tr><td>10</td><td>32</td><td>30</td><td></td><td>23</td><td>22</td><td>22</td><td>24</td><td>高出棱道底1.05米。</td></tr><tr><td>11</td><td>7</td><td>10</td><td>8</td><td>高出棱道底25厘米。</td><td>24</td><td>30</td><td>32</td><td>19</td><td>孔內底部有一圓形小底孔(34)。</td></tr><tr><td>12</td><td>14</td><td>15</td><td>9</td><td>對正底孔13。</td><td>25</td><td>7</td><td>8</td><td>13</td><td>高出棱道底1.5米。</td></tr><tr><td>13</td><td>24</td><td>26</td><td>18</td><td>對正底孔14。</td><td></td><td></td><td></td><td></td><td></td></tr></table>
+
+<p>底孔共有35個。</p>
+<p>人Ⅶ段底孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>說 明</td><td>編號</td><td>徑</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>15</td><td>18</td><td rowspan="2">}與壁孔3對正。</td><td>18</td><td>8</td><td>2</td><td>與壁孔14對正。</td></tr><tr><td>2</td><td>13</td><td>12</td><td>19</td><td>11</td><td>23</td><td>是圓形的孔。</td></tr><tr><td>3</td><td>11</td><td>7</td><td></td><td>20</td><td>6</td><td>5</td><td>與壁孔16對正。</td></tr><tr><td>4</td><td>9</td><td>5</td><td></td><td>21</td><td>12</td><td>8</td><td></td></tr><tr><td>5</td><td>8</td><td>6</td><td>與壁孔4對正。</td><td>22</td><td>10</td><td>24</td><td>是圓形的孔,自此以下至孔26,皆見圖版拾伍之4。</td></tr><tr><td>6</td><td>25×16</td><td>12</td><td>是凹槽、安放的木條向西伸出。底部有一小孔,即孔7,是其榫眼。</td><td>23</td><td>12</td><td>20</td><td>與壁孔17對正。</td></tr><tr><td>7</td><td>11</td><td>4</td><td>是孔6內的榫眼。</td><td>24</td><td>8</td><td>6</td><td></td></tr><tr><td>8</td><td>8</td><td>9</td><td></td><td>25</td><td>13</td><td>8</td><td></td></tr><tr><td>9</td><td>約20×30</td><td>約8</td><td>是凹槽,尺寸係估計所得。</td><td>26</td><td>11</td><td>23</td><td>是圓形的孔,與壁孔18對正。</td></tr><tr><td>10</td><td>約20×30</td><td>約16</td><td>是凹槽,底有小孔(11),是其榫眼。尺寸係估計所得。</td><td>27</td><td>13</td><td>18</td><td>與壁孔19對正。</td></tr><tr><td>11</td><td>約8</td><td>約5</td><td>是孔10底上的榫眼,尺寸係估計所得。</td><td>28</td><td>12</td><td>21</td><td>}二孔共同與壁孔20對正。</td></tr><tr><td>12</td><td>10</td><td>16</td><td></td><td>29</td><td>8</td><td>9</td><td></td></tr><tr><td>13</td><td>8</td><td>5</td><td>與壁孔12對正。</td><td>30</td><td>12</td><td>10</td><td></td></tr><tr><td>14</td><td>12</td><td>19</td><td>與壁孔13對正。</td><td>31</td><td>8</td><td>4</td><td>是圓形的孔。</td></tr><tr><td>15</td><td>9</td><td>10</td><td></td><td>32</td><td>11</td><td>18</td><td>}二孔共同與壁孔22對正。</td></tr><tr><td>16</td><td>23</td><td>13</td><td>是牛鼻形孔。</td><td>33</td><td>12</td><td>12</td><td></td></tr><tr><td>17</td><td>14</td><td>9</td><td></td><td>34</td><td>7</td><td>2</td><td>是壁孔24底上的一個小圓孔。</td></tr><tr><td></td><td></td><td></td><td></td><td>35</td><td>90×25</td><td>14</td><td>是凹槽。東西長(稍偏),南北窄。</td></tr></table>
+
+<p>側壁上有唐代垂拱、北宋至和興明代等時代的題刻6段。</p>
+<p>全段的實測情況見圖一二。</p>
+<h1 id="8v">（8）人V段</h1>
+<p>從入V段末尾向東北彎轉，即爲本段。其形狀同上段(圖版拾染;圖版拾捌,1、2、4)。全長29米。棧道底寬爲0.15—2.5米，一般在1.7米左右；高程爲284.5—285.4米。在本段的起端——靠近島尖的拐角處，側壁上也有許多被輓索磨勦的痕迹，磨痕一般高出棧道底約0.5—1米（圖版拾陸）。</p>
+<p>全段共有牛鼻形壁孔9個，各孔間距為1-6.5米（其中孔5與孔6，孔8與孔9上下並列，不計入）。</p>
+<p>人V段牛鼻壁形孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>說明</td><td>編號</td><td>徑</td><td>深</td><td>說明</td></tr><tr><td>1</td><td>30</td><td>16</td><td rowspan="4">孔外有輓棗磨損痕迹。同上。</td><td>7</td><td>40</td><td>24</td><td>此孔中梁橫轉,同樣情況見於人区段孔4。</td></tr><tr><td>2</td><td>37</td><td>17</td><td></td><td></td><td></td><td></td></tr><tr><td>3</td><td>21</td><td>11</td><td>8</td><td>30</td><td>12</td><td rowspan="2">}二孔上下並列,孔9比孔8高9厘米。孔8中梁已斷,似此處必須有孔,故孔8中梁折斷後,叉鑿孔9。</td></tr><tr><td>4</td><td>32</td><td>17</td><td>9</td><td>43</td><td>20</td></tr><tr><td>5</td><td>19</td><td>12</td><td rowspan="2">}二孔上下並列。孔5高出孔652厘米。似輓舟至此特別費力,故多鑿一孔,以增強壁間横索。</td><td></td><td></td><td></td><td></td></tr><tr><td>6</td><td>35</td><td>19</td><td></td><td></td><td></td><td></td></tr></table>
+
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>方形壁孔共22個。各孔間距為0.3-2.4米(孔7未繫完,不計入)。其中5個(孔18-22)位置在靠近島尖轉角處的陡壁上,高程為287.5米左右,低於棧道底5米多,河水稍漲,即沒入水面,不知怎樣使用。</p>
+<p>人匝段方形壁孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>高</td><td>寬</td><td>深</td><td>說 明</td><td>編號</td><td>高</td><td>寬</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>26</td><td>25</td><td>10</td><td>在栈道側壁頂上的一小台面上,對正底孔3、7、8號。</td><td>12</td><td>30</td><td>32</td><td>39</td><td>對正底孔33。</td></tr><tr><td>2</td><td>30</td><td>30</td><td>13</td><td>孔內壁很粗糙,似未罄完。對正底孔10。</td><td>13</td><td>15</td><td>15</td><td>28</td><td>對正底孔35。</td></tr><tr><td>3</td><td>14</td><td>13</td><td>10</td><td>對正底孔11、12。</td><td>14</td><td>31</td><td>30</td><td>41</td><td></td></tr><tr><td>4</td><td>23</td><td>22</td><td>23</td><td>高出栈道底1.44米,使用法不明。</td><td>15</td><td>13</td><td>14</td><td>18</td><td>對正底孔37、38。</td></tr><tr><td>5</td><td>15</td><td>14</td><td>13</td><td>對正底孔15、16。</td><td>16</td><td>15</td><td>13</td><td>11</td><td>對正底孔39。</td></tr><tr><td>6</td><td>12</td><td>13</td><td>10</td><td>對正底孔21。</td><td>17</td><td>11</td><td>11</td><td>9</td><td>對正底孔41。</td></tr><tr><td>7</td><td>30</td><td>30</td><td></td><td>剛刻劃一方框,未繫進。</td><td>18</td><td>24</td><td>24</td><td>28</td><td>在栈道底以下的陡壁上。</td></tr><tr><td>8</td><td>30</td><td>32</td><td>45</td><td>對正底孔22、23。</td><td>19</td><td>22</td><td>24</td><td>11</td><td>同上。</td></tr><tr><td>9</td><td>13</td><td>15</td><td>20</td><td>對正底孔24。</td><td>20</td><td>25</td><td>27</td><td>16</td><td>同上。</td></tr><tr><td>10</td><td>30</td><td>32</td><td>38</td><td>對正底孔30。</td><td>21</td><td>23</td><td>27</td><td>22</td><td>同上。</td></tr><tr><td>11</td><td>13</td><td>13</td><td>14</td><td></td><td>22</td><td>22</td><td>25</td><td>?</td><td>同上,深度未度量。</td></tr></table>
+
+<p>底孔共45個。</p>
+<p>人匯段底孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>說 明</td><td>編號</td><td>徑</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>10</td><td>5</td><td>是圓形的孔。</td><td>24</td><td>7</td><td>9</td><td>與壁孔 9對正。</td></tr><tr><td>2</td><td>11</td><td>10</td><td></td><td>25</td><td>16×15</td><td>12</td><td rowspan="5">五孔在向外傾斜的一片石面上,低於梯底約40-60厘米,其功用約為插入直立的木條,以支撑樓道底的木板。</td></tr><tr><td>3</td><td>11</td><td>11</td><td>與壁孔1對正。</td><td>26</td><td>10×15</td><td>12</td></tr><tr><td>4</td><td>16</td><td>11</td><td></td><td>27</td><td>13×18</td><td>10</td></tr><tr><td>5</td><td>22</td><td>9</td><td>形如方形壁孔,向南開口,所放木條將伸向人V段。</td><td>28</td><td>13×15</td><td>13</td></tr><tr><td></td><td></td><td></td><td></td><td>29</td><td>13×15</td><td>13</td></tr><tr><td>6</td><td>7</td><td>9</td><td></td><td>30</td><td>10</td><td>8</td><td>與壁孔10對正。</td></tr><tr><td>7</td><td>73×36</td><td>5</td><td>孔7是凹槽,孔8爲槽底的榫眼。對正壁孔1。</td><td>31</td><td>32×22</td><td>10</td><td>是凹槽。</td></tr><tr><td>8</td><td>7</td><td>11</td><td></td><td>32</td><td>8</td><td>8</td><td></td></tr><tr><td>9</td><td>7</td><td>11</td><td></td><td>33</td><td>14</td><td>13</td><td>與壁孔12對正。</td></tr><tr><td>10</td><td>8</td><td>9</td><td>與壁孔2對正。</td><td>34</td><td>6</td><td>6</td><td></td></tr><tr><td>11</td><td>10</td><td>13</td><td>共同與壁孔3對正。</td><td>35</td><td>9</td><td>10</td><td>與壁孔13對正。</td></tr><tr><td>12</td><td>16</td><td>17</td><td></td><td>36</td><td>10</td><td>8</td><td></td></tr><tr><td>13</td><td>13</td><td>13</td><td></td><td>37</td><td>9</td><td>11</td><td>與壁孔15對正。</td></tr><tr><td>14</td><td>10</td><td>12</td><td></td><td>38</td><td>8</td><td>9</td><td></td></tr><tr><td>15</td><td>8×4</td><td>7</td><td>與壁孔5對正。</td><td>39</td><td>9</td><td>8</td><td>與壁孔16對正。</td></tr><tr><td>16</td><td>8</td><td>7</td><td></td><td>40</td><td>12</td><td>6</td><td></td></tr><tr><td>17</td><td>95×28</td><td>13</td><td>是凹槽,南端底部有榫眼(孔18)。</td><td>41</td><td>8</td><td>6</td><td>與壁孔17對正。</td></tr><tr><td></td><td></td><td></td><td></td><td>42</td><td>9</td><td>5</td><td></td></tr><tr><td>18</td><td>10</td><td>19</td><td>在底孔17的底部。</td><td>43</td><td>27</td><td>24</td><td>形似方形壁孔,所放木條伸向人区段(與人区段底孔1對正,相距3.4米)。</td></tr><tr><td>19</td><td>10</td><td>10</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>20</td><td>27×22</td><td>12</td><td>是凹槽。</td><td>44</td><td>8</td><td>4</td><td></td></tr><tr><td>21</td><td>13</td><td>11</td><td>與壁孔6對正。</td><td>45</td><td>18</td><td>16</td><td>在梯道邊外的陡坡坡腳,高程為281.44米,其功用似為插入直立的木條,以支撑樓道底的木板。</td></tr><tr><td>22</td><td>22</td><td>11</td><td>孔22是凹槽,23在其中心,是其榫眼。與壁孔8對正。</td><td></td><td></td><td></td><td></td></tr><tr><td>23</td><td>11</td><td>12</td><td></td><td></td><td></td><td></td><td></td></tr></table>
+
+<p>側壁上有題名1段。</p>
+<p>全段實測情況見圖一三。</p>
+<h1 id="9ii">（9）人Ⅱ段</h1>
+<p>在八匝段的東北，相距4米餘，在西南端有底孔1，與人Ⅲ段的底孔43對正，二孔可安放連通這二段的長約3—5米的木梁。全段長達115米。形狀略同上段，唯西南端長約10米的一段有1.7—2.5米高的頂部。此處河岸似原來即爲階形開鑿棧道時略爲加工郎行利用，所以不很整齊（圖版拾染；圖版拾掷，1、2、3）。棧道底寬為0.4—3，高程爲282.7—286.5米。</p>
+<p>全段共有牛鼻形壁孔21個，間距為0.1—41.9米。其中距離最遠的為孔11至12(41.9米)，兩孔之間，石道比較寬坦，輓夫縉引船隻時約不須側壁橫索的幫助，故牛鼻形壁孔在此中斷。除此而外，各孔距離皆在10米以內。另有20、21二孔鑿在棱道底面以下的</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖一三 人Ⅷ段平面、立面、剖面圖</p>
+<p>緣河陡壁上，用法不明。</p>
+<p>人Ⅱ段牛鼻形壁孔登記表（單位爲厘·）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>說 明</td><td>編號</td><td>徑</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>40</td><td>16</td><td></td><td>12</td><td>34</td><td>15</td><td></td></tr><tr><td>2</td><td>50</td><td>14</td><td></td><td>13</td><td>45</td><td>18</td><td></td></tr><tr><td>3</td><td>26</td><td>12</td><td></td><td>14</td><td>38</td><td>16</td><td></td></tr><tr><td>4</td><td>43</td><td>18</td><td>孔形橫轉,中梁橫置。</td><td>15</td><td>32</td><td>13</td><td></td></tr><tr><td>5</td><td>25</td><td>12</td><td>同上。</td><td>16</td><td>32</td><td>15</td><td></td></tr><tr><td>6</td><td>33</td><td>16</td><td>中梁已折斷。</td><td>17</td><td>30</td><td>14</td><td></td></tr><tr><td>7</td><td>35</td><td>17</td><td></td><td>18</td><td>32</td><td>12</td><td></td></tr><tr><td>8</td><td>38</td><td>15</td><td>中梁未鑿穿。</td><td>19</td><td>30</td><td>19</td><td></td></tr><tr><td>9</td><td>40</td><td>20</td><td></td><td>20</td><td>34</td><td>15</td><td>位置在楼道底以下的陡壁上。</td></tr><tr><td>10</td><td>80</td><td>25</td><td>中梁已折斷。</td><td>21</td><td>28</td><td>15</td><td>同上。</td></tr><tr><td>11</td><td>15</td><td>14</td><td></td><td></td><td></td><td></td><td></td></tr></table>
+
+<p>方形壁孔共50個，間距為 $0.35 - 7.7$ 米。</p>
+<p>人区段方形壁孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>高</td><td>寬</td><td>深</td><td>說 明</td><td>編號</td><td>高</td><td>寬</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>13</td><td>14</td><td>9</td><td></td><td>26</td><td>16</td><td>18</td><td>17</td><td></td></tr><tr><td>2</td><td>30</td><td>34</td><td>48</td><td></td><td>27</td><td>31</td><td>31</td><td>43</td><td>對正底孔 47。</td></tr><tr><td>3</td><td>14</td><td>14</td><td>13</td><td>對正底孔 2。</td><td>28</td><td>10</td><td>16</td><td>12</td><td>對正底孔 48。</td></tr><tr><td>4</td><td>33</td><td>31</td><td>47</td><td>對正底孔 4。</td><td>29</td><td>12</td><td>10</td><td>4</td><td></td></tr><tr><td>5</td><td>12</td><td>15</td><td>8</td><td>對正底孔 7。</td><td>30</td><td>10</td><td>13</td><td>10</td><td>對正底孔 51。</td></tr><tr><td>6</td><td>32</td><td>32</td><td>29</td><td>對正底孔 9。</td><td>31</td><td>30</td><td>32</td><td>33</td><td>對正底孔 52。</td></tr><tr><td>7</td><td>30</td><td>31</td><td>25</td><td>對正底孔 13。</td><td>32</td><td>10</td><td>15</td><td>9</td><td></td></tr><tr><td>8</td><td>32</td><td>32</td><td>37</td><td></td><td>33</td><td>15</td><td>14</td><td>14</td><td>對正底孔 54。</td></tr><tr><td>9</td><td>31</td><td>30</td><td></td><td>高出梯道底 1.5 米,剛刻劃一方框未鑿。</td><td>34</td><td>30</td><td>30</td><td>2</td><td>高出梯道底 55 厘米,剛刻劃一方框未鑿。</td></tr><tr><td>10</td><td>30</td><td>30</td><td></td><td>高出梯道底 1.3 米,剛刻劃一“田”字形外框未鑿。見圖版玖,1。</td><td>35</td><td>19</td><td>14</td><td>2</td><td>對正底孔 56,極淺,似未鑿成。</td></tr><tr><td>11</td><td>12</td><td>15</td><td>21</td><td>對正底孔 26、27。</td><td>36</td><td>9</td><td>4</td><td>11</td><td>對正底孔 58。</td></tr><tr><td>12</td><td>12</td><td>13</td><td>9</td><td>對正底孔 28。</td><td>37</td><td>32</td><td>31</td><td>31</td><td>對正底孔 59、60、61。</td></tr><tr><td>13</td><td>32</td><td>32</td><td>47</td><td>對正底孔 29、30。見圖版玖,6。</td><td>38</td><td>12</td><td>16</td><td>14</td><td></td></tr><tr><td>14</td><td>14</td><td>16</td><td>17</td><td>對正底孔 32。</td><td>39</td><td>31</td><td>31</td><td>24</td><td></td></tr><tr><td>15</td><td>31</td><td>33</td><td>36</td><td>孔內有 34 號小底孔。對正底孔 33。</td><td>40</td><td>32</td><td>29</td><td>14</td><td>高出梯道底 80 厘米。</td></tr><tr><td>16</td><td>8</td><td>8</td><td>13</td><td></td><td>41</td><td>31</td><td>30</td><td>35</td><td>對正底孔 63、64。</td></tr><tr><td>17</td><td>30</td><td>35</td><td>27</td><td></td><td>42</td><td>15</td><td>15</td><td>11</td><td>對正底孔 70、71。</td></tr><tr><td>18</td><td>31</td><td>34</td><td>46</td><td></td><td>43</td><td>14</td><td>15</td><td>17</td><td>對正底孔 73。</td></tr><tr><td>19</td><td>35</td><td>32</td><td>21</td><td>對正底孔 38,另有底孔 36、37 並位於孔前,疑其作用為在此插入二小木椅,夾住插入本孔的木條。</td><td>44</td><td>15</td><td>13</td><td>11</td><td>對正底孔 76。</td></tr><tr><td></td><td></td><td></td><td></td><td></td><td>45</td><td>11</td><td>15</td><td>10</td><td>對正底孔 77。</td></tr><tr><td>20</td><td>30</td><td>31</td><td>43</td><td>對正底孔 39。</td><td>46</td><td>15</td><td>14</td><td>14</td><td>對正底孔 79。</td></tr><tr><td>21</td><td>12</td><td>14</td><td>18</td><td></td><td>47</td><td>30</td><td>31</td><td>37</td><td></td></tr><tr><td>22</td><td>30</td><td>32</td><td>34</td><td></td><td>48</td><td>32</td><td>33</td><td>48</td><td></td></tr><tr><td>23</td><td>32</td><td>32</td><td>37</td><td></td><td>49</td><td>30</td><td>36</td><td>30</td><td>對正底孔 82。</td></tr><tr><td>24</td><td>15</td><td>13</td><td>23</td><td>對正底孔 40。</td><td>50</td><td>8</td><td>9</td><td>6</td><td>對正底孔 87。</td></tr><tr><td>25</td><td>30</td><td>29</td><td>45</td><td>在一較高的石台上,與稍低的底孔 44、45 對正。</td><td></td><td></td><td></td><td></td><td></td></tr></table>
+
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖一四 人区段棧道底孔23平面及経剖面圖</p>
+<p>底孔共87個。其中有10個形狀特殊的底孔，並列成排(孔14—23)。孔形如圖一四、一五所示（圖版拾玖）。這段地方，寬僅40厘米，除非用木板將棧道加寬，輓夫們絕難平安通過，這10個奇形孔約即為加寬棧道而設。根據孔形，推想當時是從孔眼前方插入木</p>
+<p>梁, 其後尾遠伸在外, 在伸出的木梁上鋪釘木板就加寬了棧道。但木梁伸出過遠, 重心在外, 極易墜落, 必須在其前端壓上重物或用榫卯扣住, 才能把它固定; 奇形底孔後部的横槽大約就是準備在此插下木椿, 扣住木梁的頭部而設 (圖一六、一七、一八)。在這10個奇形孔的旁邊, 還有牛鼻形孔3個(6-8, 孔6中梁已斷, 孔8的中梁未繫通, 故實際使用的僅1個), 它的功用疑爲用繩索綁住上述木椿。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖一五 人Ⅱ段棱道底孔23横剖面圖</p>
+<p>在西南端的側壁上有西晉太康年間的題刻2段。</p>
+<p>全段的實測情況見圖一九。</p>
+<h1 id="10x">（10）人X段</h1>
+<p>在人区段東北5米。它的北端直抵人門島北頭的盡端，旁邊就是開元新河，前面與開元新河北口外的一座小島遙對，中隔4—5米的河道。全段長約60米，形狀略同上段（圖版貳拾，1、2)。棧道底寬0.9—4.5；高程爲284——285.5米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖一六 人区段棲道底孔23用途想像圖</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圈一七 人区段棱道底孔23用途想像图</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖一八 人区段棧道底孔第14—23號一帶的木構想像圖</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>人区段底孔登記表（單位為厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>說 明</td><td>編號</td><td>徑</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>18×13</td><td>11</td><td>是凹槽,與人Ⅷ段底孔43對正。</td><td>47</td><td>15</td><td>7</td><td>與壁孔27對正。</td></tr><tr><td>2</td><td>12</td><td>8</td><td>與壁孔3對正。</td><td>48</td><td>9</td><td>7</td><td>與壁孔28對正。</td></tr><tr><td>3</td><td>19×15</td><td>13</td><td>在樓道底以下的緣河陡壁上,約插入支撐樓道底部木板的木柱。</td><td>49</td><td>10</td><td>7</td><td></td></tr><tr><td></td><td></td><td></td><td></td><td>50</td><td>10</td><td>9</td><td></td></tr><tr><td></td><td></td><td></td><td></td><td>51</td><td>9</td><td>5</td><td>與壁孔30對正。</td></tr><tr><td>4</td><td>11</td><td>8</td><td>與壁孔4對正。</td><td>52</td><td>11</td><td>13</td><td>與壁孔31對正。</td></tr><tr><td>5</td><td>9</td><td>8</td><td></td><td>53</td><td>10</td><td>7</td><td></td></tr><tr><td>6</td><td>13</td><td>9</td><td></td><td>54</td><td>9</td><td>13</td><td>與壁孔33對正。</td></tr><tr><td>7</td><td>10</td><td>11</td><td>與壁孔5對正。</td><td>55</td><td>60</td><td>50</td><td>圓形,不整齊,似承一大木柱。</td></tr><tr><td>8</td><td>11</td><td>10</td><td></td><td>56</td><td>11</td><td>13</td><td>與壁孔35對正。</td></tr><tr><td>9</td><td>13</td><td>12</td><td>與壁孔6對正。</td><td>57</td><td>12×8</td><td>5</td><td></td></tr><tr><td>10</td><td>8×5</td><td>8</td><td>長方形,橫寬堅短。</td><td>58</td><td>8</td><td>7</td><td>與壁孔36對正。</td></tr><tr><td>11</td><td>17</td><td>6</td><td></td><td>59</td><td>6</td><td>7</td><td></td></tr><tr><td>12</td><td>9×7</td><td>6</td><td></td><td>60</td><td>14</td><td>8</td><td>與壁孔37對正。其中孔61在較低的石面上。</td></tr><tr><td>13</td><td>9</td><td>8</td><td>與壁孔7對正。</td><td>61</td><td>13</td><td>10</td><td></td></tr><tr><td>14</td><td></td><td></td><td>這是10個奇形孔,尺寸略同,如圖一四所示。其中孔14已殘,僅略存底部。見圖版拾玖。</td><td>62</td><td>13</td><td>12</td><td></td></tr><tr><td>|</td><td></td><td></td><td></td><td>63</td><td>25</td><td>5</td><td>與壁孔41對正。孔63是凹槽,孔64在其底部,是榫眼。</td></tr><tr><td>23</td><td></td><td></td><td></td><td>64</td><td>12</td><td>10</td><td></td></tr><tr><td>24</td><td>9</td><td>8</td><td></td><td>65</td><td>10</td><td>8</td><td></td></tr><tr><td>25</td><td>12</td><td>10</td><td></td><td>66</td><td>12</td><td>5</td><td></td></tr><tr><td>26</td><td>7</td><td>8</td><td>與壁孔11對正。</td><td>67</td><td>16</td><td>4</td><td></td></tr><tr><td>27</td><td>10</td><td>12</td><td></td><td>68</td><td>15</td><td>7</td><td></td></tr><tr><td>28</td><td>9</td><td>6</td><td>與壁孔12對正。</td><td>69</td><td>13</td><td>10</td><td></td></tr><tr><td>29</td><td>8</td><td>8</td><td>與壁孔13對正。</td><td>70</td><td>8</td><td>7</td><td>與壁孔42對正。</td></tr><tr><td>30</td><td>16</td><td>15</td><td></td><td>71</td><td>9</td><td>10</td><td></td></tr><tr><td>31</td><td>7</td><td>6</td><td></td><td>72</td><td>9</td><td>10</td><td></td></tr><tr><td>32</td><td>8</td><td>5</td><td>與壁孔14對正。</td><td>73</td><td>9</td><td>7</td><td>與壁孔43對正。</td></tr><tr><td>33</td><td>10</td><td>5</td><td>與壁孔15對正。</td><td>74</td><td>14</td><td>9</td><td>圓形。</td></tr><tr><td>34</td><td>11</td><td>9</td><td>在壁孔15的底部,是其榫眼。</td><td>75</td><td>10</td><td>9</td><td></td></tr><tr><td>35</td><td>10</td><td>6</td><td>圓形。</td><td>76</td><td>9</td><td>9</td><td>與壁孔44對正。</td></tr><tr><td>36</td><td>9</td><td>7</td><td>二孔位壁孔19前方的兩旁,參上表壁孔19的說明。</td><td>77</td><td>8</td><td>7</td><td>與壁孔45對正。</td></tr><tr><td>37</td><td>10</td><td>7</td><td></td><td>78</td><td>11</td><td>12</td><td></td></tr><tr><td>38</td><td>13</td><td>17</td><td>與壁孔19對正。</td><td>79</td><td>9</td><td>6</td><td>與壁孔46對正。</td></tr><tr><td>39</td><td>11</td><td>11</td><td>與壁孔20對正。</td><td>80</td><td>10</td><td>8</td><td></td></tr><tr><td>40</td><td>7</td><td>8</td><td>與壁孔24對正。</td><td>81</td><td>9</td><td>7</td><td></td></tr><tr><td>41</td><td>11</td><td>8</td><td></td><td>82</td><td>8</td><td>7</td><td>與壁孔49對正。</td></tr><tr><td>42</td><td>12</td><td>5</td><td></td><td>83</td><td>8</td><td>8</td><td>在壁孔49的背後,使用法不明。</td></tr><tr><td>43</td><td>10</td><td>10</td><td></td><td>84</td><td>10</td><td>9</td><td>圓形。</td></tr><tr><td>44</td><td>9</td><td>8</td><td>與壁孔25對正。</td><td>85</td><td>13</td><td>9</td><td></td></tr><tr><td>45</td><td>14</td><td>12</td><td></td><td>86</td><td>8</td><td>7</td><td></td></tr><tr><td>46</td><td>12</td><td>7</td><td></td><td>87</td><td>6</td><td>5</td><td>與壁孔50對正。</td></tr></table>
+
+<p>全段的牛鼻形壁孔僅4個，間距為0.9—7.3米，都集中在北半段，這是因爲前面半段比較寬坦，側壁可以不施橫索。</p>
+<p>人X段牛鼻形壁孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>編號</td><td>徑</td><td>深</td></tr><tr><td>1</td><td>30</td><td>12</td><td>3</td><td>40</td><td>14</td></tr><tr><td>2</td><td>36</td><td>15</td><td>4</td><td>19</td><td>10</td></tr></table>
+
+<p>方形壁孔共20個，間距為0.4—6.2米。</p>
+<p>人X段方形壁孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>高</td><td>寬</td><td>深</td><td>說 明</td><td>編號</td><td>高</td><td>寬</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>36</td><td>33</td><td>32</td><td></td><td>11</td><td>14</td><td>18</td><td>8</td><td></td></tr><tr><td>2</td><td>20</td><td>18</td><td>13</td><td></td><td>12</td><td>30</td><td>30</td><td>35</td><td></td></tr><tr><td>3</td><td>10</td><td>11</td><td>4</td><td></td><td>13</td><td>13</td><td>14</td><td>7</td><td></td></tr><tr><td>4</td><td>30</td><td>30</td><td>32</td><td>對正底孔 8、9。</td><td>14</td><td>28</td><td>29</td><td></td><td>在孔13之上面,剛刻劃一方框未鑄</td></tr><tr><td>5</td><td>15</td><td>14</td><td>10</td><td>對正底孔 10。</td><td>15</td><td>10</td><td>17</td><td>27</td><td></td></tr><tr><td>6</td><td>15</td><td>15</td><td>6</td><td></td><td>16</td><td>15</td><td>12</td><td>9</td><td>對正底孔 25。</td></tr><tr><td>7</td><td>32</td><td>31</td><td>24</td><td></td><td>17</td><td>24</td><td>27</td><td>44</td><td>對正底孔 26。</td></tr><tr><td>8</td><td>11</td><td>12</td><td>5</td><td>高出棱道底 54 厘米。</td><td>18</td><td>13</td><td>14</td><td>10</td><td>對正底孔 27。</td></tr><tr><td>9</td><td>15</td><td>16</td><td>14</td><td></td><td>19</td><td>17</td><td>15</td><td>10</td><td></td></tr><tr><td>10</td><td>12</td><td>13</td><td>10</td><td></td><td>20</td><td>32</td><td>31</td><td>30</td><td></td></tr></table>
+
+<p>底孔共37個,其中在棱道南端的1、2、3三孔口向入Ⅱ段,所安放的木梁,將伸向入Ⅱ段。</p>
+<p>人X段底孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>說 明</td><td>編號</td><td>徑</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>10</td><td>7</td><td>是凹槽。</td><td>20</td><td>20×17</td><td>15</td><td>形如方形壁孔,孔外向。</td></tr><tr><td>2</td><td>14×12</td><td>5</td><td>同上。</td><td>21</td><td>11×14</td><td>10</td><td></td></tr><tr><td>3</td><td>14</td><td>13</td><td>同上。</td><td>22</td><td>6</td><td>2</td><td></td></tr><tr><td>4</td><td>7</td><td>7</td><td></td><td>23</td><td>8</td><td>8</td><td></td></tr><tr><td>5</td><td>30</td><td>20</td><td></td><td>24</td><td>10</td><td>12</td><td></td></tr><tr><td>6</td><td>4</td><td>10</td><td></td><td>25</td><td>11</td><td>12</td><td>與壁孔16對正。</td></tr><tr><td>7</td><td>14</td><td>5</td><td></td><td>26</td><td>15</td><td>10</td><td>與壁孔17對正,在一較低的石面上。</td></tr><tr><td>8</td><td>7</td><td>3</td><td rowspan="2">與壁孔4對正。</td><td>27</td><td>10</td><td>11</td><td>與壁孔18對正。</td></tr><tr><td>9</td><td>9</td><td>8</td><td>28</td><td>7</td><td>6</td><td></td></tr><tr><td>10</td><td>9</td><td>6</td><td>與壁孔5對正。</td><td>29</td><td>9</td><td>7</td><td>在壁孔20的背後,使用法不明。</td></tr><tr><td>11</td><td>10</td><td>8</td><td></td><td>30</td><td>9</td><td>5</td><td></td></tr><tr><td>12</td><td>10</td><td>9</td><td></td><td>31</td><td>8</td><td>4</td><td></td></tr><tr><td>13</td><td>9</td><td>8</td><td></td><td>32</td><td>13</td><td>5</td><td></td></tr><tr><td>14</td><td>8</td><td>8</td><td></td><td>33</td><td>10</td><td>7</td><td></td></tr><tr><td>15</td><td>8</td><td>9</td><td></td><td>34</td><td>9</td><td>7</td><td></td></tr><tr><td>16</td><td>9</td><td>8</td><td></td><td>35</td><td>12</td><td>12</td><td></td></tr><tr><td>17</td><td>9</td><td>10</td><td></td><td>36</td><td>11</td><td>9</td><td></td></tr><tr><td>18</td><td>12</td><td>10</td><td></td><td>37</td><td>10</td><td>13</td><td>形如方形壁孔,口向北。</td></tr><tr><td>19</td><td>9</td><td>6</td><td></td><td></td><td></td><td></td><td></td></tr></table>
+
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圆二○ 人X段平面、立面圆</p>
+<p>全段的實測情況見圖二〇。</p>
+<h1 id="11-mathbfx">（11）人 $\mathbf{X}$ 段</h1>
+<p>在開元新河北口外有一個頂部平坦的小島，島頂的高程與其它各段棧道的底部相近。棧道從入X段末尾越過4米多寬的河道搭到島頂，經過全島，又越過了9米多寬的河道通往黄河岸上的人Ⅲ段；在島頂有許多孔眼，可知也曾鋪設木構（圖版拾柒，1；圖版拾捌，1;圖版貳拾，1)。</p>
+<p>孔眼共97個,除個別的是鑿在側壁上外(島頂有一些岩石高低錯落,在這裏就形成了小片的側壁),都是底孔。其中71個是一種很小的長方形孔,大小極相近,長約6,寬約2,深約6厘米,常常三、四個或七、八個成排的在一起(圖版貳拾,4)。現代石工在分解大塊岩石時,往往先打出這類小孔,島上小孔的功用,大概相同。從而可知島面曾經修整,這71個小孔就是未完成的工程的遺跡。</p>
+<p>另外的26個孔眼大都屬於上述底孔一類的性質，它們大體成爲平行的兩排，相距2米左右，在島中心通過；這些底孔的位置，也就是棧道的位置。在棧道兩端的3、4、23、24、25、26六孔，則形如方形壁孔。其中孔3、4在小島東南端，口向入X段，連通入X、XI兩段的木梁，就放在這裏。孔23、24在小島北端，口向入Ⅲ段，所放木梁，將伸向人Ⅲ段。孔25、26鑿在小島北端的緣河陡壁上，與入Ⅲ段底孔31、32（也在低於棧道的緣河陡壁上）</p>
+<p>人XII段小長方形孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>長</td><td>寬</td><td>深</td><td>各孔距離</td><td>說明</td></tr><tr><td>1</td><td>5</td><td>2</td><td>4</td><td></td><td></td></tr><tr><td>2</td><td>4</td><td>2</td><td>3</td><td></td><td></td></tr><tr><td>3-10</td><td>5-8</td><td>2-4</td><td>2.5-6</td><td>4-14</td><td>八孔並列一排。</td></tr><tr><td>11、12</td><td>6</td><td>2</td><td>5</td><td>4</td><td>二孔並列。</td></tr><tr><td>13-20</td><td>6</td><td>3</td><td>6</td><td>3</td><td>八孔並列一排,見圖版貳拾,4。</td></tr><tr><td>21-26</td><td>5</td><td>2</td><td>4</td><td>5</td><td>六孔並列一排,見圖版貳拾,4。</td></tr><tr><td>27-35</td><td>6</td><td>2</td><td>4</td><td>2</td><td>九孔排成“十”字形,直三孔,横六孔,見圖版貳拾,4。</td></tr><tr><td>36</td><td>6</td><td>3</td><td>5</td><td></td><td>在底孔4西邊2厘米處。</td></tr><tr><td>37-40</td><td>6</td><td>3</td><td>8</td><td>3</td><td>在底孔4北邊9厘米處,並列成一排。</td></tr><tr><td>41</td><td>6</td><td>3</td><td>5</td><td>與42號相距3厘米。</td><td></td></tr><tr><td>42</td><td>5.5</td><td>3</td><td>6</td><td></td><td></td></tr><tr><td>43</td><td>5</td><td>3</td><td>5</td><td>與42號相距10厘米。</td><td></td></tr><tr><td>44</td><td>4</td><td>3</td><td>1</td><td>與43號相距10厘米。</td><td>與42、43在一起成一横排。</td></tr><tr><td>45</td><td>4</td><td>1.5</td><td>3</td><td></td><td></td></tr><tr><td>46</td><td>7</td><td>2</td><td>4</td><td>4</td><td>二孔並列。</td></tr><tr><td>47</td><td>6</td><td>5</td><td>4</td><td></td><td>四孔並列成一排,見圖版貳拾,4。</td></tr><tr><td>48</td><td>4</td><td>1.5</td><td>3.5</td><td></td><td></td></tr><tr><td>49</td><td>6</td><td>2</td><td>5</td><td>與48號相距6.5厘米。</td><td></td></tr><tr><td>50</td><td>6</td><td>2.5</td><td>4.5</td><td>與49號相距9厘米。</td><td></td></tr><tr><td>51</td><td>6</td><td>3</td><td>5</td><td>與50號相距10厘米。</td><td></td></tr><tr><td>52</td><td>7</td><td>3</td><td>8</td><td></td><td>横鑿在一片側壁上。</td></tr><tr><td>53-71</td><td>7</td><td>3.5</td><td>8</td><td>2.5</td><td>十八孔成一排,橫鑿在52號以下的側壁上。</td></tr></table>
+
+<p>隔河對正，在這四孔間插入二根木梁後，可以在上面立柱支撑凌越河道的棧道。</p>
+<p>人段底孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>說 明</td><td>編號</td><td>徑</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>10</td><td>8</td><td></td><td>14</td><td>12</td><td>11</td><td></td></tr><tr><td>2</td><td>15</td><td>13</td><td></td><td>15</td><td>15</td><td>13</td><td></td></tr><tr><td>3</td><td>30×26</td><td>17</td><td rowspan="2">\}都是大方孔,安放伸向人X段的木梁。</td><td>16</td><td>10</td><td>11</td><td></td></tr><tr><td>4</td><td>28×36</td><td>44</td><td>17</td><td>11</td><td>15</td><td></td></tr><tr><td>5</td><td>7</td><td>8</td><td></td><td>18</td><td>7.5</td><td>12</td><td>圓形。</td></tr><tr><td>6</td><td>7</td><td>3</td><td></td><td>19</td><td>5</td><td>6</td><td></td></tr><tr><td>7</td><td>16</td><td>15</td><td></td><td>20</td><td>8</td><td>6</td><td>圓形。</td></tr><tr><td>8</td><td>12</td><td>9</td><td></td><td>21</td><td>10</td><td>14</td><td></td></tr><tr><td>9</td><td>16×19</td><td>6</td><td></td><td>22</td><td>10</td><td>9</td><td></td></tr><tr><td>10</td><td>11</td><td>11</td><td></td><td>23</td><td>114</td><td>53</td><td>是凹槽,所放木梁,將伸向人XII段。</td></tr><tr><td>11</td><td>14</td><td>7</td><td></td><td>24</td><td>17</td><td>12</td><td>在孔23底部,是其榫眼。</td></tr><tr><td>12</td><td>12</td><td>11</td><td></td><td>25</td><td>約 16×22</td><td>8</td><td rowspan="2">\}擊在線河陡壁上,形如方形壁孔,與人XII段底孔31和32對正。</td></tr><tr><td>13</td><td>12</td><td>18</td><td></td><td>26</td><td>約 12×16</td><td>6</td></tr></table>
+
+<p>全段的實測情況見圖二一。</p>
+<h1 id="12iii">（12）人Ⅲ段</h1>
+<p>在黄河左岸的半腰，與人Ⅱ段中隔9米多寬的河道。這段棱道的南端和開元新河北口相連（開元新河的東岸和棱道在一條直綫上），如果不注意到它與人Ⅱ段的關係，很容易誤認爲開元新河末尾所附棱道。</p>
+<p>棧道全長40餘米，其形狀大體和人Ⅺ、人X兩段相同，屬於沒有頂部的階形形式（圖版貳拾,3)。底部不平整，寬1—3.1，其高程為285—287米。</p>
+<p>全段共有牛鼻形壁孔8個，間距為0.8—17米。孔6與孔7之間的距離為17米，這一帶雖然棧道拐彎，底部較崎彎，却很寬闊，所以側壁未施橫索。其它各孔間距都在4米以內。</p>
+<p>人XII段牛鼻形壁孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>說明</td><td>編號</td><td>徑</td><td>深</td><td>說明</td></tr><tr><td>1</td><td>30</td><td>14</td><td></td><td>5</td><td>34</td><td>16</td><td></td></tr><tr><td>2</td><td>30</td><td>11</td><td>中梁未繫通。</td><td>6</td><td>31</td><td>16</td><td></td></tr><tr><td>3</td><td>30</td><td>14</td><td></td><td>7</td><td>32</td><td>14</td><td></td></tr><tr><td>4</td><td>23</td><td>9</td><td>中梁已斷。</td><td>8</td><td>40</td><td>15</td><td></td></tr></table>
+
+<p>方形壁孔共23個，間距0.5—7.5米。各孔間距一般皆在4米以內，僅孔12—13為7.5米，這是因爲兩孔間的山岩有一隙口，棧道至此必須順直架梁鋪板，不宜安放橫梁的緣故。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>人XII段方形壁孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>高</td><td>寬</td><td>深</td><td>說 明</td><td>編號</td><td>高</td><td>寬</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>10</td><td>12</td><td>7</td><td></td><td>13</td><td>24</td><td>32</td><td>30</td><td>對正底孔 18。</td></tr><tr><td>2</td><td>14</td><td>14</td><td>8</td><td></td><td>14</td><td>23</td><td>23</td><td>13</td><td>對正底孔 19。</td></tr><tr><td>3</td><td>30</td><td>30</td><td></td><td>未繫完,見圖版玖,3。</td><td>15</td><td>17</td><td>13</td><td>14</td><td></td></tr><tr><td>4</td><td>14</td><td>16</td><td>8</td><td></td><td>16</td><td>16</td><td>16</td><td>24</td><td></td></tr><tr><td>5</td><td>30</td><td>30</td><td>31</td><td></td><td>17</td><td>16</td><td>16</td><td>16</td><td></td></tr><tr><td>6</td><td>14</td><td>14</td><td>14</td><td>對正底孔 6。</td><td>18</td><td>7</td><td>6</td><td>15</td><td>對正底孔 22。</td></tr><tr><td>7</td><td>30</td><td>40</td><td>34</td><td>對正底孔 7。</td><td>19</td><td>31</td><td>30</td><td>34</td><td>在壁孔 20 的上面,高出棱道底 43 厘米。</td></tr><tr><td>8</td><td>12</td><td>12</td><td>14</td><td>對正底孔 8。</td><td>20</td><td>13</td><td>15</td><td>17</td><td>對正底孔 25。</td></tr><tr><td>9</td><td>12</td><td>12</td><td>13</td><td></td><td>21</td><td>15</td><td>15</td><td>20</td><td>對正底孔 27。</td></tr><tr><td>10</td><td>14</td><td>14</td><td>13</td><td>對正底孔 10。</td><td>22</td><td>32</td><td>34</td><td>34</td><td>高出棱道底 1.1 米。</td></tr><tr><td>11</td><td>18</td><td>20</td><td>20</td><td>對正底孔 11。</td><td>23</td><td>10</td><td>12</td><td>13</td><td></td></tr><tr><td>12</td><td>17</td><td>20</td><td>20</td><td>對正底孔 12。</td><td></td><td></td><td></td><td></td><td></td></tr></table>
+
+<p>底孔共32個。</p>
+<p>人Ⅲ段底孔登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>說 明</td><td>編號</td><td>徑</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>7</td><td>5</td><td></td><td>17</td><td>10</td><td>8</td><td></td></tr><tr><td>2</td><td>8</td><td>14</td><td>殘存一臥。</td><td>18</td><td>23</td><td>19</td><td>與壁孔13對正。</td></tr><tr><td>3</td><td>8</td><td>10</td><td></td><td>19</td><td>10</td><td>6</td><td>與壁孔14對正。</td></tr><tr><td>4</td><td>22</td><td>15</td><td></td><td>20</td><td>11</td><td>7</td><td></td></tr><tr><td>5</td><td>8</td><td>6</td><td></td><td>21</td><td>22</td><td>11</td><td></td></tr><tr><td>6</td><td>9</td><td>7</td><td>與壁孔6對正。</td><td>22</td><td>10</td><td>6</td><td>與壁孔18對正。</td></tr><tr><td>7</td><td>15</td><td>14</td><td>與壁孔7對正。</td><td>23</td><td>8</td><td>5</td><td></td></tr><tr><td>8</td><td>14</td><td>10</td><td>與壁孔8對正。在近代會被加大鑿深,痕迹猶新。</td><td>24</td><td>7</td><td>5</td><td></td></tr><tr><td>9</td><td>11</td><td>14</td><td></td><td>25</td><td>16</td><td>20</td><td>與壁孔20對正。</td></tr><tr><td>10</td><td>8</td><td>2</td><td>上部已崩掉。與壁孔10對正。</td><td>26</td><td>12</td><td>11</td><td></td></tr><tr><td>11</td><td>8</td><td>8</td><td>與壁孔11對正。</td><td>27</td><td>9</td><td>13</td><td>與壁孔21對正。</td></tr><tr><td>12</td><td>13</td><td>16</td><td></td><td>28</td><td>9</td><td>8</td><td></td></tr><tr><td>13</td><td>32</td><td>37</td><td>另有一徑15的內層,是在外層鑿完後再向裏鑿進8厘米。</td><td>29</td><td>9</td><td>8</td><td></td></tr><tr><td>14</td><td>17</td><td>16</td><td></td><td>30</td><td>8</td><td>8</td><td></td></tr><tr><td>15</td><td>6</td><td>5</td><td></td><td>31</td><td>22×18</td><td>10</td><td rowspan="2">鑿在樓道底以下的緣河陡壁上,形如方形壁孔,與人XI段底孔25、26對正,似在其間橫架木梁。</td></tr><tr><td>16</td><td>10×7</td><td>1</td><td></td><td>32</td><td>14</td><td>6</td></tr></table>
+
+<p>棱道側壁有題刻5段，其中2段是西晉泰始的紀年。</p>
+<p>全段實測情況見圖二二。</p>
+<h1 id="13">（13）開鑿時代</h1>
+<p>文獻記載，西漢成帝時期曾經修鑿過三門峽。這是歷史上第一次工程，它的內容還不夠清楚，大概不是開鑿棧道。三國、西晉時期，曾動用五千餘人，經常在此修治河灘（大概</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖甲</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（立面图）<br />
+圖二二 人Ⅻ段平面、立面圖</p>
+<p>就是開鑿棧道)。到了唐代高宗時期,又曾大動工程,修鑿棧道。而在玄宗時期鑿通了開元新河以後,似不再在棧道上多花工夫了。後來,在北宋初年和明代嘉靖年間又修治過棧道,規模似乎很小[1]。</p>
+<p>人門棧道是什麼時候開鑿的呢？是經過好幾個世紀陸續鑿成的嗎？</p>
+<p>人門棧道現在分成了許多段落，在這種中間屢有斷缺的條件下，無法供輓夫們使用。根據實用的原則、棧道的地形以及棧道上的孔眼來推测，完全可以肯定當木構存在的時候，人門棧道必然一氣連成。金王渥有“飛棧曾連空”的詩句，很清楚的說明了這一情況。既然棧道中斷就無法使用，那麼也就可以推斷各段棧道應當是在一段比較短的年代內同時開鑒的。</p>
+<p>在這些棧道側壁上，遺存了摩崖題刻36段，它們都是在走道鑿成後才刻上去，所以其中最早的年代可作爲棧道開鑿時間的下限。題刻中年代最早的是東漢和平元年（公元150年）的一段（入VI段T5）；其次，魏、晉的有9段，分佈在人Ⅱ、V、VI、Ⅲ、Ⅲ諸段上；北魏的3段，在入VI段上；唐代的4段，在入VI段和入Ⅶ段上；北宋的2段，在人V、Ⅷ段上；明代的1段，在人Ⅷ段上；其餘各段題刻年代不詳。這些題刻，除北宋與明代的3段是觀賞風景的題記外，大約都是修鑿工程或航行的記事和題名。根據這些題刻，可以知道人門棧道至遲在東漢桓帝時期已經開鑿，此後一直到唐代，續有修造。由於魏、晉諸刻起自入Ⅱ段，迄止於人Ⅲ段，數目最多，分佈最廣，從而可推想這一時期曾在人門全面施工，棧道大約已被基本鑿成。三國、西晉時期大動工程的情況，在文獻中也有記載[1]。</p>
+<p>但是，棧道開鑿的時間是否可能更早？西漢成帝時期楊焉修鑿三門的工程是什麼？是開鑿棧道嗎？凡此，因無確實資料可據，殊難肯定。</p>
+<p>此外，棱道上的孔眼和走道是同時繫成的嗎？關於這一問題，文獻和遺跡中曾呈現出相反的現象，其中關係較直接的有以下四條材料：</p>
+<p>① 漢書卷一高祖紀上（涵芬樓景印景祐刊本）：“(元年四月)張良辭歸韓，漢王(劉邦)送至褒中，因說漢王燒絕棲道，以備諸侯盜兵，亦視項羽無束意”。又戰国策秦策三(商務排印吳曾祺補註本)：“棲道千里，(通)於蜀漢”。<br />
+② 中州集卷六金王渥三門津（涵芬樓景印元刊本）：“大河三門險，神禹萬世功。…劉(按：當作留)侯智有餘，始令舟楫通。仍餘石上穴，飛棲曾連空”。<br />
+③ 涕幢小品卷二十六(明刊本)：“河中砥柱有三門，……嘉靖乙未，御史余光、河津知縣樊得仁鑿石崖爲窟，植以栃木椿，鍊鐵爲索，橫繫椿上，凡四十餘丈。往者以鐵鈞挽索而上，頗易爲力”。<br />
+$④$ 在人VI段上，6號方形壁孔打破了甘露五年題記（T5）。</p>
+<p>根據王渥三門津詩“仍餘石上穴”一句，知道孔眼在金代以前就有。而再從漢書高祖紀中記載結合上引水經注中描寫的褒斜棧道的情況來看，劉邦燒毀的棧道，大概就是鑿穴植梁的結構。這種技術既然在漢初，甚至在戰國時期就已掌握，那麽，在開鑿入門棧道時似不應不被利用。人VI段的一段題刻：“太康二年，木匠□倫、石工孫同造”，(T12)“木匠□倫”大約就是建造棧道木構的。當然，後來歷代在整修棧道過程中，必然會增鑿一些孔眼，上述③、④兩點，大約就是增鑿的記載和遺跡。況且，湧幢小品所記嘉靖十四年所鑿石穴，只有四十餘丈，根據羅福頗傳世古尺錄(羅氏排印本)中著錄的嘉靖牙尺，當時一尺為32厘米，四十丈折合今日尺度為128米，而人門棧道全長却有625米，從頭到尾都有孔眼，可知嘉靖工程所鑿石穴，絕不能包括全部孔眼。在人Ⅷ、人Ⅸ段棧道底以下的緣河陡壁上，有一排孔眼（從入Ⅷ段方形壁孔18—22號起，至入Ⅸ段牛鼻形孔20、21號止）；如果在那裏植上木</p>
+<p>椿, 横繫鐵索, 其情景却和湧幢小品中的記述有些相似。但是全長僅 50 餘米, 亦不符“四十餘丈”的長度, 而且孔眼太疏, 不易繫索, 似也難以把嘉靖工程局限於此。</p>
+<p>至於牛鼻形壁孔，則懷疑它是隋、唐時期加鑿的，因爲在房山小西天藏經洞中第五窟（即雷音洞)窟門的上方，也鑿有這種牛鼻形壁孔，而第五窟是隕僧靜琬所開鑿。開鑿牛鼻形孔或許是隋、唐時期爲了在岩石上繫掛繩索而普遍使用的一種方法[1]。</p>
+<p>綜上所述，這些孔眼大部分應當是和棱道輪廓同時鑿出，而一部分則是後來加鑿的。但是，今天已難以分辨清楚了。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖二三 鬼I段平面、立面圖</p>
+<h1 id="2">2. 鬼門棧道</h1>
+<p>在鬼門右岸，也就是黄河的右岸，有二段棧道遺存。這一帶河岸的海拔高度在288.5—295.3米之間，棧道鑿在沿河陡壁的半腰，其底部的高程在286米左右。這二段棧道大約和人門棧道一樣，只是在木構毀壞，或是岩石崩落後才斷開的。</p>
+<h1 id="1i_1">（1）鬼I段</h1>
+<p>在鬼門的南端，岸上有一塊略向河中突出的拳形大岩，這一段棧道就鑿在它的半腰。從遠處觀望，這塊岩石略似張口猛獅，故傳稱之為獅子頭。</p>
+<p>棱道的形狀與上述人I、Ⅱ等段相同，亦爲凹槽形。但沒有孔眼。全段長12米。底寬0.5—1.4米，其高程在286米左右。頂高2米。棱道的兩端似曾崩塌，所以在調查時如不藉助梯架，就難以登臨(圖版貳壹，1、3)。</p>
+<p>在獅子頭的背陽處，有明、清二代的摩崖題刻6段(圖版貳壹,4、5)。</p>
+<p>全段的實測情況見圖二三。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二.四 鬼Ⅱ段平面、立面图</p>
+<h1 id="2ii_1">(2）鬼Ⅱ段</h1>
+<p>從鬼I段向北63米，即達本段南端。全段長為50餘米。底部的高程為285.4—286米。頂高2米左右。其形狀和上段相同，也沒有孔眼。這裏的岩石，似曾經過比較嚴重的崩塌，所以特別狹窄，無法站立。它的底部，寬為0—30厘米（在一部分地方，底部已完全崩毀），頂部也只有一點殘存的痕迹，依稀可見（圖版貳壹，2）。</p>
+<p>全段的賓測情況，見圖二四。</p>
+<h1 id="3">(3) 開鑿時代</h1>
+<p>鬼門棧道的開鑿時間，因無直接資料可憑，難以確定。從其形狀觀察，它與人門棧道十分相似，似可從而推測其開鑿時代大約與人門棧道相同。三門之中，鬼門的水勢最險，船隻總是盡量從人門通過，此處棧道不會經常使用。</p>
+<h1 id="3_1">3. 下游栈道</h1>
+<p>下游栈道是指三門峽以東的黄河兩岸的棧道。在三門峽以東，黄河依然是兩岸山嶺相連，河道狹窄，水勢湍急。而且在很多地方兩岸突出，河道突然收縮，形成“門”的形狀，河水流到這裏，更加湍急。就在這種“門”的地方，岸上往往鑿有棧道。我們從三門向東，只調查了10公里的地方，在兩岸都發現了斷斷續續的棧道遺存，其盡端還不知在何處。</p>
+<p>已發現的下游棲道，在黃河北岸的有：七里溝東（圖版貳貳）、七里溝西、杜家莊（圖版貳參）、獅子口（圖版貳肆、貳伍）四段；在黃河南岸的有：七里溝東（圖版貳陸）、七里溝西（圖版貳柒）、獅子口（圖版貳肆，1、2）三段。這些棲道的形狀、大小等等，都和三門峽棲道相同，它們也鑿出了弧形的頂部和牛鼻形壁孔、方形壁孔、底孔（僅南岸的七里溝東一段沒有孔眼）。其中，在北岸的杜家莊段棲道的底部，還橫鑿了許多大凹槽（圖版貳參，2），為其它棲道所無。其用途，顯屬放置木梁。在這一段，棲道側壁還有陰線刻出的小佛象一尊（圖版貳參，3；拓片錄附一）和題刻2段。題刻之一為北宋治平三年所鑿(參“摩崖題刻與碑記”一節)，佛象亦似宋、金作風。</p>
+<p>這一帶的地形，有些比三門峽更爲險惡，而許多棧道的保存情況則不如三門峽，往往是棧道緊挨黃河而其底部已完全崩落，根本無法登上。下游棧道範圍既大，工作條件又如此困難，因此，這次工作沒能進行詳細的考查與記錄。關於黃河三門峽下游古棧道的詳細情況，還有待於將來的調查。</p>
+<h1 id="_19">二、開元新河</h1>
+<p>在人門以東的岩石中有一條人工鑿出的渠道，它是唐代開元廿九年起為通漕舟而開鑿的，所以後代名之爲開元新河，又名娘娘河，其實在唐代因爲它是三門旁邊新添的一個門戶，稱之爲新門。在新門的兩岸還有一些建築遺跡與唐代以後的題刻。</p>
+<h1 id="1_1">1．新門</h1>
+<p>開元新河是在人門北面的岩石中鑿出（圖版貳捌，1)。河的南端插入人Ⅱ、人Ⅲ段之間，正當人門的入口（圖版貳捌，2)；北端在人Ⅱ段、人Ⅲ段之間，其東岸與人Ⅱ段相連而西岸與人X段末尾相接觸，正當人門的出口（圖版拾捌，1)。航船從此通過，正好避開了人門(見圖一)。</p>
+<p>河身南北向, 很直, 僅北端微向西彎曲, 全部河身大略成北頭向西、南頭向東的 $11^{\circ}$ 左右的偏方向。全長 280 餘米。河身寬度為 6-8 米左右, 河底高程在 278 米左右, 河身高度 (即河底與河岸的距離) 為 5-10 米。它的兩壁陡立, 上口比河底稍寬 (一般寬 60-80 厘米)。兩壁表面錯落不平, 在鑿出後未經修飾 (圖版貳摺、貳玖)。</p>
+<p>在東壁上,還有一段棲道(圖版參拾),形狀與人I段等棲道極相似,只是特別窄,而且沒有孔眼。這段棲道全長70餘米,南端緊靠新門的入口,在靠近北端的地方有一缺口,長7米。中間有5米長的一片地方在北宋時期被擊平,留下了二段題刻(題刻編號:開、東T1、T2參“摩崖題刻與碑記”一節)。棲道大約是與新門同時開鑿的。棲道底部比河底高7米餘,高程在286米左右。頂高約2米。底寬約1米,但向外傾斜,故實際可站立處不及一半,絕難行走。這似乎是鑿而未成,或鑿成後沒有使用的棲道。根據這段棲道,可看出從東漢魏晉至唐代,棲道的形狀,沒有什麼變化。</p>
+<p>新門兩岸, 南半部低而平坦, 北半部逐漸峻險, 然而東岸靠河邊的一帶還勉強可以行走。新唐書卷五十三食貨志 (涵芬樓景印宋嘉祐刊本) 中說此地曾“開其山巔爲輓路”, 為了開闢“輓路”, 雨岸 (至少是東岸) 是經過修鑿的。在唐代, 載夫們引漕舟入新門後, 大約即在東岸上行走, 最後踏上人Ⅲ段, 把漕舟引入黄河。</p>
+<p>文獻記載，這條小河是在陝州刺史李齊物主持下，從開元廿九年十一月開工修鑿，至次年(天寶元年)正月二十五日完工[1]。這時，正值冬季水枯時節，河水不會流入新門(今日即是如此)，便於施工。</p>
+<h1 id="2_1">2. 两岸建築遺跡</h1>
+<p>在開元新河河身兩壁以及東、西兩岸有橋樑、房屋遺跡與唐、宋灰層。分述於後：</p>
+<h1 id="1_2">（1）橋樑遺跡</h1>
+<p>基址I柱穴登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>形狀</td><td>徑</td><td>深</td><td>說 明</td><td>編號</td><td>形狀</td><td>徑</td><td>深</td><td>說 明</td></tr><tr><td>1</td><td>圓</td><td>24</td><td>20</td><td></td><td>37</td><td>圓</td><td>16</td><td></td><td></td></tr><tr><td>2</td><td>圓</td><td>25</td><td>20</td><td></td><td>38</td><td>圓</td><td>14</td><td>6</td><td>殘存北半。</td></tr><tr><td>3</td><td>圓</td><td>22</td><td>16</td><td></td><td>39</td><td>圓</td><td>14</td><td>7</td><td></td></tr><tr><td>4</td><td>圓</td><td>22</td><td>8</td><td></td><td>40</td><td>圓</td><td>15</td><td>8</td><td></td></tr><tr><td>5</td><td>圓</td><td>24</td><td>16</td><td rowspan="11">1至12見圖版參貳,4。在11與12之間,距離較大而地面岩石崩掉一塊,可能在這兩孔之間,原有一孔。</td><td>41</td><td>圓</td><td>12</td><td>1</td><td>似因擊錯而放棄,改擊40號。</td></tr><tr><td>6</td><td>圓</td><td>22</td><td>10</td><td>42</td><td>圓</td><td>14</td><td>9</td><td></td></tr><tr><td>7</td><td>圓</td><td>22</td><td>14</td><td>43</td><td>圓</td><td>17</td><td>10</td><td></td></tr><tr><td>8</td><td>圓</td><td>20</td><td>10</td><td>44</td><td>圓</td><td>22</td><td>9</td><td></td></tr><tr><td>9</td><td>圓</td><td>22</td><td>12</td><td>45</td><td>圓</td><td>23</td><td>11</td><td></td></tr><tr><td>10</td><td>圓</td><td>22</td><td>5</td><td>46</td><td>圓</td><td>18</td><td>9</td><td></td></tr><tr><td>11</td><td>圓</td><td>21</td><td>10</td><td>47</td><td>圓</td><td>18</td><td>3</td><td></td></tr><tr><td>12</td><td>圓</td><td>28</td><td>10</td><td>48</td><td>圓</td><td>21</td><td>3</td><td></td></tr><tr><td>13</td><td>圓</td><td>21</td><td>12</td><td>49</td><td>圓</td><td>20</td><td>6</td><td></td></tr><tr><td>14</td><td>圓</td><td>19</td><td>15</td><td>50</td><td>圓</td><td>22</td><td>9</td><td></td></tr><tr><td>15</td><td>圓</td><td>22</td><td>10</td><td>51</td><td>圓</td><td>20</td><td>9</td><td></td></tr><tr><td>16</td><td>圓</td><td>22</td><td>6</td><td rowspan="15">13至20見圖版參貳,3。</td><td>52</td><td>圓</td><td>22</td><td>13</td><td></td></tr><tr><td>17</td><td>圓</td><td>25</td><td>7</td><td>53</td><td>圓</td><td>22</td><td>15</td><td></td></tr><tr><td>18</td><td>圓</td><td>26</td><td>14</td><td>54</td><td>圓</td><td>20</td><td>13</td><td></td></tr><tr><td>19</td><td>圓</td><td>25</td><td>16</td><td>55</td><td>圓</td><td>23</td><td>13</td><td></td></tr><tr><td>20</td><td>圓</td><td>26</td><td>5</td><td>56</td><td>圓</td><td>21</td><td>12</td><td></td></tr><tr><td>21</td><td>圓</td><td>21</td><td>5</td><td>57</td><td>圓</td><td>14</td><td>4</td><td></td></tr><tr><td>22</td><td>圓</td><td>20</td><td>6</td><td>58</td><td>圓</td><td>12</td><td>2</td><td></td></tr><tr><td>23</td><td>圓</td><td>14</td><td>6</td><td>59</td><td>圓</td><td>14</td><td>2</td><td></td></tr><tr><td>24</td><td>圓</td><td>16</td><td>8</td><td>60</td><td>圓</td><td>15</td><td>2</td><td></td></tr><tr><td>25</td><td>圓</td><td>14</td><td>6</td><td>61</td><td>圓</td><td>12</td><td>4</td><td></td></tr><tr><td>26</td><td>圓</td><td>16</td><td>2</td><td>62</td><td>圓</td><td>13</td><td>3</td><td></td></tr><tr><td>27</td><td>圓</td><td>15</td><td>4</td><td>63</td><td>圓</td><td>20</td><td>12</td><td></td></tr><tr><td>28</td><td>圓</td><td>12</td><td>4</td><td>64</td><td>圓</td><td>19</td><td>12</td><td></td></tr><tr><td>29</td><td>圓</td><td>16</td><td>2</td><td>65</td><td>圓</td><td>20</td><td>18</td><td></td></tr><tr><td>30</td><td>圓</td><td>15</td><td>8</td><td>66</td><td>圓</td><td>20</td><td>8</td><td></td></tr><tr><td>31</td><td>圓</td><td>16</td><td>4</td><td>殘存西半。</td><td>67</td><td>圓</td><td>22</td><td>16</td><td></td></tr><tr><td>32</td><td>方</td><td>口:46×48底:38×33</td><td>22</td><td></td><td>68</td><td>圓</td><td>21</td><td>16</td><td></td></tr><tr><td>33</td><td>方</td><td>口:36底:32</td><td>20</td><td>32直径的度量記錄為:南北×東西。</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>34</td><td>方</td><td>口:38底:32</td><td>18</td><td>32至36見圖版參貳,1。</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>35</td><td>方</td><td>口:35底:35</td><td>12</td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>36</td><td>方</td><td>口:32底:30</td><td>15</td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table>
+
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖二五 開元新河基址I及栈道平面圖</p>
+<p>在開元新河東壁棧道的北端以北16米處，河身兩壁的上口有互相對正的方形孔眼：東壁3個(圖版參壹，3)，西壁2個(圖版參壹，2)。孔眼尺寸未度量，據目測估計為10(徑) $\times 6$ (深)厘米左右。現代在此地搭了竹橋，連通兩岸，這5個孔眼則可能是以前所架</p>
+<p>木橋的遺跡。</p>
+<h1 id="2i">(2）基址I</h1>
+<p>開元新河西岸(即人門島)的南半部有一片平地，平地的西部逐漸昇高，最後突然陡立成人門島的頂峽。在這片平地上鑿有方形或圓形的平底柱穴62個：方形的共5個，徑30—46厘米（圖版參貳，1）；圓形的共57個，徑12—28厘米（圖版參貳，2、3、4）。全部柱穴的範圍南北為20.2，東西為15.7米，其排列情況如圖二五。另在開元新河東岸的岸邊，有直徑約20厘米的圓形柱穴6個，組成一排，與此相對。從柱穴夾岸相對的情形看，似爲橋樑遺跡，而西岸的大片柱穴又似房屋遺跡，它們或許是橋樑和殿堂的混合遺跡（圖版參壹，1;圖二五）。</p>
+<h1 id="3-ii">(3) 基址Ⅱ</h1>
+<p>開元新河西岸的北半部，亦有一片平地。平地上有8個平底圓形柱穴組成一排。在開元新河東岸岸邊，也有6個圓形平底柱穴與此相對。它們的排列情況如圖二六。</p>
+<h1 id="4">（4）唐宋灰層</h1>
+<p>在人門島島頂的南部，有一片南北約16，東西約4米的狹長地帶。這片地方，岩石上堆了一層黃土，土中夾雜了很多石塊、燒土、灰燼和素背布紋灰瓦、素灰方磚、略帶繩紋的灰條磚等</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖二六 開元新河基址Ⅱ平面圖</p>
+<p>碎塊。灰瓦上布紋較粗,條磚上的繩紋很直,有明顯的唐代特徵。一部分遺物可能是宋代的。這些應當是一座(或一羣)建築物頗毀後的遺存(位置見圖一)。</p>
+<p>基址Ⅱ柱穴登記表（單位爲厘米）  </p>
+<table><tr><td>編號</td><td>徑</td><td>深</td><td>編號</td><td>徑</td><td>深</td><td>編號</td><td>徑</td><td>深</td><td>編號</td><td>徑</td><td>深</td></tr><tr><td>1</td><td>17</td><td>5</td><td>5</td><td>16</td><td>3</td><td>9</td><td>20</td><td>9</td><td>12</td><td>9</td><td>8</td></tr><tr><td>2</td><td>9</td><td>7</td><td>6</td><td>18</td><td>2</td><td>10</td><td>20</td><td>10</td><td>13</td><td>20</td><td>8</td></tr><tr><td>3</td><td>18</td><td>10</td><td>7</td><td>15</td><td>4</td><td>11</td><td>20</td><td>12</td><td>14</td><td>18</td><td>15</td></tr><tr><td>4</td><td>17</td><td>5</td><td>8</td><td>16</td><td>5</td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table>
+
+<h1 id="5">(5) 禹廟與開化寺問題</h1>
+<p>司馬光有謁三門禹祠詩二首及游三門開化寺詩一首[1]，這個禹廟與開化寺大約就是上述基址I與唐代灰層。</p>
+<p>在開元新河東岸的一段大約是北宋的題刻，記載了禹廟與開化寺的位置：</p>
+<p>“南鬼門、中夜叉門、北金門，次北開元新河。禹廟、開化寺並在金門山上”（開東T25）[2]。</p>
+<p>題刻中的金門，即指人門，所以禹廟與開化寺應當在人門島上。又，文苑英華卷三十四（明隆慶刊本)唐趙冬曦三門賦序：</p>
+<p>“砥柱山之六峯者，其最北有兩柱相立，距崖而立，即所謂三門也。次於其南有孤峯揭起，峯頂平闊，夏禹之廟在焉”。</p>
+<p>趙冬曦作三門賦時，開元新河約尚未開鑿，所以序中所述地形，未涉及開元新河，這裏所指“孤峯”，乃是今日的人門島。根據這條記載，可知禹廟唐代已有，且亦在人門島頂。至北宋元符年間，禹廟毀於洪水。畫墳錄(李孝源重訂稗海本)記載：</p>
+<p>禹廟在西澤，有寺。下望砥柱，上百步(按：約指梳桩台)，元符中，大水懷三門，一夕寺廟皆失，略無子遺”。</p>
+<p>大水衝毀後大約立即重建，所以在徽宗時期留下的題刻中有2段是朝謁禹廟的內容：</p>
+<p>“張羲恭謁禹祠。大宋崇寧癸未仲春，男公涣題”（開東T12）。</p>
+<p>“高口丁書才朝謁大禹廟，遊開化院。聖宋政和四年三月初五日題”(人V段T8)。關於開化寺的題刻，還有1段：</p>
+<p>“丁天成、宋子忠、朱澤民、許師是。政和四年孟夏月避暑開化寺”（開西T5）。禹廟在金代似曾重修，而到了明初，與開化寺並已毀壞。皇明文衡卷三十一王翰游三門記（涵芬樓景印明嘉靖刊本)記載：</p>
+<p>“自（開元）新開河東口（按：應爲南口，此當係王翰未看清黄河至此微折向南的形勢而誤），涉水上山，上舊有開化寺，今不存。有小祠象龍神者，前碑剎落不可模，不知何時立。祠簾下二石，其狀如碑，無字，上作三竅；一碑蓋金源興定十二年（按：興定只五年，此處有誤）修禹廟之記也。回至西可二里，上山謁禹廟而還。所至處皆用小律詩</p>
+<p>記之。……洪武十七年二月二十八日記。”</p>
+<p>洪武時期，人門島上只有一龍神小祠，禹廟已遷至三門西面的北山上了。</p>
+<p>今日，從三門峽西行2里許，在黃河北岸的台地上有禹王廟一座。廟已頹廢，只存破殿一楹(圖版參陸,1)。殿內外還有明清以降的碑記14通。成化山西通志卷五：</p>
+<p>“禹王廟, 凡十有三。……在一平陸縣東五十里三門山上。唐天寶二年建, 元至元六年修。”</p>
+<p>這大約是根據廟內的明天順三年重修大禹廟碑記而記(圖版參陸,3)。碑文:</p>
+<p>“唐天寶二年著民梁友仁，緇惟禹闊門之動采，始構廟於柱門之北山；元至元六年，耆民王成甫繼修之；至正二十六年，李良甫重修之；暨元末世罹兵燹，廟宇則零丁甚，所存者僅正殿耳。”</p>
+<p>碑中所述天寶二年梁友仁“始構廟於柱門之北山”，或據舊碑而記，但未必可信。因上述趙冬曦三門賦序中已經提到禹廟，而序文的寫作年月從沒有提到開元新河的情況看來，應是開元廿九年以前的作品。天寶二年，可能只是重修而已。至於“北山”之說，更不足信，上述諸種材料都已證明唐宋時期的禹廟是在人門島上。現在的禹王廟，大約是在金、元或元、明之際，人門島上的廟字毀壞後才遷移過去的。</p>
+<p>根據王翰遊三門記，從人門左岸一過開元新河南口就到達開化寺，並有興定的修禹廟記。這裏，正是基址I與唐代灰層的所在地，而且上述諸北宋時期的有關題刻，恰恰又分佈在周圍，所以這是禹廟與開化寺的基址無疑。但是，那一個是開化寺，那一個是禹廟呢？王翰敞帶集卷二開化寺詩(明刊本)：</p>
+<p>“中流山嶺岑，最上隱精藍，碑勒前朝額，僧房何處庵？簾鐘沉濁水，經卷寄空岩，日日行人過，焚香禮石籠”。</p>
+<p>前述唐、朱灰層在人門島的最高峽，正是“最上隱精藍”的位置，或者這就是開化寺的故址。</p>
+<h1 id="_20">三、北岸陸道與東西倉址</h1>
+<p>唐代開元廿一年, 曾在三門北岸鑿山開道18里, 在其東端置集津倉, 西端置鹽倉, 從陸路運輸漕糧。德宗貞元時期, 又加修一條走回空車的上路[1]。這18里陸道與東、西兩倉仍然有些舊跡可窺。</p>
+<h1 id="1_3">1. 龍岩（集津仓）遗址</h1>
+<p>自三門峡沿黄河北岸東行，沿岸皆峭壁峻嶄，道路狹窄。走過了大約16或17華里的</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖二七 龍岩遺址殘瓦當(一)</p>
+<p>路程(里程據當地農民口述),便有一小片台地,三面環山,南面臨水,地勢比較低平(圖版參塗)。這是三門以東第一處勉強可以建倉的地點。這裏,地面散佈着許多漢代的灰色繩紋瓦殘片,調查時並採集到捲雲紋瓦當殘塊3片(圖二七)、“濕口備(?)\口”瓦當殘塊1片(圖二八)。此外,還有少量的唐、宋白瓷片;瓷質相同的器物,曾在陝縣</p>
+<p>的唐、宋墓中出土。瓦片和瓷片是散怖在第二、第三台地上，其範圍東西約120餘米，南北約40餘米，南距黄河約200餘米。這裏遺物雖多，但不見灰層露頭。</p>
+<p>從遺址再向東行約2華里許，有小村名龍岩（又名鑾蓋），村中居民相傳當地乃秦代的運糧城。在村莊周圍曾有漢代的灰陶倉、灶、壺與宋代的三彩瓷枕等物出土，應該都是墓中的隨葬品。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+圖二八 龍岩遗址殘瓦當(二)</p>
+<p>根據三門以東的黃河北岸的地形觀察，在20多華里的範圍內除上述台地而外，別無它處宜於建倉，而且流傳的龍岩村爲“運糧城”之說，應即淵源於漕運，所以這片台地大約即爲集津倉的故址。建倉時裴耀卿說：“今漢、隋漕路瀕河倉廬遺迹可尋”（新唐書卷五十三食貨志），唐代的集津倉很可能是建在漢、隋舊址上，這也正和地面有大量漢代瓦片遺存的現象相符。所不解的是何以唐代的殘瓦瓷片極爲稀少。</p>
+<h1 id="2_2">2. 下倉 (鹽倉) 遺址</h1>
+<p>從三門峽沿黃河西行約5華里，在一處台地上散佈着許多唐代的灰色素面布紋瓦片與白釉瓷片，其瓷片與龍岩遺址所出相同。這片台地東西約100，南北約20—30米，緊挨河</p>
+<p>灘,是第一層台地。這一帶河岸因常年受黄河衝刷,破壞嚴重,所以在若干年以前大概還寬闊一些(圖版參摯,1、2、3)。</p>
+<p>台地西北方有小村名下倉。這裏原名倉里，因有上、下兩村，此村在下，故名下倉。在村前路溝中有1個六角形的尊勝陀羅尼經殘石幢[1]，在村莊周圍還出土過漢代的灰陶鼎、盒、倉、灶、壺、甕（圖版參玖，3）和唐代的灰陶注子、宋代的褐地罩白釉的剔釉小鉢、三彩瓷枕（圖版參玖，4）等物。</p>
+<p>在村西2華里許，河灘上有亂石一堆，其中一塊有繩索磨渤的痕跡，似因久有船隻停留，用繩在此拴縛而形成（圖版參捌，4；圖版參玖，1、2）。此外，別無古跡。從此繼續西行，在5、6華里以內，再無古代遺跡。</p>
+<p>文獻記載,東、西二倉的距離為18里,唐代的1里為540米[2],折合今日華里,爲19.5里左右。假定龍岩遺址確係集津倉故址,則鹽倉遺址應在三門峽以西3、4里左右。下倉遺址時代既屬唐代,里程亦大體符合,而其地名又似與倉址有一定的淵源,可以推測它就是鹽倉舊址。固然今日地形過於狹窄,但千年以來,一定有一大片地方已被黄河衝塌,變為河灘。原來的地形如果再闊廣一些,則是一處十分宜於建倉的地址。</p>
+<h1 id="3_2">3. 十八里隧道</h1>
+<p>在三門峽北岸, 今日有一條小道通往東、西二倉舊址。從三門向西的一段, 才出峽口即走入河灘, 旁邊是峻削的峭壁, 别無道路。這一帶因受黄河衝刷, 地形變化較大, 唐代舊道大約早已毀壞。從三門向東的一段, 虛然是隨着山勢而蜿蜒曲折, 一直通到龍岩遺址, 但狹窄崎彎, 許多地方的寬度只有1一2米, 只能馳運, 和文獻記載“車般”的情況不符, 也不是唐代舊道。唯一保留着唐代舊道的部分, 只是三門峽地區內短短的一段。</p>
+<p>在三門峽地區的這段小道旁邊的石崖上,有開、東、T27—35諸題刻,題刻完整,未被道路打破,應為修路以後所镌刻(圖版肆拾,2)。題刻的年代,T35爲金代,T30—32與T34大約爲北宋或金代,其餘是明代的。道路既然早於題刻,或即唐代舊道。而且在它東邊的一段(在梳桩台旁邊的岸上),是從山岩中開出的斜坡,形似山峽,其兩壁岩石錯落的形狀和開元新河河壁相同,極似同一時代的手法(圖版肆拾,1)。過此而東,則再無舊路痕迹。</p>
+<p>三門一帶，地震劇烈，這不但在文獻上有記載[1]，許多山頭上岩石崩裂的痕迹還很清楚。北岸的十八里陸道可能即因此而歷經毀壞，改變了原狀。至於走回空車的“上路”，則更無踪跡。</p>
+<h1 id="_21">四、摩崖題刻與碑記</h1>
+<p>在棱道側壁上或山岩間，遺存有束漢以來的摩崖題刻107段；在禹王廟有碑記14通；文獻上還記錄了一些已經佚亡的石刻。這些題刻，按其地點分爲人門棱道、開元新河兩岸、神門島、獅子頭、砥柱石、下游杜家莊棱道、禹王廟和已佚石刻八個部分敘述。題刻的編號皆冠以“丁”字，取“題”字拼音的第一個字母。每行末一字之後標以」符號，漫渤不清的字用□代替，殘渤字數不清者用……，隱約可見但有疑問的外圍加□，如國。各段題刻的位置，除一小部分未曾測入者外，可見圖一及各段棱道的分圖內索得（圖七、八、十、十一、十二、十三、十九、二二）。</p>
+<h1 id="1_4">1. 人門棧道摩崖題刻</h1>
+<p>人門島左岸的12段棧道中，I、II、V、VI、VII、VIII、IX、XII諸段都有題刻遺存，共40段，分述於後：</p>
+<p>(1) 人I段題刻</p>
+<p>T1: “任龍”。</p>
+<p>真書1行，字徑約4，通高8厘米，似北朝筆跡(拓片錄一)。相同的題名還見於人V段。</p>
+<p>(2）人Ⅱ段题刻</p>
+<p>T1: “佑……”。</p>
+<p>填書1行，“佑”下各字漫憑。字徑約5，通高12厘米(拓片錄二)。</p>
+<p>T2: “石師」政始」元年」作」”。</p>
+<p>分書4行，左行，字劃較模糊。字徑約7，通高12，通寬27厘米。這約是石工在某一階段工程完畢後的記事題刻。政始即正始，以正始作年號有三次：曹魏齊王芳（公元240—249年）、後燕高雲（公元407—409年）和北魏宣武帝（公元504—508年）。這段題刻，字存分意，不類北朝碑版，而後燕則在慕容寶時期已喪失中原，所以應當是三國時期的題刻（拓片錄三）。</p>
+<p>(3) 人 $\nabla$ 段题刻</p>
+<p>T1: “石工竟一”。</p>
+<p>兵書1行。字徑約6，通高19厘米(拓片錄四)。</p>
+<p>T2: “大康二年”。</p>
+<p>分書1行。字徑約6，通高23厘米(圖版拾壹，3;拓片錄五)。大康即太康，爲西晉</p>
+<p>武帝年號（公元280—289年）。</p>
+<p>T3: “石近張兮仙」、張庭賓”。</p>
+<p>真書2行，右行。字徑約5，通高28，通寬12厘米。“近”即爲“匠”字，見於囊龍顔碑與干祿字書（貞松老人遺稿甲集羅振玉簽證本），是南北朝至唐代流行的別書；這段題刻，約即這一時期所镌(圖版拾，3;拓片錄六)。</p>
+<p>T4: “古”。</p>
+<p>真書1字，徑4厘米(拓片錄七)。</p>
+<p>T5: “任龍”。</p>
+<p>真書1行，“龍”字下半已。字徑約8，通高16厘米(拓片錄八)。相同的題名還見於人I段。</p>
+<p>T6: “石工劉方”。</p>
+<p>頁書1行，字徑約3，通高13厘米(拓片錄九)。</p>
+<p>T7: “十日”。</p>
+<p>真書1行，字徑3，通高6厘米(拓片錄一〇)。</p>
+<p>T8: “高口丁書才朝謁大禹廟,遊開化院。」聖宋政和四年三月初五日,天成題”。</p>
+<p>此刻在崩落於河灘的一塊岩石上。頁書4行，右行。字徑約10，通高74，通寬50厘米(拓片錄一一)。天成乃丁天成，約是丁書才的字，其題名還見於開元新河兩岸(開西下5、開東下19、開東下38)。</p>
+<p>T9: “佺廿”</p>
+<p>在上刻下方。真書1行。字徑約19，通高23厘米。“廿”下似有筆道，類“四”字；左下角亦似有字，不可辨認(拓片錄一二)。</p>
+<p>T10: “园圆”、“神窗”、圈秋日”、“辛未”、“舟楫”、“今朝散大夫”。</p>
+<p>這是棲道邊河灘中一塊落石上的題刻。真書。字徑約5,通高30,通寬130厘米。因漫濾過甚,行數與字數皆不可計,只能隱約辨認上列諸字(拓片錄一三)。題刻中的“朝散大夫”是隋、唐、北宋與金代官制中的文散官,據此可知爲元代以前的題刻。</p>
+<p>T11: “君子之”、“刊勒得□口筆”、“十居同□九”、“吳興□□縣尉張”、“智隱韓”、“德”、“淮”、“右”。</p>
+<p>頁書。字徑約5，通高約72，通寬約74厘米。全篇亦漫濾不能計行數與字數，可辨認者，只有上列諸字。這段題刻與上刻在同一塊岩石上，中間有石槽隔開，相距50厘米。其字體大小相同，或係一刻(拓片錄一四)。</p>
+<p>(4) 人VI段题刻</p>
+<p>T1: “大康二年, 木圓□倫、石工孫同造”。</p>
+<p>分書3行,左行。字徑約4,通高17,通寬16厘米。次行第2字似“匠”,但很模糊,</p>
+<p>然而據字義，釋為“匠”字最妥(拓片錄一五)。</p>
+<p>T2：“開元廿二年□供主……□□□……」”。</p>
+<p>填書3行，左行。字徑約3，通高22，通寬19厘米。左下角有“□平”2字，字較大，應係另一題刻，附記於此(拓片錄一六)。</p>
+<p>T3：“甘露五年二月十六日，治河都匠左贡、口□、石師江洛善、許是口”。</p>
+<p>分書3行，左行。字徑約6，通高57，通寬27厘米。镌刻時，先在棲道側壁上鑿出一略成橈形的外框，然後在中間刻字。在題刻的左下方，有1方形壁孔(6號)將其外框及末尾1字打壞(圖版拾參,2)。用甘露作年號的有：西漢宣帝（公元前53—50年）、曹魏高貴鄉公(公元256—260年)、東吳孫皓(公元265—266年)與前秦苻堅(公元359—364年)。這應當是曹魏時期的題刻，因爲宣帝的甘露只4年，且題刻字體不類西漢分書；東吳疆域不達此地；而苻秦時期戰爭頻繁，沒有漕運的需要與可能，不會在此修治棲道(拓片錄一七)。</p>
+<p>T4: “總章三年正月廿一日,儒林郎守司馬表當開三門河道”。</p>
+<p>填書4行，左行，其末2行行首低下2格，是被石勢所限。字徑約5，通高40，通寬30厘米（拓片錄一八)。“表”字爲姓，曾見於通志卷二十九氏族略引姓苑(商務景印武英殿本)，名字似脫落未鏽。</p>
+<p>T5：“和平元年六月十四日，平陰李兒口造”。</p>
+<p>分書5行,左行。字徑約7,通高34,通寬34厘米。在鏽刻前,亦先鑿出一外框。因就石勢而刻,故左方偏向上(圖版拾差,1;拓片錄一九)。和平為東漢桓帝(公元150年)或前涼張祚(公元354—355年)、北魏文成帝(公元460—465年)的年號,根據題刻中所記平陰一地,知其應為桓帝時所刻。曾以平陰作地名的共二處:一在河南省,一在山東省。山東的平陰在春秋時期屬齊國。左傳襄公十八年(脈望仙館石印十三經注疏本):</p>
+<p>“晉師伐齊，……齊侯禦諸平陰（杜預注：‘平陰城在濟北盧縣東北’）”。</p>
+<p>這個平陰漢書地理志不載，而續漢書郡國志（涵芬樓景印宋紹熙刊本）則於盧縣條下記：“有平陰城”，是已經廢棄的故城的語氣，大約在西漢時期已被廢棄。後來在大業二年，重設平陰縣，如元和郡縣志卷十(金陵書局刊本)：</p>
+<p>“平陰縣：本漢肥城縣地，屬泰山郡。古肥子國。隋開皇十四年於今縣西北二十八里</p>
+<p>置榆山縣;大業二年移於今理,仍改名平陰,屬濟州。”</p>
+<p>在漢至北魏時期，山東並無平陰。河南的平陰亦起於春秋，如左傳昭公二十三年：</p>
+<p>“晉師在平陰，王師在澤邑（杜預注：‘平陰，今河陰縣’）。</p>
+<p>這個平陰在漢書地理志及續漢書郡國志中都有記載，可知漢代沿襲了這一名稱。後來改名爲河陰，其改名時間，王先謙後漢書集解(商務排印本)據魏志卷九夏侯惇傳裴注引魏書“時(韓)浩舅杜陽爲河陰令”一句，考訂爲桓、靈以後至建安中，而傳世光和元年買地券(見書道全集卷三，昭和六年本)與光和七年買地券(見丙寅稿頁18，羅氏排印本)却仍然稱為“平陰”，則應在靈帝至獻帝時期。因此，這當然是桓帝時的題刻。</p>
+<p>T6: “大唐貞觀十六年」四月三日,岐州鄴縣合侯懿、河北縣尉古城師」、前三門府折衝侯宗等」奉勅造軾兩艘,各六百石,試上三門,「記之耳」”。</p>
+<p>具書7行，左行。字徑約4，通高30，通寬35厘米。在第6行“百”字上原有一“露”字，“上”字下原有一“石”字，因筆跡不類其它諸字，疑非同時所刻，故剔除，且剔除後始可通讀。可能這裏原有一段題刻，在貞觀十六年將它磨平後另鑄這段題刻，“露”、“石”二字是殘留下的痕跡(拓片錄二〇)。唐代初年，三門峽的棧道大約已被毀壞，不通舟船[1]，這是唐代帝國欲重通漕運，在此試航後的題記。勞經原唐折衝府考(百爵齋叢刊羅振玉校補本)中錄有底柱一府，大約即是題刻中的三門府。</p>
+<p>T7：“景明四年三月十六日”。</p>
+<p>頁書1行。字徑約2,通高20厘米。其中“明”字在“四年”2字右側,似因遺漏而補刻(拓片錄二一)。</p>
+<p>T8: “景明……”。</p>
+<p>真書1行。字徑6厘米，下部殘渺，現高18厘米(拓片錄二二)。</p>
+<p>T9: “都匠藥世以□口初……□□禹□□□□治……□□前後七支□□七十剋……立石”。</p>
+<p>或釋爲: “都匠樂世以魏黃初二年」□脩禹王廟河床, 治□定彌□」急灘, 前後七支呈年七十剋□。」□立石」”[2]。</p>
+<p>分書4行，左行。字徑約4，通高44，通寬25厘米。全篇字跡極模糊(拓片錄二三)。樂世在三門峽修棧道的事情，在水經注卷四中曾有記載：</p>
+<p>“晉泰始三年正月，武帝遣監運大中大夫趙國(□□)[3]、都匠河東藥世[4]帥衆五千人修治(三門峽)河灘”。</p>
+<p>這大約就是“修治河灘”時留下的題刻，惜磨渤太甚，不能卒讀。</p>
+<p>T10：“景口四年三月廿六日”。</p>
+<p>真書1行。字徑約2.5，通高28厘米。字跡與同段T7、T8全同，亦應屬景明時期所刻(拓片錄二四)。</p>
+<p>T11: “不爲公涉此」難者非忠臣，「爲私涉此難」者非孝子」”。</p>
+<p>兵書4行，左行。字徑約3,通高20,通寬17厘米(拓片錄二五)。漢書卷七十六王尊傳：</p>
+<p>“（王尊）遷益州刺史。先是琅琊王陽爲益州刺史，行部至邛崃九折阪，嘆曰：‘奉先人</p>
+<p>遺體，奈何乘此險’。後以病去。及尊爲刺史，至其阪，向吏曰：‘此非王陽所畏道邪’？</p>
+<p>吏對曰：‘是’。尊叱其馳曰：‘驅之。王陽爲孝子，王尊爲忠臣。”</p>
+<p>這是應用了王陽、王尊的典故，形容三門之險，猶如卍鄴九折阪。</p>
+<p>(5) 人VII段题刻</p>
+<p>T 1: “三門銘”</p>
+<p>頁書1行。字徑約15，通高48厘米(拓片錄二六)。這應是一段銘刻的標題。</p>
+<p>T2: “君命臣聽, 害除利興。萬世承休, 羡聖禹勤。平治懷襄, 下民今寧。亘鐸鴻流, 以□□口墊, 匪安爾游。矧舟鄭欖, 以濟不通, 匪浮爾求。迄唐泛艱, 衰劍。銜衝」軸髒, 國用日夥, 民用……”。</p>
+<p>真書6行，左行。字徑約20，通高343，通寬135厘米。這是一段四言銘贊，或許就是上刻所謂的“三門銘”。銘中“褒劇”一辭，是褒獎唐代劉晏通漕運的意義[1]。從其字體觀察，似係宋人手筆(拓片錄二七)。</p>
+<p>T3: “大唐垂拱四年」正月十六日，上柱國馬大諒當」開三門河道。造字人蔡國。」正月十八日”。</p>
+<p>真書6行，左行。字徑約5厘米，末尾5字較小，為3厘米，通高35，通寬38厘米（圖版拾伍，3；拓片錄二八）。</p>
+<p>T4: “尚書外郎程嗣立、弟運判嗣宗、姬校」書壽孫、男監簿令」孫游鳩公院觀」禹跡。木禹書。至和二年十[圆二十二回]”。</p>
+<p>頁書7行，左行，第3行“書”字及第6行“至”字上半均殘渺。字徑約15厘米，末2行紀年較小，爲12厘米，通高120，通寬120厘米(拓片錄二九)。程嗣宗的題名還見於砥柱石。</p>
+<p>T5: “王七”。</p>
+<p>頁書1行。字徑7，通高16厘米(拓片錄三〇)。</p>
+<p>T6:“三刊”。</p>
+<p>頁書1行。字徑約8，通高29厘米(拓片錄三一)。</p>
+<p>T7: “觀砥柱銘」繫□□□，□宏禹德。□□□□□，立我心極。」提刑按察副使陳夷」”。</p>
+<p>真書4行，左行。字徑約13，通高109，通寬63厘米(拓片錄三二)。陳秉字文岡，又字汝忠，嘉靖乙未進士。曾經任中書舍人、禮科給事中、刑部員外郎、山西督學等官職，最後為陝西觀察使巡撫甘肅[2]。在任平陽府提學副使時至平陸，在三門峽留下了許多題記[3]。</p>
+<p>(6) 人Ⅲ段题刻</p>
+<p>T 1: “陳先”。</p>
+<p>頁書1行。字徑約6，通高14厘米(拓片錄三三)。</p>
+<p>(7) 人Ⅷ段題刻</p>
+<p>T1: “大康……都匠張□、梁□……□□作人見之□□如□”。</p>
+<p>分書6行，左行。字徑約4，通高36，通寬26厘米。全篇磨渤過甚，不得卒讀（拓片錄三四）。</p>
+<p>T2：“大康二年”。</p>
+<p>分書1行，“年”字下半殘。字徑約9，通高30厘米(拓片錄三五)。</p>
+<p>（8）人Ⅻ段题刻</p>
+<p>T1:“泰始四…</p>
+<p>分書1行。字徑約3，現高10厘米(拓片錄三六)。</p>
+<p>T2: “馬”。</p>
+<p>頁書1字。字徑11厘米(拓片錄三七)。</p>
+<p>T3: “泰始”</p>
+<p>分書1行，“始”字殘渺，僅能略辨痕跡。字徑約4，通高9厘米。泰始三年起，都匠藥世帶頒了5千多人修治棧道，這段題刻與T1大約都是那次工程中留下的(拓片錄三八)。</p>
+<p>T4: “三日”。</p>
+<p>分書1行。字徑3.5，通高8厘米(拓片錄三九)。</p>
+<p>T5: “大隆”。</p>
+<p>填書1行。字徑約5，通高10厘米(拓片錄四○)。</p>
+<p>末2段題刻是在炸平人門島前不久所發現，未及測入棧道立面圖。</p>
+<h1 id="2_3">2. 開元新河兩岸摩崖題刻</h1>
+<p>開元新河兩岸有摩崖題刻51段，現分爲東岸(即黃河岸上)與西岸(即人門島頂)兩部分叙述於後：</p>
+<p>（1）西岸题刻</p>
+<p>T1:“三門導路”</p>
+<p>真書1行。字徑約10,通高42厘米(拓片錄四一)。</p>
+<p>T2: “提舉三門轅運王昭[侍板興來遊。宣和]辛丑上元後六日」”。</p>
+<p>真書3行，右行。字徑約5,通高43,通寬20厘米(圖版參參，3;拓片錄四二)。王昭的題名還見於開元新河東岸(開東T18)。“提舉三門轅運”是北宋設在三門的漕運官，如宋會要輯稿“食貨”第四十五(北京圖書館景印徐松所輯稿本):</p>
+<p>“又有三門、白波都大提舉轟運都大提舉一人，同提舉二人（原註：河陰一人，三門一</p>
+<p>人), 並以朝官充, 掌轄三門、河陰、汾、洛人般, 以備轂運之事”。</p>
+<p>T3:“寓。[天寶二年]三月十日記」”。</p>
+<p>“寓”字較大，徑16厘米，位題刻起首。以下2行分列其下，字徑約9厘米。皆真書。通高60，通寬19厘米。“寓”字疑爲殘存的題名(圖版參參，4;拓片錄四三)。</p>
+<p>T4:“大金興定三年」正月初七日「甘棠席祿製」”。</p>
+<p>兵書3行，左行。字徑約8，通高84，通寬28厘米(圖版參參，4：拓片錄四四)。末一字疑爲“塑”字。金代人門島上有禹廟，這或許是塑製神像後的留題。</p>
+<p>T5: “丁天成、宋子忠、」宋澤民、許師是。」政和四年孟夏」月避暑開化寺」”。</p>
+<p>填書4行，左行。字徑約12，通高95，通寬85厘米(拓片錄四五)。丁天成的題名還有開東T19、開東T38、人V段T8諸刻；宋子忠、朱澤民的題名還有開東T8。</p>
+<p>T6:“千尋丹碧，萬古風雷。文岡”。</p>
+<p>真書3行，左行，雙鉤刻出。“文岡”2字較小，徑18，其餘各字徑約30，通高150，通寬90厘米(拓片錄四六)。這段題刻，在牟陽府志及三門官廳碑記中曾經提及[1]。</p>
+<p>T7: “雜」省 正」名正 懷圖 見書”。</p>
+<p>真書5行，暫從右行。其中“雜”、“省”、“正”、“書”諸字徑約20，其餘徑32厘米；通高100，通寬140厘米。從字體觀察，似爲朱、金人題名(圖版參參，2;拓片錄四七)。</p>
+<p>T8：“王明恕、趙子霖」鄧洵望、張克昌、「張洙同遊」”。</p>
+<p>小篆3行，右行。字徑約10，通高66，通寬30厘米(拓片錄四八)。張洙的題名還有開東T8[2]。</p>
+<p>T9: “□和」邑]寶觀」導黎」口竊]初臨」”。</p>
+<p>頁書6行，暫從左行。字徑約28，通高90，通寬170厘米（拓片錄四九）。大約也是宋、金的題名。</p>
+<p>T10:“匪修武校」桂”。</p>
+<p>頁書2行，左行。字徑約8，通高35，通寬20厘米(拓片錄五○)。</p>
+<p>T11:“大明洪武十年二月初八日，奉」中書省差署令郭祐、承宣使江岷同河南通判」相視河……」”。</p>
+<p>真書4行，左行。字徑約10，通高120，通寬40厘米(拓片錄五一)。</p>
+<p>T12:“□锡、向春卿、霍惠民、吴□、方晋明自集津謁『護公祠歸、少璁是院。」…庚子三月已巳日”。</p>
+<p>真書4行，左行。字徑約8，通高66，通寬34厘米(拓片錄五二)。“庚子”上一字左旁尚有二筆末端可見，似爲“禾”旁，則上劭年號必爲宣和。方晉明的題名還有開東T18，亦爲宣和庚子所留。題刻中“少憩是院”當指開化院，即開化寺[1]。</p>
+<p>T 13: “釘卿(或心?)」順□」隨□」□□」”。</p>
+<p>小篆4行，暫從左行。字徑約28，通高75，通寬75厘米(拓片錄五三)。</p>
+<h1 id="2_4">(2）東岸題刻</h1>
+<p>T1:“清慎。」大宋庚子歲『膝公輔書』”。</p>
+<p>真書。“清憤”2字特大，徑約160厘米，其餘2行小字徑約10厘米，附於“憤”字左下方；通高350厘米。這段題刻是打破了開元新河東壁棧道，把石崖磨平後再镌刻的（圖版參肆，1、2;拓片錄五四）。</p>
+<p>T2：“□碑□樊仁。」大宋庚子崴□」”。</p>
+<p>具書2行，右行。字徑約12，通高74，通寬26厘米(拓片錄五五)。</p>
+<p>T3: “□南路□踏木押」運粘鉤毛克監造。□廣威將軍□鄉縣令」大虎山□」忠孝副統。□定二年」”。</p>
+<p>真書6行，左行。字徑約10，通高70，通寬120厘米(拓片錄五六)。末行第2字只殘存下半部，但確係“定”字。在金、元二代，武散官中均有“廣威將軍”一銜，而“副統”一職則僅金代設置[2]，故其紀年必爲大定或興定。</p>
+<p>T4:“有四日時以……”</p>
+<p>真書。字徑約10，通高170，通寬245厘米。全篇磨渤過甚，僅中間數行有上列7字可辨(拓片錄五七)。</p>
+<p>T5: “賈端、楊□、張」保、趙佑、□議□至」”。</p>
+<p>真書3行，左行。字徑約8,通高50,通寬20厘米(拓片錄五八)。蘭臺法鑑錄卷十三(明萬曆刊本):“趙佑,字廉相,陝西渭南人,四川成都衛籍。弘治十二年進士,十三年爲山西道御史,十七年陸山西副使,致仕。”可能就是題名中的趙佑。</p>
+<p>T6: “大觀三年正月十九日、建安曹樞憲中、祥符張棟公度、彭城鄭望□守道，右三人同游”。</p>
+<p>填書5行，右行。字徑約12，通高100，通寬62厘米（拓片錄五九）。在北宋末至南宋初有彭城人鄭望之字顧道[8]，題名內末一人的名、字皆同一字，而其地望與時代又復相同，疑爲弟兄。</p>
+<p>T7: “東平任□幾遊”。</p>
+<p>滇書2行，左行。字徑約18，通高72，寬40厘米(拓片錄六○)。</p>
+<p>T8: “夷門宋孝先子中、甘棠宋滂澤民、平原王石吉老、張蕤恭、簞山張保源澄之，政和壬辰中秋後十日同視。張洙、師聖來，御前枟木澄之題”。</p>
+<p>其中“張羹恭”與“張洙、師聖來”2行爲小篆，字徑約30厘米，餘爲真書，字徑約16厘米，共8行，右行。通高190，通寬158厘米(拓片錄六一)。張保源是“元祐黨人”，蔡京所書元祐黨籍碑[1]曾列其名；其事略可參陸心源元祐黨人傳卷四（光緒陸氏家刻本）與宋詩紀事補遺卷三十一(光緒陸氏家刻本)。</p>
+<p>T9: “時大金興定二年十月,奉峽州元帥完顔崇進差充三門北岸副提控防冬。安賢係遠東蓋州人氏,本朝太祖皇帝之兄太師吳克尼七代之孫。完顔安賢謹題”。</p>
+<p>滇書10行，左行。字徑約7，通高78，通寬80厘米(拓片錄六二)。</p>
+<p>T10:“仁]智]樂。近□陳韭」”。</p>
+<p>真書横列3大字，左行，字徑約40厘米，雙鈞刻出。下款4字較小，字徑約14厘米。通高40，通寬140厘米(拓片錄六三)。</p>
+<p>T11:“正德十年秋七月廿日，御史楊時周、行人劉鯊題名”。</p>
+<p>分書4行，右行。字徑約10，通高72，通寬60厘米(拓片錄六四)。楊時周爲正德三年進士；七年由行人選爲廣東道御史;正德九年巡按山西[2]。劉翀爲正德六年進士；十四年由行人選爲四川道御史[3]。這是楊時周巡按山西時留下的題刻。</p>
+<p>T12:“張羹恭謁禹祠。大宋」崇寧癸未仲」春，男公涣題」”。</p>
+<p>小篆4行，左行、字徑約20，通高100，通寬60厘米(圖版參肆，3;拓片錄六五)。張義恭的題名還有開束T8。</p>
+<p>T13: “鑿開山骨過長河,」水土方平叙九歌,」舉世但傳神禹力,」誰人知是帝功多。」政和壬辰歲「張保源重題」”。</p>
+<p>真書6行，右行。字徑約16，通高130，通寬110厘米(圖版參伍，2;拓片錄六六)。張保源的題名還有開東T8。</p>
+<p>T14:“忠」孝」”。</p>
+<p>真書。“忠”字徑150，“孝”字徑168厘米，分別刻在兩處岩壁上（拓片錄六七）。皇明文衛卷三十一，王翰遊三門記記載：</p>
+<p>“（開元）新開河左就巔石下刻宋、金人題名並詩，且刻‘翠陰’禹功’二崙。稍東刻‘忠孝’清慎’四字，字畫若顔魯公書者”。</p>
+<p>王翰在洪武十七年遊三門，則約爲北宋或金代所鑿。</p>
+<p>T15:“陝洛捕寇石]繼和公美到」此。嘉祐庚子]九月十一日題」”。</p>
+<p>真書4行,左行。字徑約8,通高50,通寬35厘米(圖版參伍,1;拓片錄六八)。</p>
+<p>T16: “河南府陝州果(靈)寶縣」公差工房司吏何鶴」監修上倉一十二間。」洪武十年三月日「記」”。</p>
+<p>真書5行，左行。字徑約5,通高48,通寬28厘米(拓片錄六九)。明代自洪武七年起，曾轉運漕粟餉陝西[1],所以在此修建倉房。</p>
+<p>T17:“陳錫 陳□ 樊仁”。</p>
+<p>真書1行。通高50厘米(拓片錄七〇)。樊仁的題名還有開東丁2。</p>
+<p>T18:“王昭晉錫、」吳行中勉|道、方謁晉」明。宣和庚子季春六日同遊”。</p>
+<p>真書6行，左行。字徑約12，通高70，通寬98厘米（拓片錄七一）。王昭的題名還有開西下2；方場的題名還有開西下12。</p>
+<p>T19:“丁天成”。</p>
+<p>真書1行。字徑約20，通高80厘米(拓片錄七二)。丁天成的題記還有人V段T8、開西T5、開東T38諸段。</p>
+<p>T20:“疏鑿千秋話禹功，」屹然一柱界高空。」不因鐵骨撑天地，」詣障狂流萬里中？」康熙壬申暮春朔有七日，余奉」撫軍命，巡視河道，以備轉運。時偕署平陸兮陳裔振菑止。砥柱屹」然中流，峭不可犯，境耶心耶！何」神契之乃爾耶！因口占一絕，以」誌不朽云。知山西潞安府事中」憲大夫劉□□題並跋」”。</p>
+<p>頁書11行，左行。七絕一首，字徑約13厘米；跋尾款識字徑約5厘米；通高93，通寬110厘米(拓片錄七三)。</p>
+<p>T21:“王□希全、王□□元之、杜帅之□□辰宿三門。時政和」癸巳仲夏念二圓]遊此，□水勢甚□，□目王國□題，鄧元之捧硯”。</p>
+<p>行書7行，左行。字徑約8，通高65，通寬65厘米(拓片錄七四)。宋代有王轟字定國，爲“元祐黨人”[2]，善書小草，如書史會要卷六(武進陶氏影刻明洪武本)：</p>
+<p>“王轅:字定國,魏州人。工書小草,頗有高韻,雖不逮古人,亦可傳於世也。”這段題刻字體秀拔,似出書家手筆,或即王轅所書。</p>
+<p>T22: “正德丙子孟」夏十七日, 監[察御史朱裳]至此」”。</p>
+<p>真書4行，左行。字徑約16，通高80，通寬70厘米（拓片錄七五）。明史卷二〇三朱裳傅(涵芬樓景印武英殿本)：</p>
+<p>“朱裳，正德九年進士，擢御史，巡鹽河南。”</p>
+<p>正德丙子爲十一年，正是在“巡鹽河南”時期。</p>
+<p>T23:“正德九年」六月，奉天」宋廷佐巡」按過此。」書吏杜」洪從」”。</p>
+<p>頁書6行,右行。字徑約12厘米,末2行較小,通高65,通寬76厘米(拓片錄七六)。宋廷佐爲正德六年進士,正德八年至十二年“清軍山西”[1],題刻正是彼時所留。</p>
+<p>T24:“禹功崢、禹功、交岡”。</p>
+<p>填書3行，左行。“禹功”2字較大，徑約30厘米，其餘各字徑約16厘米；通高80，通寬80厘米。首行“禹功崢”3字題刻，見於前引王翰遊三門記。又如王翰梁園寓橐卷三禹功岩詩(文津閣四庫全書本)：</p>
+<p>“琬琰何時寫，磨崖記聖功。石紅經火烈，字綠見菩封”。</p>
+<p>這3字大約是宋、金時所刻。“禹功”2字，則爲陳毬加題其旁(圖版參伍，4;拓片錄七七)。（“禹功、文岡”四字未拓）。</p>
+<p>T25:“南鬼門，」中夜叉門，」北金門，」次北開元新河，」禹廟、」開化寺並在」金門山上」”。</p>
+<p>填書7行，左行。字徑約9,通高60,通寬60厘米(圖版參肆，4;拓片錄七八)。盛唐時期稱人門為金門，金代改名人門，而至明洪武時期已不知夜叉門與金門命名的由來[9]，所以，這應是金代以前的題刻；而其字體不類唐人書風，或爲北宋所镌。</p>
+<p>下26:“永樂元年四月」初六日，」內官□同在□□」□□□到此遊」放□□平安」無事記」”。</p>
+<p>填書6行，左行。字徑約6,通高45,通寬36厘米(圖版齊肆，4;拓片錄七九)。這段題刻位上刻下方，地方局促，似爲岩壁上已經有了一段題刻，只能在這裏镌刻所致。這也是上刻年代早於明代的一個證據。</p>
+<p>T27: “大明洪武十年二月十二日, 中奉大夫河南等處承宣」布政司左參政馬亮、同中書省宣使李傅記相視三門河道記。石匠趙貴、周成、孫成、房宣、董告刻淞路運”。</p>
+<p>填書9行，左行。字徑約9，通高興通寬均約120厘米(圖版參伍，3)(未拓)。</p>
+<p>T28:“九年底續，」萬世永賴。」副使司給事」文岡陳渠題」”。</p>
+<p>真書4行，左行。首2行大字，徑約35厘米，雙鈉刻出；題款爲小字，徑約15；通高129，通寬90厘米(拓片錄八○)。</p>
+<p>T29:“大明加靖乙卯冬，」如我峯。」文岡陳挾書」”。</p>
+<p>填書3行，左行。中行“如我峯”三字徑約35厘米，雙鈞刻出；餘爲小字，徑15厘米。通高120，通寬100厘米(拓片錄八一)。</p>
+<p>T30:“翠陰崢”</p>
+<p>頁書1行。字徑約15，通高48厘米(拓片錄八二)。前引遊三門記中曾提到“翠陰巔”題刻，則其時代約爲北宋或金代。</p>
+<p>T31: “文岡陳枭到此”。</p>
+<p>頁書1行。字徑約10，通高70厘米(拓片錄八三)。</p>
+<p>T32:"南歎樂山，」北紫金山」"。</p>
+<p>真書2行。字徑約10，通高53，通寬33厘米(拓片錄八四)。明吕桷溝野先生文集卷十六觀底柱記(嘉靖三十四年于德昌刊本)：</p>
+<p>“（底柱）在三門山之陽，紫金、駱馴二峽之西。”所謂紫金山，乃指人門左岸一帶的山峽。</p>
+<p>T33:“砥柱峯”</p>
+<p>兵書1行。字徑約10，通高30厘米(拓片錄八五)。</p>
+<p>T34: “掛鼓石”</p>
+<p>頁書1行，字徑約10，通高30厘米(拓片錄八六)。前引遊三門記：</p>
+<p>“(翠陰、禹功二崢之南)山上有石嶸然如鶥蹲者，人號爲掛鼓石，蓋禹用以節時齊力也”。</p>
+<p>又王翰梁闋寓橐卷三挂鼓石詩：</p>
+<p>“奇峯名挂鼓，今古竟相傳。樹密青陰合，煙消翠影圓。簾爛驚踞虎，籲舉類飛蒿。月夜聞轟吼，猶疑餘韻喧。”</p>
+<p>“鼓”當即“鼓”字。其實，掛鼓石的形狀極普通，王翰的詩文，故作渲染。</p>
+<p>T32一T34諸刻，位置接近，其字體又都與T30(翠陰巔)相似，約同爲北宋或金代所刻。</p>
+<p>T35:“……」□警……」□□將軍……」□□□□校尉……」武□將軍前解州平陸」□□將軍前解州義軍”。</p>
+<p>真書6行，因殘渤太甚，不能卒讀，暫從左行。字徑約3,通高34,通寬30厘米(拓片錄八七)。北宋時期曾在荆湖路夔州等地置“義軍”鎮壓西南諸少數民族，而金末則在中原一帶招募“義軍”，企圖綿延殘喘[1]，所以這段題刻據“前解州義軍”一句，知爲金末所留。</p>
+<p>T36:“太原曾保柔……」……同遊。張……題”。</p>
+<p>真書4行，左行。字徑約7,通高41,通寬34厘米(拓片錄八八)。</p>
+<p>T37:“加靖乙卯冬孟，字内大觀。陳翡書”。</p>
+<p>真書4行，左行。中間2行大字，徑38厘米，左右上下款小字，徑10厘米。通高83，通寬108厘米(拓片錄八九)。</p>
+<p>T38:“飛棲蒼崖勢欲」摧,洪河直下吼」驚雷,千金尚有」垂堂戒,嗟我胡」爲向此</p>
+<p>來。丁天成題”。</p>
+<p>真書6行，右行。字徑約10，通高80，通寬80厘米(拓片錄九〇)。丁天成的留題，還有人V段T8、開西T5、開東T19諸刻。這段題刻在梳桩台以東約100米的路旁，其實已遠離開元新河，附編於此。</p>
+<h1 id="3_3">3. 神門島摩崖題刻</h1>
+<p>在神門島上，有2段摩崖題刻。</p>
+<p>T 1: “李昌言、范百朋, 治平元年正月式十式日同觀禹門。楊炳奉陪, 山僧熙曬刻石”。</p>
+<p>小篆5行，左行。字徑約26，通高220，通寬160厘米(拓片錄九一)。李昌言爲宋州楚邱人，曾官太子中舍[1]。上述入Ⅷ段T4曾提到“鳴公院”，可能是指熙輞所駐僧院。</p>
+<p>T2:“開三門使楊」岌」。</p>
+<p>真書2行，左行。字徑約18，通高90，通寬55厘米(拓片錄九二)。唐代經常修治三門峽棧道，這種“開三門使”似屬唐代所遣的可能最大。</p>
+<h1 id="4_1">4. 砥柱石摩崖題刻</h1>
+<p>在砥柱石上有摩崖题刻6段。</p>
+<p>T1: 全篇高約30, 宽約36厘米。除末一字似爲“和”字外, 其餘皆不能辨識。</p>
+<p>T2:“……程嗣宗……」觀。進士木瓊書”。</p>
+<p>真書2行，右行。字徑約20，通高120，通寬40厘米。程嗣宗和木珘的題名還有人Ⅶ段T4。</p>
+<p>T3:“……丞張深(?)具當」…練…」…」”。</p>
+<p>寅書3行，不能卒讀，暫從右行。字徑約22，通高135，通寬80厘米。</p>
+<p>T4：“……大……」……蔣□早、趙簡」……陳新、」。</p>
+<p>頁書4行，不能卒讀，暫從左行。字徑約9，通高72，通寬40厘米。</p>
+<p>T5: “丁酉上元□王旦”。</p>
+<p>真書2行，左行。字徑約18，通高65，通寬50厘米。</p>
+<p>T 6: “鲁静”。</p>
+<p>頁書1行。字徑約13，通高40厘米。</p>
+<h1 id="5_1">5. 獅子頭摩崖題刻</h1>
+<p>在狮子頭(即鬼I段棧道所在的那塊岩石)上,共有摩崖題刻6段。</p>
+<p>T1: “大明萬曆戊申春月同遊。」峭壁雄流，鬼斧神工。三晉雷炎先、關中陳徽、楊坦，古燕劉獻可，海岱孫繡祖書，廣西劉紹先並題”。</p>
+<p>填書7行，左行。中間“峭壁雄流，鬼斧神工”8字極大，徑約50厘米；其餘題款字徑約18厘米。通高390，通寬170厘米(圖版貳壹，5;拓片錄九三)。</p>
+<p>T2: “奉差修建廟工江南揚州府泰州州同張永訢，懷慶武陟人；」高郵州州判朱國樑，福建莆田人。大清乾隆三十二年春月日”。</p>
+<p>填書5行，左行。字徑約5，通高85，通寬55厘米(圖版貳壹，4;拓片錄九四)。</p>
+<p>T3:“天設三門險，波」漩萬疊流。神工」雖已盡，漫道可」通舟。」大清康熙三十一年歲次壬申季秋，」巡撫河南都察院右副都御史宣」鍾閣興邦巡察至此題」”。</p>
+<p>墳書7行，左行。題詩較大，字徑約8厘米；題款的字徑約4厘米。通高67，通寬85厘米(圖版貳壹,4;拓片錄九五)。碑傳集卷六十六閣興邦墓誌銘(光緒江蘇書局刊本)：</p>
+<p>“（康熙二十七年起，閣興邦巡撫河南。以後)秦中游饑，詔撥江南、湖、廣漕米數十萬石輸之秦。車運騷負，晝夜不息。公親駐洛陽，躬自督率。閔三月，事始竣已(時卅一年)。調公撫貴州。”</p>
+<p>題刻爲卅一年所留，大概正因監運漕米而至陕州。</p>
+<p>T4: “修建廟工:「張務本、」□頭長李保太、「張景、」壯頭張世榮、」木工唐金柱、」據理登封王惠、」本州戶房史書庚、」快頭馮延木、」□□任修性、」□□皂頭楊存孝、」崔有的、」靈寶皂頭杜選、闇鄉皂頭王步雲。」乾隆三十二年春月吉旦」”，“鐵匠董彰善、」楊順」”。</p>
+<p>填書。“修建廟工”4字較大，徑約12厘米，列於全篇上部。其餘14行題名，左行，字徑約6厘米。通高130，通寬110厘米。“鐵匠”題名2行，在上述題名旁邊，通高55厘米，大約和上述題名為同時所刊，所以附編於此(拓片錄九六)。</p>
+<p>T5: “神工闖天險,」帝德並河流。」今古居平士,」乾坤一葉舟。」壬申秋,州牧三韓「廿國璧題」”。</p>
+<p>填書6行，左行。字徑約8，通高76，通寬66厘米(拓片錄九七)。碑傳集卷六十八，廿國璧墓誌銘：</p>
+<p>“（廿國壁)肆業太學。期滿，御試，擢高等，授河南陝州知州。”</p>
+<p>甘國璧任陝州知州時在康熙年間，則此處壬申爲康熙三十一年，時間與上述下3相同。這是和閣興邦的題詩而作。</p>
+<p>T6: “砥柱三門萬劫來,鴻蒙」旁磚定誰開。丈夫特立」應如此,未信狂瀾鄴不回。闖中南居益書,郡人梁可棟、劇善政、崔連秀全觀”。</p>
+<p>填書7行，左行。字徑約10，通高98，通寬95厘米(拓片錄九八)。南居盃是至死頑抗李自成起義的渭南大地主。明史卷二六四南居盃傳(涵芬樓景印武英殿本)：</p>
+<p>“(南居益)舉萬曆二十九年進士，……擢山西提學副使，雁門參政，歷按察使，左右布政使，並在山西。天啓二年，入爲太僕卿。(崇禎)十六年，李自成陷渭南，責南氏餉百六十萬，……(次年正月)絕食七日而死。”</p>
+<p>這段題刻，當是萬曆時期所留。梁可棟爲陝州人，也是反抗李自成起義而死，見明史卷二百九十三張維世傳與勝朝殉節諸臣錄卷五(據乾隆刊本)。</p>
+<h1 id="6">6. 杜家莊棧道摩崖題刻</h1>
+<p>在三門峡下游的杜家莊棧道上，遺存題刻2段。</p>
+<p>T1: “治牟三年十」月, 内山河都「頭毛順重別」開鑿隧道記」”。</p>
+<p>真書4行，左行。字徑約4,通高22,通寬36厘米(拓片錄九九)。</p>
+<p>T2:“王喜”。</p>
+<p>真書1行。字徑約2，通高7厘米。位上刻右下角(拓片錄一〇〇)。</p>
+<h1 id="7">7. 禹王廟碑記</h1>
+<p>禹王廟在三門峽以西2華里許的黃河北岸台地上。殿內有：“天順二年重脩大禹廟記”、“正德十六年閔槐遊三門詩碑”、“乾隆四十年重脩禹王廟鼓敘”、“乾隆五十七年重脩大禹廟碑記”、“民國七年重脩三門禹王廟碑記”、“民國七年輸財姓氏碑”、“民國十七年重脩禹王廟大門前樂臺碑記”諸碑；殿外曠野中有：“萬曆二年三門官廳碑記”、“崇禎九年余城中流砥柱碑”、“乾隆五十一年創修金龍四大天河神龍王廟序”、“嘉慶五年關帝廟創建樂樓大門棧崖碑記”、“道光二年鄉約碑”、“同治元年俞鎔等題詩”諸碑。其中，乾隆、嘉慶、民國諸碑，因時間倉促，不克逢錄。其它各碑，分述於下。</p>
+<p>“天順三年重脩大禹廟記” 額篆“重脩大禹廟記”6字。真書碑文25行：</p>
+<p>“重脩大禹廟記。」山西平陽府解州平陵縣儒學教論四川潼川州安岳王民撰。廬騰生員賀振、馬淳篆、書。」王者見載祀典固夥，然垂莫大勅，享無窮禮，億萬年纔一人，必稽其人以實之，唯神禹乎。平陸邑治東五十里，大河之中流有石，其形如柱，嶙峋萬丶切，謂之底柱。柱之上流不百步曰三門。當唐虞秋，泽水瀾漫，九有一壑，民其魚鯡，咸作怨咨。天閲厥下，俾神禹出，不辭胼胝之苦，舟車輒標之是載，」八年在外，荒度土功。然隨山之序，糞則既載壺口，次雷首、大岳，又次底柱、析城、王屋，至于大行恆山。其底柱，即今底柱三門也。然柱固當中流，三門」則南北兩山，嶽尻險窄，門石横截堅墜，遠望之若封閉然。河水經逝，柱礙石湮，淘涌不洩，寶爲扼水之喉咽。當是時也，禹則鑿之排之，決之淵之，分」爲三門。三門闊，則囊之水患息而民無軋翹，府事修治而世享其利矣。以故唐天寶二年者民梁友仁，緇惟禹闊門之動采，始構廟於柱、門之北山；」元至元六年，耆民王成甫繼修之；至正二十六年，李良甫重修之；暨元末世罹兵聚，廟宇則零丁甚，所存者僅正殿耳。國朝間有欲修葺者，力不能任。他合來尹茲士，</p>
+<p>注意者罕。我賢大尹李公譜恭，字克敬，東魯濮州人也。公於景泰乙亥春，適有繡衣使蠡吾李公宏輶車」至。公復曰：‘祭法能禦大蓄，捍大患，則祀之，儀雷封內有神禹廟，欲廓而祀之，可乎？’繡衣曰：‘睹梁山而思禹績，觀底柱而慕禹澤，人心所同，令廷理焉。」公遂勸誘僚案及者老趙昇、吳斌、梁小九等，咸資俸絹，繇是闖地廣狹，圪工練材。前殿則因其敞而理之；如後宮、過道、前廳、二門、三門、左右廊舍及李耳殿二十餘間，俱昉羈焉。經始於景泰乙亥春三月，詒工於是年秋九月。然次第締構，塗墾丹肅，炳焯人目，賀趋於昔。其地據北山之疊秀，翠臯」時其東，青嶂翼其西，南面陝州諸山，前後規摯閔壯，蜿蜒盤迥。矧四時仙葩異卉，林木森列，遠近瞻仰，如三山焉。吁違哉！天順元年春，公將獻績」天朝，囑予爲記。予曰：繡衣樂然從其復，神之威有以啓之也；公乃劫然成其事，神之力有以彰之也。雖然，禹，大聖人也，豈私昵人而徼其祀耶！但利遺天」下億萬世，而天下億萬世人心自莫能忘。矧三晉間廟貌獨繁，以闇洪荒之功，特盛於冀故耳。予與公為賓主，魚水相得，不能辭，特謹誌之。泊新大」尹甘泉開公志、縣判洛川蕭公誠借謂宜記而系以銘，故銘之。銘曰：「北山蒼蒼，河水湯湯。星土分野，烝民徬徨。神禹挺出，四載是將。呱呱弗顧，既載囊方。跋兹暑險，瀾漫張皇。神劍鬼鑿，門關桂昂。地平天歲(按：疑爲成字之誤)，元元弗康。」後人景仰，德惟輝煌。億萬斯年，銘石弗忘。」提調官承事郎知縣開志、茅津渡巡檢李英、束延里省祭官王鑑、老人梁益。」迪功郎縣丞高賢、稅課局大使張佑、丁輝、張浩、張興。」將仕郎主簿蕭誠、白浪渡巡檢宋潤、吳斌。」典史王傑、醫學訓科呂庭、三廁老人趙昇、紀英。」儒學訓導史良、道會司李玄靜、芝道清、徒趙守忠、陳宣、孫貴。」中順大夫知江西袁州府事呂遜、僧會司正喜、何海、趙朋。」天順三年歲次已卯孟冬中滙吉日立石。」（圖版參陸，3；拓片錄一〇一）。</p>
+<p>碑高176，寬68厘米。其中所記禹廟創建的歷史有誤，已詳前述“禹廟與開化寺問題”一節。據禹曆平陽府志卷三，開志於天順二年起任知縣。</p>
+<p>“正德十六年閔槐遊三門詩碑” 額篆“大明”2字。碑文行草8行，左行，末3行爲真書小字：</p>
+<p>“遊三門詩：」九曲有天險，三門無夜扃。浪花飛碎白，」砥柱立孤青。鬼斧何年劈，龍渦尚爾」腥。禹皇不可作，吾欲問山靈。」正德十六年十月廿日，平陽知府閔槐題。」平陸縣知縣賈深、主簿□瑄、典史單臻。」”（圖版參陸，4;拓片錄一〇二）</p>
+<p>碑高107，宽60厘米。第3行末尾“爾”字已，據乾隆平陸縣志補入。閔槐係直隸任邱進士，自正德九年起爲平陽知府；賈深爲直隸東鹿人，舉人，正德十六年任知縣[1]。</p>
+<p>“萬曆二年三門官廳碑記” 額篆“三門官廳碑記”2行。真書碑文22行：</p>
+<p>“平陸縣三門新建官廳記。」予嘗以雲中轉平陽，公餘稽古，則知平陸本處公國，中條北</p>
+<p>登,大河南縈,晉人假道于是,亦冀□□」地也。其治城東有三門山,蓋禹導河鑿山為三門以通河,故名。逕東南中流孤峽峭立,峻壁嶸險,其」形如柱,則底柱也。禹貢'東至于底柱’即此耳。瑰奇佳勝,不獨爲宇宙大觀,迺萬世永賴之功,寛肇於」此。矧漢、唐飛輓,由茲轉漕,觀風問俗,可弗至於斯耶!是歲春,予以例上計」冢宰,恭荷」殊恩,賜宴錫服,榮渥曇典,咸溢尋常。且躬聆」聖論,若曰:‘咨爾良牧,守茲丕郡,既心宣力,惟爾之任。爾往欽哉!予拜稽首曰:‘敢對揚」天子之休命’！比至汾,夙夜祇懼,思圖報稱。迺夏六月乙卯,偕同寅南洲王君敬,逼歷郡邑,閔民疾苦,用宜」德意。至虞境,觀河思功,求所以爲‘九年底績,萬世永賴’者何在?遂達觀于斯,則有若開元河、米堆山、集」津倉及漕運渤蹟,蓋所聞不盡於所見也。其北山之顛,上爲禹廟,前爲崇樓,俯觀大河,古景盈眸,一」望無際。前學使陳公覽勝,題三門壁曰‘千尋丹碧,萬古風雷’諸大書。予仰而嘆曰:‘偉者禹功!允若兹」也。既而令尹丁子酌予禹宮,予顧謂丁子曰:‘勝地若斯,或」兩院代巡方岳至此,可無公署以爲慈所乎'?丁子曰:‘此則守土之責也。遂相基於禹宮左,卜惟食。前」建正廳三穩,左右爲吏胥所;后構退廳三穩,東西爲供備所;二門、大門,胥如常制。其材木瓦石、丹壎」金碧諸費,皆出自措置;工役則給若直,罔有攸擾。始於夏六月既望,落成於冬十一月云。役竣,丁子」詣予請記,予嘉樂厥成,逐爲書其歲月,且告丁子曰:‘禹功何以若此哉?蓋禹之行水也,行所無事耳。」君子之行政也,爲上爲國,爲下爲民,興革振作,亦行所無事,則有司之循良也。而平陸,而天下,可也;」簡斯所之建乎?'丁子曰:‘命我哉!是爲記’」萬曆二年冬十二月穀,'賜進士第中順大夫知平陽府事東萊順庵胡來貢撰,'平陸縣知縣丁一元立。'(圖版參陸,2;拓片錄一〇三)。</p>
+<p>碑高147，寬66厘米。胡來貢，萬曆元年起爲平陽知府[1]。碑記中所述陳渠題刻即開西T6。</p>
+<p>“崇禪九年余城中流砥柱碑” 額上真書“察院”2字，碑文真書4行，左行：</p>
+<p>“崇禪九年六月初一日。」中流砥柱」。巡按山西監察御史余城題。」平陸縣知縣加俸一級王中漢。”</p>
+<p>中間“中流砥柱”4字雙鈍刻出。（未拓）。</p>
+<p>“道光二年鄉約碑” 額上中間異書“皇清“2字，左右有“日”、“月"2字。碑文兵書14行：</p>
+<p>“大禹廟之立會，由來久矣，所以敬神明而肅人心也。一遇會」期，合社潔供粢盛，演戲祀神。祉中之人謁廟進香，共展誠恪，院內務須整潔，不淨污穢褻神。邁年來往往有左右棍徒，勾通內外匪類，先期而至，醉酒滋事，開場聚賭，引誘鄉愚子弟，廢時失業，傾家敗產，殊堪痛恨。壬午歲，合」祉議定：前此之不法，永爲禁止，而遊會之親</p>
+<p>友, 各宜自重, 」勿遺後悔, 庶幾廟內整肅而神悅人怡, 永庇無疆之福」矣。恐日久變異, 勒諸貞珉, 以垂久遠云。邑後學梁向斗撰。」九祉首事人張自貴、」梁懷刑、梁建孝、」梁德合。」大清道光二年三月吉旦, 鄭約。」”(未拓)。</p>
+<p>“同治元年俞鎔等題詩刻石” 這是太平天國、捻軍起義時幾個官僚的題詩，真書18行，左行：</p>
+<p>“余自道光乙未筮仕離城，近茅津渡，而奉檄出差，往返多次，」欲觀砥柱之雄，奔流之巨，皆不果行。同治元年三月，髮、捻擾及秦、豫，河東調兵防守。五月初，由潼關沿河擾至茅津渡，竅逼晉境，節節撲河。在事文武，督開槍磚，均經擊退，完善之區，幸克保全。七月七日，適與疏粹耄刺史，曹蓉臺、朱竹舟兩大令因公同赴三門，瞻神禹廟，步老君臺，登樓台，讀碑記，當年功業，如在目前。靜聽濤聲搢石，足助胸懷之壯。晚宿廟中，翦燭清談，是爲乞功之夕，豈非事有巧遇耶！率成拙句，諸君欣然屬和，以留泥爪云爾。擬踏三門春復秋，防河事畢始同遊。當年石壁如何鑿，長使安瀾萬古流。婺源六珊俞鎔。閑逢中伏已新秋，約伴今番快壯遊。同上高樓低首望，兩山排列水分流。長白粹蒼鍾。三門聳峙氣凌秋，隨步登臨紀勝遊。萬里黄河歸大海，但憑砥柱鎮中流。江夏蓉台曹貽智。最喜登臨值巧秋，追隨深幸此遨遊。觀河仍寓防河意，欲挽狂瀾自在流。武林竹舟朱世增。同治元年歲次壬戌孟秋月吉旦。”(未拓)。</p>
+<h1 id="8">8. 已佚石刻</h1>
+<p>三門峽的題刻與碑記，已盡上述。另有一些曾經著錄而現在已經佚亡的，附記於此。</p>
+<p>“砥柱銘” 這是唐、宋時期極其有名的一篇石刻。舊唐書卷三太宗紀記載其鏽刻的歷史：</p>
+<p>“（貞觀十二年)二月乙卯，車駕回京。癸亥，觀砥柱，勒銘以紀功德。”</p>
+<p>銘文乃魏徵所撰，薛純陀所書。北宋時期，對於砥柱銘的書法，備加誇獎，如廣川書跋卷七（民國南林張氏適園叢書五集）：</p>
+<p>“唐砥柱銘，貞觀十二年特進魏徵撰，秘書正字薛純書。其字因山鑰鑿，就其簾平通多少置字，故不成行序，宛轉於嶺嶽間以摹，故石雖存而頗難得，世知貴之。唐以書學相高，刻石之文，此其最大者也，筆力有餘，點畫不失，倘多隸體，氣象奇偉，猶有古人體法。其後柳誠懸書刻招提，今已爲缺不可讀，惟純所書在濁河間得完，蓋幕擊之工不至，雖洪濤怒浪，射發左右，而風雨摧剎日至，尚不廢也。”(砥柱銘條)</p>
+<p>“(薛純陀)貞觀十二年奉敕書銘砥柱,其字磊落如山石自開,隱鳞而出,可以見方丈之勢矣,固無牽強以成者也。當時如虞伯施、褚登善號能書者,皆避而讓之。其後柳誠懸愛其書,恐失其次第,則又別書於石。後世得純陀所書砥柱銘者,皆碎雜議讙,必按</p>
+<p>此而序之。砥柱銘爲薛純而此（按指辨法師）碑爲薛純陀，嘗爲秘書省正字，本名純陀，後以純自列於時，余於類書見之。”(辨法師碑條)</p>
+<p>關於對薛純陀書法的評論，又如朝野勅載卷三(寶顔堂秘笈普集本)：</p>
+<p>“薛純陀亦効歐陽(詢)草, 傷於肥鈍, 亦(歐陽)通之亞也。”</p>
+<p>歐陽文忠公集集古錄跋尾唐辨法師碑條(涵芬樓景印元刊本)：</p>
+<p>“(薛)純陀，其書有筆法，其邁勁精悍，不滅吾家蘭台。”</p>
+<p>砥柱銘不僅以書法著稱，文章也很有名，以至曾拿來考試監生，如明道雜志（涵芬樓景印學海類編本）：</p>
+<p>“掌禹錫學士……嘗言一生讀書，但得佳賦數箇，每遇差考輒用之，用亦幾盡。嘗試監生，試砥柱勒銘賦。”</p>
+<p>柳公權寫的砥柱銘，在寶刻類編卷四(道光劉氏梅華山館刊本)與通志卷七十三金石略中曾經著錄，但納新河朔訪古記卷下（博古齋景印守山閣譜書本）所錄洛陽石刻目中即未收錄，疑在元代已經佚亡。至於薛純陀原刻，在北宋時期拓片就很難得，而且至元符時曾經崩壞數十字。畫墳錄記載：</p>
+<p>“(在禹廟)下望砥柱,上百步,屹然中流,高數十丈尺。銘勒其上,……魏公撰文,正字薛純,稷之子也。每欲印搢,伺天氣晴明,先維舟砥下(按:當作‘柱’)下,梯而墜上,數日不可竟,俯視洪流,足酸目眩,用是難得真本。元符中,大水壞三門,……銘亦失數十字。”</p>
+<p>根據這條記載，砥柱銘刻在“砥柱”上，而所謂“砥柱”，似即今日的梳桿台。類似的記載還有溫國文正司馬公文集謁三門禹祠詩：</p>
+<p>“相映孤峯短(原注:水際孤峯,甚細而高……),銘書絕壁高(原註:唐太宗刻銘砥柱之陰,魏鄭公撰,字幾盈尺,殘缺僅可讀)。”</p>
+<p>調查時在梳桩台上曾經仔細搜索，已毫無字跡，而王翰遊三門記中也沒有提到砥柱銘，大概在明初就已經佚亡。全部銘文沒有流傳下來，現在只能讀到“仰臨底柱，北望龍門，茫茫禹跡，浩浩長源”[1]及“挂冠莫顧，過門不息”[2]等殘句了。</p>
+<p>“唐三門紀功頌” 賓刻叢編卷十陝州條(光緒陸氏萬卷樓刊本)：</p>
+<p>“唐三門紀功頌：唐太子亨題額，棣王琰分書。天寶三年十二月建(原註：復薈碑錄)。”</p>
+<p>又，寶刻類編卷一亦曾著錄。頌文沒有流傳下來。</p>
+<p>“唐雍王遊三門記” 賓刻叢編卷十陕州條：</p>
+<p>“唐雍王遊三門記：唐元帥府判官裴徽撰，行軍司馬李進書，雍王題額。代宗廣德初，雍王爲天下兵馬元帥，東討史朝義，師還次陝，因登三門，問從官以古今與亡治亂之迹，作此記。廣德二年刻，在三門。”</p>
+<p>又，寶刻類編卷一亦曾著錄，但裴敬作裴敞，李進作李晉。文章也沒有流傳下來。</p>
+<p>“底柱”二字 明吕桷溝野先生文集卷十六觀底柱記：</p>
+<p>“而束岸山斫有古刻‘底柱’二字及唐、宋、元、金銘詩。”</p>
+<p>今“底柱”二字及唐、金、元人題詩，都已不存。</p>
+<h1 id="_22">結束語</h1>
+<p>自西漢以來，歷代在黄河中運輸漕糧時，由於中途有三門峽的天險，遇到了極大的困難，為了征服這一天險，古代和中世紀的王朝曾經動用了大量的人力在此開鑿棧道、道路、運渠和建造倉庫。這些巨大的工程，過去祇能依靠有限的文獻記載，加以揣測，現在經過實地調查，則增加了許多比較具體的資料。</p>
+<p>這次調查,仔細勘察了一系列的漕運遺跡,發現人門左岸的棧道在東漢至魏、晉時期已經基本鑒成了,而後來它又經過許多次的修整;瞭解到唐代的開鑿開元新河是一項規模巨大的工程,而在開元新河中行舟,確比從人門經過為安全、穩妥;同時,又找到了唐代的集津倉、鹽倉和唐、宋時期的禹廟、開化寺遺址。這些遺跡和遺存在當地的摩崖題刻,大大地補充了文獻的不足,彌補了文獻的局限性的缺陷,使我們可以比較清楚地勾劃出三門峽的漕運歷史。也是研究我國漕運歷史的重要資料。</p>
+<p>這些宏偉的工程遺跡，既閃耀着勞動人民智慧和勇敢的光芒，也發出他們的血淚控訴。通過調查，我們清楚地看到那些古棧道十分狹窄，在上面輓舟前進是如何的危險！但是，在將近二千年的時間內，勞動人民處於統治階級的殘酷壓榨下，却不得不捨命航運、輓縈，不知有多少人在此喪身殞命，死於濁流。</p>
+<p>現在, 這裏正進行着規模比古棧道、古運渠不知要宏大多少倍的水利工程, 峻險的三門, 正在被改造成為一座鋼筋混凝土大門。待欄河大壩建成以後, 滚滾黃水將變成一片清淨安寧的湖光, 傳說中大禹神仙般的功績, 在解放了的勞動人民手中, 將成爲現實!</p>
+<h1 id="_23">附錄一：三門峽漕運簡史</h1>
+<p>黃、渭兩河橫貫中原,秦、漢以來,常藉以漕運糧食,在很長一段時間內,猶如一條經濟大動脈。但是,三門峽水勢激湍,運舟至此,往往遇險,使漕運受到很大的阻礙。歷代為了使漕運暢通,特別是建都於長安的各個王朝,為了要順利的漕運關東或東南糧食至關中來維持其統治機構,曾在當時已達到的技術條件下,想盡一切辦法,企圖征服這一天險。人們在三門峽進行的活動可以說是為通漕運而與自然進行鬥爭的歷史。在這部歷史中,我們可以看到剝削階級的王朝怎樣不顧生命安全,極端殘酷地驅使人民漕運糧食的情形;也可以看到勞動人民不畏困難,勇敢地與大自然進行鬥爭的偉大氣魄。</p>
+<h1 id="1_5">1. 地名沿革</h1>
+<p>在春秋時期，已經把三門峽叫做三門，如左傳僖公二年：</p>
+<p>“冀为不道，入自顓軎，伐鄴三門”[1]。</p>
+<p>三門又名底柱(“底”又作“底”、“砥”)², 水經注卷四記載了這兩個名稱命名的道理:</p>
+<p>“砥柱, 山名也。昔禹治洪水, 山陵當水者鑿之, 故破山以通河。河水分流, 包山而過, 山見水中, 若柱然, 故日砥柱也。三穿既决, 水流踈分, 指狀表目, 亦謂之三門矣”。</p>
+<p>河中心的三個“門”，根據一段大約是北宋時期的摩崖題刻（開東T25），當時名爲鬼門、夜叉門(今日的神門)與金門(今日的人門)。文苑英華卷三十四唐趙冬曦三門賦序：</p>
+<p>“砥柱山之六峯者，皆生河之中流，其最北有兩柱相對，距崖而立，即所謂三門也。</p>
+<p>次於其南有孤峯揭起，峯頂平闊，夏禹之廟在焉；西有孤石數丈，圓如削成（按：當時約開元新河尚未開鑿，故此乃入門島）。復次其南有三峯：東曰金門，中曰三堆，西曰天柱”。</p>
+<p>所謂金門，當指梳莊台。梳莊台正在人門南口，人門大約在盛唐時期即已稱為金門。人門一名，大約起於金代，如中州集卷四周昂底柱圖詩：</p>
+<p>“鬼門幽險深百篇，人門過窄逾兩牢”。</p>
+<p>從此，金門與夜叉門二名逐漸被人門與神門所代替。皇明文衡卷三十一王翰遊三門記：</p>
+<p>“南者爲鬼門，中爲神門，次北爲人門[3]，又次北及開元新開河；又以中爲夜叉門，北爲</p>
+<p>金門，…未詳其說也”。</p>
+<p>但夜叉門一名，似延續較久，如嘉靖山西通志卷四：</p>
+<p>“禹鑿砥柱，决三川，有上、中、下三門：上曰鬼門，中曰夜叉門，下曰人門”。</p>
+<p>三門或砥柱, 原是三門峽地區的總稱, 現在把河中的一座小島叫做砥柱, 則是後代的傳謠。據前引趙冬曦三門賦序, 唐代名梳莊台為金門, 張公石為三堆, 砥柱石為天柱, 而至北宋時期, 似已不明白古文獻中砥柱一名的意義, 把流莊台稱作砥柱<sup>[1]</sup>。這可能是因爲砥柱銘镌刻在梳莊台上面的緣故。砥柱與天柱僅一字之差, 极易傳謠, 大約在明代以後, 由於砥柱銘的毀壞, 逐漸不稱梳莊台為砥柱而把它挪到天柱的身上了。</p>
+<p>此外，在金代以後，還曾名梳桩台為老君爐，開元新河為公主河。中州集卷六王渥三門津詩：</p>
+<p>“大河三門開，神禹萬世功。他山亦崔嵬，砥柱獨尊雄。遙瞻白玉枝，極植丹灶中；仙公去不返，此事真冥濛。夫人與鼓崖，怪幻尤難窮。”</p>
+<p>又, 王翰遊三門記:</p>
+<p>“又以……(開元)新開河爲公主河,未詳其說也。……其南一峯,壁立度高二百尺許,極奇秀,石紋青黃相雜,其巔多鶴鸛巢,壺石爲爐形,非飛舉者不可至,不知其始,或謂老君煉丹爐,蓋以神之也。”[2]</p>
+<p>王渥詩中的“白玉枝”，當指梳莊台，所謂“挺植丹灶中，仙公去不返”，大概就是老君煉丹爐的傳說。“夫人與鼓崖”，應即爲公主河與掛鼓石[3]。這些詩句，表明煉丹爐、公主河等名稱，金代已經開始。此後，直至乾隆平陸縣志、乾隆直隸陝州志及嘉慶一統志等書中，仍爲這些名稱。可能至晚清以後，才漸漸產生娘娘河、梳莊台等名稱。</p>
+<h1 id="2_5">2. 西漢至北朝</h1>
+<p>楚、漢之際，已經在黃、渭兩河間漕運糧食，如漢書卷三十九蕭何傳：</p>
+<p>“夫漢與楚相守榮陽數年，軍無見糧，蕭何轉漕關中，給事不乏”。</p>
+<p>而在此以前，自秦國東出函谷，逐漸秉併六國土地後，在關東徵收的一部分貢賦，可能已用漕運的方法從黃河轉入渭河西上，所以張良在勸說劉邦定都長安時說：</p>
+<p>“河、渭漕輓天下，西給京師，諸侯有變，順流而下，足以委輸”（史記卷五十五留侯世家，涵芬樓景印宋黄善夫刊本）。</p>
+<p>西漢定都長安後，專制主義國家機構的供應，一部分依靠着關東租穀。因為水運經濟，所以在關東徵收的租穀，主要是漕運而上。漕運數額，隨着社會經濟發展後帝國的向</p>
+<p>外擴張, 軍需和其它開支的增加而越來越大。漢書卷二十四食貨志:</p>
+<p>“（高祖時)漕轉關東粟，以給中都官，歲不過數十萬石。五鳳中，(耿壽昌)奏言：</p>
+<p>‘故事，歲漕關東粟四百萬斛，以給京師’（按：所謂‘故事’，係指武帝時事）”。</p>
+<p>“(武帝時,桑)弘羊又請……諸農各致粟山東,漕盃歲六百萬石”。</p>
+<p>這些漕糧,都要通過三門。經過這一段時間的航運，逐漸增加了對三門峽水情的瞭解,出現了有關的描述,如淮南子卷六覽冥訓(嘉慶刊莊達吉校本):</p>
+<p>“飲砥柱之湍瀲，（高誘注：……湍，湧水至疾；瀝清皆激悍急流）”。</p>
+<p>漕舟在經過三門時, 往往覆沒, 損失很大。但在武帝時期對這一天險還束手無策, 只是想用晉西南和漢中的糧食來代替關東漕粟。史記卷二十九河渠書記載:</p>
+<p>“河東守番係言：‘漕從山東西，歲百餘萬石，更底柱之限，敗亡甚多，而亦煩費。穿渠引汾，溉皮氏、汾陰下，引河溉汾陰、蒲坂下，……度可得穀二百萬石以上。穀從渭上，與關中無異，而底柱之東，可無復漕。’發卒數萬人作渠田。數歲，河移徙，渠不利，…河東渠田廢。其後人有上書，欲通褒、斜道，及漕。事下御史大夫張湯。湯問其事，因言：‘便於底柱之漕。’發數萬人，作褒、斜道五百餘里。道果便近，而水湍石，不可漕。”</p>
+<p>這些計劃失敗後，到宣帝時，又用加重關中和晉南負担的辦法，來減少關束的漕運。漢書卷二十四上食貨志：</p>
+<p>“（大司農中丞耿壽昌）五鳳中奏言：‘故事歲漕關東穀四百萬斛，以給京師，用卒六萬人。宜羈三輔、弘農、河東、上黨、太原郡穀，足供京師，可以省關東漕卒過半，又白增海租三倍。’天子皆從其計，……漕事果便。”</p>
+<p>但是耿壽昌的辦法，並不能徹底解決困難。三門天險不能渡過，關東與關中的經濟聯系就仍受到很大的限制。所以至成帝時期，開始了修鑿底柱的巨大工程。漢書卷二十九溝血志：</p>
+<p>“鴻嘉四年，楊焉言：‘從河上下，患底柱陘，可鏽廣之。’上從其言，使焉鏽之。鏽之裁沒水中，不能去，而令水盞湍怒，爲害甚於故。”</p>
+<p>當時不瞭解三門激流形成的原因,不僅僅是河道狹窄,還在於河床深度懸殊,礁石極多。所以,這種企圖鑿廣三門而使水勢平緩的行動,當然失敗;況且,以當時的技術能力而言,要真正的加寬河道也是不可能的。盡管如此,這件事實仍反映出西漢晚期由於冶鐵技術的進步,大大提高了進行這種巨大工程的能力。因爲從幾件現存的武帝時期的石雕看(霍去病墓石刻羣、昆明湖畔牽牛繡女像),大都只是就石材的形態,稍加雕琢而成,對石材的加工還十分無能,所以當時根本不可能在這種堅硬的閃長斑岩上進行巨大的工程。而在宣帝時期,對於熟鐵加以熱處理的淬鋼法已經發明[1],可以想像,在成帝時期大概就是應用</p>
+<p>着這種堅硬的工具而開鑿岩石的。可惜，在三門峽已經分辨不出這次工程的痕跡了。</p>
+<p>不久以後，赤眉起義推翻了西漢王朝，東漢遷都洛陽。這時，關中的經濟十分暢敞，東漢帝國所依靠的漕糧，大都不需經過三門天險，所以見不到修鑿三門的議論。</p>
+<p>然而，在古代的技術條件下，一種比較切實的辦法——開鑿棧道，開始了。根據調查，至少可以肯定在東漢桓帝和平元年以前已經開始修鑿了一段棧道(人VI段)[1]。並且，還有一批熟悉三門水情的船夫，幫助航行，如後漢紀卷二十八獻帝紀：</p>
+<p>“（興平二年十二月，李樂)欲令車駕御船過砥柱出孟津。宗正劉艾曰：“臣前爲陝金，知其險。舊故有河師[2]，猶有傾危，況今無師！”</p>
+<p>束漢末年，中原混戰，當然不通漕運。至魏、晉時期，由於中原地區的暫時統一，又在此大規模地修鑿棧道。水經注卷四：</p>
+<p>“魏景初二年二月，帝令都督沙丘部、監運諫議大夫寇慈帥工五千人歲常修治，以平河阻。晉泰始三年正月，武帝遣監運大中大夫趙國(□□)，都匠中郎將河東藥世帥衆五千餘人修治河灘”。</p>
+<p>在這二次工程中，遺留下了許多題刻，如：人Ⅱ段T2（正始元年）、人Ⅵ段T3（甘露五年）、人Ⅶ段T9（樂世題記）、人Ⅲ段T3（泰始）、人Ⅲ段T1（泰始四年）、人Ⅱ段T1（太康）、人Ⅱ段T2（太康二年）、人Ⅴ段T2（太康二年）、人Ⅶ段T1（太康二年）等。經過這麼長時間的修鑿，綿延在人門左岸的長達600多米的棧道，已經基本完成了[9]。但是，航運仍然困難，其情況，有如水經注卷四所載：</p>
+<p>“雖世代加工,水流湧湧,濤波尙屯,及其商舟是次,鮮不踟蹰難湧”。</p>
+<p>所以，在泰始十年時，又有鑿通陝州南山，引河注洛而通漕運的計劃，但沒有實行[4]。這樣大規模的工程，在當時只能是一個美麗的幻想而已。</p>
+<p>北魏時期，三門峡水運不通。在孝文帝遷都洛陽後，陝州以西的租調，是從陸路車運至洛陽的。魏書卷一百十四食貨志(涵芬樓景印宋蜀大字本)：</p>
+<p>“三門都將薛欽上言：計京西水次汾、華二州，恆農、河北、河東、正平、平陽五郡，年常綿絹及貨麻，皆析公物，雇車牛送京；道險人弊，費公損私”。</p>
+<p>當時，各路漕運都已不通，由於薛欽詳細論述了陸運的耗費[5]，於是計劃重通漕運。魏書卷一百十四食貨志：</p>
+<p>“倘書度支郎中朱元旭計稱：今校薛欽之說，雖迹驗未彰，而指況甚善，所云以船代車，是其策之長者。底柱之難，號爲天險，迅驚天險，未易其功。然既陳便利，</p>
+<p>無容輙抑……。倘書崔休以爲：其(薛)欽所列州郡，如請興造東路諸州，皆先通水運，今年租調，悉用舟轢……。錄尚書事高陽王雍、尚書僕射李崇等進曰：「運漕之利，今古攸同，舟車息耗，實相殊絕。(薛)欽之所列，關西而已，若域內同行，足爲公私巨盃。即求開興修築，或先以開治，或古跡仍在，用功差易。此冬開月，令疏通咸訖，比春水之時，使運漕無滯。詔從之，而未能盡行也。”</p>
+<p>根據這段記載，似乎盡管朱元旭建議三門漕運要重新開通，而最後却祇開通了東路諸州的水運；然而，遺存在人VI段棧道上的3段景明年間的題刻（T7、T8、T10）却反映出當時確會準備修復棧道[1]，可能還進行過一些工程。</p>
+<p>後來，黃河流域東西分裂，在東、西魏與北齊、北周的時期，河連不通。</p>
+<h1 id="3_4">3. 隱唐時期</h1>
+<p>公元577年，北周滅齊，北方統一，又產生了在黃河中漕運的可能與要求。於是在六年以後就開始漕運關東等地的租穀至長安。隋書食貨志(涵芬樓景印元大德刊本)：</p>
+<p>“開皇三年，朝廷以京師倉廬尚虛，議為水旱之備。於是詔於蒲、陝、虢、熊、伊、洛、鄭、懷、邵、衡、注、許、汝等水次十三州置募運米丁；又於衛州置黎陽倉，洛州置河陽倉，陝州置常平倉，華州置廣通倉，轉相灌注，漕關東及汾、晉之粟以給京師。又遣倉部侍郎韋瓊向蒲、陝以東募人能於洛陽運米四十石經砥柱之險，達於常平者，免其征戍。……四年詔曰：“雖三門以下，或有危險，若發自小平陸運，至陝還從河水，入於渭川，兼及上流，控引汾、晉，舟車來去，爲益殊廣。”</p>
+<p>這時，三門的棧道還沒有修復，所以祇能用陸運的辦法來迴避這一天險。這種在水運艱難處改走陸道的辦法，在此後很長的一段時間內，繼續施行。</p>
+<p>公元589年，隋文帝滅陳，統一了全國。這時，江南地區由於經過六朝時期數百年的開發，出產已超過了黃河流域，江、淮地區的租穀成爲皇帝百官剎削人民、維持國家機器的主要內容之一，漕運的數量，愈來愈大，因而開始修復棧道，準備開通三門水運。隋書卷二高祖紀下：</p>
+<p>“（開皇十五年)六月戊子，詔鑿底柱”。</p>
+<p>在漕運額增大的形势下，帝國頌佈了在三門峽修復棧道的命令。但棧道是否修好？當時在三門是否通船？都不很清楚。</p>
+<p>隋末農民起義後，開皇十五年以後即使修復了一些條道，大概也已被破壞。歷代名畫記卷一(商務景印津逮秘書本)：</p>
+<p>“聖唐武德五年，…兩都秘藏之迹，維揚扈從之珍，歸我國家焉。乃命司農少卿宋遵貴載之以船，訴河西上，將致京師。行經砥柱，忽遺漂沒，所存十亡一二。”</p>
+<p>這次運載的是極其珍貴的書畫與圖書<sup>[1]</sup>, 行船一定倍加小心, 而仍遭覆沒, 當時棧道殘破的情況, 可想而知。</p>
+<p>貞觀十六年四月三日，鄴縣令侯懿、河北縣尉古城師和侯宗三人，押運兩艘載重六百石的船隻通過三門(據人VI段T6)，揭開了唐代在三門峽開通漕運的序幕。六百石，是北魏以來航行於黄河中的漕舟的一般載重量[2]。但這時的漕運，在洛陽至陝州一段，仍以陸運爲主。新唐書卷五十三貞貨志：</p>
+<p>“高祖、太宗之時，…水陸漕運崴不過二十萬石，故漕事簡。自高宗以後，歲益增多。初，江、淮漕租米，至東都輸含嘉倉，以車或馱陸運至陝而水行。”</p>
+<p>高宗以後，由於朝廷機構迅速擴大，百官俸祿增多，而且寓兵於農的府兵制又在逐漸破壞，朝廷的開支大大增加了。因而，京師需要輸入的租調，日益增多。但洛陽至陝州，“既用陸運，無由廣致。若能廣開漕運，變陸爲水，則有所盈餘，動逾萬計”（唐會要卷八十七裴耀卿語，據江蘇書局繡武英殿聚珍版譜書本）。所以從顯慶元年起，大力修鑿棧道。唐會要卷八十七：</p>
+<p>“顯慶元年十月，苑面西監褚朗請開底柱三門，鑿山架險，擬通陸運。於是發卒六千人鑿之，一月而功畢。後水漲引舟，竟不能進。”</p>
+<p>這裏似還反映出在褚朗率工開鑿以前，漕舟一般不能通過三門。此後，唐代官府仍繼續在三門峽修鑿棧道，還存在人門棧道側壁上的總章三年開三門河道(人VI段T4)和垂拱四年開三門河道(人VII段T3)等題刻，說明了這一情況。</p>
+<p>其後，在中宗神龍元年以後至玄宗開元十八年之間的時候內，又有楊務廉率工開鑿棧道[3]。太平廣記卷二六八引朝野叢載(文友堂景印明談愷刊本)：</p>
+<p>“(將作大匠楊務廉)開陝州三門，鑿山燒石巖，側施棲道牽船。河流湍急，所顧(雇)夫並未與價值。苟牽繩一斷，棲梁一絕，則撲殺數十八，取顧夫錢 籍米充數，即註夫逃</p>
+<p>走,下本貫禁父母、兄弟、妻子。其牽船夫皆令繫二鈇於胸,皆落棱着石,百無一存。”人門棱道在魏、晉時期已粗具規模,可見褚、楊工程,並非草創,只是修整原有的棱道;然從而可知現存的人門棱道,是經過唐代大規模加工後的形狀。</p>
+<p>水運既然如此危險，所以“變陸為水”的願望並未實現，大部分漕糧仍在黃河南岸陸運而過。由於陸運耗費，數量不能太多，逼使高宗至玄宗往往逐糧東都。開元廿一年，長安糧穀缺貫，又實行一種縮短陸運途程的辦法，來增加漕運額。新唐書卷五十三食貨志：</p>
+<p>“（開元二十一年)京師雨水，穀踊貴，玄宗將幸東都，復問(裘)耀卿漕事。耀卿因請罷</p>
+<p>陝陸運而置倉河口，使江南漕舟至河口者輸粟於倉而去，縣官雇舟以分入河、洛。置倉三門東西，漕舟輸其東倉而陸運以輸西倉，復以舟漕，以避三門之水險。玄宗以為然。乃於河陰置河陰倉，河西置柏崖倉，三門東置集津倉，西置鹽倉，鑿山十八里以陸運。自江、淮漕者皆輸河陰倉，自河陰西至太原倉（在陝州）謂之北運，自太原倉浮渭以實關中。凡三歲，漕七百萬石，省陸運傭錢三十萬緡”。</p>
+<p>這條運路，因爲在黃河北岸，所以當時稱之爲“北運”；以前在黃河南岸的運輸，就稱之爲“南路陸運”（見新唐書卷五十三食貨志）。北運所設集津倉和鹽倉，大概就在調查時發現的龍岩遺址與下倉遺址的地點。十八里陸道，也還有一小段痕跡可窺[1]。</p>
+<p>西倉似本名三門倉(唐會要卷八十七“漕運”條)，鹽倉之名則約與解州池鹽有關。貞元十三年崔敖大唐河東鹽池靈慶公神祠碑：</p>
+<p>“(河東池鹽)其漕砥柱,其關嶺輻。……濟于橫汾，爰距隴坂，束下京鄭，而抵于宛。</p>
+<p>艘連其檔，轟擊其”。（金石萃編卷一〇三）</p>
+<p>唐、宋時期，陝西、河南等地皆貪河東池鹽[2]。自戰國以來，池鹽皆由解州陸運至虞坂，然後東下。虞坂在三門以西，距鹽倉極近[3]，一部分解鹽可能即暫貯倉內，因此而得名鹽倉。當時的南、北陸運既然耗費太大，那些解鹽就可能甘冒危險，直從砥柱而過，順河東下；所謂“其漕砥柱”，約即指此而言。</p>
+<p>大概由於三門下游還有一大段艱險的水程，而新開的十八里陸道也不太好走，所以北運只有短短的三、四年便告夭折。新唐書卷五十三食貨志：</p>
+<p>“及耀卿罷相，北運頗艱，米歲至京師才百萬石。二十五年，遂罷北運。而崔希逸爲河南陝運使，歲運百八十萬石。其後以太倉積粟有餘，歲減漕數十萬石。”</p>
+<p>北運失敗後，又想“變陸為水”。這時，正值大唐帝國最強盛的時期，徵收的租調既多，國賈也極雄厚，在這兩種條件結合下，於開元二十九年冬進行了一項規模極為巨大的工程，在人門左岸的山岩間開出一條運渠，使漕舟從此而過[4]。新唐書卷五十三食貨志：</p>
+<p>“（開元）二十九年，陝郡太守李齊物鑿砥柱爲門以通漕，開其山巔爲輓路，燒石沃醜而鑿之。然棄石入河，激水盃湍怒，舟不能入新門，候其水漲，以人輓舟而上。”</p>
+<p>修鑿從十一月開始，至次年正月二十五日完工。鑿成後本無定名，如唐會要卷八十</p>
+<p>七“漕運”條與舊唐書卷九玄宗紀稱之為“渠”，通典卷十食貨典與冊府元龜卷四百九十七“邦計部”（據明崇禪刊本)稱之爲“石渠”，通鑑卷二百十五玄宗紀下與玉海卷二十二“地理”稱之爲“三門運渠”，新唐書卷五十三食貨志稱之爲“新門”，開天傳信錄(據陶氏景刻咸淳刊百川學海本；又白孔六帖卷八十四引開元記略同，是爲一書，六帖據明嘉靖刊本)稱之爲“天寶河”；“開元新河”一名，約自北宋以後所起。所謂“新門”，當爲三門以外新鑿的一個“門”的含義。</p>
+<p>李齊物開鑿新門用了“燒石沃醜(即醋)”的方法，楊務廉鑿棧道也應用了“燒石巖”的方法。燒石潑水的方法，戰國時期已經應用[1]，東漢時期已很普遍[2]；燒石潑醋的方法，則在唐代亦已被普遍應用[3]。</p>
+<p>新門鑿通後，漕舟從此通過要比從人門通過安全得多。開天傳信錄(陶氏景刻咸淳刊百川學海本)：</p>
+<p>“天寶中，上以三門(按：“門”字據博古齋景印明刊百川學海本補)河道險束，漕運艱難，乃旁北山鑿石爲月河，以避湍急，名曰天寶河。歲省運夫五十萬，久無覆溺淹滯之患，天下稱之。”</p>
+<p>但漕運額因此而增加沒有呢? 根據新唐書食貨志的記載, 由於韋堅開通了長安至潼關的漕渠, 溢運額在天寶三載達到最高峽, 每年四百萬石。當時運送這些租粟的途程, 在陝州一段只有三門水運和南路陸運兩路。而南路陸運的數量, 在開元初每年為八十萬石, 以後逐漸增加, 至天寶七載歲達二百五十萬石是最高的數額[4], 那麽在天寶三載時, 還不到此額。所以這一年在新門中通過的漕糧, 應在一百五十萬石以上。水運的數量, 差不多相當過去水陸運輸的總量。</p>
+<p>但是，新門的河床太淺了，沒有幾年就被河泥淤塞而不能通漕舟。</p>
+<p>不久以後，安、史繼起，藩鎮割據，黄河中、下游成爲戰場，三門峽的棧道破壞了，漕運停頓了。其情況，有如劉晏遺元載書所述：</p>
+<p>“函、陕凋残，束周尤甚。過宜陽、熊耳，至武牢(按：即虎牢，唐人避諱改)、成皋，五百里</p>
+<p>中，繡戶千餘而已。……興必脫幅，牛必贏角，棲車輓輓，亦不易求。”(唐會要卷八十七，“漕運”)</p>
+<p>漕運猶如唐代王朝的命脈，一刻也不能停頓，所以一俟戰勝史朝義，立即委命劉晏設法恢復。劉晏一方面依裴耀卿分節轉運的舊法，另外還製造一種載重一千石的堅牢的“上門填闕船”，專門在河陰至三門間航行，並調用四川、襄陽的麻、竹來製作縈繩<sup>[1]</sup>。棧道大概也得到了修復。這時期，三門漕運的情景，有十分具體的記載：“自集津上至三門，皆一網船夫併牽一船<sup>[2]</sup>，仍和雇相近數百人挽之。河流如激箭，又三門常有波浪，每日不能進一、二百船，觸一暗石，即船碎如末，流入旋渦，更不復見。上三門篙工，謂之‘門匠’，悉平陸人為之，執一標指麾，以風水之聲，入語不相聞。陝人云：‘自古無門匠墓’，言皆沉死也；故三門之下，河中有山，名米堆、穀堆<sup>[3]</sup>。每綱上三門，無損傷，亦近百日方畢。所以漕運艱阻。”（類說卷二引鄴侯家傳，據文學古籍刊行祉景印明天啓刊本）</p>
+<p>關於漕舟遇險的比例，新唐書卷五十三食貨志記載：</p>
+<p>“歲漕經底柱，覆者幾半”[4]。</p>
+<p>這時，還由於藩鎮強大，國家徵收到的租穀减少了，漕運量最多每年不過一百一十萬石，一般只有數十萬石[5]。</p>
+<p>德宗建中二年起，唐王朝相繼與李正己、李希烈、朱汙、李懷光等作戰，運河常被切斷，德宗且曾倉皇脫出長安，漕運停頓。興元元年戰勝朱汙，德宗回到長安，並在同年十一月攻克汴州，打通了運河航路。但當時陝號都知兵馬使達奚抱暉又與李懷光相聯結，陝州運道隨時可能被切斷。直到貞元元年七月，德宗遣李泌至陝州以權術取得達奚抱暉的兵權，才重新創造了開通漕運的條件[6]。三門水運，既然有如前引鄭侯家傳所述，十分困難，於是用加寬裴耀卿所鑿北岸陸道，並新修一走回空車的“上路”的方法，重通北運。這時，長安米糧匱乏，十分緊張，所以李泌一取得陝州兵權，立即動工。陸宣公翰苑集“制詠”卷六，貞元元年祭大禹廟文(涵芬樓景印宋刊本)：</p>
+<p>“底柱之間,河流迅激,舟楫所歷,罕能獲全。爰命工徒,鑿山開道,避險從易,涉安代危。嗷嗷蒸人,俟此求濟,仰新幽贊,以集丕功。”</p>
+<p>又新唐書卷五十三食貨志：</p>
+<p>“陝虢觀察使李泌益繫集津倉山西逕爲運道，屬於三門倉。治上路以回空車，費錢五萬緡；下路滅罕。”</p>
+<p>次年二月,道路修完。通鑑卷二百三十二“貞元二年二月”條:</p>
+<p>“自集津至三門，鑿山開車道十八里，以避底柱之險。是月道成。”鑿成以後，立即運輸。資治通鑑考異卷十八“貞元二年”條引鄭侯家傳：</p>
+<p>“三月入河運第一綱米三萬石，自集津車般至三門，十日而畢。”</p>
+<p>北岸陸道經過這次修鑿後，似很暢通。太平廣記卷三十八引鄴侯外傅：</p>
+<p>“(李泌)又開三門陸運一十八里，漕米無砥柱之患，大濟京師”。</p>
+<p>又, 新唐書卷五十三食貨志:</p>
+<p>“（李泌在修鑿陸道而外）又爲入渭船，方五板，輸東渭橋太倉，米至凡百三十萬石。遂罷南路陸運。”</p>
+<p>根據這條記載，還可以知道在劉晏主持漕運時，水陸兼運。事實上水陸運輸並舉大約貫穿整個唐代，只是在有些時候主要依靠南路陸運，而另一些時候則主要依靠三門水運或北運。</p>
+<p>北岸陸運，在憲宗的時候，似又被水運代替。文苑英華卷八百八十八李宗閔故丞相尚書左僕射太尉王公神道碑：</p>
+<p>“(王播)疏三門,挽沉石,以濟巨虧,關中遂亡其饑”。</p>
+<p>咸通以後,四方起義,漕舟愈盆脆薄,漕運逐斷絕[1]。不久以後,唐帝國被農民大起義打垮而滅亡了。</p>
+<h1 id="4_2">4.北宋以後</h1>
+<p>經過紊亂的五代十國後，北宋遷都汴京，金、元以後又遷都北京，陝州便失去了轉運東南租米至都城的重要地位，通過三門的運舟因而愈來愈少。</p>
+<p>北宋前期，三門曾略通漕運，不過已不是將東南租米運致長安，而是轉運陝西的粟、菽至汴京，且數量較少。朱會要輯稿“食貨”第四十六：</p>
+<p>“凡水運：……陝西諸州菽、粟自黄河三門淞(沿)流入汴，亦至京師，三門白波發運使判官摧綱領之。……四河所運，國初未有定額，太平興國六年始制：汴河歲運江、淮杭米三百萬石，豆百萬石；黄河粟五十萬石，豆三十萬石；惠民河粟四十萬石，豆二十萬石；廣濟河粟十二萬石；凡五百五十萬石。或水旱蠲放民租，隨減其數。”</p>
+<p>爲了準備重通漕運，從太祖建隆四年起曾修繫過三門棧道。宋會要輯稿“方域”第十：</p>
+<p>“（建隆）四年四月二十三日詔：‘重疏鑿三門’”[2]。</p>
+<p>並立即在在三門設立發運司，有發運使，河陰至三門為一段，三門至陝西爲一段。朱會要</p>
+<p>辑稿“職官”第四十二：</p>
+<p>“三門白波發運司有摧促、裝綱各二人，以京朝官三班充；河陰至陝州，自京至汴口，摧綱各一人，並以三班以上充”。</p>
+<p>“太平興國五年正月，命右贊善大夫姚沆爲陝西三門發運”。</p>
+<p>這時，山西的解鹽約陸運至集津倉後，才從黃河水運而下[1]。這是為了躲避三門水險的緣故。</p>
+<p>至仁宗時期，趙元昊自稱皇帝，立國西夏，在關西爆發了戰爭，不但陝西的粟、菽不能運送汴京，反需關東供應大量的糧餉，因而在嘉祐四年以後，陝西粟、菽停止東漕。文獻通考卷二十五(商務景印武英殿本)：</p>
+<p>“後(仁宗慶曆時)黄河歲漕盃減耗，纔運救三十萬石，而歲創漕船市材木役牙錢，勞費甚廣。嘉祐四年，詔罷所運救，……自是歲漕三河而已。”</p>
+<p>但是在三門下游的杜家莊棧道上發現一段治平三年修鑿棧道的題記，三門漕運似未完全停止。這可能是為了供應關西軍餉而進行的，然而，至多是不絕如纏而已。</p>
+<p>宋王朝與西夏作戰以後，為了將關東物質西運，先後有歐陽脩建議重通唐代北運舊道[2]，王安石計劃實現西晉時期繫通陝州南山，連接黄河、穀水、洛水而通漕運的理想[3]，但是都沒有實行。</p>
+<p>金、元時期，此地不通漕運。而在元代，則一度曾欲疏鑿三門，重通漕運至關陝，亦因險難不可克服而沒有實行。元史卷一八三王思誠傳(涵芬樓景印明洪武刊本)：</p>
+<p>“(至正年間)陝西行台言欲疏鑿黄河三門,立水陸運站,以達於關陝。移牘(王)思誠。會陝西、河南省憲臣及郡縣長吏視之，…河中灘礦百有餘里，礁石錯出。凡(行)三十里，度其不可，乃作詩歷敘其險[4]。執政采之，遂寢其議。”</p>
+<p>在明代，又重新開通了三門水運。洪武七年春，爲了防禦蒙古，開始轉運糧餉至陝西、</p>
+<p>寧夏、河州一帶。明史卷七十九貢貨志：</p>
+<p>“(洪武時)命浙江、江西及蘇州等九府運糧三百萬石於汴梁，……其西北邊則浚開封漕河，餉陝西，自陝西轉餉寧夏、河州。”[1]</p>
+<p>洪武十年, 有奉中書省差署令郭祐、承宣使江岷、中奉大夫河南等處承宣布政司左參政馬亮、同中書省宣使李傅等至三門巡視河道 (據開西 T11 與開東 T27), 並且修建了糧倉十二間 (據開東 T16)。大約三門又通運了。</p>
+<p>雖然明代的造船、航運技術已比唐、宋時期大大提高，但仍克服不了三門天險，當時似只有鹽船、木筏才往來無滯，而糧草的運輸却很少。所以在天順、弘治年間，楊鼎和倪岳曾建議實行“倒倉”之法(即唐代分節轉運之法)來增加漕運。但沒有實行。野獲編卷十三“關陝三邊餓道”條(道光扶荔山房刊本)：</p>
+<p>“故太宰倪文毅岳在事時，見關中三鎖轉輸不給，曾上疏云：‘今關陝所需，皆出山西、河南，此三省俱近黄河，其中雖有三門孟津(按：當爲集津之誤)之險，然漢、唐糧運，皆由此濟，即今鹽船、木筏，往來無滯。……是在按求古跡，何處可避險，何處可立倉倒運，何處可造船裝運，勿懼一勞而失永利。’事竟不行。”[2]</p>
+<p>後來,在嘉靖十四年時,曾在此修整棧道四十餘丈。湧幢小品卷二十六:</p>
+<p>“嘉靖乙未，御史余光[3]、河津知縣樊得仁鑿石崖爲窟，植以栃木椿，鍊鐵爲索，橫繫椿上，凡四十餘丈，往者以鐵鈞挽索而上，頗易爲力。”</p>
+<p>可是在不久以後，有王士性來此游覽，却完全看不到輓舟航運的情況，如豫志(涵芬樓景印學海類編本)：</p>
+<p>“三門而下，石礎如山，連延百里。河過砥柱，響聲如雷。漢時轉漕關中，皆繇此路，不知何以挽舟而上？或謂古有月河(按：指開元新河)，今石礎中皆無形影可求”。</p>
+<p>王士性爲萬曆進士[4]，在他抵三門游覽時，既“不知何以挽舟而上，”三門水運當已停頓。</p>
+<p>從此以後，三門不通漕運。然而在康熙時期，曾一度想從此轉運河南米穀至山、陝。三十一年，有知山西潞安府事中憲大夫劉口口來三門巡視河道(據開東T20)；四十二年至四十三年，康熙又派人勘察試航。大清聖祖仁皇帝寶錄卷二百十四(僞滿國務院印本)：</p>
+<p>“（康熙四十二年）十二月辛卯，上谕大學士等：朕頃巡幸西省，閲視汾、渭，二水俱屬大河，直與黄河相通，河南等處米穀，似可由黄河轉運。但聞三門底柱水勢極溜，船不能上。朕欲親往閲視，因陝州知州奏無路徑斷難行走，遂未果行。特命三貝勒尤祉同近御侍衛往視。據回奏云：伊等遣人乘騎涉河一道，閲有神、人、鬼三門，俱係鑿石開通，水從三門流出，其勢甚寬，其流甚急，古人於岸上鑿有曳船眼孔，但未經以船試驗，</p>
+<p>不知可否行走？……朕至河南，閲河南府居各省之中，水路四達，最爲緊要之地，應於此處儲積米穀，每年田畞豈能必皆豐收，倘山、陝等省間或收成歉薄，即可將此積貯米穀，修造船隻，由黄河挽運，若到三門底柱船不能上，亦可於三門底柱造船剎運，以至山、陝。……俟明歲，遣大臣往視。”</p>
+<p>又，雍正河南通志(同治補修本)：</p>
+<p>“康熙四十三年八月[1]，九卿科道會議得川陝總督博濟、陝西巡撫鄂海、山西巡撫噶禮、河南巡撫徐潮疏稱：‘臣等欽遵諭旨，會勘三門在陝州東北四十里。兩岸石山，鑿分三潤，中流謂之神門，水勢正溜;南岸謂之鬼門，水更淘湧；北岸謂之人門，水略舒緩。三門之下約百餘步則有砥柱，再其下二里許則有臥虎灘。臣等用空船從神門順流下放，頗覺利便。又從臥虎灘下挽舟上行，因係方船，又無蓬舵，自辰至申，僅能拽行半里。復以有蓬舵空船，從臥虎灘下乘風縈挽逆流而上，方能從人門經過。又以船載糧三十石，用夫三十餘名，從下挽行而上，自已至未，亦從人門過去。雖船隻可行，但溜急灘多，水漲則無縈路，今挽空船於二百六十里，足行十有七日，若係重載，必濡滯時日，多費人工。似此水路，不如陸行為便。倘將漕糧貯於河南府，由陸路運至陝州西門外太陽渡上船，計程不過三百餘里，馳送不過四、五程，車行止需七、八日，更比河路費省矣”。</p>
+<p>這段詳細的試航記錄，使我們可進一步瞭解漢、唐時期三門輓運的情況，它說明歷代關於三門水程艱險的言論，絕非誇張。</p>
+<p>自從驛海鐵路修通以後，三門峽愈來愈不受重視，成爲一個荒僻的地方，那些漕運遺跡，也逐漸不被外世所聞。</p>
+<p>* *</p>
+<p>自秦、漢通漕以來，各個王朝對三門峽的態度，由於其歷史、技術條件的不同，可以概括為五個階段：</p>
+<ol>
+<li>西漢武、宣時期 由於帝國經濟、政治的發展，漕運量已經很大，但在技術條件的限制下，只能採取迂迴躲避的消極態度。  </li>
+<li>西漢成帝時期 由於冶鐵技術的發展，揭開了修繫三門峽的序幕。但對地形、水情缺乏認識，以為只因河道狹隘，便想鑿廣。而這種理想在當時根本無力實現，當然失敗。<br />
+3.東漢後期至魏、晉已經瞭解三門一帶的水勢，一則由於河道窄，二則是暗礁多，形成所謂的“闢流”[2]。而且大概也已認識到繫廣三門峽是不可能的。所以，在西漢修鑿三</li>
+</ol>
+<p>門的經驗的基礎上，改繫棧道。</p>
+<ol>
+<li>隱、唐時期 由於東南地區經濟的發展，漕運糧大大增加，會不斷地進行時間長、規模大的修治工程。這一階段採取的方法是多方並舉，即一面修治原已粗具規模的棧道，另外又開鑿了北岸十八里陸道和開元新河。  </li>
+<li>北宋以後 由於大部份漕糧不從三門經過，所以僅就原有棧道，稍加修鑿。而在金、元及萬曆以後，放棄不顧。</li>
+</ol>
+<p>不論那個時期，也不論當時採取什麼方法，從未完全克服三門天險。安全通過三門，成爲二千年來人們的一個美麗的理想。解放以後，黨和政府，領導全國人民製訂和實現着宏偉的治黃規劃，工人階級正在以驚天動地的力量，改造社會，改造自然。將來，這裏不僅可以發電、灌溉，還會有許多船隻順利地來往不息，幾千年的理想，快要成爲現實了。</p>
+<p>砥柱的險惡，黄河的災難，將砥是像銘刻一樣，鑄在歷史的巨石上，一去不復返！</p>
+<h1 id="_24">附錄二：河心諸島的仰韶、龍山與殷代文化遺存</h1>
+<p>1957年春，由於黄河三門峽工程局在河心諸島挖掘土方，準備岩石的爆破工程，暴露了鬼門島和張公石島上的仰韶、龍山、殷代遺址。這些遺址保存得並不好，遺物也較少，而挖土的速度又很快，我們僅僅能採集一些標本和做一些簡單的觀察。</p>
+<h1 id="1_6">1. 鬼門島遺址</h1>
+<p>鬼門島上的遺址可分爲西部與中部兩區。</p>
+<p>島頂西部的區域,從挖掘土方的斷面看,可分為三層:第一層黃砂土,厚約30—40厘米,無包含物;第二層紅色土,質地細密,厚約20—35厘米,無包含物;第三層灰褐土,夾雜着灰土塊和紅燒土塊,厚約90—110厘米。第三層出仰韶陶片;並有一座圓形殘窖,直徑72,殘壁高30厘米,窑底與窖壁係厚約5厘米的紅燒土,因已被挖土時所破壞,無法復原,其形制可能與1957年在陝縣三里橋遺址中所發現的仰韶陶窖相同。</p>
+<p>至於島頂中部，則僅在挖土時發現磨製石斧和仰韶、龍山的陶片，未見清楚的灰層。</p>
+<p>仰韶文化的遺物主要分佈在西部，這裏發現一件夾砂粗紅陶的歟口（圖版肆壹，1）。在島頂中部採集到4片素面的細泥紅陶(圖版肆壹,2、3)，大約是盆形器的口緣和底部；還有1片細繩紋陶片，似屬小口尖底瓶的殘片。這些陶器的質地和製法，似與陝縣三里橋的仰韶遺址出土物相似。</p>
+<p>龍山文化遺物則只在島頂中部發現。全部是帶籃紋的泥質灰陶。有一種罐底（闕版肆壹,5)，用接底方法製成，腹、底部都印有籃紋，具有明顯的龍山文化特徵。另外還發現一種輝長岩的長方形厚斧，橫截面為有棱角的長方形，刃部對稱而磨製較細絞，斧身稍粗糙(圖版肆壹,4)。這種石斧過去曾被人視作是仰韶文化的典型石器[1]，而據我們在陝縣廟底溝、三里橋的發掘，却僅僅出於龍山文化層中。</p>
+<h1 id="2_6">2. 張公石島遺址</h1>
+<p>在島頂有文化堆積。據所挖土方,其地層剖面為:第一層,黃沙土,厚約15—35厘米,無包含物:第二層,灰土,厚約20—40厘米,含殷代陶片;第三層,紅色土,無包含物:第四層,灰白土,出龍山陶片及單孔石刀等。</p>
+<p>龍山文化遺物主要是帶繩紋的夾砂粗灰陶,大部份是高的碎片,其中有2件是帶鑿的</p>
+<p>鬲口，2片是附有圓餅形堆紋的腹片(圖版肆贰,2-4)。還有幾片籃紋的泥質陶片(圖版肆贰,5)，大抵是罐類。長方單孔石刀1件，用頁岩製成，形狀略不規則，孔由兩面鑽透，刃部對稱(圖版肆贰,1)。這些石器和陶器，都是典型的河南龍山文化遺物。</p>
+<p>殷代遺物有夾砂粗灰陶與泥質灰陶兩種，紋飾以繩紋為主。前者有闋口沿（圖版肆贰，6)及附有尖錐形足尖的鬲足(圖版肆贰，9)與鬲檔等；後者有5件以上圜底內凹的缺底(圖版肆贰，8)，肩部帶劃紋的罐形器殘片(圖版肆贰，7)和一些似爲大口尊的殘片。總的特徵與鄭州二里岡的殷代遺物很接近，或係殷代早期的遺存。</p>
+<p>此外，還在人門島南端的河灘內掘出65枚西漢下橫文五銖，約是西漢時期遇險船舶的遺物，附記於此。</p>
+<p>*</p>
+<p>在鬼門島及張公石島上的發現仰韶、龍山和殷代三個時期文化堆積的事實，說明在那些時候曾有人類在這裏居住過。現在，這兩個石島都在黃河激流之中，貳有在水枯的時期，才能通過乾涸的河床，走上河岸；而且面積很小。按照現在的這種地形來說，古代人類居住在上面，不僅交通不便，也將無法生存。因而我們推測在殷代以前，這兩個石島可能還與兩岸中至少一岸的陸地連接在一起，由於黃河急流不斷地衝刷侵蝕等原因，後來才把它們和陸地切開，成爲孤立在黃河中心的島嶼。鬼門島和張公石島上的古文化遺存的發現，提供了研究黄河變遷歷史的新的資料。</p>
+<h1 id="_25">缺页</h1>
+<h1 id="_26">拓 片 錄</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+七</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+八</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+九</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+-0</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<h1 id="_27"></h1>
+<h1 id="_28"></h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+四一</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>111 H</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>H</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+四八<br />
+五O</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+五七</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+七四</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>川</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>中</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一O</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span>  </p>
+<h1 id="_29"></h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+附一<br />
+附二</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+三門峽全景 (由南向北攝)<br />
+1. 砥柱石 2. 鬼門島 3. 鬼門 4. 神門 5. 神門島 6. 人門 7. 人門島 8. 開元新河 9. 梳桿台 10. 張公石</p>
+<p>（）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 稍推右 2. 跟公石 3. 砌柱石 4. 砌砖石 5. 开远新河 6. 人門島 7. 神門 高 8. 鬼門 9. 鬼門 10. 鬼門</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 人門棧道全景（由右向左爲人1段至人3段，1、闋元新河南口2、椔龍台3、張公石）（由西向東面）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.人Ⅲ段至人Ⅲ段楼道全景（由西北向東南插）<br />
+人門樓道全景</p>
+<p>图版</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.人I段型人Ⅲ段指道金（自右向左数为人I段型人Ⅲ段：由南向北幅）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.提元新人10人17之关系（有除）为间心新（由市向北品）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.人工段轨道工人Ⅲ段轨道条（由南向北锯）<br />
+人I至人Ⅱ段楼道全录及開元新河與人Ⅲ段至人Ⅳ段的則係</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 人 I、II 段棲道及開元新河之关系(自梳桿台上向東北播,右爲人 I 段,中爲人 II 段,左爲開元新河)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 人 I 段楼道之侧景 (由北向南描)</p>
+<p>八T、Ⅱ段標道及開元新河</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 人Ⅱ段棲道全景（由西南向東北播）<br />
+4. 人Ⅱ段楼道侧景(由南向北播)<br />
+人Ⅰ、Ⅱ段楼道全景</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 人I段栈道全景(山西向東攝)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 人 I、Ⅱ段樓道側景（處爲人 I 段，由北向南攝）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 人I段棲道側景(由南向北描)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 人I段栈道侧景(由南向北描)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 人段楼道頂部(仰禪)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 人Ⅱ段楼道侧景（由北向南搞）</p>
+<h1 id="_30">圖版</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 人I段棱道第6號牛鼻形墊孔</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 人VI段棧道第2號牛鼻形壁孔（繩係現代所槃）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 人工段桡道第5號牛鼻形壁孔（梁已断）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 人豆段棲道第1號牛鼻形壁孔</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 人I段棧道第2、3、4號壁孔</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 人V段棲道第8號壁孔與第14—16號底孔對正的情況(俯攝)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7. 人I段棲道第10號壁孔與第10、11號底孔對正的情況(附稿)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 刚出“川”字形方框的方形壁孔<br />
+（人区段第10號孔）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 倘未完全製完的方形壓孔（入V段第5號孔）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 刚攀了右上角及左下角的方形壁孔（入I段第24號孔）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 刚鑿了底下一部分的方形壁孔<br />
+（人V段第12號孔）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 刚紧了底下一部分的方形壁孔<br />
+（人X段第3號孔）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 醫完後的方形壁孔（入Ⅱ段第13號孔）</p>
+<h1 id="_31">圖版拾</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 人皿段棲道第12、13號底孔（大凹槽爲13號，俯禪）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 人V段楼道T3（石匠服令仙、张庭雷）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 人Ⅲ段楼道第5-8號孔</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 人V段與人VI段樓遊之關係(由東南向西北描)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 人Ⅳ段樓道(即箭頭所指處, 左下角爲人V段樓道的起端。由南向北描)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 人V段與人VI、VII段棲道之關係(由東南向西北描)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.八段楼道（由东南向西北端）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.入V段楼道T2（大唐二年）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 人Ⅳ段栈道（由南向北描）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）<br />
+中<br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 人VI段樓道T3（廿露五年）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+入VI段晓道上的题刻<br />
+1. 人VI段楼道T5（和不定年）</p>
+<h1 id="_32">圖版拾肆</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 人Ⅷ段與人Ⅵ段及人Ⅲ段樸道之關係（箭頭指處爲人Ⅷ段，左爲人Ⅷ段，右爲人Ⅵ段，由西向東攝）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 人Ⅷ段棲道全景(山東向西描)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 人Ⅲ段棲道西北端(由東南向西北播)<br />
+八VI、VII、VIII段楼道</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 人Ⅷ段樓道西北部（山東向西播）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 在人V段樓道上向東南遠眺（最近處爲人V段樓道，由西向東插）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 人Ⅲ段栈道T3（垂拱四年）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 人V段楼道西北部的底部(由東向西俯掘)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 人Ⅷ段與人Ⅸ段棲道側景(遠處爲人Ⅸ段，山西南向東北播)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.人段道上侧壁被纖繩磨的痕跡（山南向北摄）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 人V段棱道上侧横被縄繩磨的疾跡（山西南向東北插）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 人马段楼道上侧壁被縷繩嚼涮的痕迹(由北向南摄)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 人Ⅲ段至人Ⅱ段棲道全景(右端爲人Ⅲ段，近處小島爲人Ⅱ段，由東北向西南播)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 人Ⅷ段及人Ⅸ段棱道西半部(由東北向西南播)</p>
+<p>人Ⅷ段至人XI段楼道全景</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 人Ⅷ段與人Ⅸ段樓道(右邊爲人Ⅷ段,由北向南描)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 人段楼道(由西向東播)<br />
+人VII、IX 段 業道</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 人Ⅷ至人XII段(中心小島)棲道與開元新河的關係(山北向南描)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.入区段楼道東半部(由西向東播)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 人IX段樸道第22號底孔(俯攝)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 人区段棲道第14—23號底孔(俯搢)<br />
+人 IX 段 楼 道 上 的 底 孔</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 人区段棲道第14—23號底孔(山西向東播)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 人IX段棲道第14—23號底孔（俯插）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 人XII段楼道(由南向北播)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 人X段棧道上的1、3號底孔及13—35、48—51號小長方形孔(俯搢)<br />
+人X段至人XII段棱遭</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 人X、XI、XII段楼道（由右向左，左侧小岛为人XI段，由西南向東北描）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 人X段楼道(由北向南播)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 鬼Ⅰ段、鬼Ⅱ段栈道全景(由東北向西南攝,左邊的是鬼Ⅰ段)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 乘I段楼道全景（由北向南描）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 鬼Ⅱ段棲道全景（由北向南播）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 狮子题题刻T1。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 狮子頭題刻 T2 及 T3。</p>
+<h1 id="_33">圖版贰貳</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. (由南向北搞)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. (由西向東攝) <br />
+七里蒲以电黄河北岸古楼道全景</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.古楼道（由西北向東南播）<br />
+2.古楼道底部的方槽（俯摄）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.古楼道侧壁上刻的小坐佛</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+题<br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 直棱道侧景（由西向東播）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.古楼道侧壁被碾磨的情况</p>
+<p>雷河獭子日北岸古钱道</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.古栈道垒景（由北向南舞）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.古楼道（山西南向北摇）</p>
+<p>七里蒲以申潢河南岸的古楼道</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+七里溝以西黄河南岸古栈道被黄沙淤埋的情况（由東北向西南攝）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.開元新河南端入口（右邊是人Ⅱ段樓道，由南間北構）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.開元新河北端出口（山北向南播）<br />
+開新河全景</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.開元新河全景（由北河南描）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 周正新河全景（由北向南俯瞰）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.開定新河中段（由南向北播）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.開元新河北端出口（山南向北播）<br />
+開元新河南、北端出人口及中段</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.開元新河南端剛入口後（由南向北描）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.開定新河北端(山南向北播)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（<br />
+4. <br />
+联 斯 藉 电 票 屈 撼 县 团</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（所有）<br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.開元新河西岸基址I全景（由東向西播）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.開元新河西壁竹橋下雙孔(箭頭所指處爲孔眼所在，由西向東播)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.開元新河東壁竹橋下三孔(箭頭所指處爲孔眼所在，由西南向東北插)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.第1至12号孔<br />
+1 <br />
+3. 49 136+20 86</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+32</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. “開西T3”（天智二年）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. “開西T7”（左邊還有一“雜”字未照上）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. “蜀西下2”（宣和三年）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. “開四T4”（興定三年）</p>
+<h1 id="_34">圖版參肆</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. “開束T（大宋废子）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.“開東T1”（膝公輔書款）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. “開東午12”（景寧二年）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. “開東T25、T26” <br />
+開心新河中岸題刻</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 4 <br />
+元 粤河东岸</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.萬曆二年“三門官廳碑記”與搗王廟(山西南向東北播)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 正德十六年“遜三門謁碑”<br />
+禹王潮全景及碑刻 <br />
+3.天顺三年“重修禹王廟碑”（中間一碑）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 禹王廟全景（由東南向西北攝）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 集津仓库址（由东南向西北描）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 集津台遗址（箭頭所指之台地即是，由東向西掘）</p>
+<p>蓝河北景龍岩村的淮津金雀山</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 鹽倉址址(山西向東招)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.下仓村西河旁的乱石堆(山西向東播) <br />
+鹽倉遺址及下倉村西黃河岸邊的亂石堆</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 霍仓遗址(由南向北播)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 鹽仓遗址之緣河嶺崖(山東南向西北插)<br />
+石</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.下仓村以西河滩旁石塊上被繩索磨湧的痕跡<br />
+4.下仓村附近出土的宋代瓮枕，瓮罐<br />
+下倉村以西河灘旁被繡索磨渤的痕跡及下倉村附近的出土物</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.下仓村以西河滩旁有繩索磨湧痕之石塊</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.下仓村附近出土的漢代陶倉、陶壺、陶灶</p>
+<h1 id="_35">圖版肆拾</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 唐代開鑿的山道(由東南向西北攝)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 現在的小道(右側箭頭所指爲開東 T30 至 T35 所在地, 其後則爲上岡所示山道所在地。左側箭頭所指爲開東 T28。由北向南攝)</p>
+<p>三門左岸唐代開鑿的山道及現在的小道</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4 A</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4B</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<h1 id="_36">鬼門島仰韶、龍山遺物</h1>
+<ol>
+<li>
+<p>粗陶罐 2. 细泥红陶盆沿 3. 细泥红陶细绞陶片（以上仰韶） 4. 石斧</p>
+</li>
+<li>
+<p>寫敘陶罐底部（以上龍山）（1爲1/5，3爲1/1，余皆1/2）</p>
+</li>
+</ol>
+<h1 id="_37">圖版肆贰</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+張公石島龍山、殷代遺物</p>
+<ol>
+<li>
+<p>石刀 2-4. 陶南山片 5. 篮敘陶片（以上龍山） 6. 陶南山沿片 7. 陶罐殘片</p>
+</li>
+<li>
+<p>圆底陶罐残片 9. 陶函足（以上殷代）（除8爲1/3外，余皆1/2）</p>
+</li>
+</ol>
+  </div>
+</div>
+
+<div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)"><a href="./长沙马王堆一号汉墓发掘报告.html" style="color:var(--muted);text-decoration:none">← 长沙马王堆一号汉墓发掘报告</a><a href="./殷墟妇好墓.html" style="color:var(--muted);text-decoration:none">殷墟妇好墓 →</a></div>
+</div>
+
+<div class="toc-float" id="tocPanel">
+  <h4>目录</h4>
+  <div id="tocContent">正在生成...</div>
+</div>
+</div>
+<footer class="site-footer">
+<div class="footer-inner">
+  <p>中国考古学专刊·丁种 实体标注知识库 &copy; 2026</p>
+  <p class="footer-links">
+    <a href="https://github.com/CrossTheOcean/archaeology-report-kb" target="_blank">GitHub</a> ·
+    <a href="../about.html">关于本站</a>
+  </p>
+</div>
+</footer>
+<script>
+
+// Generate TOC from headings
+setTimeout(function() {
+  const body = document.getElementById('reportBody');
+  const headings = body.querySelectorAll('h1, h2, h3');
+  const toc = document.getElementById('tocContent');
+  if (headings.length === 0) {
+    toc.innerHTML = '<span style="color:var(--muted)">无标题</span>';
+    return;
+  }
+  toc.innerHTML = '';
+  headings.forEach((h, i) => {
+    h.id = 'heading-' + i;
+    const a = document.createElement('a');
+    a.href = '#heading-' + i;
+    a.textContent = h.textContent;
+    a.style.paddingLeft = (h.tagName === 'H3' ? '12px' : '0');
+    toc.appendChild(a);
+  });
+}, 500);
+
+</script>
+</body>
+</html>

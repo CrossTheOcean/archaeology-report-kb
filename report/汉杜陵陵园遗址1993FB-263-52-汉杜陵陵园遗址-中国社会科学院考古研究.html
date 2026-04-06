@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>汉杜陵陵园遗址 — 中国考古学专刊·丁种 — 实体标注知识库</title>
+<meta name="description" content="基于70份考古学专刊·丁种发掘报告的实体标注与结构化知识库">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏺</text></svg>">
+<style>
+:root {
+  --bg: #0f1117;
+  --card: #1a1d27;
+  --border: #2a2d3a;
+  --text: #e4e4e7;
+  --muted: #8b8fa3;
+  --accent: #f59e0b;
+  --accent2: #ec4899;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* Navigation */
+.topnav {
+  background: rgba(15, 17, 23, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.nav-links a.active { color: var(--accent); background: rgba(245,158,11,0.08); }
+
+/* Layout */
+.container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+.hero {
+  text-align: center;
+  padding: 48px 20px 32px;
+}
+.hero h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.hero .subtitle { color: var(--muted); font-size: 1.05rem; }
+
+/* Stats */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin: 28px 0 36px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 28px;
+  text-align: center;
+  min-width: 150px;
+  flex: 1;
+  max-width: 200px;
+}
+.stat-card .num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.stat-card .label { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
+
+/* Grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+}
+.card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  background: var(--card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.82rem;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+thead th:hover { color: var(--text); }
+tbody td { padding: 10px 14px; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+tbody tr { transition: background 0.15s; }
+tbody tr:hover { background: rgba(245, 158, 11, 0.04); }
+
+/* Tags */
+.era-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.ebar {
+  display: inline-block;
+  height: 6px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Report detail page */
+.report-header {
+  margin-bottom: 28px;
+}
+.report-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.report-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.report-meta span {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+.report-body h2 { font-size: 1.3rem; margin: 32px 0 16px; color: var(--accent); }
+.report-body h3 { font-size: 1.1rem; margin: 24px 0 12px; }
+.report-body p { margin-bottom: 12px; }
+.report-body ul, .report-body ol { margin: 12px 0 12px 24px; }
+.report-body li { margin-bottom: 4px; }
+.report-body table { margin: 16px 0; }
+.report-body table th { background: var(--card); }
+.report-body table td, .report-body table th {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+}
+.report-body pre {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.report-body code {
+  background: rgba(245,158,11,0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* Image placeholder */
+.img-placeholder {
+  display: inline-block;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+/* Entity chips */
+.entity-section { margin: 20px 0; }
+.entity-section h4 { color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; }
+.echip {
+  display: inline-block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  margin: 2px 3px;
+}
+
+/* Report card (for list page) */
+.report-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.report-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.report-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.report-card .rc-meta { color: var(--muted); font-size: 0.84rem; }
+.report-card .rc-entities { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-top: 6px; }
+
+/* Search & filter */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+.search-input {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 260px;
+  outline: none;
+}
+.search-input:focus { border-color: var(--accent); }
+.filter-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(245,158,11,0.08);
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  margin-top: 60px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.footer-inner { text-align: center; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.footer-links { margin-top: 8px; }
+.footer-links a { color: var(--accent); text-decoration: none; }
+.footer-links a:hover { text-decoration: underline; }
+
+/* About page */
+.about-section { margin: 28px 0; }
+.about-section h2 { font-size: 1.3rem; margin-bottom: 12px; color: var(--accent); }
+.about-section p { margin-bottom: 12px; color: var(--muted); }
+.about-section ul { margin: 8px 0 8px 20px; color: var(--muted); }
+
+/* Download page */
+.dl-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.dl-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.dl-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; }
+.dl-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #000;
+  padding: 8px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.dl-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.dl-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.dl-btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Map page */
+.map-container {
+  text-align: center;
+  margin: 24px 0;
+}
+.map-container img {
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .stats-row { gap: 10px; }
+  .stat-card { min-width: 120px; padding: 14px 16px; }
+  .stat-card .num { font-size: 1.5rem; }
+  .nav-links a { padding: 6px 10px; font-size: 0.82rem; }
+  .search-input { width: 100%; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+}
+@media (max-width: 480px) {
+  .nav-links { gap: 0; }
+  .nav-links a { padding: 6px 8px; font-size: 0.78rem; }
+  .container { padding: 16px; }
+}
+
+
+.toc-float {
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.8rem;
+  max-width: 220px;
+  z-index: 50;
+}
+.toc-float h4 { color: var(--muted); margin-bottom: 8px; }
+.toc-float a { color: var(--muted); text-decoration: none; display: block; padding: 2px 0; }
+.toc-float a:hover { color: var(--accent); }
+@media (max-width: 1024px) { .toc-float { display: none; } }
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<nav class="topnav">
+<div class="nav-inner">
+  <a href="../index.html" class="logo">🏺 考古知识库</a>
+  <div class="nav-links">
+<a href="../index.html">总览</a>
+<a href="../reports.html" class="active">报告列表</a>
+<a href="../map.html">遗址地图</a>
+<a href="../download.html">数据下载</a>
+<a href="../about.html">关于</a>
+  </div>
+</div>
+</nav>
+<div class="container" style="display:flex;gap:24px">
+<div style="flex:1;min-width:0">
+<div class="report-header">
+  <a href="../reports.html" style="color:var(--muted);font-size:0.88rem;text-decoration:none">← 返回报告列表</a>
+  <h1 style="margin-top:8px">汉杜陵陵园遗址</h1>
+  <div class="report-meta">
+    <span class="era-tag" style="background:#ef444422;color:#ef4444">秦汉</span>
+    <span>115 页</span>
+    <span>3.8 MB</span>
+    <span>444 个实体</span>
+    <span>密度 3.9</span>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:24px">
+  <h3>🏷️ 实体标注</h3>
+  <div class="entity-section"><h4>测量数据 (192)</h4><div><span class="echip">10</span><span class="echip">7</span><span class="echip">1</span><span class="echip">5</span><span class="echip">3</span><span class="echip">9</span><span class="echip">8</span><span class="echip">6</span><span class="echip">45</span><span class="echip">84</span><span class="echip">22</span><span class="echip">0.4</span><span class="echip">0.83</span><span class="echip">0.75</span><span class="echip">0.25</span><span class="echip">36</span><span class="echip">4</span><span class="echip">64</span><span class="echip">72</span><span class="echip">75</span><span class="echip">55</span><span class="echip">12</span><span class="echip">09</span><span class="echip">0.3</span><span class="echip">03</span><span class="echip">05</span><span class="echip">24</span><span class="echip">2</span><span class="echip">13</span><span class="echip">15</span><span class="echip">61</span><span class="echip">02</span><span class="echip">85</span><span class="echip">92</span><span class="echip">35</span><span class="echip">70</span><span class="echip">65</span><span class="echip">165</span><span class="echip">0.54</span><span class="echip">40</span><span class="echip">53</span><span class="echip">25</span><span class="echip">86</span><span class="echip">74</span><span class="echip">37</span><span class="echip">6.8</span><span class="echip">2.2</span><span class="echip">20</span><span class="echip">17</span><span class="echip">17.5</span><span class="echip" style="color:var(--muted)">+142 更多</span></div></div>
+<div class="entity-section"><h4>器物编号 (157)</h4><div><span class="echip">T2:1</span><span class="echip">T3:5</span><span class="echip">T3:4</span><span class="echip">T4:2</span><span class="echip">T3:2</span><span class="echip">T2:40</span><span class="echip">T2:41</span><span class="echip">T2:42</span><span class="echip">T3:1</span><span class="echip">T2:39</span><span class="echip">T7:10</span><span class="echip">Y2:25</span><span class="echip">Y1:5</span><span class="echip">Y3:1</span><span class="echip">Y1:7</span><span class="echip">Y2:22</span><span class="echip">Y2:23</span><span class="echip">Y2:24</span><span class="echip">Y2:26</span><span class="echip">Y2:28</span><span class="echip">Y2:27</span><span class="echip">Y1:9</span><span class="echip">J2:1</span><span class="echip">T4:4</span><span class="echip">T13:2</span><span class="echip">T1:1</span><span class="echip">T11:1</span><span class="echip">T8:2</span><span class="echip">T7:9</span><span class="echip">T2:9</span><span class="echip">T2:10</span><span class="echip">T2:13</span><span class="echip">T2:11</span><span class="echip">T2:2</span><span class="echip">T7:8</span><span class="echip">T7:6</span><span class="echip">T2:3</span><span class="echip">T2:6</span><span class="echip">T2:5</span><span class="echip">T2:7</span><span class="echip">T2:18</span><span class="echip">T16:6</span><span class="echip">T2:17</span><span class="echip">T3:3</span><span class="echip">T8:3</span><span class="echip">T2:14</span><span class="echip">T2:15</span><span class="echip">T2:16</span><span class="echip">T8:1</span><span class="echip">T2:19</span><span class="echip" style="color:var(--muted)">+107 更多</span></div></div>
+<div class="entity-section"><h4>遗迹编号 (54)</h4><div><span class="echip">K1</span><span class="echip">K4</span><span class="echip">F1</span><span class="echip">F2</span><span class="echip">F6</span><span class="echip">F7</span><span class="echip">F3</span><span class="echip">F4</span><span class="echip">F5</span><span class="echip">F16</span><span class="echip">F11</span><span class="echip">F12</span><span class="echip">F14</span><span class="echip">F9</span><span class="echip">F15</span><span class="echip">F8</span><span class="echip">II6</span><span class="echip">II2</span><span class="echip">IV4</span><span class="echip">IV5</span><span class="echip">IV7</span><span class="echip">IV8</span><span class="echip">IV9</span><span class="echip">IV2</span><span class="echip">IV3</span><span class="echip">IV6</span><span class="echip">IV10</span><span class="echip">IV11</span><span class="echip">IV12</span><span class="echip">II</span><span class="echip">IV</span><span class="echip">T4</span><span class="echip">T2</span><span class="echip">T3</span><span class="echip">F13</span><span class="echip">Y2</span><span class="echip">T7</span><span class="echip">Y1</span><span class="echip">Y3</span><span class="echip">J2</span><span class="echip">T13</span><span class="echip">T1</span><span class="echip">T11</span><span class="echip">T8</span><span class="echip">T10</span><span class="echip">T16</span><span class="echip">T15</span><span class="echip">T5</span><span class="echip">T6</span><span class="echip">T14</span><span class="echip" style="color:var(--muted)">+4 更多</span></div></div>
+<div class="entity-section"><h4>探方编号 (15)</h4><div><span class="echip">T4</span><span class="echip">T2</span><span class="echip">T3</span><span class="echip">T7</span><span class="echip">T13</span><span class="echip">T1</span><span class="echip">T11</span><span class="echip">T8</span><span class="echip">T10</span><span class="echip">T16</span><span class="echip">T15</span><span class="echip">T5</span><span class="echip">T6</span><span class="echip">T14</span><span class="echip">T12</span></div></div>
+<div class="entity-section"><h4>陶器 (7)</h4><div><span class="echip">陶罐</span><span class="echip">盆</span><span class="echip">壶</span><span class="echip">釜</span><span class="echip">缸</span><span class="echip">罐</span><span class="echip">盘</span></div></div>
+<div class="entity-section"><h4>铜器 (4)</h4><div><span class="echip">镞</span><span class="echip">剑</span><span class="echip">矛</span><span class="echip">盘</span></div></div>
+<div class="entity-section"><h4>方向角度 (4)</h4><div><span class="echip">南北向</span><span class="echip">东西向</span><span class="echip">坐南朝北</span><span class="echip">坐北朝南</span></div></div>
+<div class="entity-section"><h4>建筑结构 (3)</h4><div><span class="echip">门道</span><span class="echip">柱洞</span><span class="echip">夯土</span></div></div>
+<div class="entity-section"><h4>制作工艺 (2)</h4><div><span class="echip">鎏金</span><span class="echip">镶嵌</span></div></div>
+<div class="entity-section"><h4>年代 (2)</h4><div><span class="echip">公元573年</span><span class="echip">公元前156年</span></div></div>
+<div class="entity-section"><h4>石器 (1)</h4><div><span class="echip">石圭</span></div></div>
+<div class="entity-section"><h4>材质 (1)</h4><div><span class="echip">铁器</span></div></div>
+<div class="entity-section"><h4>纹饰 (1)</h4><div><span class="echip">绳纹</span></div></div>
+<div class="entity-section"><h4>遗存类型 (1)</h4><div><span class="echip">标本</span></div></div>
+
+</div>
+
+<div class="card">
+  <h3>📖 报告全文</h3>
+  <div class="report-body" id="reportBody">
+    <h1 id="_1">目录</h1>
+<h1 id="1">前言 (1)</h1>
+<h1 id="2">第一章 地理环境 ………………………………………… (2)</h1>
+<h1 id="6">第二章 汉宣帝陵 ………………………………………… (6)</h1>
+<h1 id="6_1">第一节 陵墓· (6）</h1>
+<h1 id="7">第二节 陵园 ………………………………………… (7)</h1>
+<p>一、形制 ………………………………………… (7)<br />
+二、东门遗址（二号遗址） ………………………………………… (8)<br />
+三、北门遗址（三号遗址） ………………………………………… (15)<br />
+四、出土遗物 ………………………………………… (19)</p>
+<p>（一）陶器 (19)<br />
+（二）铁器 ………………………………………… (22)<br />
+（三）铜器 ………………………………………… (23)</p>
+<h1 id="23">第三节 寰园 (23)</h1>
+<p>一、覆园形制 ………………………………………… (23)<br />
+二、寝殿遗址（一号遗址） (26)</p>
+<p>三、便殿遗址（五号遗址） ………………………………………… (31)</p>
+<p>（一）以堂为主的建筑群 ………………………………………… (31)<br />
+（二）室的房屋建筑群· (36)<br />
+（三）院落建筑群 ………………………………………… (41)<br />
+（四）地下排水设施… (42)<br />
+（五）客穴 ………………………………………… (44)</p>
+<h1 id="45">四、出土遗物 ………………………………………… (45)</h1>
+<p>（一）陶器 (45)<br />
+（二）石器 ………………………………………… (48)<br />
+（三）铁器 ………………………………………… (48)<br />
+（四）铜器 ………………………………………… (53)</p>
+<h1 id="62">第三章 孝宣王皇后陵 ………………………………………… (62)</h1>
+<h1 id="62_1">第一节 陵墓与陵园 ………………………………………… (62)</h1>
+<p>一、陵墓 ………………………………………… (62)<br />
+二、陵园 … (63)<br />
+三、东门遗址（四号遗址） ………………………………………… (63)</p>
+<p>四、出土遗物 ………………………………………… (66)</p>
+<h1 id="67">第二节 寂园 ………………………………………… (67)</h1>
+<p>一、寝园形制 ………………………………………… (67)<br />
+二、寝殿遗址（六号遗址） ………………………………………… (67)<br />
+三、便殿遗址（七号遗址） ………………………………………… (72)<br />
+四、出土遗物 ………………………………………… (72)</p>
+<p>（一）陶器 (73)<br />
+（二）石器 ………………………………………… (73)<br />
+（三）铁器 ………………………………………… (73)<br />
+（四）铜器 ………………………………………… (74)</p>
+<h1 id="75">第四章 杜陵的其它建筑遗址 (75)</h1>
+<p>第一节 八号遗址 (75)<br />
+第二节 九号遗址 ………………………………………… (75)<br />
+第三节 十号遗址 ………………………………………… (76)</p>
+<h1 id="77">第五章 杜陵陪葬坑 (77)</h1>
+<p>第一节 一号陪葬坑 (K1) ………………………………………… (77)</p>
+<p>一、遗迹 (77)</p>
+<p>（一）地层 ………………………………………… (77)<br />
+（二）形制 ………………………………………… (77)<br />
+（三）遗物分布 ………………………………………… (81)</p>
+<p>二、出土遗物 ………………………………………… (84)</p>
+<p>（一）陶器 ………………………………………… (84)<br />
+（二）石器 ………………………………………… (86)<br />
+（三）铁器 ………………………………………… (86)<br />
+（四）钢器和金饼 ………………………………………… (90)</p>
+<p>第二节 四号陪葬坑（K4） (94)</p>
+<p>一、遗迹· (94)</p>
+<p>（一）地层 ………………………………………… (94)<br />
+（二）形制 ………………………………………… (94)</p>
+<p>二、出土遗物 ………………………………………… (96)</p>
+<p>第三节 其它陪葬坑的勘察 ………………………………………… (97)</p>
+<p>第六章 杜陵陪葬墓 (98)<br />
+第七章 杜陵邑 ………………………………………… (101)<br />
+结语 (102) <br />
+英文提要 (107)</p>
+<h1 id="_2">插图目录</h1>
+<p>一 西汉帝陵分布图 ………………………………………… (3)<br />
+二 杜陵陵区平面图… (5）<br />
+三 杜陵陵园与寝园关系图 ………………………………………… (7)<br />
+四 杜陵陵园东门遗址地层堆积剖面图 ………………………………………… (8)<br />
+五 杜陵陵园东门遗址平、剖面图 ………………………………………… (9)<br />
+六 杜陵陵园东门右外塾便门平、剖面图 ………………………………………… (11)<br />
+七 杜陵陵园北门遗址平面图 ………………………………………… (16)<br />
+八“长乐未央"与“长生无极”瓦当的“长”字字形变化… (21) <br />
+九 铁器 ………………………………………… (23)</p>
+<p>一〇 杜陵寝园遗址平面图… (24)<br />
+杜陵寝园南面中门平、剖面图 ………………………………………… (25)<br />
+一 二 杜陵寝殿院落东门平面图 ………………………………………… (27)<br />
+一三 杜陵寝殿遗址平面图 ………………………………………… (29)<br />
+一四 杜陵便殿遗址平、剖面图 ………………………………………… (33)<br />
+一五 杜陵便殿七号院平面图 ………………………………………… (36)<br />
+一六 杜陵便殿一号窦穴平、剖面图… (44)<br />
+一七 陶门白· (46)<br />
+一八 陶罐、盆、壶… (47)<br />
+一九 陶纺轮及灯等 ………………………………………… (48)<br />
+二〇 铁器 ………………………………………… (49)<br />
+二一 铁工具 ………………………………………… (50)<br />
+二二 铁武器等 (52)<br />
+二三 铜器 (53)<br />
+二四 铜博山炉盖及花纹展开图 ………………………………………… (54)<br />
+二五 铜车器等 ………………………………………… (55)<br />
+二六 铜钱——半两及五铢 ………………………………………… (58)<br />
+二七 铜钱——货泉等 ………………………………………… (60)<br />
+二八 铜压胜钱· (60)<br />
+二九 王皇后陵陵园与寝园关系图 ………………………………………… (62)<br />
+三〇 王皇后陵陵园东门遗址地层堆积剖面图 ………………………………………… (63)<br />
+三一 王皇后陵陵园东门遗址平、剖面图 ………………………………………… (64)<br />
+三二 王皇后陵寝殿遗址平面图 ………………………………………… (68)<br />
+三三 王皇后陵寝殿北门西阶平、剖面图 ………………………………………… (71)</p>
+<p>三四石、铜、铁器 (73)<br />
+五 杜陵一号陪葬坑平、剖面图 ………………………………………… (78)</p>
+<p>三六 杜陵一号陪葬坑一号车遗迹及遗物分布平面图 ………………………………………… (82)<br />
+三七 杜陵一号陪葬坑一号车遗迹车辕、车轴关系图… (83)<br />
+三八 陶器 (85)<br />
+三九 陶俑… (86)<br />
+四 $\bigcirc$ 铁器 … (87)<br />
+四一 铁车马器等 ………………………………………… (89)<br />
+四 铜器 (90)<br />
+四三 铜车马器等 ………………………………………… (92)<br />
+四 四 铜器铭文拓本 ………………………………………… (93)<br />
+四五 小五铢和铜印印文 ………………………………………… (93)<br />
+四六 杜陵四号陪葬坑平、剖面图 ………………………………………… (95)</p>
+<p>:iy·</p>
+<h1 id="_3">图版目录</h1>
+<p>彩一 杜陵<br />
+彩二 杜陵便殿遗址<br />
+彩三 王皇后陵<br />
+彩四 杜陵一号陪葬坑出土的陶俑<br />
+杜陵<br />
+二 杜陵陵园东门遗址<br />
+三 杜陵陵园东门门道<br />
+四 杜陵陵园东门门墩<br />
+五 杜陵陵园东门门道铺地砖和砌石<br />
+六 杜陵陵园东门左、右塾<br />
+七 杜陵陵园东门右外塾便门<br />
+八 杜陵陵园东门右内塾便门<br />
+九 杜陵陵园东门左内、外塾便门<br />
+一〇 杜陵陵园东门西廊及左塾壁柱础石<br />
+杜陵陵园东门二墜南、北廊<br />
+一二 杜陵陵园东门配廊<br />
+一三 杜陵陵园东门右配廊铺地砖、砌石和散水<br />
+一四 杜陵陵园东门门道西端散水及铺地砖<br />
+一五 札陵陵园东门西廊挑檐柱遗迹<br />
+一六 杜陵陵园北门门道南端散水<br />
+一七 杜陵陵园北门础石<br />
+一八 杜陵陵园北门右塾南壁贴瓦<br />
+一九 杜陵陵园北门廊道<br />
+二〇 杜陵陵园北门左配廊壁柱础石<br />
+二一 杜陵陵园东、北门遗址出土的砖、瓦<br />
+二二 杜陵陵园东、北门遗址出土的筒瓦<br />
+二三 杜陵陵园东、北门遗址出土的“长乐未央”瓦当<br />
+二四 杜陵陵园东、北门遗址出土的“长乐未央”瓦当<br />
+二五 杜陵陵园东、北门遗址出土的瓦当<br />
+二六 杜陵陵园东、北门遗址出土的“长生无极”瓦当<br />
+二七 杜陵陵园东门遗址出土的铁器与铜钱<br />
+二八 杜陵寝园南墙、东墙及东墙外的砖路<br />
+二九 杜陵寝园南面中门</p>
+<p>三〇 杜陵寝园南面中门门道及南墙外的慢道</p>
+<p>三一 杜陵寝园南面东门及东门</p>
+<p>三二 杜陵寝殿院落东廊</p>
+<p>三三 杜陵寝殿院落东门</p>
+<p>三四 杜陵寝殿院落东门檐廊、散水等</p>
+<p>三五 杜陵寝殿遗址</p>
+<p>三六 杜陵寝殿西门</p>
+<p>三七 杜陵寝殿西门门道隔墙及通道</p>
+<p>三八 杜陵寝殿西门铺地砖</p>
+<p>三九 杜陵寝殿西门磁石</p>
+<p>四〇 杜陵寝殿东门</p>
+<p>四一 杜陵寝殿东门隔墙及砌石</p>
+<p>四二 杜陵寝殿东门门道及散水</p>
+<p>四二 杜陵寝殿南门</p>
+<p>四四 杜陵寝殿北门</p>
+<p>四五 杜陵寝殿北门中阶东、西两边铺地砖</p>
+<p>四六 杜陵便殿遗址发掘情形</p>
+<p>四七 杜陵与便殿遗址</p>
+<p>四八 杜陵便殿遗址</p>
+<p>四九 杜陵便殿东南部通道</p>
+<p>五 $\bigcirc$ 杜陵便殿西部</p>
+<p>五一 杜陵便殿五号院与三号院</p>
+<p>五二：杜陵便殿六号院</p>
+<p>五三 杜陵便殿六号院东、北廊</p>
+<p>五四 杜陵便殿西部房屋（F1、F2）</p>
+<p>五五 杜陵便殿东部建筑群</p>
+<p>五六 杜陵便殿四号院</p>
+<p>五七 杜陵便殿四号院与其南部建筑</p>
+<p>五八 杜陵便殿七号院</p>
+<p>五九 杜陵便殿七号院及其南面房屋（F6）</p>
+<p>六 $\bigcirc$ 杜陵便殿七号院及其北面房屋（F7）</p>
+<p>六一 杜陵便殿七号院天井与通道</p>
+<p>六二 杜陵便殿I号庭院及其北面房屋（F3、F4、F5）</p>
+<p>六三 杜陵便殿IV号庭院及其西面房屋（F16、F11、F12、F14）</p>
+<p>六四 杜陵便殿中部房屋 (F11、F12)</p>
+<p>六五 杜陵便殿中部房屋 (F9、F12、F14)</p>
+<p>六六 杜陵便殿九号院及其东面房屋 (F15)</p>
+<p>六七 杜陵便殿九号院</p>
+<p>六八 杜陵便殿九号院东北部通道与IV号庭院</p>
+<p>vi</p>
+<p>六九 杜陵便殿IV号庭院<br />
+七〇 杜陵便殿北部院落建筑群<br />
+七一 杜陵便殿二号院与南廊道<br />
+七二 杜陵便殿二号院及南廊道的础石<br />
+七三 杜陵便殿一、二、八号院<br />
+七四 杜陵便殿V号庭院及北面房屋（F8）<br />
+七五 杜陵便殿七号院天井地漏<br />
+七六 杜陵便殿七号院附近排水道<br />
+七七 杜陵便殿东南部地漏<br />
+七八 杜陵便殿东南部地漏的五角水道<br />
+七九 杜陵便殿内的一号窖穴<br />
+八 $\bigcirc$ 杜陵寝园遗址出土的砖<br />
+八一 杜陵便殿遗址出土的空心花纹砖<br />
+八二 杜陵寝园遗址出土的“长乐未央”瓦当<br />
+八三 杜陵寝园遗址出土的陶、石器<br />
+八四 杜陵寝园遗址出土的陶器<br />
+八五 杜陵寝园遗址出土的陶器<br />
+八六 杜陵寝园遗址出土的铁器<br />
+八七 杜陵寝园遗址出土的铁器<br />
+八八 杜陵寝园遗址出土的铁器<br />
+八九 杜陵寝园遗址出土的铁器<br />
+九 $\bigcirc$ 杜陵寝园遗址出土的铜器<br />
+九一 杜陵寝园遗址出上的铜器<br />
+九二 杜陵寝园遗址出土的铜器<br />
+九三 杜陵寝园遗址出土的铜钱<br />
+九四 杜陵与王皇后陵外景<br />
+九五 王皇后陵园东门及门道<br />
+九六 王皇后陵园东门门道西端散水<br />
+九七 王皇后陵园东门左、右塾<br />
+九八 王皇后陵园东门墙壁贴砌砖瓦<br />
+九九 王皇后陵园东门廊道<br />
+一〇〇 王皇后陵园东门左熟便门<br />
+一〇一 王皇后陵园东门右塾便门<br />
+一〇二 王皇后陵寝殿<br />
+一三 王皇后陵寝殿墙皮及散水外铺地砖<br />
+一〇四 王皇后陵寝殿东、西廊<br />
+一五 王皇后陵寝殿南、北廊<br />
+一〇六 王皇后陵寝殿东门<br />
+一七 王皇后陵寝殿东门铺地砖和东、西门础石</p>
+<p>一〇八 王皇后陵寝殿东门檐廊及散水<br />
+一九 王皇后陵寝殿西门檐廊及散水<br />
+一一〇 王皇后陵寝殿南门<br />
+王皇后陵寝殿北门西阶<br />
+一一二 王皇后陵寝殿北门<br />
+——三 杜陵东北八号遗址出土的龙凤纹空心砖<br />
+一一四 杜陵一号陪葬坑<br />
+一一五 杜陵一号陪葬坑坑道及南壁台阶<br />
+一一六 杜陵一号陪葬坑底部枕木与中厢立木遗迹<br />
+一一七 杜陵一号陪葬坑主室棚木和中厢<br />
+一一八 杜陵一号陪葬坑坑室和中厢南、西壁立木<br />
+一一九 杜陵一号陪葬坑四边厢<br />
+一二〇 杜陵一号陪葬坑出土的陶器<br />
+一二一 杜陵一号陪葬坑出土的陶俑<br />
+一二二 杜陵一号陪葬坑出土的方柱体石块及小五铢<br />
+一二三 杜陵一号陪葬坑出土的铁器<br />
+一二四 杜陵一号陪葬坑出土的铁器<br />
+一二五 杜陵一号陪葬坑出土的铜器<br />
+一二六 杜陵一号陪葬坑出土的铜器和金饼<br />
+一二七 杜陵四号陪葬坑<br />
+一二八 杜陵及其陪葬墓</p>
+<p>viii</p>
+<h1 id="_4">前言</h1>
+<p>西汉王朝是我国封建社会前期的鼎盛时代。在我国古代历史上，封建社会的中央统一帝国始于秦代，但是秦帝国仅仅存在十五年，封建社会的各种典章制度的完善、确立和巩固，实际上是完成于继秦而立的西汉王朝。汉宣帝是西汉一代的中兴皇帝，在他执政期间，汉代的各种制度趋于定型。因此，汉宣帝在西汉王朝历史上是位非常有代表性的人物。</p>
+<p>我国古代统治者认为：“治身者斯须忘礼，则暴嫚入之矣；为国者一朝失礼，则荒乱及之矣。”礼仪被他们认为能“通神明，立人伦，正情性，节万事”<sup>1)</sup>。丧葬制度是礼仪典章制度的重要组成部分。西汉皇帝的陵墓，代表了当时社会的最高丧葬礼仪。从这点而言，宣帝杜陵反映了西汉王朝“中兴”时期的丧葬礼仪。汉代丧葬“事死如生”，因面对宣帝杜陵的考察，就使我们对西汉中晚期历史有了更加全面、深刻的认识。我们选择西汉宣帝杜陵开展考古工作，也就是基于上述原因。</p>
+<p>中国社会科学院考古研究所于1982年秋季至1985年夏季，开展了对汉宣帝陵和孝宣王皇后陵的陵墓、陵园、寝园及杜陵的陵庙、陵邑、陪葬坑和陪葬墓的考古勘查；并对帝陵陵园东门、北门遗址（二、三号遗址）和寝园的寝殿、便殿遗址（一、五号遗址），孝宣王皇后陵陵园东门遗址（四号遗址）和寝园的寝殿遗址（六号遗址），杜陵一、四号陪葬坑（K1、K4）进行了考古发掘。刘庆柱、李毓芳参加了上述全部考古勘察和发掘工作。冯时参加了1983年帝陵寝殿遗址和帝陵陵园东门遗址的发掘。汪义亮参加了1982年秋季帝陵陵园北门遗址的发掘。</p>
+<p>本报告鉴于已发掘的杜陵和孝宜王皇后陵的六处遗址的各种出土遗物基本上属于同一时代，对它们采用了统一划分型式。两座陪葬坑中的随葬器物绝大多数为明器，它们的型式则单独划分。报告中的各种器物，按不同遗址、陪葬坑分单元编号，如帝陵寝殿遗址（一号遗址）和杜陵一号陪葬坑的遗物，在遗物号前分别冠以“山”和“K1”，其它遗址和陪葬坑的编号形式同此。各遗址或陪葬坑器物号均从“1”编起。</p>
+<p>本报告的资料整理和编写执笔者为刘庆柱、李毓芳。插图由刘凯军绘制，器物照片由马晓宁拍摄。此外，张孝光、郭义孚、姜言忠、蒋忠义、韩慧君、李森和薛玉尧、冯孝唐等在绘图、照相工作中给予了大力协助。兽骨鉴定工作由周本雄担任。英文提要由黄纪苏译、莫润先校。全稿经徐苹芳、黄展岳审阅。</p>
+<p>关于汉宣帝杜陵陵园发掘情况，在《考古》1984年10期和1991年12期有过简要报道，如果有与本报告相悖之处，当以本报告为准。</p>
+<h1 id="_5">第一章 地理环境</h1>
+<p>西汉11个皇帝的陵墓均在汉长安城附近，其中高祖长陵、惠帝安陵、景帝阳陵、武帝茂陵、昭帝平陵、元帝渭陵、成帝延陵、哀帝义陵和平帝康陵分布在汉长安城以北的咸阳原上，文帝霸陵和宣帝杜陵分别坐落在汉长安城东南的白鹿原与少陵原上（图一）。</p>
+<p>杜陵所在的少陵原，始因孝宣许皇后葬于今长安县大兆乡司马村而得名。孝宣许皇后陵小于宣帝杜陵，故后人又谓之“小陵”<sup>1)</sup>。古代“小”、“少”通假，所以孝宣许皇后的陵墓又称“少陵”，故其陵墓所在地的原区则称“少陵原”。少陵原亦称“鸿固原”。这些都是秦汉以后的称谓。秦汉时代，杜陵及其附近地区称“杜东”或“杜东原”<sup>2)</sup>。杜东或杜东原因位于秦汉时代的“杜县”以东而得名。秦汉杜县遗址位于今西安市南郊杜城村，宣帝杜陵在共东9公里。宣帝陵墓因筑于当时杜县辖境之内的杜东原上，故名杜陵。汉宣帝在杜东原上营筑杜陵同时，根据汉代帝陵附近设置陵邑的制度，修建了杜陵邑，并且改名杜县为杜陵<sup>3)</sup>，县治由杜县移往杜陵邑。原来的杜县城，因其较杜东原上的杜陵邑地势低下，改称“下杜城”<sup>4)</sup>。王莽时杜陵曾改名“饶安”，东汉时代复称杜陵，后魏杜陵易名杜县，北周建德二年（公元573年）杜县合并到万年县中<sup>5)</sup>。</p>
+<p>西安的地势呈东南高西北低。杜陵在西安东南的少陵原北端，海拔618米，比西安市区高约200米。登上杜陵，南边的终南山似一近在咫尺的翠屏，北边的渭河犹如脚下的一条玉带，京师故地尽收眼底。杜陵东邻沪河，西傍潼州，实为京畿胜地。杜陵陵区位于今陕西省西安市雁塔区曲江乡三兆村附近。陵区范围四至为：北由马腾空村、缪家寨，南至甘寨村、东伍村，东自赵家湾、余王编，西到三兆镇；东西3、南北4公里（图二）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图二 杜陵陵区平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 宣帝社陵 2. 王皇后陵 3. 杜陵寝殿遗址（一号遗址） 4. 杜陵陵庙遗址（八号遗址） 5. 杜陵九号遗址 6. 杜陵寝殿南面遗址（十号遗址） 7. 杜陵便殿遗址（五号遗址） 8. 王皇后陵寝殿遗址（六号遗址） 9. 王皇后陵便殿遗址（七号遗址） 10. 杜陵一号陪葬坑 11. 杜陵二号陪葬坑 12. 杜陵三号陪葬坑 13. 杜陵四号陪葬坑 14. 杜陵五号陪葬坑 15-76. 封土尚存陪葬墓 77-121. 封土已无陪葬基</p>
+<h1 id="_6">第二章 汉宣帝陵</h1>
+<h1 id="_7">第一节 陵 墓</h1>
+<p>通过近年来对西汉帝陵的勘察，诸帝陵的分布已搞清楚。西汉皇帝的陵墓大多建在汉长安城北的咸阳原上，而汉宣帝却把其寿陵——杜陵修筑在汉长安城东南的杜东原上，其原因有三：</p>
+<p>第一，汉代帝陵埋葬有着严格的昭穆制度，宣帝刘询是武帝曾孙，昭帝堂孙，按照辈分，在西汉帝陵主要陵区——咸阳原陵区内，昭帝刘弗陵之下应为史皇孙同辈人，而宣帝刘询则晚一辈。这样，因相邻两个皇帝刘弗陵与刘询的昭穆序列一致，所以宣帝无法在咸阳原汉陵区内营筑寿陵，只好另辟墓地。</p>
+<p>第二，宣帝在选择陵址中，受到了汉代丧葬礼仪中，子女死后安葬以近父母的传统风俗影响。宣帝的直系亲属曾祖母孝武卫皇后、祖母史良娣、父史皇孙、母王夫人，皆因“巫蛊”之祸而遇害，均葬于长安城东南<sup>1)</sup>。宣帝将陵址选在长安城东南的杜东原上，与这一情况有着密切关系。</p>
+<p>第三，宣帝将寿陵筑于杜东原上，与他当皇帝之前，“周徧三辅”，“尤乐杜、鄂之间，率常在下杜”有着重要关系。</p>
+<p>杜陵位于今三兆镇南，少陵原北部最高处(图版一)。杜陵南边，现存五通石碑：其一，清代乾隆时期，陕西巡抚毕沅所书的“汉宣帝杜陵”石碑；其二，康熙七年所立，“御祭祀文”石碑；其三，康熙七年长安县知事所立石碑；其四，乾隆二年所立石碑；另一石碑文字模糊不清。可看清文字的四通石碑，均记其墓为汉宣帝杜陵。</p>
+<p>1982年10月至12月，我们对汉宣帝陵进行了勘察。帝陵封土形如“覆斗”，高29米，底和顶部平面均为方形，边长分别为172与50米。封上规模与文献记载是相同的3)。封土夯筑，顶部平坦，无建筑遗迹（彩版一）。</p>
+<p>陵墓四面正中各有一条墓道，四条墓道的大小、形制基本相同。这证实了《后汉书·礼仪志（下)》注引《皇览》的记载：“汉家之葬，方中百步，已穿筑为方城。其中开四门，四通”。封土以外部分的墓道长20、宽约8米，墓道口距地表深约3一4米，接近封土边的墓道距今地表深约20米。墓道底部为斜坡道。墓道内原来均填土夯筑，但由于后代被盗掘<sup>①</sup>，故填土均已扰乱，墓道亦被破坏得很不整齐。与墓道所对的陵墓封土处，至今仍可看出塌陷遗迹。</p>
+<h1 id="_8">第二节 陵园</h1>
+<h1 id="_9">一、形 制</h1>
+<p>在帝陵陵墓的周围筑有墙垣，此即帝陵陵园，或谓“杜陵园”<sup>1)</sup>。陵园的墙垣建筑遗</p>
+<p>图三 札陵陵园与寝园关系图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1）《汉书·五行志（上)》：“永光四年六月甲戌，孝宣杜陵园东阙南方灾。”</p>
+<p>迹现在全部埋在地面之下，因此地面之上已看不出陵园的轮廓。经钻探了解到，陵园平面为方形，边长433米（以陵园墙垣外四角的距离为准，下同）。陵园墙基一般宽8—10米(南墙东部墙基宽约6米)，墙基夯筑。四面墙及每面墙不同部分的墙基夯土厚度及距今地表深度不甚一致。南墙东段地表以下1.6米见墙基，其厚3.7米；西段地表以下1.2米见墙基，其厚4.1米。北墙东段墙基距地表深0.5米，其厚4.7米；西段墙基距地表深0.3米，其厚6.3米。东墙南段墙基距地表深1.5米，其厚2.9米；北段墙基距地表深0.5米，其厚2.8米。西墙南段墙基距地表深0.8米，其厚4.6米；北段墙基距地表深0.3米，其厚8.45米。陵园墙基的夯土均筑于生土之上。</p>
+<p>陵墓居陵园中央。陵园四面墙垣中央各辟一门，四门与陵墓封土正中的墓道相对。四门内侧距陵墓封土边均为120米。四门大小、形制基本相同，门址面阔82—84米，进深20—22米(图三)。四门之中，以东门遗址保存较好。东门和北门遗址进行了发掘。汉代陵园四门，时称“司马门”或“阙”<sup>1)</sup>。</p>
+<h1 id="_10">二、东门遗址（二号遗址）</h1>
+<p>陵园东门遗址发掘面积2700平方米。门址地层堆积情况如下：在门址内外和门道间文化层堆积较厚，耕上层（厚0.2—0.4米）下即灰黄色土，系近代扰土层，厚0.5—0.83米，其中出土有少量近代和汉代砖瓦。第三层为灰色土，系东门建筑废弃后的堆积，即汉代文化层，厚0.5—0.75米，其中出土有大量汉代砖瓦及少量其它汉代遗物。第三层之下为灰褐色土，土质坚硬，系汉代地面，厚0.2—0.25米。门址塾和配廊隔墙的基址之上，去掉现在的耕土，即露出基址夯土(图四)。</p>
+<p>图四 杜陵陵园东门遗址地层堆积剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.耕土 2.灰黄色土 3.灰色土 4.灰褐色土 (4层以下未发掘)</p>
+<p>东门遗址面阔84.24、进深20.36米，由门道——“隧”、二塾和二配廊组成（图五；图版二）。</p>
+<p>隧居门中央，二垫和二配廊对称分布于它的左右两侧。隧宽13.2、长17.4米。隧系砖铺地面(图版三)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+五<br />
+1-10. 电电</p>
+<p>隧内居中有门槛，将隧分为内、外相同的两部分。在门槛左右各有门墩一，其形制、大小相同，均为一端与门槛相连，另一端与垫相接。门墩基址为长方形分台，南北3,45、东西1.8、现存高0.4米。二门墩间距6.3米，此亦门槛宽度。门槛已腐朽无存（图版三，2；图版四）。</p>
+<p>隧分为南、北、中三部分。中间部分为通道，通道南、北两边为门庭。二门庭大小、形制相同。通道宽6.3、长17.4米。通道之上的铺地方砖破碎严重（图版五，1）。通道与其两旁门庭间的地面上，各铺置一排东西向长方砖作为界限。庭内地面铺素面方砖。门庭宽3.45、长7.8米。门庭靠近门口处砌立砖，门庭其余诸边均砌长条砖或长方砖（图版五，2）。</p>
+<p>隧内左、右门墩东西两侧各有一柱洞，柱洞距门墩均为5.64米。一侧两柱洞，南北间距各为6.72米。柱洞平面为圆形，其中础石仅存残块(图版五，3)。</p>
+<p>高于隧的两侧夯土台基，应为文献记载中的“台门”，《礼记·礼器》孔颖达《正义》云：“两边筑闋为基，基上起屋，曰台门。”台门亦即“塾”。《尔雅·释宫》云：塾即“门侧之堂。”《三辅黄图》记载：“塾门，外舍也。臣来朝君，至门外当就舍，更熟详所应对之事。”关于塾的形制，《释宫》云：“门之内外，其东西皆有塾，一门而塾四。”这是就南、北门而言，其东、西皆有塾。若就东、西门而言，则应南、北皆有塾。《朝庙宫室考》复云：“内为内塾，外为外塾，中以墉别之。”帝陵陵园东门形制与此载相同。东门址隧两旁的夯土台基即左、右塾基址（图版六）。二塾形制，大小相同。以右塾(南塾)</p>
+<p>图六 杜陵陵园东门右外整便门平、剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 踏步 2. 铺地砖 3. 门道 23. 转角柱洞</p>
+<p>为例，台基东西15.3、南北9.75、现存高0.4米。卷中间有一条深褐色南北向隔墙痕迹，此即“墉”的遗迹。墉迹的两端分别与隧之门墩和配廊隔墙对直。墉迹长8.65、宽1.9米。内、外垫形制相同、大小相近。如右塾的内、外塾南北均为9.75米，东西长度略有不同，前者6.75、后者6.55米。</p>
+<p>东门遗址右内、外塾在东南与西南角各设一便门，左内、外塾在东北与西北角各置</p>
+<p>一便门，作为进出四塾的门道。</p>
+<p>右外垫便门宽1.15、进深1.12米。门道西北角有一转角柱，山二柱槽组成；二柱共用一个础石。门道地面自北向南呈坡状，坡 $5^{\circ}$ 。门道铺地砖有几何纹和小方块纹，也有素面。门道北端置二长方砖作为踏步（图六；图版七）。</p>
+<p>右内垫便门宽1.5、进深1.09米。门道东北角有转角柱，亦由二柱槽组成，二柱槽下各置一础石。门道地面自北向南呈坡状，坡为 $11^{\circ}$ ，地面未见铺砖（图版八）。</p>
+<p>右塾二便门发掘清理中发现有大量红烧土，柱洞内有大量炭灰。柱槽壁被烧红，烧过的柱槽壁厚0.15—0.3厘米；础石亦被烧裂。这应是火灾所致<sup>1)</sup>。</p>
+<p>左外塾便门宽1.4、进深1.03米。门道西南角有转角柱，由二柱槽组成，二柱共用一块础石。门道地面高出附近廊道地面8厘米。门道东部有夯土台，南北1.03、东西0.25、高0.05米（图版九，1）。</p>
+<p>左内垫便门宽1.53、进深1.05米。门道东南角有转角柱，由二柱槽组成，二柱共用一块础石。门道踏步平面为“凹”字形，中间向南凹进31、东西宽83厘米；“凹”字形两边长、宽各为25、踏步高16厘米（图版九，2）。踏步为夯土所筑，其上以草泥抹面，再上又有5厘米厚的细砂。细砂之上有木炭渣遗存，估计台阶上原来曾放置了木质踏步。</p>
+<p>二壑四壁置壁柱，每壑计有壁柱16个，每壁有壁柱4或6个(各自均含转角柱)。四壁的壁柱间距为3米左右，只有右塾南壁和左塾北壁的壁柱间距约2米。壁柱柱槽截面一般为长方形，长30、宽20厘米。柱槽之下置白色磚石，石质细腻。磚石面加工整齐，磨制光洁（图版一〇，3）。磚石面一般高于附近廊道铺地砖面2—3厘米。磚石一般长51—52、宽33—45、厚21—24厘米。有的柱磚石面上刻有编号（图版一〇，4）。</p>
+<p>二墊前、后檐廊的形制、大小相同。其中后檐廊（即西檐廊）遗迹保存较好。后檐廊长14.25、宽1.03米，廊道地面由里向外（即由东向西）呈斜坡状，坡度为 $6.5^{\circ}$ 。廊道铺素面方砖3排（图版一〇，1）。后檐廊与左、右内塾北、南檐廊铺地砖交汇处，分别砌以立砖分隔开（图版一〇，2）。</p>
+<p>二塾南、北檐廊形制、大小相同。二塾的南、北檐廊又被东门二配廊分隔为东西两部分。它们对称分布于配廊内外侧，二者大小、形制相同。以右内塾南檐廊为例，长6.95、宽1米，廊道地面呈由北向南（即由里向外）和由东向西斜坡状，二者坡度分别为 $3.5^{\circ}$ 与 $0.5^{\circ}$ （图版一一）。二塾南、北檐廊与二配廊廊道铺地砖交汇处，亦砌立砖相分隔。</p>
+<p>二塾分别与二配廊相连。二配廊对称分布于二塾之外。二配廊大小、形制相同，以右配廊为例，长26、宽12.2米。配廊中部（东西居中）有隔墙，长与配廊相同，宽3.4、现存高0.3—0.4米，墙体夯筑。隔墙配廊分为内、外，内、外廊对称分布于隔墙两边，大小、形制相同（图版一二）。例如右配廊的内廊，长26、宽4.4米；廊道宽3.4米。廊道用素面方砖铺地，地面里边（东边）较平，外边（西边）较陡，里高外低，坡为 $6^{\circ}$ （图版一三，1）。</p>
+<p>二配廊的隔墙东、西两侧各有对称分布的壁柱5对。左配廊由南至北的5对壁柱间</p>
+<p>距依次为5.12、5.15、5.13和5.13米。右配廊由北至南的5对壁柱间距依次为5.1、5.12、5.17和5.15米。柱槽截面长方形，一般宽32、进深24厘米。柱槽之下置础石，均为暗础。础石巨大，如右配廊隔墙东壁南数第一个础石，长1.05、宽0.75、厚0.61米（图版一三，3）。础石面经过加工。这些础石的置柱面距其旁边的廊道铺地砖面深约12厘米（图版一三，2）。</p>
+<p>垫与配廊的廊道之外均置散水。散水以河卵石铺设。卵石的码放有一定规律，如右</p>
+<p>帝陵陵园东门遗址现存柱洞、础石统计表（单位：厘米）  </p>
+<table><tr><td>编号</td><td>位置</td><td>柱洞截面及现存深度</td><td>础石平面及厚度</td><td>备注</td></tr><tr><td>1</td><td>内隧南边</td><td>径60</td><td>仅余残石块</td><td>砂岩,系明柱</td></tr><tr><td>2</td><td>内隧北边</td><td>径60</td><td>仅余残石块</td><td>砂岩,系明柱</td></tr><tr><td>3</td><td>外隧南边</td><td>径60</td><td>仅余残石块</td><td>灰白色砂岩,系明柱</td></tr><tr><td>4</td><td>外隧北边</td><td>径60</td><td>仅余残石块</td><td>灰白色砂岩,系明柱</td></tr><tr><td>5</td><td>右门墩东北角</td><td>25×25-60</td><td>仅余残石块</td><td>白面石</td></tr><tr><td>6</td><td>右门墩西北角</td><td>25×25-60</td><td>仅余残石块</td><td>灰白色砂岩</td></tr><tr><td>7</td><td>左门墩西南角</td><td>25×25-62</td><td>仅余残石块</td><td>灰白色砂岩</td></tr><tr><td>8</td><td>左门墩东南角</td><td>25×25-62</td><td>础石已无</td><td></td></tr><tr><td rowspan="2">9</td><td rowspan="2">右内垫西壁北数第一个</td><td rowspan="2">25×25-65</td><td>础石已移动</td><td rowspan="2">白面石</td></tr><tr><td>础石51×46.5-19</td></tr><tr><td>10</td><td>右内垫西壁北数第二个</td><td>30×20-63</td><td>46×36.5</td><td>白面石,砌石面露出柱槽外11厘米</td></tr><tr><td>11</td><td>右内垫西壁北数第三个</td><td>29×19-64</td><td>46×33.5</td><td>白面石,砌石面露出柱槽外11.5厘米</td></tr><tr><td>12</td><td>右内垫西壁北数第四个</td><td>26×26-60</td><td>44×46.5</td><td>白面石</td></tr><tr><td>13</td><td>右内垫南壁西数第二个</td><td>30×13-55</td><td>45×33</td><td>白面石,砌石面露出柱槽外13.5厘米</td></tr><tr><td>14</td><td>右内垫北壁西数第二个</td><td>28×19-60</td><td>53×33</td><td>白面石,砌石面露出柱槽外13厘米</td></tr><tr><td>15</td><td>右内垫北壁西数第三个</td><td>30×15.5-53</td><td>50×28</td><td>白面石,砌石面露出柱槽外10.5厘米</td></tr><tr><td>16</td><td>右外垫北壁东数第三个</td><td>29×18-48</td><td>35×30</td><td>白面石,砌石面露出柱槽外11厘米</td></tr><tr><td>17</td><td>右外垫北壁东数第二个</td><td>25×20-50</td><td>础石已无</td><td></td></tr><tr><td>18</td><td>右外垫东壁北数第一个</td><td>30×20-55</td><td>础石已无</td><td>即右外垫北壁东数第一个</td></tr><tr><td>19</td><td>右外垫东壁北数第二个</td><td>30×20-55</td><td>础石已无</td><td></td></tr><tr><td>20</td><td>右外垫东壁北数第三个</td><td>30×20-55</td><td>础石已无</td><td></td></tr><tr><td>21</td><td>右外垫东壁北数第四个</td><td>30×22-55</td><td>础石已无</td><td>即右外垫南壁东数第一个</td></tr><tr><td>22</td><td>右外垫南壁东数第二个</td><td>28×20-29</td><td>47×37</td><td>白面石,砌石面露出柱槽外13厘米</td></tr><tr><td rowspan="2">23</td><td>右外垫便门转角柱之一</td><td>34.5×31-48</td><td>与柱槽截面同</td><td>砂岩,暗础</td></tr><tr><td>右外垫便门转角柱之二</td><td>23×25-49.5</td><td>与柱槽截面同</td><td>砂岩,暗础,以上二者共用一砾石</td></tr><tr><td rowspan="2">24</td><td>右内垫便门转角柱之一</td><td>48×30-56</td><td>与柱槽截面同</td><td>砂岩,暗础</td></tr><tr><td>右内垫便门转角柱之二</td><td>21×30-55</td><td>与柱槽截面同</td><td>石灰石,暗础</td></tr><tr><td>25</td><td>左内垫西壁南数第一个</td><td>30×20-70</td><td>础石已无</td><td></td></tr><tr><td>26</td><td>左内垫西壁南数第二个</td><td>30×20-70</td><td>46.5×33.5</td><td>白面石,砌石面露出柱槽外10.5厘米</td></tr><tr><td>27</td><td>左内垫西壁南数第三个</td><td>30×19-70</td><td>46.5×33.5</td><td>白面石, 砸石面露出柱槽外12厘米</td></tr><tr><td>28</td><td>左内垫西壁南数第四个</td><td>27×20-65</td><td>47×36.5</td><td>白面石</td></tr><tr><td>29</td><td>左内垫北壁西数第二个</td><td>28×16-63</td><td>58×30</td><td>白面石, 砸石面露出柱槽外9厘米</td></tr><tr><td>30</td><td>左内垫南壁西数第二个</td><td>29×20-56</td><td>46×33</td><td>白面石, 砸石面露出柱槽外10厘米</td></tr><tr><td>31</td><td>左内垫南壁西数第三个</td><td>28×20-57</td><td>40×28</td><td>白面石</td></tr><tr><td>32</td><td>左外垫南壁东数第二个</td><td>30×20-65</td><td>础石已无</td><td></td></tr><tr><td>33</td><td>左外垫南壁东数第三个</td><td>30×20-65</td><td>础石已无</td><td></td></tr><tr><td>34</td><td>左外垫东壁南数第一个</td><td>30×20-65</td><td>础石已无</td><td></td></tr><tr><td>35</td><td>左外垫东壁南数第二个</td><td>30×20-60</td><td>础石已无</td><td></td></tr><tr><td>36</td><td>左外垫东壁南数第三个</td><td>30×20-60</td><td>础石已无</td><td></td></tr><tr><td>37</td><td>左外垫东壁南数第四个</td><td>30×25-60</td><td>础石已无</td><td></td></tr><tr><td>38</td><td>左外垫北壁东数第二个</td><td>30×25-60</td><td>础石已无</td><td></td></tr><tr><td>39</td><td>左外垫便门转角柱之一</td><td>40×30-60</td><td>与柱槽截面同</td><td>暗础,砂岩,二者共用一础石</td></tr><tr><td></td><td>左外垫便门转角柱之二</td><td>35×35-60</td><td>与柱槽截面同</td><td></td></tr><tr><td>40</td><td>左内垫便门转角柱之一</td><td>40×20-63</td><td>与柱槽截面同</td><td>暗础,砂岩,二者共用一础石</td></tr><tr><td></td><td>左内垫便门转角柱之二</td><td>37×40-63</td><td>与柱槽截面同</td><td></td></tr><tr><td>41</td><td>右配廊西壁北数第一个</td><td>28×33-57</td><td>与柱槽截面同</td><td>暗础,砂岩</td></tr><tr><td>42</td><td>右配廊西壁北数第二个</td><td>28×37-54</td><td>与柱槽截面同</td><td>暗础,砂岩</td></tr><tr><td>43</td><td>右配廊西壁北数第三个</td><td>33×24.5-47</td><td>与柱槽截面同</td><td>暗础,砂岩</td></tr><tr><td>44</td><td>右配廊西壁北数第四个</td><td>32×24.5-34</td><td>与柱槽截面同</td><td>暗础,砂岩</td></tr><tr><td>45</td><td>右配廊西壁北数第五个</td><td>29×22-18</td><td>与柱槽截面同</td><td>暗础,砂岩</td></tr><tr><td>46</td><td>右配廊东壁北数第一个</td><td>31.5×20-53</td><td>与柱槽截面同</td><td>暗础,砂岩</td></tr><tr><td>47</td><td>右配廊东壁北数第二个</td><td>29×18-42</td><td>与柱槽截面同</td><td>暗础,砂岩</td></tr><tr><td>48</td><td>右配廊东壁北数第三个</td><td>30×20-28</td><td>与柱槽截面同</td><td>暗础,砂岩</td></tr><tr><td>49</td><td>右配廊东壁北数第四个</td><td>28×19-23</td><td>与柱槽截面同</td><td>暗础,砂岩</td></tr><tr><td>50</td><td>右配廊东壁北数第五个</td><td>29×20-8</td><td>与柱槽截面同</td><td>暗础,砂岩</td></tr><tr><td>51</td><td>左配廊西壁南数第一个</td><td>33×20-70</td><td>与柱槽截面同</td><td>暗础,砂岩</td></tr><tr><td>52</td><td>左配廊西壁南数第二个</td><td>27×18-71</td><td>与柱槽截面同</td><td>暗础,砂岩</td></tr><tr><td>53</td><td>左配廊西壁南数第三个</td><td>29×19-60</td><td>与柱槽截面同</td><td>暗础,砂岩</td></tr><tr><td>54</td><td>左配廊西壁南数第四个</td><td>28×17-49</td><td>与柱槽截面同</td><td>暗础,砂岩</td></tr><tr><td>55</td><td>左配廊西壁南数第五个</td><td>28×20-50</td><td>础石已无</td><td></td></tr><tr><td>56</td><td>左配廊东壁南数第一个</td><td>30×20-60</td><td>与柱槽截面同</td><td>暗础,砂岩</td></tr><tr><td>57</td><td>左配廊东壁南数第二个</td><td>30×20-56</td><td>与柱槽截面同</td><td>暗础,砂岩</td></tr><tr><td>58</td><td>左配廊东壁南数第三个</td><td>30×20-45</td><td>与柱槽截面同</td><td>暗础,砂岩</td></tr><tr><td>59</td><td>左配廊东壁南数第四个</td><td>30×20-37</td><td>与柱槽截面同</td><td>暗础,砂岩</td></tr><tr><td>60</td><td>左配廊东壁南数第五个</td><td>30×20-40</td><td>础石已无</td><td></td></tr></table>
+
+<p>整西廓的南北向散水，卵石为东西排列成行，南北则无甚规律。每行散水的卵石约有24个。散水内外两边的卵石较小，中间的卵石较大。散水截面呈中间高，内外两边低，而内边又比外边高些。散水边均砌立砖为界（图版一三，4）。</p>
+<p>二塾东西廊之外的散水各宽1.08、长15.2米。东西廊散水于门道处各向外凸出，凸出部分散水东西宽0.4、南北长1.5米。上述散水之外，各铺素面方砖6块，南北向分2行排列（图版一四）。这里铺置的铺地砖，或许为守卫陵园司马门的士兵站立之处。</p>
+<p>在散水之上还发现有挑檐柱窝遗迹。凡属这些地方的散水卵石均已被取掉。右内</p>
+<p>西廊外散水上的挑檐柱窝遗迹有7个，其间距不等，由北向南的挑檐柱窝间距依次为1.6、1.45、2.1、2.7、2.8和2.5米；北数第一与第七个挑檐柱窝分别距散水北边和南边1.68与0.02米。由北向南7个挑檐柱窝直径依次为0.25、0.19、0.25、0.3、0.25、0.2和0.2米。</p>
+<p>左内塾西廊外散水上的挑檐柱窝遗迹有5个，其间距亦不等，由南向北的挑檐柱窝间距依次为3.4、2.72、3.65和2.85米；北数第一与第五个挑檐柱窝分别距散水北边和南边0.7与1.6米。由南向北5个挑檐柱窝直径依次为0.3、0.35、0.34、0.3和0.3米（图版一五）。</p>
+<p>二塾北廊与南廊外散水形制、大小均同。以右内塾南廊散水为例，长4.6、宽1米。右内塾西廊、南廊和右配廊内廊散水间分别砌以立砖相隔，它们是上述诸廊道铺地砖所砌分界立砖的外延。右内、外塾的南廊散水大小、形制相同。</p>
+<p>二配廊散水形制、大小相同。以右配廊散水为例，分为内、外配廊散水，二者形制、大小亦同，其中内配廊散水保存较完整，长24.8、宽0.92米；南端东折长4.35米。</p>
+<p>二配廊的隔墙延伸出去与陵园墙相接。配廊之外墙垣长13米的一段，其宽度仍与配廊隔墙相同，在这段墙的表面贴砖，砖外再抹细泥。此段墙再向外延则墙宽度变为6-8米。</p>
+<p>东门遗址的地基处理很深，夯土厚达4.7米。夯土之下即为生土。</p>
+<p>东门遗址现存柱洞及础石的情况，参见13、14页帝陵陵园东门遗址现存柱洞、础石统计表。</p>
+<h1 id="_11">三、北门遗址（三号遗址）</h1>
+<p>北门遗址保存较差。门址的前半部和右配廊几乎全被取土挖掉，现已成为高2-2.5米的断崖。左配廊暗础之上的地面建筑遗迹也均遭严重损坏。为了弄清北门建筑形制，对现存部分进行了发掘，发掘面积为643平方米（图七）。</p>
+<p>北门与东门遗址地层堆积情况基本相同，耕土层厚约 $20 - 30$ 厘米；其下即灰黄色土，系近代扰土层，厚约40-70厘米。此层出土少量近代遗物与汉代砖瓦碎块；再下为灰色土，系北门废弃后的汉代堆积层，厚30-65厘米，距现在地表深60-165厘米，其中汉代砖瓦甚多。此层之下为灰褐色土，上质硬，系汉代地面。门址的垫和配廊的耕土之下即是夯土基址。</p>
+<p>隧宽12.8，现存长10.6米（复原后的完整长度应为18米）。隧左、右各有一门墩，分别与左、右塾相连。二门墩夯土台基已被取土破坏。从现存门墩遗迹可以看出，二者相距5.4米，其形制、大小相同。以左门墩为例，东西3.7米、南北1.8米。门墩的东南角和东北角各有一柱槽，其截面均为方形，边长30厘米，础石已无。右门墩西南角的础石尚存。础石呈长方形，长66、宽52、厚13厘米，系白面石，础石面磨光。</p>
+<p>二门墩和门槛将隧分为内、外两部分。门槛及门槛槽遗迹均被破坏。外隧大部分被破坏；内隧铺地砖多被揭掉，仅留有砖渣及铺地砖痕迹。隧的两边尚有少量铺地砖。内隧有明柱柱槽一对，二者东西相距5.8米，位于门墩以南5.3米处。二柱槽截面均为圆形，径70厘米。仅东边柱槽内础石尚存。从解剖情况看，础石形如鼓状，最大腹径位</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图七 杜陵陵园北门遗址平面图、24、27. 柱洞 19-23、25、26. 柱础石</p>
+<p>于磁石中上部，磁石底部为尖状；磁石面平整，通高55厘米。磁石被加工为三层，磁石面径64、厚2厘米；第二层与门道地面平，径80、厚3厘米；第三层为磁石座，最大径98、厚50厘米（图版一七，1、2）。</p>
+<p>隧的二门墩间为通道，通道两边为门庭。隧两侧为左右塾（即西塾和东塾），二塾形制、大小相同。以右塾为例，共夯土台基东西9.6、南北现存8.7米；高于隧和廊道地面0.48—0.54米。右塾南壁之上发现有大面积的贴瓦。南壁由东向西的第一与第二壁柱间，墙壁贴瓦中有4块板瓦，其余均为筒瓦；第二与第三壁柱间，墙壁贴瓦均为板瓦；第三与第四壁柱间，墙壁贴瓦均为筒瓦。上述瓦片均为西汉时代的板瓦或筒瓦瓦片。瓦片的绳纹均朝外（图版一八）。</p>
+<p>二整除北壁已被破坏外，每塾的南壁和东、西壁均有壁柱。二整的壁柱分布与数量相同。如右内塾的东、西、南壁各有2，3，4个壁柱（均包括各壁的转角柱）。壁柱间距，南壁由东向西分别为2.8、2.6和2.55米；东壁为2米。西壁由南向北分别为2.75和2.85米。上述壁柱柱槽截面均为长方形，一般长约40—50、宽30—40厘米。础石为白面石。础石面磨光，略高于附近廊道或门道地面2—3厘米。础石一般长48—68、宽43—53厘米。转角柱础石厚20厘米以上，其它壁柱础石厚约13厘米左右（图版一七，4）。这说明了设计者是根据不同部位、不同承重，而选择使用大小不一的础石。</p>
+<p>左右内、外塾应各有一便门，右内、外塾二便门和左内塾便门的转角柱础石尚在。右内塾便门门道宽1.1、进深1.25米。门道地面为斜坡状。便门西北角有一转角柱，础石距今存夯土台基面深21厘米。础石由上、下两层组成，下层为一块大石制成的础石，系砂岩。其上分置两块白面石制成的础石，二者为东北、西南方向对角分布。础石面磨光，但其平面形状均不规整。东北角的础石四边长分别为21，27，30和28厘米；西南角的础石四边长分别为25，31，28和26厘米，二者均厚20厘米。础石放置分两层，或是为了升高础石面。</p>
+<p>右外塾便门已被破坏，其西南角的转角柱础石悬置于断崖之上。础石系砂岩，长48宽67厘米。础石面上有两处加工面，它们低于础石面2一3厘米。两处加工面分别在础石面的西北角和东北角，前者长17、宽7厘米；后者长34、宽33厘米。</p>
+<p>左内垫便门宽1.15米、进深1.2米。便门东北角有转角柱，础石系花岗岩。础石长87、宽73厘米。础石面西南角有一长46、宽36、底于础石面2.5厘米的加工面。</p>
+<p>北门南檐廊保存较好，长33.8、宽1.1米（图版一九，1）。廊道地面铺砖4排，靠近内塾分土台基墙壁一排为长方砖，砖长34-36、宽7-9厘米。其外的3排铺地砖均为方砖。长方砖和方砖均为素面。廊道地面由里向外（即由北向南）呈斜坡状、坡为 $6.5^{\circ}$ 。南檐廊东、西两端与右内塾东檐廊和左内塾西檐廊铺地砖交汇处，分别砌以立砖相隔（图版一九，2）。</p>
+<p>二塾分别与二配廊相连。二配廊遗址保存差：左配廊仅有一些配廊隔墙壁柱础石尚存；右配廊仅有与右塾连接处的极少量铺地砖和散水遗迹。从二配廊仅存的遗迹来看，配廊隔墙宽3.4米。隔墙将配廊分为内、外廊，外廊已破坏无存，内廊宽3.1米。左配廊由东向西保存4对础石，础石未经扰动。础石的间距，由东向西分别为5.5、5和5.2米。这些础石均为砂岩，平面为长方形，大小不尽相同，一般长60-95、宽54-86厘米。础石面上均有加工的立柱面，础石距地表深30-40厘米。耕土层下即础石，原来的</p>
+<p>柱槽已不复存在（图版一七，3、5、6；图版二〇）。</p>
+<p>右配廊外廊西数第一个碑石悬置于断崖之上。碑石系砂岩，平面呈方形，边长84厘米。碑石加工面长84、宽55厘米。</p>
+<p>北门南檐廊散水以隧之通道为界，分为大小、形制相同，左右对称的两部分。以左塾南檐廊散水为例，长14.8、宽1米。在其东端近隧处，散水宽度为1.5米；此段散水东西长1.6米。在这片散水以南，东西并列铺置2块素面方砖（图版一六）。</p>
+<p>帝陵陵园北门遗址现存柱洞、础石统计表（单位：厘米）  </p>
+<table><tr><td>编号</td><td>位 置</td><td>柱洞截面及现存深度</td><td>础石平面及厚度</td><td>备 注</td></tr><tr><td>1</td><td>内隧东边明柱</td><td>径61</td><td>面径64,最大腹径103,厚55</td><td>花岗岩,明柱,础石面磨光</td></tr><tr><td>2</td><td>内隧西边明柱</td><td>径64</td><td>础石已无</td><td></td></tr><tr><td>3</td><td>隧东门墩西南转角柱</td><td>已无</td><td>66×52</td><td>石灰石,础石面磨光</td></tr><tr><td>4</td><td>隧西门墩东南转角柱</td><td>已无</td><td>础石已无</td><td></td></tr><tr><td>5</td><td>右内垫南壁东数第一壁柱</td><td>30×25-55</td><td>53×48.5</td><td>白面石</td></tr><tr><td>6</td><td>右内垫南壁东数第二壁柱</td><td>30×25-55</td><td>46.5×53</td><td>白面石</td></tr><tr><td>7</td><td>右内垫南壁东数第三壁柱</td><td>30×23-55</td><td>础石已无</td><td></td></tr><tr><td>8</td><td>右内垫南壁东数第四壁柱</td><td>30×25-55</td><td>53×65-22</td><td>白面石</td></tr><tr><td>9</td><td>右内垫东壁南数第二壁柱</td><td>30×25-40</td><td>47×53</td><td>白面石</td></tr><tr><td>10</td><td>右内垫西壁南数第二壁柱</td><td>已无</td><td>础石已无</td><td></td></tr><tr><td>11</td><td>右内垫西壁南数第三壁柱</td><td>已无</td><td>48×43.5-13</td><td>白面石</td></tr><tr><td>12</td><td>左内垫南壁西数第一壁柱</td><td>30×24-10</td><td>础石已无</td><td></td></tr><tr><td>13</td><td>左内垫南壁西数第二壁柱</td><td>30×25-30</td><td>础石已无</td><td></td></tr><tr><td>14</td><td>左内垫南壁西数第三壁柱</td><td>30×25-30</td><td>础石已无</td><td></td></tr><tr><td>15</td><td>左内垫南壁西数第四壁柱</td><td>30×25-30</td><td>51×44-21</td><td>白面石</td></tr><tr><td>16</td><td>左内垫西壁南数第二壁柱</td><td>已无</td><td>础石已无</td><td></td></tr><tr><td>17</td><td>左内垫东壁南数第二壁柱</td><td>已无</td><td>础石已无</td><td></td></tr><tr><td>18</td><td>左内垫东壁南数第三壁柱</td><td>已无</td><td>础石已无</td><td></td></tr><tr><td>19</td><td>左内垫便门转角柱</td><td>已无</td><td>73×87</td><td>砂岩,暗础</td></tr><tr><td>20</td><td>左配廊南壁东数第一壁柱</td><td>已无</td><td>60×54</td><td>砂岩,暗础</td></tr><tr><td>21</td><td>左配廊南壁东数第二壁柱</td><td>已无</td><td>62×67</td><td>砂岩,暗础</td></tr><tr><td>22</td><td>左配廊北壁东数第一壁柱</td><td>已无</td><td>95×87</td><td>砂岩,暗础</td></tr><tr><td>23</td><td>左配廊北壁东数第二壁柱</td><td>已无</td><td>95×86</td><td>砂岩,暗础</td></tr><tr><td>24</td><td>右内垫便门转角柱之一</td><td>已无</td><td>上为四边形白面石四边长:28、21、27、30</td><td>二门面石下为础石</td></tr><tr><td></td><td>右内垫便门转角柱之二</td><td>已无</td><td>上为四边形白面石四边长:26、25、31、28</td><td></td></tr><tr><td>25</td><td>右外垫便门转角柱</td><td>已无</td><td>84×67</td><td>砂岩,暗础</td></tr><tr><td>26</td><td>右配廊北壁东数第一壁柱</td><td>已无</td><td>84×84</td><td>砂岩,暗础</td></tr><tr><td>27</td><td>隧西门墩东北角转角柱</td><td>已无</td><td>础石已无</td><td></td></tr></table>
+
+<p>左右内塾东西檐廊的散水大小、形制相同。以右内塾东檐廊散水为例，长4.85、宽0.74米。</p>
+<p>北门二配廊散水中仅存右配廊内廊散水西端很少一部分，其长1.7、宽1米。</p>
+<p>北门遗址的地基夯筑，夯土厚达4米。隧地面之下的夯层厚薄较均匀，一般每层厚为11—12厘米。越向下，夯层越厚，每层厚13—15厘米；反之，上部的夯层则较薄，每层厚6—8厘米。</p>
+<p>北门遗址现存柱洞及础石的情况，参见上页帝陵陵园北门遗址现存柱洞、础石统计表。</p>
+<h1 id="_12">四、出土遗物</h1>
+<p>帝陵陵园东门和北门遗址出土遗物数量以砖、瓦和瓦当最多，其次为铁器，再次为铜器。</p>
+<h1 id="_13">（一）陶器</h1>
+<p>陶质遗物均为砖、瓦和瓦当等建筑材料，未发现陶容器及其它日用陶器。</p>
+<p>砖用陶土未经淘洗，为青灰色或灰色，质坚硬。制法以手制为主，纹饰均以模印成。种类有方砖、长方砖和长条砖。</p>
+<p>方砖 一般边长33-35厘米，少数小者边长31-32、大者边长36-37厘米，厚4-5厘米。砖的纹饰有小方块纹（或称乳丁纹）、几何纹（图版二一，1、3、4），也有素面。几何纹的纹饰分为四个单元，对角二单元纹饰相同，一为“回形纹”，一为三角与菱形格组成的几何纹。不少素面方砖的背面为小方块纹或几何纹；也有方砖正面为小方块纹或几何纹者，背面则均为素面。方砖中素面者占绝大多数。方砖一般正面略大于背面。如正、背面均为素面的方砖，正面长32.5、宽34.5厘米，背面长31.5、宽33厘米。正面为素面、背面为小方块纹的方砖，正面长30.3、宽29.8厘米，背面长29.5、宽29厘米。几何纹方砖，正面长34.5、宽34厘米，背面（素面）长33.3、宽33厘米。小方块纹方砖，正面长35、宽33.5厘米，背面（素面）长34.2、宽33厘米。方砖在遗址内主要用于铺置地面，因此亦称“铺地砖”。用这种方砖铺地，由于制作时砖的上（正面）大、下（背面）小，所以砖面之间接缝非常严密，浑然一体。这种方砖有时也被打断直立砌作廊道和散水的边沿，或在不同方向的廊道与廊道、散水与散水的交汇处，作为界砖使用。有的还用于贴砌墙壁，一般花纹面朝外，并在其上抹细泥。</p>
+<p>长方砖 一般长31-34、宽20-29、厚4-5厘米，其砖面纹饰种类和用法与上述方砖相同。</p>
+<p>长条砖 一般长34-37、宽16-22、厚5-10厘米，均为素面砖（图版二一，2）。这种砖亦用于铺置地面，但均在靠近墙根处。</p>
+<p>瓦的种类有板瓦和筒瓦。瓦的陶土未经淘洗，呈灰色，烧制火候较高，质坚硬。板瓦和筒瓦外表面均饰绳纹，板瓦里面为素面，筒瓦里面系布纹。</p>
+<p>板瓦 个体大，瓦身长59.5厘米，一端宽50、另一端宽43厘米，厚2.4厘米。瓦的表面通体饰粗绳纹，纹宽0.7—1厘米。绳纹斜行，排列疏朗（图版二一，5、6）。</p>
+<p>简瓦 瓦表面均饰直绳纹，纹宽0.3厘米。可分下述四型。</p>
+<p>I型：通长56—59、宽19—19.7、厚2.1—2.3、瓦唇长6.2—6.8厘米。瓦表面绳纹长21厘米。这是简瓦中数量最多的一种（图版二二，1、2）。</p>
+<p>II型：通长59、宽19.7、厚3.5、瓦唇长6.2厘米。瓦表面通体饰绳纹，但较1型筒瓦绳纹粗而深（图版二二，3）。</p>
+<p>III型：与I型筒瓦近似，但个体略小，通长53、宽16、厚1.5、瓦唇长5厘米。瓦表面饰细绳纹，纹饰长20厘米（图版二二，4）。</p>
+<p>IV型：此类筒瓦的一端附带瓦当，瓦身之上有插瓦钉的圆形洞。分二式。</p>
+<p>1式：瓦身残，未发现完整者，瓦宽19.2、厚2.7厘米、圆洞径1厘米。瓦表面通体饰绳纹（图版二二，5）。</p>
+<p>2式：亦未发现完整者，从一保留较好的残瓦看，瓦硕大，残长63（估计通长75厘米左右）、宽19.7、厚2.8、圆洞径1厘米。与1式主要区别是瓦表面部分饰绳纹，纹饰长19厘米（图版二二，6）。</p>
+<p>从IV型筒瓦来看，瓦上有插瓦钉圆洞的必然附有瓦当，但附有瓦当的筒瓦上未必都有插瓦钉的圆洞。</p>
+<p>上述砖瓦均见于东门遗址；北门遗址除未发现IV型筒瓦之外，其它砖瓦均曾出土。</p>
+<p>瓦当在杜陵各建筑遗址出土的均为圆瓦当。制法系将模印好的圆瓦当，直接附着在已经切好的筒瓦上，因此瓦当背面不再留有切痕及棱角痕迹。遗址中出土的瓦当可以分为文字瓦当和云纹瓦当，其中以文字瓦当数量占绝大多数。文字瓦当有“长乐未央”和“长生无极”两种，以前者占大多数。</p>
+<p>“长乐未央”文字瓦当146件（以下均按完整者计数），其中东门遗址的118件，北门遗址的28件。瓦当表面分为四区，“长乐未央”四字分置其中。四区中央饰圆泡纹，圆泡纹周围一般有12枚乳丁纹。根据瓦当大小，分为五型。多数型又根据“长”字字体的不同分成若干式。</p>
+<p>I型：2件，均出于东门遗址。直径21、边轮宽1.7、厚2.1-2.2厘米。瓦当面的纹饰和文字甚浅。“长”字形如图八，1（图版二三，1）。</p>
+<p>II型：101件（东门76件，北门25件）。直径19—20厘米。分九式（2、3、5和9式均出于东门）。</p>
+<p>1式：10件（东门9件，北门1件）。边轮宽2、瓦当厚2厘米。中央圆泡纹，周围有乳丁纹18枚。“长”字形如图八，2（图版二三，2）。</p>
+<p>2式：2件。边轮宽1.8、瓦当厚2.2厘米。“长”字形如图八，3（图版二三，3）。</p>
+<p>3式：7件、边轮宽2、瓦当厚3.2厘米。“长”字形如图八，4（图版二三，4）。</p>
+<p>4式：6件（东门4件，北门2件）。边轮宽2.2、瓦当厚3.3厘米。瓦当的字体圆润，疏朗，“长”字形如图八，5（图版二三，5）。</p>
+<p>5式：1件。边轮宽2.2、瓦当厚3厘米。中央圆泡纹周围乳丁纹16枚，“长”字形如图八，6（图版二三，6）。</p>
+<p>6式：64件（东门45件，北门19件）。边轮宽1.75、瓦当厚2.7厘米。“长”字形与I型相同。</p>
+<p>7式：2件（东门、北门各1件）。边轮宽1.5、瓦当厚2.5厘米。“长”字形如图八，</p>
+<table><tr><td>第7章</td><td>第8章</td><td>第9章</td><td>第10章</td><td>第11章</td><td>第12章</td><td>第13章</td><td>第14章</td><td>第15章</td><td>第16章</td><td>第17章</td><td>第18章</td><td>第19章</td><td>第20章</td></tr><tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td></tr><tr><td>第3章</td><td>第4章</td><td>第5章</td><td>第6章</td><td>第7章</td><td>第8章</td><td>第9章</td><td>第10章</td><td>第11章</td><td>第12章</td><td>第13章</td><td>第14章</td><td>第15章</td><td>第16章</td></tr><tr><td>第11章</td><td>第12章</td><td>第13章</td><td>第14章</td><td>第15章</td><td>第16章</td><td>第17章</td><td>第18章</td><td>第19章</td><td>第20章</td><td>第21章</td><td>第22章</td><td>第23章</td><td></td></tr></table>
+
+<p>图八“长乐未央”与“长生无极”瓦当的“长”字字形变化  </p>
+<table><tr><td>“长乐未央”瓦当: 1. I. II6 2. III1 3. II2 4. III3 5. IV4 6. IV5 7. IV7 8. IV8 9. IV9 10. IV2 11. IV3 12. IV4 13. IV5 14. IV6 20. IV10 21. IV11 22. IV12 23. IV7 “长生无极”瓦当: 15. I 16. II 17. III1 18. IV2 19. III3</td></tr></table>
+
+<p>7（图版二四，1）。</p>
+<p>8式：5件（东门3件，北门2件）。边轮宽1.7、瓦当厚2.4厘米。“长”字形如图八，8（图版二四，2）。</p>
+<p>9式：4件。边轮宽2、瓦当厚2.3厘米。“长”字形如图八，9（图版二四，3）。</p>
+<p>III型：23件（均出于东门）。直径18厘米。分二式。</p>
+<p>1式：20件。边轮宽1.7、瓦当厚2.6厘米。中央圆泡纹周围乳丁纹数目和“长”字字形均与Ⅱ型5式相同。</p>
+<p>2式：3件。边轮宽2.1、瓦当厚2.1厘米。文字和纹饰较浅。“长”字形如图八，10（图版二四，4）。</p>
+<p>IV型：19件（东门16件，北门3件）。直径16—17厘米。分六式（3—6式均出于东门）。</p>
+<p>1式：9件（东门7件，北门2件）。边轮宽1.3、瓦当厚2厘米。瓦当的边轮较高，面较深。“长”字形与I型相同。</p>
+<p>2式：5件（东门4件、北门1件）。边轮宽1.5、瓦当厚2.1厘米。“长”字形与Ⅱ型3式相同。</p>
+<p>3式：2件。边轮宽1.4、瓦当厚1.7厘米。中央圆泡纹周围的乳丁纹为18枚。“长”字形如图八，11（图版二四，5）。</p>
+<p>4式；1件。边轮宽1，瓦当厚2厘米。“长”字形如图八，12（图版二四，6）。</p>
+<p>5式：1件。边轮宽1.6、瓦当厚2厘米。文字和纹饰较浅。“长”字形如图八，13（图版二五，1）。</p>
+<p>6式：1件。边轮宽1.4、瓦兰厚2厘米。中央圆泡纹周围没有乳丁纹。“长”字形如图八，14（图版二五，2）。</p>
+<p>V型：1件（出于东门）。直径12.5厘米。瓦当已残，文字与边轮间有一周“×”形纹（图版二五，3）。</p>
+<p>“长生无极”文字瓦当11件（东门9件，北门2件）。瓦当文字与纹饰布局与“长乐未央”文字瓦当基本相同。根据瓦当的大小和“长”字字形的不同，分为三型（I和II型均出于东门）。</p>
+<p>I型：2件。直径19.2、边轮宽1.9、瓦当厚2.2厘米。“长”字形如图八，15（图版二六，1）。</p>
+<p>II型；4件。直径18.5、边轮宽1.9、瓦当厚2.4厘米。“长”字形如图八，16（图版二六，2）。</p>
+<p>III型：5件（东门3件，北门2件）。直径17—17.5厘米。分四式(2和3式出于东门，4式出于北门)。</p>
+<p>1式：2件（东门、北门各1件）。边轮宽1.4、瓦当厚2.1厘米。“长”字形如图八，17（图版二六，3）。</p>
+<p>2式：1件。边轮宽1.5、瓦当厚1.6厘米。中央圆泡纹周围有11枚乳丁纹。“长”字形如图八，18（图版二六，4）。</p>
+<p>3式：1件。边轮宽1.5、瓦当厚2厘米。“长”字形如图八，19（图版二六，3）。</p>
+<p>4式：1件。与III型1式基本相同，但其中央圆泡纹周围有8枚乳丁纹（图版二六，6）。</p>
+<p>云纹瓦当 4件。瓦当面分为四个大小相同的扇面形区间，分布有四个形制相同的卷云纹。根据瓦当中央图案的不同，分为三型（I和II型均出于东门，III型出于北门）。</p>
+<p>I型：1件。瓦当中央图案与“长乐未央”文字瓦当相同。直径19、边轮宽2、瓦当厚2.4厘米（图版二五，4）。</p>
+<p>II型：2件。中央圆圈内无圆泡纹。瓦当的区间分界线穿过中央圆圈，形成复线“+”字，中央圆圈被分成四等份，每等份中形成一“L”纹。瓦当直径17.2-18、边轮宽1.3-1.5、厚2-2.5厘米（图版二五，5）。</p>
+<p>III型：1件。瓦当云纹图案外围有一周“×”形纹。中央圆泡纹周围有16枚乳丁纹。瓦当直径15.5、边轮宽1、厚2.6厘米（图版二五，6）。</p>
+<p>上述瓦当在东门和北门遗址出土时的分布情况是：“长乐未央”文字瓦当中的I、II型均出于门址中部的塾和隧附近；III型见于塾和配廊附近；IV、V型均见于配廊附近。“长生无极”文字瓦当和云纹瓦当均出于配廊。</p>
+<h1 id="_14">（二）铁器</h1>
+<p>铁器共6件，均出土于东门遗址，计有钉、镰、环首扦、刀、刀形器和插6种。</p>
+<p>钉1件（②：T4：1）。通长28.8、帽径3.2、厚0.3厘米（图版二七，1）。</p>
+<p>镰1件 $(2: T4: 2)$ 。镰身内弧如新月形，刃在凹的一面，背部起脊，基部可装木柄；通长27.5、基部宽3、尖端宽0.9、背厚0.5厘米（图九，1；图版二七，4）。</p>
+<p>环首扦1件（②：T2:1）。通长15.8厘米，环呈椭圆形，长径3、短径2.6厘米。扦身上部扁平，下部呈锥体（图版二七，2）。</p>
+<p>刀1件 $(2: T3: 1)$ 。已残，残长10、宽1.9厘米。</p>
+<p>刀形器 1 件 (②: T3:5)。背部微呈弧形，两面刃，直刃。器身高 10.5、刃宽 19、背中部厚 2.2、两端厚 1 厘米（图九，3；图版二七，5）。</p>
+<p>镭1件（②：T3:4）。镭体呈“一”字形，刃较长。器高4.7、壶口长17.5、宽0.7、深2.4、刃长18.4厘米（图九，2；图版二七，6）。</p>
+<p>图九 铁器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 铁镰 (②: T4:2) 2. 锚 (③: T3:4) 3. 刀形器 (②: T3:5)</p>
+<h1 id="_15">（三）铜器</h1>
+<p>环1件（②：T3:2）。径2.2厘米。</p>
+<p>五铢钱 2枚。东门和北门遗址各出土1枚，均与杜陵寝园遗址出土五铢钱中的III型（详见第三节）相同（图版二七，3）。</p>
+<h1 id="_16">第三节 寝园</h1>
+<h1 id="_17">一、寝园形制</h1>
+<p>《后汉书·祭祀志》记载：“汉诸陵皆有园寝。”汉宣帝陵也设置了寝园<sup>1</sup>。关于寝园的位置，汉代承袭了秦制，置于陵墓之旁<sup>2</sup>。宣帝陵的寝园位于陵园东南（详见“结语”）（图三）。</p>
+<p>我们对宣帝陵寝园进行了全面勘察，其范围为东西174、南北120米，占地20880平方米。寝园四周筑墙（图一）。北墙利用了陵园南墙中南门以东的一段，西自帝陵陵园南门左配廊（即东配廊）东端，东至陵园东南角。北墙长174、宽6米；西墙长112、宽4.6米；南墙长154.19、宽1.3、现存高0.89米，南墙东端距东墙14.2米处，向南折拐，现存长5.9、宽1.2米（图版二八，2）；东墙现存长122、宽1.2米、高0.22-0.35米（图版二八，3）。东墙外筑斜坡散水宽1米，自西向东坡 $10.15^{\circ}$ 斜坡散水以东1.1米，有一条与东墙平行的南北路，路宽0.78、现存长42.6米。此路向北沿陵园东墙外延伸，仍有断续保存。这条路由东西并列的三排铺地砖组成，两边两排为长方砖，砖长38.5、宽8.5厘米；中间一排为方砖，边长36厘米。此三排砖均为素面砖。中间一排铺地砖破碎甚烈，当系人们经常行走所致（图版二八，1）。</p>
+<p>寝园四面墙中，只有南墙外侧筑有檐廊，廊宽0.85米。廊道铺素面砖，南北三排，</p>
+<p>1）《西汉会要》卷一九，礼条：“孝宣皇帝寝园。”<br />
+2）《后汉书·祭祀志（下)》：“秦始出寝，起于墓侧，汉因而弗改。”</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>里边（北边）二排为方砖，外边（南边）一排为长方砖。方砖边长33厘米，长方砖长35、宽19厘米。廊道里高外低（即北高南低），坡 $9 - 9.5^{\circ}$ 。廊外置卵石散水，宽1.04米。散水亦呈里高外低，坡度为 $7 - 12^{\circ}$ ，一般为 $10^{\circ}$ 。</p>
+<p>寝园南墙西端以东3.4米，有两条东西并列的南北向墙基，北与南墙垂直相接。现存墙基长4米；东、西二墙基宽分别为1与2米；二者间距4米。</p>
+<p>寝园的西、南、东墙之上皆辟门。</p>
+<p>寝园有西门一座，进行了钻探和试掘。此门距寝园西北角60、距西南角40.8米。门址面阔12、进深13、门道宽6.4米。门道中央有一东西向夯土隔墙，将门道分为南、北两通道；二通道大小、形制相同。门道南、北两边皆有檐廊与卵石散水。</p>
+<p>寝园有南门三座。对南面西门进行了钻探和试掘。此门位于寝园西南角以东54.4米，北对寝殿中央。门址面阔10.8、进深7.2、门道宽6.8米。斜坡门道，从北向南坡 $15^{\circ}$ 。门道东、西两侧为檐廊，廊道宽1米。二檐廊外侧各置卵石散水，宽均为1米。门的檐廊、散水分别与寝园南墙外的檐廊和散水相连接。</p>
+<p>在南面西门以东55.1米处，为寝园南面中门，对此门进行了全面发掘。此门北对便殿主体建筑一殿堂。门址面阔9.88、通长（水平距离）5.8米（图一一；图版二九，1）。门址中间的门道由北部平道和南部坡道两部分组成。平道宽1.91、长1.3米，地面铺素面方砖；坡道宽2.8、长（坡长）4.5米，自北向南坡 $10.5^{\circ}$ 。坡道地面中间铺</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一一 杜陵寝园南面中门平、剖面图<br />
+1—5.柱洞</p>
+<p>几何纹方砖，东、西两侧各铺两排素面长方砖。坡道东、西对称分布有护坡；二护坡形制、大小相同。以西护坡为例，坡面呈三角形。三边长分别为3.58、2.84和1.92米。西护坡东邻坡道西边，北邻西慢道南边。护坡之上铺素面方砖，自东向西斜坡 $32^{\circ}$ （图版二九，2、3）。寝园南墙外檐廊廊道，从东、西两边通至此门外，形成了缓坡慢道。东、西慢道对称分布于门道东、西两边，二者大小、形制相同。现以西慢道为例说明如下：</p>
+<p>西慢道长3.55、宽0.85米，呈自东向西和自北向南两个方向的斜坡，前者坡 $9 - 11^{\circ}$ 后者坡 $8.5 - 10^{\circ}$ ；二者的坡度均为靠近门道处（东部）较缓，远离门道处（西部）较陡。东、西慢道南部均筑有护坡；二护坡形制、大小相同。现以西慢道南部护坡为例，共东、西、南、北边长分别为1.9，0.9，2.66和3.55米；护坡的东、西、北三面分别为门道西护坡、檐廊散水和西慢道。护坡自北向南坡 $25^{\circ}$ 。慢道及其护坡均铺素面方砖。慢道与其护坡、护坡与散水的分界处均铺素面长方砖。慢道护坡与门道护坡分界处，以及门道护坡外边（即门道东、西护坡的东、西边）则砌置立砖（图版三 $\bigcirc$ ，1）。门道的平道辟于寝园南墙之上（图版三 $\bigcirc$ ，3）；门道东西壁各有3个壁柱；柱槽截面长方形，长24、宽28厘米。磚石为白面石，石面磨光，略高于门道地面（图版三 $\bigcirc$ ，2）。</p>
+<p>在寝园南墙东端南拐的南北墙上，北距南墙0.36米处有一道门，对此门进行了发掘。这应是寝园中的一座便门，门道宽0.75、进深1米。门道有台阶三级，由下向上（自西向东），第一级宽30厘米，第二级宽27、高9厘米，第三级宽38、高20厘米。此门东部为一南北向慢道（图版三一，1）。</p>
+<p>寝园东门一座，已进行了发掘。此门位于寝园东北角以南46米。门宽2.25、进深1.5米。门道地面铺素面方砖，自西向东坡 $7^{\circ}$ 。门道东边有门槛槽，长与门宽相同；槽宽21、深9厘米，槽内遗留有木灰（图版三一，2）。</p>
+<p>寝园之中有寝殿和便殿，它们分别为杜陵一、五号遗址（详见“结语"）。</p>
+<h1 id="1_1">1、裂殿遗址（一号遗址）</h1>
+<p>寝殿遗址位于寝园西部，自成一组建筑，形成一座大院落。寝殿院落南、北、西三面有墙，东面置廊，其范围东西116、南北120米。南、北墙分别利用了寝园南、北墙的西段；西墙即寝园西墙。南墙北面有廊，与寝殿院落东廊相通。南墙北廊宽2.95米，其外檐廊及卵石散水分别宽1和0.95米。东廊宽4.75米，其外檐廊及卵石散水分别宽1和0.95米。东廊和南墙北廊廊道、檐廊均以素面方砖铺地；檐廊一律铺三排方砖，廊道地面呈由里向外斜坡。如东廊檐廊廊道地面呈自东向西（由里向外）斜坡，坡度为6.5— $7^{\circ}$ （图版三二，1）。从已经发掘的东廊来看，廊壁壁柱础石均为白面石，础石面磨光，为圆或椭圆形。在东廊檐廊外的卵石散水上，还发现有挑檐柱窝遗迹。挑檐柱窝直径25厘米，其间距不等，小者4米、大者4.95米。寝殿院落东门南檐廊散水以南30.32米之内有七处挑檐柱窝遗迹，自北向南，其间距分别为4.5、4、4.95、4.45、4.25和4.75米（图版三二，2）。</p>
+<p>寝殿院落辟有三座门，西、南二门即寝园的西门和南面西门。南门基本处在寝殿院落南墙东西居中位置，北对寝殿南面的露台中央。露台东西28.8、南北8.6米。露台南边为寝殿院落南墙里边的南廊道。露台东、西、北三面有檐廊和散水，它们与南廊道外的檐廊和散水相连。露台北对寝殿中央。</p>
+<p>东门与西门形制、大小基本相同，并对称分布于寝殿东、西两侧，分别与寝殿东、西门相对。寝殿院落东门面阔12.75、进深11.5米。门址由门道及其两边的檐廊和散</p>
+<p>水组成（图一二；图版三三，1）。门道居中，门道中间置东西向夯上墙：长11.5、宽1米，现存高0.12米。此墙将门道分隔为南北二通道。隔墙西端呈“凸”字形，突出部分南北为50、东西为35厘米，其南北两侧各置一壁柱，二壁柱截面同大，均为长方形，</p>
+<p>北<br />
+图一二 杜陵寝殿院落东门平面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1—8. 柱洞 12、16. 柱础石</p>
+<p>长50、宽45厘米。自隔墙西端向东3.75米处，亦有二壁柱，对称分布于隔墙南北，柱槽截面大小相同，长37、宽25厘米。再向东3.45米，又有大小相同的二壁柱对称分布于隔墙南北壁，柱槽截面长30、宽20厘米。隔墙壁柱的砌石均以白面石制作，砌石面磨光，砌石的置柱面略高于附近地面2-3厘米。</p>
+<p>门道被隔墙分成南北二通道，大小、形制相同。现以北通道为例说明如下：北通道长11.1、宽2.95米。通道自东向西、自南向北分别各呈 $3^{\circ}$ 斜坡。通道与檐廊二者地面高差10厘米。通道地面铺素面方砖，南北向8排，东西向32排（图版三三，2）。通道西端有门槛槽，长2.4、宽0.25米；槽内遗存有木炭。门槛槽的南、北两端各有一柱槽，南者即隔墙西端北边的壁柱。在北通道北边，与隔墙东数第一对壁柱南北相对位置有一柱础石，础石北边与门道北壁平直。础石面为圆形，直径40厘米。在南通道南边，与隔墙东数第二对壁柱南北相对位置有一柱础石，础石面为椭圆形，长径48、短径32厘米。上述情况说明，门道南北两壁的柱础石，均与隔墙上的壁柱呈南北对称分布。上</p>
+<p>述础石均以白面石制作，础石面磨光。门道隔墙两壁础石的平面为长方形，门道南、北两边础石的平面为圆或椭圆形（图版三二，3）。</p>
+<p>门道两侧对称分布着南、北檐廊，二廊形制、大小相同。以北檐廊为例，长11.13、宽1米，廊道铺素面方砖。地面呈由南向北斜坡，坡为 $7^{\circ}$ （图版三四，1）。</p>
+<p>门道二檐廊外边，各置卵石散水，二散水形制、大小相同，对称分布于东门两侧（图版三四，2、4）。以北檐廊外散水为例，长10.1、宽0.9米。散水西端向北突出一部分，这部分散水长2.23、宽1.04米。南檐廊散水西端则向南突出一部分，其大小与北檐廊散水西端向北突出部分相同，东门的檐廊和散水分别与寝殿院落东廊的南北向檐廊和散水相连接。</p>
+<p>寝殿院落中的主体建筑——寝殿遗址（一号遗址）位于其中部偏南，北距寝园北墙51米，南距露台21米，寝殿东、西门距寝殿院落东、西门各4米。寝殿遗址进行了发掘，发掘面积3200平方米。</p>
+<p>寝殿遗址地层堆积情况：第一层耕土，厚10—30厘米；第二层系灰黄色土，即近代扰土，厚7—75厘米，内有近代遗物和汉代砖瓦碎块；第三层系灰色土，即寝殿建筑倒塌后的汉代堆积土，厚30—60厘米，其中汉代砖瓦甚多。寝殿殿堂夯土台基部分的上面仅覆盖一层耕土；寝殿四周檐廊、散水及寝殿南部，一般被第一、二层堆积上压着；寝殿东、西、北部的汉代地面，由于地势较低，第三层堆积土才得以保存，压在其上。</p>
+<p>寝殿遗址东西长74.3、南北宽37.5米（图一三；图版三五）。遗址中部为殿堂台基，东西长50.6、南北宽29.3米。寝殿遗址在平整地上中曾被破坏，因此殿堂台基保存高度仅10-25厘米。寝殿基址夯土厚2.5米，夯土层上部每层厚约7厘米，下部每层厚约11厘米。</p>
+<p>寝殿殿堂台基四壁有壁柱，由于台基遭受严重破坏，共壁柱遗迹保存也甚少。台基东、西壁各应有壁柱6个。东壁现存3个壁柱，共分布为：台基东北角以南4.8米、共南5.8米、再南6.8米各1个。西壁现存2个壁柱，一在台基西北角以南11米，另一在其南6.8米。南壁现存4个壁柱遗迹，东数第一个在台基东南角以西19.1米，第二个于其西4.3米，又西4米为第三个，再西4.2米为第四个。第二、三个壁柱正对寝殿南门中阶的东西两边。寝殿台基的壁柱截面为方形，边长33厘米；东、西二壁的现存壁柱柱洞内还有残存的碎石块，均为白面石。</p>
+<p>寝殿台基四壁之上抹有6厘米厚草泥；共上再涂很薄的麦糠泥，表面刷白垩粉（图版三四，3）。</p>
+<p>寝殿台基四周设置回廊，东、西廊各长35.5米，南、北廊各长53.8米，四面廊道各宽2.1米。廊道铺素面方砖。</p>
+<p>回廊之外置散水，东、西廊散水各长36.5米，南、北廊散水各长56.8米，回廊四面散水各宽1米。散水外边铺置了一排与之平行的几何纹方砖。</p>
+<p>在回廊与散水、散水与几何纹方砖间均以立砌的方砖为界，砖厚约5厘米。</p>
+<p>寝殿四面辟门，其中东、西门规模较大。东、西门对称分布于寝殿东、西两边。二门形制相同、大小相近。</p>
+<p>寝殿西门与寝殿院落西门（即寝园西门）东西相对，间距4米，其间素面方砖铺地。寝殿西门位于寝殿西壁中央，门址面阔12.25，进深10.53米。门址由门道、南北檐</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>廊及其散水组成（图版三六）。</p>
+<p>门道宽6.73米。中间筑隔墙，墙垣分筑，长10.53、宽0.95、现存高0.2米。隔墙西端呈“凸”字形，凸出部分长0.4、宽0.52米，其南、北两侧各有一壁柱，二者柱槽截面均为方形，边长50厘米。其中南侧壁柱础石尚存，础石长54、宽50、厚20厘米，系白而石，础石面磨光。由隔墙西端向东4.3米处，隔墙南北壁各有一壁柱，柱槽截面方形，边长30厘米（图版三七，1、2）。</p>
+<p>隔墙将门道分为南、北二通道，二者形制、大小基本相同。以南通道为例，宽2.9米（图版三七，3）。通道地面分前、中、后三部分，前、后两部分通道为平面，长分别为4.47与4.9米。中部通道为自东向西（即由内向外）的坡道，坡为 $14^{\circ}$ ；坡道长1.4米。通道地面均铺方砖，但通道的前、后铺素面方砖，通道的中部因系坡道，为了行走安全，铺几何纹方砖（图版三八）。门道与廊道地面高差20厘米。南通道西端有门槛槽，长2.1、宽0.2、深0.05米；槽内遗留有木炭。门槛槽南、北两端各有一柱槽，北者即门道隔墙西端的南侧壁柱；南者位于门道南边两端，柱槽截面呈圆形，直径40厘米；柱槽内遗留有砌石碎块。</p>
+<p>门道南、北两边各有柱槽3个，对称分布。每边柱槽间距均为4.3米。最西端的柱槽即为门道西边、南北通道门槛的外端柱槽。门道南、北两边的础石均系白面石制作，础石面磨光。础石面略高于门道地面。从保存完整的础石来看，础石面为圆形或椭圆形，前者直径48厘米，置柱面厚8厘米，础石座长62、宽52、厚20厘米；后者长径47、短径37厘米，置柱面厚7厘米，础石座厚18厘米（图版三九）。</p>
+<p>门道南、北檐廊的形制、大小相同，对称分布于门道两边。以南檐廊为例，长10.53、宽1.05米。廊道铺素面方砖，东西向铺地砖南北3排；在檐廊与门道南壁间还铺了一排长条砖。长条砖一般长32—34、宽6—9厘米。这个遗迹现象在北檐廊与门道间未发现。</p>
+<p>门道南、北檐廊的外侧均置散水，西门两边的散水形制、大小相同，对称分布于西门两侧。以南檐廊外散水为例，长10.53、宽1.7米。</p>
+<p>寝殿东门略小于西门。东门面阔12.66、进深9.1米。门道隔墙宽1米。隔墙东端凸出部分的南北两边壁柱之下础石均在；二础石大小相同，长54、宽50、厚20厘米。隔墙东端以西4.4米处，墙的南、北壁各有一壁柱，南壁壁柱砌石尚存，长35、宽24、厚20厘米（图版四）。隔墙将门道分为南、北二通道，各宽2.92米。通道东西平道各长3.7米；中间坡道长1.4米，坡为 $14^{\circ}$ 。南北二通道东端各置门槛，二门槛槽遗迹大小相同，长2.3、宽0.24、深0.05米（图版四一，1；图版四二，1）。门道南、北两边，各有柱槽3个，对称分布于门道南、北。东数第一对在二通道门槛槽外侧；第二对在其西3.7米处；第三对在第二对以西3.2米处。第一、二对柱槽截面为圆形，直径40厘米。第三对柱槽截面方形，边长33厘米（图版四一，2）。东门南、北檐廊各宽1.06米。南、北檐廊外散水宽分别为1.94与1.76米（图版四二，2）。</p>
+<p>寝殿南面有三座门，可称东阶、中阶和西阶（图版四三，1）。东阶位于寝殿台基东南角以西3.8米处，其西15.6米处为中阶，再西15.6米处为西阶，西阶以西距寝殿台基西南角3.8米。三阶形制、大小基本相同。每阶面阔4、进深1.75米。阶的通道地面自北向南略呈斜坡状，坡为 $4^{\circ}$ 。通道之上清理出铺置方砖的痕迹。通道口砌置了一排立砖为界。各阶通道的两边均有卵石散水，长1.75、宽1.1米；其外分别与寝殿南檐廊外</p>
+<p>散水相连接（图版四三，2）。</p>
+<p>寝殿北面也有三座门，亦可称东阶、中阶和西阶（图版四四，1）。东阶位于寝殿台基东北角以西8.4米处，其西10.9米处为中阶，再西10.9米处为西阶；西阶以西距寝殿台基西北角8.01米。三阶形制相同、大小略异。东、西阶面阔各4.25米，中阶面阔4.08米。三阶进深均为1.9米。三阶通道地面由南向北呈斜坡，坡为 $5^{\circ}$ 。通道之上铺几何纹砖。通道口有一排立砌的铺地砖。通道两边有散水，各长1.9、宽1.05米，其外分别与寝殿北檐廊散水相接（图版四四，3、4）。</p>
+<p>在寝殿北门中阶的东、西两边有铺地砖（图版四五，1、3）。其中的中阶东部，散水以东3.55至4.35米间、北距北檐廊散水0.31米处，有一片铺地砖痕迹，其东、西、南边砌置的立砖尚在（图版四五，2）。中阶西部的铺地砖，在中阶西边散水以西3.3米处，现存两块南北排列铺地砖，南距北檐廊散水31厘米。两块铺地砖南北长68厘米（图版四五，4）。上述中阶东、西两边基本对称分布的铺地砖，可能是寝殿卫兵侍立之处。</p>
+<h1 id="_18">三、便殿遗址（五号遗址）</h1>
+<p>便殿遗址位于寝园东部，1984年春季对其进行了发掘，发掘面积6560平方米（彩版二；图版四六、四七）。</p>
+<p>遗址地层堆积情况：第一层耕土层，厚20—40厘米；第二层为灰黄色土，属于扰土层，厚26—100厘米，土质较纯净，其中含有少量近代砖瓦、瓷片和汉代砖瓦碎块等；第三层系灰色土，属于汉代文化层，厚27—60、距地表深65—155厘米，此层之中有大量汉代砖瓦及钱币、兵器、工具等遗物。这些是便殿建筑废弃后的堆积，汉代建筑遗迹和汉代地面压在此层之下。</p>
+<p>便殿东、南、北三面筑墙，西面置廊，其范围东西为73.5、南北为120米。南、北二墙利用了寝园南、北墙的东段；东墙利用了寝园东墙。西与寝殿院落相连，寝殿院落的东门、东廊，即是便殿的西门、西廊（图版四七、四八）。便殿东、西、南三面置门，其东门即寝园东门，西门即寝殿院落东门；南面有二门，即寝园南面中门和东门（图一四）。</p>
+<p>便殿是由堂、室和院子三组建筑群组成。堂、室两组建筑群并列于院于建筑群南部，其间有夯土墙和廊道相隔。便殿中的建筑物主要是党和室，堂又是便殿中的主体建筑物。</p>
+<h1 id="_19">（一）以堂为主的建筑群</h1>
+<p>以殿堂为主的建筑群，位于寝殿东边、便殿西部，北与院子建筑群的西部由一东西向廊道分开，东邻以室为主的建筑群，南至便殿南墙（即寝园南墙），其范围为南北58.2、东西29.1米。这组建筑群中包括殿堂一座，院子3个（编号为三、五、六号院）、房屋一套两间（编号F1和F2）和一个庭院（编号为III号庭院），以及西、南门各一座。西门即便殿西门（亦即寝殿院落东门）；南门即便殿南面西边的门（亦即寝园南面中门）（图版五○，1）。</p>
+<p>便殿的殿堂基址位于便殿西门东南，西距便殿西檐廊7.1米。殿堂南、北各有一座</p>
+<p>院子（编为三号院和五号院）。殿堂基址东西为18.5、南北为15.3米。基址夯土台平整土地中曾被破坏，现存高仅10一35厘米(以三、五号院南北檐廊铺地砖面为标准的高差；我们把殿堂基址最高处标高确定为 $\pm 0$ )。殿堂基址中部偏南有3个柱洞遗迹，但未发现础石。其一在基址南边以北1.35、东边以西5.4米处；其二在第一个柱洞遗迹以西4.4米处；其三在第二个柱洞遗迹以北3.8米处。柱洞遗迹平面均呈圆形，直径70一75厘米。殿堂南北有檐廊，其长均为28.8米；宽分别为 $^ { \text{喜} }$ 4.8与2.3米。殿堂东、西廊长43.3米，宽分别为3.4与7.1米。</p>
+<p>三号院东西18.5、南北13.3米（图版五○，2）。该院南邻殿堂，东、西、北三面设廊，分别为殿堂东、西、北廊一部分，其廊长分别为13.3，13.3与18.5米。院内四面置檐廊。南、北檐廊各长18.5、宽1.08米；廊道铺素面方砖，东西向3排。东、西檐廊各长13.3米，宽分别为0.67与0.77米；廊道铺素面方砖，南北向2排。四面檐廊廊道均坡向院子天井，南北檐廊坡为 $4.5^{\circ}$ ；东西檐廊坡为 $7.5^{\circ}$ 。</p>
+<p>四面檐廊之外均置卵石散水，南、北檐廊外散水长17米，宽分别为1.2与0.94米。东、西檐廊外散水长11.2米，宽分别为0.82与0.88米。四面檐廊和散水的四角，分别砌立砖为界（图版五一，3）。</p>
+<p>院内天井东西长15、南北宽9米。天井地面未发现铺砖痕迹。</p>
+<p>三号院各部分的标高分别为：天井中央-47厘米，南檐廊(均取廊道中间数字)-19厘米，北檐廊-33厘米，东、西檐廊均为-33厘米。</p>
+<p>五号院形制与三号院相同，但其规模较小。该院东西长18.5、南北宽8米（图版五一，1）。北邻殿堂，东、西、南三面为廊，分别为殿堂东、西、南廊的一部分，其廊长分别为8、8和18.5米。院内东、西檐廊各长8，宽0.7米；南、北檐廊各长18.5，宽分别为1和1.5米。四面檐廊均以素面方砖铺地。南、北檐廊东西向铺地砖分别为3和4排；东、西檐廊南北向铺地砖各2排。四面檐廊廊道均坡向天井中央，东、西檐廊各坡6.5°；南、北檐廊分别坡3.5与7.5°。南、北檐廊外散水各长17.2，宽分别为0.95与0.87米；东、西檐廊外散水各长5.6、宽0.96米。四面檐廊及散水交界处砌立砖为界，但由于各檐廊、散水间宽度不尽完全一致，因此由散水交界所砌立砖延至二檐廊交界处，并不都是通至二檐廊交角处。例如，院东北角的立砖，则在东、北檐廊交角以南72厘米处(图版五一，2)。</p>
+<p>在西檐廊廊壁、北距院西北角3.75米处有一堆碎石块，疑为当时磚石被破坏后的遗物。这里可能为西檐廊壁柱之一。</p>
+<p>院内天井东西长15.2、南北宽4.05米。</p>
+<p>五号院各部分的标高分别为：天井中央为-40厘米，南、北檐廊分别为-20与-25厘米，东、西檐廊各为-22厘米。</p>
+<p>六号院在五号院以南4.85米处，其范围东西为16.5、南北为14.5米（图版五二，1）。该院与三、五号院形制不同。六号院以寝园南墙为院墙；东有夯土隔墙，长14.5，宽1、现存高0.4米；西邻便殿西廊；北邻五号院南廊。该院南边有一门（即便殿南面西门，亦即寝园南面中门），距院东、西两边分别为7.9和6.9米。</p>
+<p>院内地面除卵石散水之外，均以素面方砖铺地。院子南部，南门之内有一片铺地砖碎裂得厉害。系人们践踏所致，说明此处当时人们走动甚多。这片铺地砖南北宽4.05米。在这片铺地砖以北，有一条东西向沟槽，其西自院子西壁，东至院子东壁以西3.1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一</p>
+<p>来处；沟槽东西长14、宽0.25、深0.1米；槽内遗留有木灰(图版五，2)。沟槽可能系安置木屏所设。沟槽以北为院子的南檐廊。</p>
+<p>南檐廊西至院子西壁东边，长13.3、宽1.6米，东西向铺方砖南北5排。由沟槽西端，向东北方向铺有一排立砖，长2.6米。东北端至南檐廊北边，共西距院子西壁1.6米。北檐廊在院子北壁以南2.59米、西壁以东1.75米，廊长12.3、宽0.65米。廊道东西向铺地砖2排（图版五三，2）。东檐廊在院子东壁以西2.37米，南自沟槽起，北至院子北壁以南2.59米处。廊长7.85、宽0.75米。廊道南北向铺地砖2排（图版五三，1）。西檐廊在院子西壁东边，南自南檐廊，北至院子北壁以南2.59米处。廊长6.1、宽1.75米。原廊道铺地砖已无存，仅见砖渣遗迹。</p>
+<p>北、东檐廊外面有卵石散水。北檐廊散水西距六号院西壁1.75米，散水长11.5、宽0.74米。东檐廊散水，南至沟槽，北与北檐廊散水相交。散水长7、宽0.78米；东檐廊与南、北檐廊相交处所砌立砖向外延至散水之上。</p>
+<p>院子中央为天井，东西10.7、南北4.77米。天井地面上还保存有部分铺地砖遗迹。院内东、南、西、北檐廊地面均坡向院中央的天井，其坡度分别为8.5、6、5和 $8^{\circ}$ 。东、北二檐廊外散水坡度甚微（坡为 $2^{\circ}$ ）。</p>
+<p>该院各部分的标高分别为：天井中央-85厘米，南北檐廊各-75厘米，东檐廊-80厘米，沟槽以南地面-63厘米，北檐廊以北地面-70厘米。</p>
+<p>六号院及其南门附近出土有剑、刀、镞、弩机和甲片等遗物；这些应为士兵防卫用品。此处设置卫兵防守，应与便殿主体建筑——殿堂在此附近有关。</p>
+<p>六号院东边有一套房屋，由东西并列、坐北朝南的两间房组成，编号F1和F2（图版五四）。</p>
+<p>F1面阔1.8、进深4.65米。西墙长5.1、宽1、现存高0.3米；此墙即六号院东墙北段。东墙长5.1、宽0.75、现存高0.33米。南墙长0.92、宽0.64、现存高0.23米。F1北壁即五、六号院之间东西廊道的南壁。东、西、南三面均夯筑。南墙西部有一门，门道宽0.71米。门道两侧各有壁柱一对。门道东侧南墙西端呈“凸”字形，凸出部分东西为23、南北为27厘米。在其南、北两边各有一壁柱，二壁柱大小、形制相同。柱槽截面为长方形，长23、宽18厘米；北边柱洞下遗留有被破坏的础石残块。门道西侧与东侧形制相同，“凸”字形顶端凸出部分东西为30、南北为33厘米；其西与F1西墙相连。在其南、北两边亦各有一壁柱，下有础石，南者长33、宽50厘米，北者长30、宽20厘米；二者均厚7厘米。础石均为白面石，石面磨光。</p>
+<p>F2位于F1东边，面阔3.75、进深4.63米。西墙即F1东墙。F2东墙长5.1、宽0.63、现存高0.26米。南墙偏东有一门，宽1.15米，门道铺素面方砖。门东、西两侧的南墙长分别为0.75与2.5、宽0.65、现存高0.26米。F2北壁即五、六号院之间的东、西廊道之南壁。东、南墙均为夯筑。F2屋内东北部地面保存一块未经扰动的素面砖，长34、宽17.5、厚8.5厘米。</p>
+<p>F1和F2屋内地面标高相同，均为-33厘米。</p>
+<p>F1和F2以南为Ⅲ号庭院，南北为4.3、东西为6.9米，地面标高-38厘米。Ⅲ号庭院以南为便殿南部的东西向通道。</p>
+<p>在F1和F2附近曾出土不少铲、镰、锛、犁铧等工具。房屋的居住者或为便殿的杂</p>
+<p>役人员。</p>
+<p>室与殿堂两组建筑群东、西之间有一条南北向长廊（即殿堂和三、五号院的东廊），将二者分隔开。</p>
+<h1 id="_20">（二）室的房屋建筑群</h1>
+<p>这组建筑位于殿堂基址的东南部，其范围南北为58.2、东西为31.4米。它们主要包括三套房屋、三座院子和三座庭院（图版五五）。</p>
+<p>室的房屋建筑群最北部是一个大院子，编号四号院（图版五六，1）。四号院东西长29、南北宽15.8米。院子四周为廊，南、北廊各长29、宽2.41米。南廊北边东西排列三个础石，其间距各3.7米。西数第一、二个础石，大小、形制相近，砌石面均加工成圆形，直径48、加工面高8厘米。砌石长56—59、宽51—54、厚25.5—28.5厘米。西数第三个础石较小，长53、宽49、厚16厘米。砌石面虽经加工，但未磨光；石面近圆形，直径48.5、加工面高7厘米；石面北边与南廊北壁齐，弦长35厘米(图版五六，2、3)。东、西廊各长15.8、宽分别为4.3与2.37米。西廊道中间平，南、北两端呈斜坡</p>
+<p>状，北端自南向北倾斜，南端自北向南倾斜，坡度各为 $8^{\circ}$ 。二者坡长分别为1、1与1.32米。坡道之上铺几何纹方砖，其余廊道地面均铺素面方砖（图版五七，1、2）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一五 杜陵便殿七号院平面图1-13. 柱洞</p>
+<p>四号院南、北檐廊各长22.15、宽0.75米；东、西檐廊各长11.3、宽分别为1.04与0.75米。四面檐廊地面均铺素面方砖，除东檐廊铺地砖3排之外，其余三面檐廊铺地砖各2排。四面檐廊均坡向院子中央的天井，其坡度分别为东 $5.5^{\circ}$ 、西 $6^{\circ}$ 、南 $10^{\circ}$ 、北 $7.5^{\circ}$ 。四面檐廊外均设置卵石散水。东、西檐廊散水各长9.75、宽0.83米；南、北檐廊散水各长20.73、宽分别为0.8与1米。</p>
+<p>院子天井东西长18.8、南北宽8米。该院各部分的标高分别为：天井中央-115厘米，四面檐廊各-95厘米；四面廊道各-55厘米。</p>
+<p>四号院西南部有一组建筑，院西廊正对这组建筑的北门（图版五七，3）。这组建筑由编号F6和F7两个小房子与其间院子——七号院组成（图一五；图版五八）。</p>
+<p>F6位于这组建筑的南部，坐南朝北，面阔7.1、进深2.85米（图版五九，1）。东墙长4.25、宽0.65、现存高0.46米；西壁即便殿的殿堂东廊之东壁，长4.25、高0.5米；南墙长7.8、宽0.65、现存高0.5米；北墙被门道均分为东、西两段，各长3、宽0.63米。北墙东段北壁贴砌了方砖(图版五九，2)。北墙门道宽0.9米；门道两侧各有南、北二壁柱。四个壁柱柱槽截面形状、大小相同，长24、宽17厘米。门道东侧南、北二壁柱础石尚在，北者长33、宽36、厚18厘米，置柱面长25.5、宽24厘米，高于门道地面12厘米；南者长29.5、宽24、厚17厘米，置柱面长21.5、宽20厘米，高于门道地面11厘米。门道西侧仅北边壁柱础石尚存，长37、宽26、厚19厘米，置柱面长26、宽19厘米，高于门道地面11厘米。上述门道两侧础石均为白面石，石面磨光（图版五九，3）。</p>
+<p>F7位于这组建筑的北部，坐北朝南，与F6南北相对。F7面阔4.6、进深2.8米。东墙长4.1、宽0.74、现存高0.2米；西墙长4.1、宽0.7、现存高0.4米；北墙长5.8、宽0.75、现存高0.5米；南墙中有门，门道东、西的南墙长分别为2.5与2.4、宽0.7、现存高0.42米；门道宽0.9米。门道两侧各有南、北二壁柱。东侧南、北二壁柱柱槽截面均为长方形，长20、宽18厘米。其中北边的础石长、宽各26.5、厚13.5厘米；置柱面长21、宽20厘米，高于门道地面4厘米。南边的础石长、宽各29，厚18.5厘米；置柱面长20、宽14.5厘米，与门道地面平。门道西侧北边壁柱柱槽截面为长方形，长18、宽13厘米；础石已经扰动和破坏。其南边壁柱柱槽截面亦为长方形，长18、宽13厘米，础石长30、宽23、厚17厘米，置柱面长20、宽19.5厘米。F7门道两侧础石均为白面石；除门道两侧南边础石面未经磨光外，其余石面均已磨光（图版六）。</p>
+<p>F6与F7南北之间为七号院。院子东西为5、南北为5.48米。院四周为廊，中央为天井。廊和天井地面均铺素面方砖。南、北各长5、宽分别为0.64与0.68米。廊道东西向铺地砖各2排，地面分别坡向天井，坡度均为 $6.5^{\circ}$ 。东、西廊各长5.48、宽分别为0.4与0.85米。二廊道南北向铺地砖分别为1与3排；地面分别坡向天井，坡度均为 $5.5^{\circ}$ 。天井东西为4.1、南北为4.25米。天井最低处在其西北部。天井与四面廊道间、北廊与西廊交界处（自天井西北角至F7西南角间)，均砌立砖为界(图版六一，1)。</p>
+<p>七号院西廊西和F7西部是从四号院进入这里通道，南北为9.95米；F7西边通道宽1.9米，院西廊西边通道宽2.1米。通道地面铺方砖。通道北部置门，门道宽1.45米（图版六一，2）。门道两侧各有一对南、北并列的壁柱。东侧二壁柱位于F7西墙北端，其中南边壁柱柱槽截面长23、宽22厘米；础石长29.5、宽23.5、厚15厘米，础石面高于门道地面5厘米。北边壁柱柱槽截面长30、宽28厘米；础石长41、宽32、厚14厘米，础石面高出门道地面4厘米（图版六一，3）。西侧二壁柱位于通道西壁北端，其中南边壁柱柱槽被破坏，础石被扰动；础石长28、宽20、厚10厘米；北边壁柱柱槽截面长26、宽25厘米，础石长34.5、宽25、厚12厘米，础石面与门道地面平。</p>
+<p>通道西壁有2个壁柱，其一在通道西壁南端、F6西北角，柱槽截面长36、宽40厘米，共下砌石长49、宽48.5、厚30厘米；其二在前一壁柱北4.57米处，柱槽截面长44、宽33厘米，共下砌石长47、宽46、厚24厘米。上述二壁柱的砌石面均与门道地面平（图版六一，4）。通道东壁（即F7西墙西壁）、门道以南3.3米处（即F7西南角）有一壁柱，柱槽截面长30、宽31厘米，其下砌石边长38、厚23厘米，砌石面高于铺砖地面1厘米。门道两侧和通道壁柱的砌石均为白面石，石面磨光。</p>
+<p>F6和F7的屋内、七号院廊道与通道地面标高均为-60厘米。</p>
+<p>七号院和F6、F7南部又有一组建筑，它们由三间小房屋：F3、F4、F5和1号庭院组成（图版六二，1）。</p>
+<p>F3坐北朝南，面阔4.8、进深3.8米。南面置门，门道宽0.94、长0.64米；门道地面呈自北向南（由里向外）斜坡，坡为 $9.5^{\circ}$ 。南墙被南门分为东、西两段，其长分别为2.11与1.85，墙宽0.64米。北墙被F4南门（亦即F3北门）分为东、西两段，其长分别为1.98与2、宽0.62、现存高0.26米。东墙长2.48、宽0.73、现存高0.24米。西壁即五号院东廊的东壁。F3西北角、西壁北端有一转角壁柱，柱槽截面长25.5、宽24.5厘米，础石长39.5、宽35、厚26厘米，高于房内地面4厘米。础石系白面石，石面磨光。</p>
+<p>F4位于F3北与F6南，坐北朝南，而阔4.9、进深2.9米。F4的南、北墙分别为F3北墙与F6南墙西段。东墙长3.47、宽0.73、现存高0.24米，南面与F3东墙相连。西壁南与F3西壁相连，亦为五号院东部东壁。F4南门宽0.92、长0.62米，门道两侧各有一对南、北并列的壁柱；四个壁柱柱槽截面均为长方形。东侧南者长30、宽15厘米，北者长30、宽20厘米；西侧南者长25、宽15厘米，北者长25、宽20厘米。四个壁柱的础石均系白面石，石面磨光。其中门道东侧南边础石长25、宽17、厚13厘米，置柱面长23.5、宽17厘米，高出门道地面5厘米；北边础石长37、宽21、厚12厘米，置柱面长29、宽22.5厘米，高出门道地面4.5厘米。门道西侧南边础石长31.5、宽22.5、厚17厘米，置柱面长27.5、宽20.5厘米，高出门道地面7.5厘米；北边础石长31、宽22、厚14厘米，置柱面长29、宽19.5厘米，高出门道地面4厘米。F4南门亦即F3北门，因此F4与F3成了“里外屋”形式。</p>
+<p>F5位于F3和F4东，F6在其北。F5面阔1.66、进深7.3米。南墙长2.3、宽0.64米，其西与F3南墙相连。北墙即F6南墙东段，其西与F4北墙相连。东墙长7.3、宽0.67、现存高0.3米。西墙即F4和F3东墙。F5西墙南端辟门，门宽0.8米。此门使F5和F3相通面成为“里外屋”形式。F5北部有一窖穴（编号为Y1）。</p>
+<p>F3、F4和F5之南为I号庭院，南北15.9、东西7.15米，地面铺砖。在庭院西部，东西1.72、南北15.9米的范围内地面铺素面长方砖，砖长35、宽17厘米；其东部均铺素面方砖。二者之间砌一排南北向立砖为界（图版六二，2）。</p>
+<p>F3、F4和F5房内地面标高分别为-41、-40和-42厘米；I号庭院地面标高为-56厘米。</p>
+<p>在F3一组和F6一组的东边，有一组大房屋，它们由四间大房子（包括两个套间）组成，由北向南编号依次为F16（套间F10）、F11、F12和F14（套间F13）。四间大房子均坐西朝东，南北并列，布局对称（图版六三，1）。</p>
+<p>F16位于四号院南廊以南、F7和七号院以东。F16面阔3.7、进深13.35米。东墙长6.3、宽0.67、现存高0.12米；西墙即F7东墙和七号院东墙北段，长6.3米；南墙东端辟门（即F11北门），门以西的南墙长12.39、宽1.72、现存高0.2米；北墙东端亦辟一门，门以西的北墙长12.39、宽0.75、现存高0.25米。北门宽1.5、长0.65米。门道地面自南向北呈斜坡状，坡为 $9^{\circ}$ 。此门北出进入四号院南廊（图版六三，2）。</p>
+<p>F16 西墙以东 1.59 米处，有一南北隔墙，南接南墙，长 2.7、宽 0.76、现存高 0.2</p>
+<p>米。隔墙以西为套间F10。F10北部有窖穴（编号Y3）。此窖穴东对套间东门门道，东门宽1.1、长0.76米。</p>
+<p>F11 南、北为 F12 和 F16，西邻七号院与 F6（图版六四，1）。F11 面阔 6.85、进深 13.35 米。北墙即 F16 南墙；南墙东部辟门，门道将南墙分为东、西两段，其长分别为 2.42 与 9.4、宽约 0.67 米，东、西两段现存高分别为 0.2 与 0.55 米。东墙亦辟一门，门道南、北两边的墙长分别为 3.23 与 2.15、宽 0.67、现存高 0.2 米。西墙即七号院东墙南段和 F6 东墙，长 6.85、宽 0.65、现存高 0.35 米。</p>
+<p>F11 东门道宽 1.5、长 0.67 米，两侧的东、西两边各有一个壁柱。四个壁柱柱槽截面均为长方形，大小基本相同，长 24、宽 18 厘米。壁柱的础石均已无存。南门宽 3、长 0.67 米。北门慢道宽 1.5、长 1.95 米。慢道北部为平面，长 0.9，高于房内地面 0.2 米；南部为斜坡道，长 1.05 米，坡为 $14^{\circ}$ （自北向南）。坡道上铺几何纹方砖，在坡道东边靠近 F11 东壁处，南北铺设一排素而长条砖（图版六四，2）。</p>
+<p>F12位于F14和F11南、北之间，西邻F5。F12面阔7.2、进深13.35米。F12北墙和西墙即F11南墙与F5东墙。F12东墙辟一门，门道南、北的墙长分别为2.8与1.7、宽0.67、现存高0.25米。南墙东端辟一门，门道以西的南墙长12.5、宽1.55、现存高0.55米。</p>
+<p>F12 东门宽 2.5、长 0.67 米，门道两侧东、西各有一壁柱。四个壁柱柱槽截面均为长方形，大小基本相同，长 25、宽 18 厘米。壁柱的础石均无。南门慢道宽 1.5、长 1.45 米。慢道由平道和坡道组成。平道位于南部，长 0.35 米，高于房内地面 15 厘米。坡道在平道以北，长 1.1 米，自南向北坡 $14^{\circ}$ 。坡道上铺素面长方砖，砖长 36、宽 21 厘米（图版六四，3）。北门即 F11 南门。</p>
+<p>F12西南角有一转角壁柱，柱槽截面长30、宽25.5厘米，其下础石长33、宽25.5、厚5.5厘米。础石系白面石，石面磨平，与屋内地面平。F12屋内有一明柱础石，位于北墙以南2.25、西墙以东4.39米。础石系白面石，长59.5、宽51、厚26厘米。础石面加工平整，但未磨光；石面为圆形，直径46.5厘米，加工面高于石座9.5厘米（图版六五，1）。</p>
+<p>F14位于F12南边，是这组大房屋最南边的一间。F14西邻I号庭院，南为九号院北廊；面阔3.56、进深13.35米，形制与F16基本相同。其北墙即F12南墙，东端有一门（即F12南门）。南墙东端辟门(即F14南门)，门以西的南墙长12.35、宽0.72米，现存墙高于房内地面0.25米（高于九号院北廊廊道0.35米）；西墙长5.78、宽0.7米，现存墙高于房内地面0.28米（高于西边I号庭院地面0.42米）；东墙长5.78、宽0.67、现存高0.12米（图版六五，3）。F14南门道宽1.5、长0.72米，门道为自北向南斜坡道，坡为 $3^{\circ}$ 。由此门南出，可进入九号院。</p>
+<p>F14 西部，在其西墙以东 1.35 米处，有一南北隔墙，长 2.3、宽 0.75、现存高 0.24 米。此墙南端与 F14 南墙相交，北端与北墙间距 1.2 米。此系 F13 门道。隔墙以西为 F14 套间 F13。F13 西北角有一转角壁柱，柱槽截面长 25、宽 20 厘米，其下有础石。F13 中部偏南有窖穴，编号 Y2。</p>
+<p>可以看出，这组大房子里，F11和F12居中，F16和F14分列两侧，中间和两侧的两组房屋，每组的二间房屋彼此大小相近，形制相同。其中的F11和F12，应是便殿东南部“室”的建筑群中的主要建筑。</p>
+<p>F16（包括其套间F10）和F14（包括其套间F13）房屋地面标高-49厘米；F11和F12房内地面标高-78厘米。</p>
+<p>便殿东南部“宝”的建筑群中，除了上述两组小房屋和一组大房屋外，在F16东边和F14南边还各有一间小房子，它们分别编号为F9和F15。</p>
+<p>F9位于四号院东南部，F16东部，面阔（南北）2.7、进深（东西）7.4米（图版六五，2）。东墙利用了寝园东墙，长3.9米；西墙长3.9米，即F16东墙中的一段；南墙长7.2、宽0.69、现存高0.18米；北墙西端辟门，门道宽1.43、长0.67米；门以东的墙长5.85、宽0.67米。房内地面西高东低，现存墙分别高于房内东、西地面0.09与0.29米。西部地面东西长3.2米，地面铺几何纹方砖；东部地面东西长3.4米，地面铺素面方砖。在东墙以西0.7米处，有一排南北向立砖。东、西部之间的地面呈斜坡状，坡长0.8米，坡为 $8^{\circ}$ 。</p>
+<p>F15位于F14东南，北距F14南墙1.75米。F15坐北朝南，南面辟门；面阔3.45、进深2.97米。东墙长4.35、宽1.2、现存高0.05米；西墙长4.35、宽0.81、现存高0.1米；南墙西端辟门，门道宽0.7、长0.77米（图版六六，1）。门以东的墙长2.6、宽0.77、现存高0.07米；北墙长4.35、宽0.67、现存高0.07米。</p>
+<p>F15 以南为 II 号庭院，南北为 10.5 米，根据庭院宽度不同，可分南、北两部分：北部长 5.15、宽 4.26 米；南部长 5.35、宽 3.29 米。II 号庭院东墙长 10.5、宽 1.2、现存高 0.05 米。它的西边北部为九号院东廊，南部为便殿南部的东西通道东端。通道西自六号院东墙，东至 II 号庭院，南为寝园南墙，北邻九号院和 I、III 号庭院。通道由西向东，然后南折通向便殿之外。通道东西长 24.3、南北宽 5 米。</p>
+<p>II号庭院以南是寝园通往南部建筑群的通道，宽6.95、现存长6.9米。通道为自北向南斜坡，坡长7.07米，坡为 $5.5^{\circ}$ 。通道东面为夯土墙，东墙现存长6.9、宽1.2米、其北与II号庭院的东墙相连接；西墙即寝园南墙东端南折的一段。通道地面均铺素面砖，东墙以西先铺两排方砖，再铺一排长方砖，最后是一排立砖；四排砖共宽0.98米。由立砖向西至西墙宽5.97米，地面铺方砖17排（南北向）（图版四九）。</p>
+<p>九号院位于F14以南、F15以西、I号庭院以东和便殿南部东西通道以北(图版六六，2)。院子西墙长7.5、宽0.7、现存高0.23米。西墙东壁贴砌了素面方砖（图版六七，1）。北墙即F14南墙一部分。东墙即F15西墙和II号庭院西墙北段。该院东西为9.2南北为10.4米。院子北、东两面设廊，北廊长9.2、宽2.8米；东廊长10.4、宽2.65米。二廊廊道地面均铺素面长方砖，砖长38、宽18厘米。在廊道边，靠近墙壁处，铺一排长条砖，砖长20、宽7厘米（图版六七，2)。北廊和东廊相交处，即院东北角，有一础石，长55、宽48、厚37厘米；石面为圆形，直径48、加工面高9.5厘米，石面高于廊道地面7厘米（图版六七，4)。北廊的北壁（即F14南墙南壁）上保存有贴砖（图版六七，3)。</p>
+<p>九号院中央为天井，天井四周有檐廊。南、北檐廊各长5.9、宽0.75米；东、西廊各长7.55、宽0.71米。四面檐廊地面均铺素面长方砖，地面均坡向天井。南、北、东三檐廊坡 $8.5^{\circ}$ ，西檐廊坡 $9^{\circ}$ 。</p>
+<p>东、南、北三檐廊外有卵石散水。东檐廊散水长6.1、宽0.8米；南、北檐廊散水各长4.5、宽0.76米。</p>
+<p>天井东西为3.63、南北为4.5米，地面铺素面方砖；天井最低处在东南部。</p>
+<p>九号院东、北二廊与四面檐廊标高分别为-56与-76厘米。</p>
+<p>九号院东北部、F15与F14南北之间，有一东西通道，长4.5、宽1.75米。通道东端至F14南门，西端与九号院北廊东端相连。通道西端置门，门道宽1.6、长0.58米。门道北边有一础石，长28、宽22.5、厚19厘米；石面长22.5、宽17厘米。门道南边有一门墩，东西20、南北58厘米。门墩分筑，南与通道南墙（即F15北墙西端）相连。该门道是从南面进入F14等大房子的通道（图版六八，1）。</p>
+<p>F9 以南、寝园东墙以西、F16 至 F15 以东，为 IV 号庭院（图版六八，2）。IV 号庭院东西为 7 米，已发掘部分南北为 39.5 米（南北全长为 49.6 米，南部 10.1 米未发掘，仅进行了钻探）。庭院东、西两边，地面铺素面方砖各 2 排（均为南北向），宽 72 厘米；再铺素面长方砖 1 排，宽 19 厘米。东、西两边素面长方砖之间均以素面方砖铺地（图版六九，1、2）。在庭院北部，F9 南部以南 2.35 米处，庭院东、西居中位置有一础石，长 42、宽 21 厘米；系白面石。</p>
+<p>IV号庭院南北居中的东部有一露台。露台北距庭院北墙（即F9南墙）20.2、西距庭院西墙4.25米，东与寝园东墙相连。露台南北9.2、东西2.85、现存高0.15米。露台西壁南、北两端和中间各有一壁柱，间距4.5米。北端壁柱柱槽截面为方形，边长26厘米，其下础石长38、宽36、厚18厘米。南端壁柱柱槽截面长24、宽14厘米；其下础石长72.5、宽51、厚30厘米。中间壁柱柱槽截面长30、宽25厘米；其下础石长72.5、宽51、厚30厘米（图版六九，3）。</p>
+<h1 id="_21">（三）院落建筑群</h1>
+<p>这组建筑分布在便殿北部，主要包括三座院子（编号为一、二、八号院），以及一间房子（F8）和一座庭院（V号庭院）。其范围东西53.2、南北12.3米。由西向东依次为一、二、八号院和F8、V号庭院，后二者北、南排列（图版七〇）。一、二、八号院三座院子的南、北廊在同一东西线上；南、北廊通长49米。南廊东部(在二号院南)宽2.3、西部（在一号院南）宽2米（图版七一，1），北廊宽2.1米。</p>
+<p>一号院西邻便殿西部的南北廊，南邻三号院北廊道。一号院东西20、南北12.3米。院子四周为檐廊，其外为散水，中央是天井。南、北檐廊各长20、宽12.3米。南檐廊南壁，西距一号院西边8.5米处有一础石。础石座已破碎，厚约36厘米；石面呈圆形，直径48、置柱面高7.5厘米。东、西檐廊各长12.3、宽1.02米。四面檐廊廊道均铺3排素面方砖，廊道地面均以 $4.5^{\circ}$ 坡斜向院子中央的天井。</p>
+<p>东、西檐廊散水各长10.1、宽1米。南、北檐廊散水各长18，宽分别为1.04与0.71米。院天井东西长16、南北宽8.2米。</p>
+<p>一号院各部分标高分别为：南廊-52、四面檐廊-68、天井中央-82厘米。</p>
+<p>二号院南邻四号院，西为一号院；该院东西长16.3、南北宽11.93米，与一号院形制相同。院南、北檐廊各长16.3米；南檐廊宽0.85米、北檐廊宽0.6米。东、西檐廊各长11.93、宽分别为0.4与1.02米。檐廊地面均铺素面方砖，廊道坡向院子中央的天井，坡为 $2.5^{\circ}$ （图版七一·2；图版七-：1）。东、西檐廊散水各长10.5、宽分别为0.8与1.05米；南、北檐廊散水各长15、宽分别为1与0.9米。二号院天井东西长13、南</p>
+<p>北宽8.55米。</p>
+<p>二号院南檐廊南壁有2个础石：东边础石在院东壁以西4.5米处，长69、宽50、厚36厘米，石面呈圆形，直径48厘米；西边础石在前者以西9.2米处，长59、宽38、厚34厘米，石面呈圆形，直径47、加工面高8厘米。两个础石均系自面石，石面与檐廊南壁平直，弦长35.5厘米(图版七二，2、3)。</p>
+<p>二号院各部分的标高分别为：南廊-52、四面檐廊-68、天井中央-77厘米。</p>
+<p>一、二号院东西之间为廊道，东西6.9、南北12.3米；地上铺素面方砖（图版七三，1)，标高为-46厘米。</p>
+<p>八号院位于二号院东边，二者间筑夯土隔墙，长11.95、宽0.75、现存高0.1米。八号院南北为11.95、东西为5.25米；亦四面置檐廊及散水，中央为天井。东、西檐廊各长11.95、宽分别为1.25与0.5米；南、北檐廊各长5.25、宽0.9米。檐廊地面均铺素面方砖。地面坡向院子天井：东、西檐廊坡为 $5^{\circ}$ ；南、北檐廊坡为 $10^{\circ}$ 。东、西檐廊散水长10.2、宽分别为0.8与0.7米；南、北檐廊散水长3.5、宽分别为1与0.65米。天井南北8.65、东西1.95米。天井中央标高-90厘米（图版七三，2）。</p>
+<p>F8位于便殿东北面，西邻八号院的东北部，座北朝南。F8面阔3.45、进深3.95米。南墙长2.6、宽0.65、现存高0.1米；北墙长3.45、宽2.3、现存高0.1米；东墙利用了寝园东墙中的一段，长4.65米；西墙长4.65、宽0.63、现存高0.11米（图版七四，1）。F8的南墙西部辟门，门道宽0.85米。在门道东侧，南墙西端的南、北两边置壁柱，其中仅北边壁柱础石尚存，础石长36、宽25、厚5厘米（图版七四，2）。屋内有铺地砖遗迹。从F8所处位置和形制，以及房子遗址中出土的铁矛等兵器来看，这里可能是门卫的用房。</p>
+<p>F8 以南、院落建筑群南边东西向隔墙以北、八号院以东、寝园东墙以西，为 V 号庭院，南北 9.47、东西 4.25 米。地面铺素面方砖。寝园东门辟于该庭院东墙（即寝园东墙）上，门道北距 F8 南墙 1.3、南距 V 号庭院南墙 5.95 米。在门道以南 1.2 米处的寝园东墙西壁有一壁柱，柱槽截面长 26、宽 17 厘米，其下砌石长 26、宽 20、厚 15 厘米。</p>
+<h1 id="_22">（四）地下排水设施</h1>
+<p>便殿建筑的排水系统是由西向东排水；向东分为两支，一支流向东北，另一支流向东南。</p>
+<p>三号院天井西北部有一处扰坑，东西1.7、南北0.65、深0.1米，此处可能原系该院地漏所在。扰坑北和东部的院子散水卵石被破坏，与此东邻的四号院西檐廊散水北部亦有一段散水卵石被整块地破坏。三、四号院两处被破坏的卵石散水恰好形成东西一条线，估计线下曾是两院间的地下排水道。从两座院子的标高来看，三号院比四号院要高68厘米。</p>
+<p>五号院天井中有一扰坑，位于东檐廊散水以西4米和南檐廊散水以北1.1米。扰坑东西5、南北1.7、深0.55米。扰坑中出土了汉代砖。</p>
+<p>六号院天井西南部有一坑，位于院子西壁以东2.2、南壁以北6.7米，坑口径0.85，深0.4米。</p>
+<p>四号院天井中有扰坑2个，其一位于西檐廊散水以东6.9、北檐廊散水以南3.5米</p>
+<p>处，坑深0.5、坑口径1.1米，坑内出土了被扰动的汉砖；另一坑位于北檐廊散水以南0.9、西檐廊散水以东8.9米处，坑深0.55米，坑口径约1.1米，坑底尚有未经扰动的一块平砖。平砖西部还有一立砌砖。此坑西与三号院天井中的坑坑基本上形成一条东西线，二坑直线间的散水卵石均被破坏。四号院天井中的两个扰坑与其西南方七号院通道下面的水道相连。</p>
+<p>七号院天井地溜及其排水管道保存完好（后面详述）。</p>
+<p>九号院天井西北部、北檐廊散水南面和院子西墙以东各1.7米处，有一不规则形扰坑，坑深0.7米。从扰坑向东南有一条扰沟，破坏了东檐廊的散水卵石。</p>
+<p>八号院天井的东北部有一扰坑，东西1、南北2、深0.2米。坑内出土有汉代砖。扰坑的北部和东部的院子散水卵石亦被破坏。八号院天井的水可能排向东北方向。</p>
+<p>上述各院子天井中的扰坑，均位于各自天井的最低处，扰坑内一般都出土有用于砌置地漏的汉代长方砖。有些扰坑与扰沟相连，或扰坑附近的散水卵石均被破坏，这是人们为挖取构筑排水设施的长方砖所造成。</p>
+<p>七号院地漏位于天井西北部、院子西墙以东2.9米处，北距F7南墙1.91米。地漏口小底大，上口东西52、南北46厘米；底部东西54、南北56、深55厘米（图版七五，1）。地漏底部铺长方砖，东西3排，南北2排；南部半排砖压在地漏南壁的砖下（图版七五，2）。地漏四壁砌砖，东、北、南三壁自上而下顺砌长方砖五层，最上面一层砖与七号院天井铺地砖一样平。西壁自下而上顺砌长方砖四层，其上为排水口。</p>
+<p>地漏与排水管道相连的排水口设在西壁，排水口宽12、高11厘米。排水口距地漏底部44厘米。院子的雨水流入地漏后，先经沉淀，当积水超过40厘米深后，才由渗井向外流出，这样可以减少雨水中夹带的污泥直接流入排水管道；雨水由地漏西壁排水口流入排水管道。排水管道自东向西北方向呈弧状，先进入F7西边通道，然后由南向北延伸。出了通道，排水管道向东北方向进人四号院天井（图版七五，3、4）。</p>
+<p>从地漏西壁的排水口和F7西边通道地面下解剖发掘的排水管道可以看出，排水管道用长方砖砌筑，底部横向铺砖（与管道走向垂直）。两壁以长方砖平放顺铺（与管道走向一致），砖的一半宽度压在水道底部铺砖上，另一半压在夯土上。两壁砌砖间距20厘米，这也就是排水管道的宽度。水道顶部横铺长方砖。水道内高11厘米。排水管道筑于夯土中。地漏和排水管道所用长方砖大小相近，一般长37、宽17—19、厚9—11厘米。排水管道顶部距汉代建筑物地面深19厘米（图版七六）。</p>
+<p>在便殿南部东边的便门西面，南部有一处地漏，北距寝园南墙檐廊散水0.96米，东距寝园南墙东端南折的东墙6.75米（图版七七，1）。</p>
+<p>地漏口小底大，南北77、东西75、深56厘米。底部未铺砖，四壁均以长方砖竖砌，上下七层。东壁南端顶在南壁东端；西壁北端顶在北壁西端；南壁西端顶在西壁南端；北壁东端顶在东壁北端。四壁长各为93.5厘米。四壁所用长方砖，一般长37、宽18.5、厚8厘米（图版七七，2、3）。</p>
+<p>与地漏相连的排水管道呈五角形。地漏排水口辟于东壁，五角形水道连接于此。排水口的五角形水道底部置于一层长方砖上，高于地漏底8厘米。水道顶部平铺一层砖。地漏排水口的五角形管道南北壁与地漏南北壁相距分别为16.5与23厘米（图版七八，1）。</p>
+<p>地漏以东的排水管道，山五角形水管道一节连接一节组成，单行排列，水道顶部距</p>
+<p>汉代地面深0.4米。由地漏向东仍保存有东西长11.25米的五角形排水管道，每节一般通宽38.5、内口宽27.5厘米；通高38.5、内口高27.5厘米；两壁高18厘米（图版七八，2，3）。</p>
+<h1 id="_23">（五）窖穴</h1>
+<p>共3座，分别编号为Y1，Y2和Y3。</p>
+<p>Y1位于F5北部，距F5北墙25厘米，距东、西墙各30厘米。窖口与屋内地面平。口径98、底径92、深695厘米（图一六；图版七九，1、2、3）。窖口的壁以券砖砌筑。由</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图一六 杜陵便殿一号窖穴平、剖面图</p>
+<p>1.夯土 2.生土 <br />
+3. 壁砖</p>
+<p>窖口向下75厘米，窖壁券砖均已被破坏，再往下保存有窖壁券砖上下5层，高39厘米。自窖口向下1.14米，窖壁均应砌券砖，自此以下的窖壁则不再用券砖。此处的窖穴南、北壁脚窝较大，上下长20—26、宽23、进深18厘米；上、下脚窝间距50—60厘米。窖壁由窖口向下1.6米处为夯土，其下则为生土壁。这说明窖穴的修筑在殿基夯筑以后。</p>
+<p>窑穴内堆积，第一层系烧土和瓦砾层，厚约1.6米；第二层为深灰色淤上，土质松软，厚约5.35米，其中出土汉代遗物较多，有砖瓦、铜器、铁器、陶器，以及大量动物骨头。</p>
+<p>Y2位于F14套间F13之内。Y2在F13南墙以北97、西墙以东17厘米。窖口与屋内地面平。口径94、底径100、深720厘米。窖内曾发现与Y1窖壁上相同的券砖，估计原来Y2窖壁上部亦曾用券砖砌筑。自窖口向下1.3米处的窖壁为夯土，再下则为生土壁。</p>
+<p>窖内堆积，第一层中包含有烧土和砖瓦，厚约1.3米；第二层上部是黄褐色土，厚约2米；下部为灰绿色土，厚3.87米。在距窖口深4.1米处，出土有汉代五铢、小铜勺及漆器上的鎏金铜饰件。距窖口深6米以下，出土有铜印章、五铢钱、漆器的鎏金铜口沿等。窖穴底部的灰绿色土下有一层木渣，为已腐朽的薄木板，厚约1厘米。其下为厚1.5—2厘米的细淤土，再下为生土。</p>
+<p>Y3位于F16套间F10之内。Y3在F10北墙以南30、西墙以东50厘米处。窖口与F10地面平。窖穴口径95、底径70、深700厘米。窖内亦曾发现与Y1窖壁上相同的券砖，推测Y3窖壁上部原来可能也用券砖砌筑。自窖口向下2米，窖壁为夯土，再下则为生土壁。</p>
+<p>窑穴内堆积，第一层中包含有烧土和砖瓦，厚约2米；第二层灰色淤土，上质较松软，厚约5米。在窑口以下3.4-3.8米</p>
+<p>处，出土了大量经火烧过的砖瓦碎块、墙皮等。3.8米以下窖穴内堆积变为灰绿色土，其中出土有汉代陶器、五铢和王莽钱币等。窖穴底部有席纹遗迹，可能原来铺垫有席类物品。</p>
+<p>从而使殿中的三个窑穴内均出土了动物骨头，经鉴定，Y1有牛、鳖、水禽（鸭、鹅等，</p>
+<p>下同)；Y2有牛、猪、羊、狗、鳖、水禽；Y3有羊、水禽。在Y1和Y2中以牛的骨头最多。</p>
+<h1 id="_24">四、出土遗物</h1>
+<p>从寝园遗址中出土遗物按其质料可分陶器、石器、铁器和铜器等，主要是便殿遗址的出土物。</p>
+<h1 id="_25">（一）陶器</h1>
+<p>陶器包括建筑材料、生产工具、生活器皿及其它器物，其中以建筑材料出土数量最多。</p>
+<p>砖的种类和形制与陵园遗址出土的砖基本相同，属于新的种类有券砖、斜边砖和空心砖。</p>
+<p>券砖 均出土于便殿遗址窖穴中。分大小两种，大者底边长14.5、圆弧边长22、高14、厚7.2厘米；小者底边长10.5、圆弧边长16、高10.4、厚7厘米。券砖平面似“扇面”，故又称“扇形砖”（图版八○，1）。</p>
+<p>斜边砖 与长方砖形状基本相同，其一面削成斜坡面。根据大小不同，分二型。</p>
+<p>I型：砖长37-37.5、厚9.5-10.5、一面宽15.5、另一面宽18-19厘米（图版八○，2）。</p>
+<p>II型：砖长21.5、厚9.5、一面宽16、另一面宽19厘米。</p>
+<p>空心砖 出土于便殿遗址，均残，根据其纹饰不同，分三型。</p>
+<p>I型：绳纹，斜行（图版八 $\bigcirc$ ，3）。</p>
+<p>II型：几何纹，边缘素面。几何纹由“回”形纹和大小相套的菱形格与三角纹组成的两种单元纹饰相间排列（图版八 $\bigcirc$ ，4）。</p>
+<p>III型：便殿Y2内出上一块，保存较完整，残长82.5、宽30.3、高18、壁厚3厘米。两宽面纹饰：一面中为5排菱形格纹，上、下各有一排宝珠纹。菱形格内有“田”字与“羽觞”纹相间排列。上、下边缘外为菱形带纹、内为网格带纹；两端面边缘各饰网格带纹。另一面中为7排方块纹，上、下各有一排宝珠纹。</p>
+<p>方块纹中的纹饰一为中饰同心圆、外为四叶纹；另一为中饰圆泡纹，此二种相间排列。上、下边缘均饰菱形带纹；两端面边缘各饰网格带纹。两窄面纹饰：一面为菱形格纹（中为“田”字格纹），上、下为宝珠纹；另一面为方块纹3排（其中四叶纹2排、圆泡纹1排），上、下为宝珠纹，上、下边缘饰网格带纹，两端边缘饰网格纹（图版八○，5、6；图版八一）。</p>
+<p>瓦当 165 作（残破者未计），均为“长乐末央”文字瓦当。</p>
+<p>寝殿遗址出土21件。II型20件，其中4式2件、8式8件、9式9件、10式1件。10式属于II型中的一个新式，“长”字形如图八、20。IV型1式1件。</p>
+<p>便殿遗址出土144件。II型107件，IV型37件。II型之中，1式18件、3式2件、6式22件、7式1件、9式61件、11式1件、12式2件。11式和12式均为II型中的新式，11式基本与9式相同，只是其“长”字形如图八，21。12式瓦当文字的外缘有一</p>
+<p>周“×”纹饰，中央圆泡纹周围有乳丁纹8枚，“长”字形如图八，22。Ⅱ型中，以9式瓦当数量最多。Ⅳ型中1式29件，2式、4式和8式各1件，7式5件。7式和8式为Ⅳ型中新式，7式的“长”字形如图八，23；8"式与2式基本相同，但其中央圆泡纹周围有乳丁纹8枚（图版八二）。</p>
+<p>门白4件。均出于便殿遗址，以汉砖制成，可分四型。</p>
+<p>I型：1件（⑤:T2:40）。圆角长方形，白长12.7、宽10.5、高6厘米；白窝口径8、底径4、深2.1厘米（图一七，1；图版八三，1）。<br />
+II型：1件（⑤:T2:41）。圆筒形，白身通高7.8、径10.5厘米；白窝较大，口径8、底径4、深2.1厘米（图一七，2；图版八三，2）。<br />
+III型：1件（⑤:T2:42）。椭圆形，白身通高4.5、长径10.5、短径9.3厘米；白窝较浅，口径7.5、深0.6厘米（图一七，3；图版八三，3）。<br />
+IV型：1件（⑤:T3:1）。上部呈不规则圆形。白身通高5、径14厘米，白窝口径6、底径1.5、深1.8厘米（图一七，4；图版八三，4）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>图一七 陶门白<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型 (5:T2:40) 2. II型 (6:T2:41) 3. III型 (5:T2:42) 4. IV型 (6:T3:1)</p>
+<p>纺轮1件（⑤：T2:39）。一面微弧状，施弦纹；另一面平整，中央穿孔。直径7、厚2.6厘米（图一九，2）。</p>
+<p>罐2件，分二型。</p>
+<p>I型：1件（⑤:T7:10）。敞口，高颈广肩，弧腹下收平底。高18.7、口径11、底径9.5厘米（图一八，1；图版八四，1）。</p>
+<p>II型：1件（⑤：Y2:25）。口外侈、颈微敛，圆肩，弧腹下收平底。高9.3、口径13.8、底径7.2厘米（图一八，2；图版八四，2）。</p>
+<p>盆6件，分四型。</p>
+<p>I型：1件（⑤:Y1:5）。大口，外折平沿，浅腹，腹壁较斜直，平底。高6.3、口径22.1、底径9.9厘米（图一八，3；图版八四，3）。</p>
+<p>II型：3件。敞口，外折平沿，深腹，腹壁较直，下部圆弧内收，平底。标本⑤：Y3:1，高12、口径28、底径14厘米（图一八，4；图版八四，4）。</p>
+<p>III型：1件（⑤：Y1:7）。敞口，宽沿稍外卷，深腹、腹壁弧内收，平底。高14.1、口径29.2、底径15厘米（图一八，5；图版八四，5）。</p>
+<p>图一八 陶罐、盆、壶<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型罐 (5:T7:10) 2. II型罐 (5:Y2:25) 3. I型盆 (5:Y1:5) 4. II型盆 (5:Y3:1) <br />
+5.Ⅲ型盆（⑥：Y1:7）6.Ⅳ型盆（⑤：Y2:22）7.I型壶（⑥：Y2:23）8.I型壶（⑤：Y2:24）</p>
+<p>IV型：1件（⑤：Y2:22）。敞门，外沿平折，深腹、腹壁斜直，内收平底。腹部有三道凹弦纹。高16.8、口径36、底径18.8厘米（图一八，6；图版八四，6）。</p>
+<p>壶2件。均出于Y2，直口、细颈，下腹内收。依形制不同，分二型。</p>
+<p>I型：1件（⑤：Y2:23）。口外有一周突棱。鼓腹，腹上部有凹弦纹一道，底残。残高26、口径4.6厘米（图一八，7；图版八五，1）。</p>
+<p>II型：1件（⑤：Y2:24）。口微残，长圆腹，平底，腹上部有三道凹弦纹。残高28.5、腹径11、底径14厘米（图一八，8；图版八五，2）。</p>
+<p>壶盖 1 件: (⑤: T3:2)。弧面形, 上有四叶蒂形纹饰, 盖缘有一周五角形纹饰。盖高 4、径 12.8 厘米 (图一九, 1; 图版八五, 3)。</p>
+<p>灯3件。泥质灰陶，浅灰色。灯作豆形，浅盘，柄粗短，喇叭形足。</p>
+<p>标本 $⑤$ ：Y1:8A，高9.3、盘径11.1厘米（图一九，5；图版八五，4）。</p>
+<p>另一件⑤：Y1:8B，盘残，灯残高8.3厘米。足底边有菱形格和三角压印纹；足缘周饰三角形乳丁纹20个，其中有大乳丁纹3个、小乳丁纹17个，两者相间排列。</p>
+<p>带柄陶器 1件 (⑤:Y2:26)。侈口，圆唇，颈微敛，鼓腹，下腹内收，底残。腹上部一侧有喇叭形柄。器身饰凸弦纹。残高13、口径12、腹径16.5，柄长5.1、末端径3.7厘米（图一九，4；图版八五，5）。</p>
+<p>图一九 陶纺轮及灯等<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 壶盖 (⑤: T3:2) = 2. 纺轮 (⑤: T2:39) 3. 陶翁残片 (⑤: Y2:28) 4. 镀柄陶器 (⑤: Y2:26) 5. 灯 (⑤: Y1:8A)</p>
+<p>瓮1件（⑤：Y2:28）。器残，大口，沿微弧外折，尖圆唇。腹壁有衔环兽面铺首。兽面两耳外卷，额部似桃形，两颊饰云纹（图一九，3；图版八三，6）。</p>
+<p>弹丸 1件 (⑤:Y2:27)。白色，表面光滑，丸径2厘米。应为弩机发射之物。广州和云南晋宁石寨山汉墓中均曾出土陶弹丸，它们或在铜弩机之旁，或夹在兵器群中<sup>1)</sup>。</p>
+<p>釉陶狗（？）1个 $(5:Y1:9)$ 。黄釉，头残，四腿伫立，短尾。通长4.5、残高3.3、身宽1.6厘米（图版八五，6）。</p>
+<h1 id="_26">（二）石器</h1>
+<p>磨石 1 件 (⑤:J2:1)。长条形, 上下面均可为磨石面, 长 12、宽 6-7、厚 3.5 厘米 (图版八三, 5)。</p>
+<h1 id="_27">（三）铁器</h1>
+<p>铁器共96件，计有钉、箍、链索、扁钩、环首钩、门栓、大铁环、釜、扦、铲、犁铧、摔冠、锤、锄、镰、锛、凿、刀、剑、矛、镞、甲片、穿、镶和圜钱等。</p>
+<p>钉7件，分二型。</p>
+<p>I型：4件。个体较大。标本①：T4:4，通长18、帽径3、厚0.3厘米。出于寝殿遗址。</p>
+<p>II型：3件。个体较小。标本⑤：T13:2，通长14.3、帽径2.3、厚0.4厘米。出于便殿遗址。</p>
+<p>箍1件（⑤：T1:1）。圆环形，中腰有凸棱一周，凸棱上有乳丁纹16枚，高、低各8枚，相间排列。凸棱宽1.25厘米，乳丁纹外径高的5.65、低的5.1厘米，高分别为0.825与0.55厘米。凸棱内径3.15、外径4、高2.4厘米（图二○，1；图版八六，5）。此物与河北满城西汉窦绾墓中出土的铜箍形制相同，可能亦为器物的附件<sup>1</sup>。</p>
+<p>图二 $\bigcirc$ 铁器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 算 $(5: T1: 1)$ 2. 片状器 $(5: T2: 13)$ 3. 门枢航 $(5: T2: 11)$ 4. 环首杆 $(5: T2: 6)$ <br />
+5.凿（⑤：T2·7）6.叉形门栓（⑤：T11:1）</p>
+<p>链索 1件（⑤：T8:2）。每节为绳索状，两端有环，环与环相衔，形成链索。此件只有3节，长32厘米（图版八八，4）。</p>
+<p>扁钩 1件（⑤：T7:9）。钩上端折平，最宽处1.7、厚0.3、钩高5.5厘米（图版八六，2）。</p>
+<p>环首钩 1件（5):T2:9）。环首呈椭圆形，孔为长方形，钩身长4.6厘米（图版八六，4）。</p>
+<p>钩1件（⑤：T2:10）。前端尖，末端弯曲，通长20.5厘米（图版八六，1）。</p>
+<p>片状器 1件 (5): T2:13)。器呈长方形, 一端弯窄, 卷曲成圆孔。器长7.6、宽3.5、</p>
+<p>厚0.1—0.2厘米（图二O，2；图版八六，3）。</p>
+<p>门枢箍3件。形制相同，由铁钉连结长条形铁片两端圆孔而成圆形铁箍。标本⑤：T2:11，径约4.65、高1.7厘米（图二○，3；图版八八，5）。</p>
+<p>叉形门栓 1件 (5): T11:1)。器身为圆柱体, 前端有一圆孔, 末端双股连把。通长 44、孔径 0.5、末端双股间距 4.5、股高 4.5 厘米（图二〇，6；图版八六，6）。</p>
+<p>大铁环 2 件。形制、大小相同。出土时二者在一起。系生铁铸件。标本⑤：T10：2A，外径26.2、内径17.8厘米，重5050克（图版八六，7）。</p>
+<p>釜1件。出土于便殿遗址Y1中，器残，从残片可知此釜器身硕大。</p>
+<p>图二一 铁工具<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铲（⑥：T2:1）2.犁铧（⑤：T2:2）3.凹口铺（⑤：T7:8）4.“一”字形锄（⑤：T4:2）<br />
+5. 铸冠 (⑤:T7:6) 6. 铸 (⑥:T2:3)</p>
+<p>环首扦2件。形制相近。标本⑤：T2:6，环首呈圆形，扦身为四面体，通长11.2、环首外径2.1、内径1.2厘米（图二〇，4；图版八八，1）。</p>
+<p>铲2件。皆残，呈缚形，圆肩，肩以下逐渐加宽，刃部已残缺，长方形鉴。合范铸成。标本⑤：T2:1，残长12.5、肩宽7.8厘米；盔口长4.6、宽1.7、深5厘米（图二一，1；图版八七，1）。</p>
+<p>犁铧 1件 (⑤:T2:2)。翼部已残缺。全器呈三角形。弧形刃，中间起脊，后部为三角形盔。脊残长8厘米（图二一，2；图版八七，2）。</p>
+<p>铧冠1件（⑤：T7:6），器呈V形，边刃锋利，两叶交角处起脊，底面板平，前端为钝角。器长23.5、后宽30、盔口中部宽3厘米（图二一，5；图版八七，5）。</p>
+<p>凹口镭1件（⑤：T7:8）。刃口和刃角呈圆弧状，两端稍外撇。残高7、刃宽10厘米（图二一，3；图版八七，4）。</p>
+<p>锄1件。呈“一”字形(⑤:T4:2)。正视横长方形，刃口平直，顶部微弧，残留横装铁柄的基部，推测铁柄末端有，可装长木柄。锄高8.1、刃口长21.8厘米（图二</p>
+<p>一，4；图版八七，6）。</p>
+<p>镰1件（⑤：T2:5）。镰身内弧，为新月形，刃在凹边，背部起脊，基部可装柄。通长22.5、基部宽3.5、背宽0.4厘米（图版八七，3）。</p>
+<p>铸1件（⑤：T2:3）。锻制，空首已残，双面刃，盔外缘部有一钉孔。通长12、刃宽8.5；空首长5.5、宽1.7；钉孔径0.4厘米（图二一，6；图版八八，3）。</p>
+<p>凿1件（⑤：T2:7）。锻制。直平双面刃，顶部为长方形鉴，鉴部有合缝痕迹。长14.5、刃宽0.7，鉴口长1.1、宽0.8厘米。鉴缘已被砸扁，器物使用痕迹明显（图二○，5；图版八八，2）。</p>
+<p>剑1件（⑤：T2:18）。剑身细长扁平，中脊稍高，格、首无存。通长30.2、身长23、宽1.2厘米（图二二，5；图版八九，6）。</p>
+<p>矛1件（⑤：T16:6）。矛身扁平似柳叶形，筒部上小下大，截面方形。系锻制而成，筒部有合缝痕迹。通长18.5、刃长10.3厘米（图二二，6；图版八九，2）。</p>
+<p>直柄刀 2 件。刀身窄长，直柄，二件柄部稍异。</p>
+<p>一件 (⑤:T2:17)柄的基部粗, 末端细, 截面呈圆形。刀通长 12、刃长 8.7、宽 1.2、背宽 0.4 厘米（图二二，9；图版八九，3）。另一件 (⑤:T3:3)柄较宽。刀通长 19.7、刃长 11.5、刃宽 1.3、背宽 0.5、柄宽 1.1 厘米（图二二，4；图版八九，4）。</p>
+<p>短刃刀 1 件 (⑤: T8:3)。刃短而宽，前端收杀成锋，柄窄长，上部弯曲作刀首，衔一铜环。刀通长 25、刃长 8.1、刃宽 1.9、背宽 0.2、柄宽 1、铜环径 3.1 厘米（图二二，3；图版八九，8）。</p>
+<p>环首刀（削）4件。刀身平直，环首呈椭圆形。分三型。</p>
+<p>I型：1件（⑤:T2:14）。刀身较宽而长，前端残缺，柄短而宽。刀残长20.9、刃残长11.5、刃宽2、刀背宽0.3、环首长径3.3、短径2.9厘米(图二二，1；图版八九，9)。</p>
+<p>II型：1件（⑤:T2:15）。刀身窄长，前端残缺，刀背较直，柄长而宽。刀残长15，刃残长3、刃宽0.7、刀背宽0.2、柄长10、柄宽1.1、环首长径2.7、短径2厘米（图二二，2；图版八九，10）。</p>
+<p>III型：2件。刀身较宽，前端收杀成锋，柄宽而短。标本⑤：T2:16，通长19.9，刃长11、刃宽1.9、刀背宽0.6、柄宽1.8，环首长径2.6、短径1.6厘米。标本⑤：T15：4，个体较大，通长31、刃长21、刃宽3.3、刀背宽0.8、柄宽2.8，环首长径3.8、短径2.4厘米（图二二，7、8；图版八九，11）。</p>
+<p>2件。分二型。</p>
+<p>I型：标本1：T8:1，骸身呈扁平三角形，中部有脊。骸身长3.5、底宽0.8，茎长2.6、径0.5，挺长8.3厘米（图二二，10；图版八九，1）。</p>
+<p>II型：标本⑤：T2:19，镞身呈三棱形，无茎，铁铤已弯曲变形，截面呈长方形。镞身长2.1、镞残长15.5厘米（图版八九，5）。</p>
+<p>甲片 53 件。均出土于便殿遗址，分四型。</p>
+<p>I型：16件。槐叶形，上端平直。标本⑤：T2:25，上有6孔，即甲片两侧和下端居中各纵列2孔，孔径0.2厘米。甲片长3.2、宽2.8、厚0.1厘米（图二二，11；图版八八，6右）。</p>
+<p>II型：1件（⑤:T2:26）。圆角长方形。上有12孔，即甲片两侧各纵列4孔、上下</p>
+<p>图二二 铁武器等<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型环首刀 (⑤:T2:14) 2. II型环首刀 (⑥:T2:15) 3. 短刃刀 (⑤:T8:3) 4、9. 直柄刀 (⑥: <br />
+T3.3, ⑤:T2:17) 5. 创 (⑤:T2:18) 6. 矛 (⑤:T16:6) 7、8. III型环首刀 (⑤:T15:4,⑤:T2:16) <br />
+10. I型（①：T8:1）11. I型甲片（⑤：T2:25）12.Ⅲ型甲片（⑥：T2:27）13、14.Ⅳ型甲片（⑥：<br />
+T2:28, ⑤:T2:29) 15. II型甲片 (6:T2:26) 16. 穿 (5:T2:4)</p>
+<p>端居中各纵列2孔，孔径0.3厘米。甲片长6.6、宽3.6、厚0.1厘米（图二二，15；图版八八，6左）。</p>
+<p>III型：10件。形同I型甲片，但个体较小。标本⑤:T2:27，上有7孔，即甲片上</p>
+<p>端居中1孔，下端居中和两侧各纵列2孔，孔径0.15厘米。甲片长2.1、宽1.7、厚0.1厘米（图二二，12；图版八八，7左）。</p>
+<p>IV型：26件。椭圆形。标本⑤：T2:28，上有6孔，甲片两侧和下端居中各纵列2孔，孔径0.15厘米。甲片长径2.2、短径1.8、厚0.1厘米（图二二，13；图版八八，7中）。另一件（⑤：T2:29），上有7孔，甲片上端偏左1孔，下端居中和两侧各纵列2孔，孔径0.13厘米。甲片长径2.2、短径1.6、厚0.1厘米（图二二，14；图版八八，7右）。</p>
+<p>穿1件（⑤：T2:4）。器呈六角形，系铸铁件。高4.9、边长5、内径7.2厘米(图二二，16)。</p>
+<p>镶半副（⑤：T2:8）。镶身为直棍形，截面为正方形，中段有二长方形穿孔。通长13.8厘米（图版八九，7）。</p>
+<p>圆钱 1 枚 (⑤: T16:4)。正方形穿。锈蚀严重，钱文不清。钱径 2.9、穿边长 0.6 厘米。</p>
+<h1 id="_28">（四）铜器</h1>
+<p>寝园之中出土的铜质器物有建筑物上的铜构件、铜箍；有各种日川器物，如博山炉、</p>
+<p>图二三 铜器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 长方形构件 (①: T5:1) 2. 勺 (⑤: Y2:1) 3. I型簇 (⑤: T2:20) 4,6. II型簇 (⑥: T6:2, ⑤: T13:1) 5. II型簇 (⑤: T2:24) 7. 铜印印文 (⑤: Y3:6) 8. 四形片状钢泡 (⑤: Y2:11A) 9. I型簇式铺首 (⑤: Y2:16A) 10. II型簇式铺首 (⑤: Y2:17A) 11. 方形器簇 (⑤: Y2:10)</p>
+<p>铜镜等；有漆器上的铜饰件，如铺首、四叶形铜饰等；有、弩机栓塞等兵器；有车器；还有钱币，以及其它器物，计36种352件。</p>
+<p>长方形构件 2 件。形制、大小基本相同，系由四面铜版构成的箍套，呈长方形，长 13.19、宽 7.3、厚 3.5 厘米。器中空，器内截面长 6.8、宽 2.8 厘米。铜构件正、背面各 2 个齿纹，两侧面各 1 个齿纹，四面 6 个齿纹的形制、大小相同。每个齿纹高 8.2、底宽 1 厘米。分二型。</p>
+<p>I型：1件（①:T5:1）。器身外部通体鎏金，齿纹镂空（图二三，1；图版九○，1）。</p>
+<p>II型：1件（⑤：T14:2）。器身未鎏金，齿纹阴刻，未镂空（图版九 $\bigcirc$ ，2）。</p>
+<p>杜陵寝园中出土的铜构件，应属西汉宫殿建筑中使用的“缸”。寝殿遗址出土的鎏金铜缸（I型）亦即文献上所记载的“黄金缸”<sup>1)</sup>。便殿遗址出土的未鎏金铜缸（II型）即“金缸”。这些铜构件可能不是壁带或壁柱上的饰物，从其截面来看，其内插杆件应为板材，不会是枋木。它们的露明面应为素面。共用途或与陕西凤翔先秦宫殿建筑遗址中出</p>
+<p>图二四 铜博山炉盖及花纹展开图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 博山炉盖花纹展开图 (⑤:T4:3) 2. 博山炉盖 (⑥:T4:3)</p>
+<p>土的双面蟠翘纹楔形中空铜构件相近。至于杜陵寝园遗址内所出土的两件铜构件上的齿纹，应该是从商周青铜器上的蝉纹、蕉叶纹和春秋秦宫金钉齿纹发展而来的<sup>1)</sup>。</p>
+<p>箍2件。均出土于柱础石附近，它们可能是柱子上的箍圈。二器均残。标本①：T4:1，外作八角形，内孔为圆形，外径21.4、内径18、高7.6，箍壁厚1-1.7厘米（图版九○，5）。另一件器残变形，无法复原，残高8.5厘米。</p>
+<p>鼎耳 1件（⑤：T2:30）。长方形，高10、宽7、厚1.8厘米。</p>
+<p>博山炉盖 1 件 (5: T4:3)。盖镂空，作山峰状，分三层，每层八峰交错排列。主峰为平顶。第一层山峰中有八个形态不一的动物，并有八个三角形烟孔。第二层山峰中有四个圆形烟孔。盖顶有一个圆形烟孔。炉盖高7.5、径11.5厘米（图二四；图版九○，4）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二五 铜车器等</p>
+<p>1.器足（⑤：Y2:13A）2.I型四叶形饰（⑤：T16:3）3.II型四叶形饰（⑤：Y2:7）4.提环（⑤：Y1</p>
+<p>：3）5.车罐（⑤：T7:1）6.兽面饰（⑤：T7:4）7.圆顶筒形器（⑤：Y2:12A）8.I型盖弓帽（⑤：</p>
+<p>T5:2) 9.Ⅱ型盖号帽 (6:T16:1)</p>
+<p>1）凤翔县文化馆、陕西省文管会：《凤翔先秦宫殿试掘及其铜质建筑构件》；杨鸿勋：《凤翔出土春秋秦宫铜构——金江》，《考古》1976年2期。</p>
+<p>提环 1件（⑤：Y1:3）。椭圆形，两端各卷曲成小环。高7、宽7.5厘米（图二五，4）。</p>
+<p>器盖1件（⑤：Y2:8）。子母口，顶部有环形钮，通高2.4、口径4.8厘米。</p>
+<p>弯月形饰 2 件。系漆器羽觞上的耳部铜饰品，器呈弯月形，鎏金。标本⑤：T2：31，长7.4、宽1.3、高0.8厘米；标本⑤：Y1:2，长10.3、宽1.7、高1.3厘米（图版九一，5）。</p>
+<p>四叶形饰 2件。分二型。</p>
+<p>1型：1件（⑤:T16:3）。四叶蒂形薄铜片，四叶之叶尖内接于一圆，相邻二叶端间距9，相对二叶间距12、叶厚0.1厘米（图二五，2）。</p>
+<p>II型：1件（⑤：Y2:7）。四叶之叶尖内接于一圆的圆心有一长方形钉孔。相邻二叶端间距6.1、相对二叶间距9、叶厚0.12厘米；钉孔长0.7、宽0.15厘米（图二五，3；图版九一，1）。</p>
+<p>扣器 3件。分三型。</p>
+<p>I型：1件（⑤：T15:3）。鎏金，正方形，边长21.3厘米。</p>
+<p>II型：1件 $(5:Y2:9)$ 。圆形，径10厘米。</p>
+<p>III型：1件（⑤：Y2:29）。长圆形，长径10.7、短径5.4厘米。</p>
+<p>环1件（⑤：Y2:30）。鎏金，外径4、内径2.4厘米。</p>
+<p>方形器座 1 件 (⑤:Y2:10)。鎏金。相对两侧分有实挡和锯齿形挡。边长 2.6、高 1 厘米（图二三，11；图版九二，5 上）。</p>
+<p>器足 3 件。形制、大小相同。鎏金。作蹄足形，内侧上方被截去，内有一长方形插榫。标本⑤：Y2:13A，高7厘米（图二五，1；图版九二，1）。它们与满城汉墓一号墓内出土的I型铜器足形制相同<sup>1)</sup>，不过杜陵便殿遗址出土的器足个体较大，似亦应为漆尊一类器物的三足。</p>
+<p>圆顶筒形器 3件。形制、大小相同。鎏金。圆顶，圆筒形，口径稍大。标本⑤：Y2:12A，高5.1、口径2厘米。出土时器内还留有木质物（图二五，7；图版九二，2）。</p>
+<p>圆形片状铜泡 3件。鎏金。圆片形。其大小不同，直径有3.4、3.2和2.8厘米三种（图二三，8）。</p>
+<p>泡钉 32 件。帽呈馒头形，下垂一钉。依据钉帽不同，分二型。</p>
+<p>I型：22件。泡钉帽有窄沿。标本⑤：Y2:14A，通高1.4，帽径2.5厘米（图版九二，5下）。</p>
+<p>II型：10件。泡钉帽无沿。标本⑤:Y2:15A，通高1.5、帽径2.1厘米。</p>
+<p>小箍1件（⑤：Y1:1）。环形，径1.8、高0.9厘米。</p>
+<p>兽面饰1件（⑤：T7:4）。兽面呈方形，边长7.1厘米，背面凹进，下面二角呈圆形，平顶。兽面上部伸出一长条形铜片，长3.9厘米（图二五，6；图版九二，7）。</p>
+<p>管1件（⑤：T16:2）。长2.5、径1.6厘米。</p>
+<p>铺首 24 件。均出土于便殿遗址 Y2 中。系漆器上的铺首，个体较小，均鎏金。分二型。</p>
+<p>I型：10件。兽面双耳外撇，额部上突，刻划简略。根据大小不同，又分2式。<br />
+1式：6件。个体较大，标本⑤：Y2:16A，宽4.1、高3厘米（图二三，9；图版九二，4左）。<br />
+2式：4件。个体较小，标本⑤：Y2:16B，宽3.5、高2.9厘米（图版九二，4右）。<br />
+II型：14件。兽面两耳外卷，额似桃形，两颊饰云纹，依据大小不同。又分2式。<br />
+1式：12件，个体较大，标本⑤：Y2:17A，宽4.7、高4.2厘米。铺首背面下方衔夹一铜泡钉（图二三，10；图版九二，3左）。<br />
+2式：2件，个体较小，标本⑤：Y2:17B，宽3.6、高3.2厘米。铺首背面未发现衔夹铜泡钉（图版九三，3右）。<br />
+镜1面（⑤：Y1:4）。系昭明连弧纹镜。圆钮，圆钮座，座外有内向连弧纹一周，外区为铭文带，素平缘。铭文为“内清以昭明，光日月”。径8.2、边厚0.35厘米（图版九○，3）。<br />
+印章1件（⑤：Y3:6）。正方形，苞状钮，有穿孔。字为阴刻篆文。印章通高1.8、边宽1.5厘米。印文为“孙口私印”（图二三，7；图版九二，6）。<br />
+勺1件（⑤：Y2:1）。勺呈半球状，一侧连一柄，柄已残断。勺径7、柄残长14.5厘米（图二三，2；图版九 $\bigcirc$ ，6）。<br />
+键（栓塞）1件（⑤：T2:32）。属于弩机上的零件。圆柱体，一端有长方形帽；另一端于圆柱上有一穿孔，用于贯销钉。键通长5厘米，其中帽长1.6、宽1.4、高0.9厘米；圆柱体长4.1、径1.2厘米；穿孔径一头0.5、另一头0.4厘米（图版九一，6）。<br />
+镶嵌9件。均为铜镶嵌铁锭，镶嵌呈三棱形。分三型。<br />
+I型：6件。长茎，茎呈六面体，圆柱形铁挺。标本⑤：T2:20，皱身长2.9，底边各宽1.3，茎长0.7，每面宽0.6，挺残长22，径0.4厘米（图二三，3；图版九一，7左）。<br />
+II型：1件（⑤：T2:24）。短茎，茎亦呈六面体，挺为圆柱体。镰身长2.1、底边各宽1.1，茎长0.2，每面宽0.5、挺残长6，径0.4厘米（图二三，5；图版九一，8）。<br />
+III型：2件。短茎，茎为圆柱体。标本⑤T6:2，髓身长2.2、底边各宽1.1，茎长0.2、径0.9，挺为圆柱体，上粗下细，挺残长19.3厘米。标本⑤:T13:1，挺为方柱体，每面宽0.3厘米（图二三，4、6；图版九一，7右）。<br />
+车辖 1 件 (⑤: T7:1)。通体鎏金，呈拱形，断面近似圆形，两脚下有长条形座连接。辖高 4.4、座长 6 厘米（图二五，5；图版九一，2）。<br />
+衡端饰 1件（⑤：T12:3）。器呈直圆筒形，素面。高8.1、口径3.1厘米。<br />
+盖弓帽 2 件。器为管形，中空成，口缘处略宽大。前端稍有收分，侧出一钩。分二型。<br />
+I型：1件（⑤：T15:2）。顶为一四瓣形花朵。通长7、顶端径3.1、口径1.3厘米（图二五，8；图版九一，4）。<br />
+II型：1件（⑤：T16:1）。前端有一道宽凸弦纹，弦纹中部有一周凸棱。顶部似球状。通长10.3、口径1.2厘米（图二五，9；图版九一，3）。<br />
+钱币绝大部分出土于便殿遗址，计有半两、五铢、鎏金五铢、小五铢、大泉五十、货泉、契刀、带柄刀币和压胜钱9种250枚。</p>
+<p>半两 1 枚 (⑤: T7:5)。钱径 2.3 厘米, 重 2.6 克, 铜质较差, 属于 “四铢半两” (图二六, 1; 图版九三, 1)。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+11</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+12</p>
+<p>图二六 铜钱——半两及五铢<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 半两 (5: T7:5) 2. 鉴金五铢 (5: Y2:18A) 3. 五铢 I 1 (5: Y2:18 c-1) 4. 五铢 I 2 (5: Y2:18 c-3) 5. 五铢 I 3 (5: Y2:18 c-4) 6. 五铢 II 1 (5: Y2:18 c-5) 7. 五铢 II 2 (5: Y2:18 c-6) 8. 五铢 III (5: Y2:18 c-7) 9. 五铢 III (5: Y2:18 c-8) 10. 五铢 IV 2 (5: Y2:18 c-10) 11. 五铢 IV 4 (5: Y2:18 c-12) 12. 五铢 V 1 (5: Y2:19A)</p>
+<p>五铢 228枚。均出土于便殿遗址。其中17枚破损较甚，其余211枚保存较好，“朱”字头均方折，依据钱文其它方面的不同分为五型。</p>
+<p>I型：30枚。“五”字交笔斜直。“铢”字的“金”字头作带翼的箭镞形，或作三角形，二者数量相若。分3式。</p>
+<p>1式：1枚（⑤：Y2:18C-1）。钱径2.5、穿宽0.9、郭厚0.12厘米，重3.6克。穿上横郭（图二六，3；图版九三，3）。</p>
+<p>2式：3枚。标本⑤：Y2:18C-3。钱径2.6、穿宽1、郭厚0.15厘米，重4.4克。穿下半星（图二六，4；图版九三，4）。</p>
+<p>3式：26枚。标本⑤：Y2:18C-4，钱径2.5、穿宽0.95、郭厚0.12厘米，重3.55克（图二六，5；图版九三，5）。均出于便殿遗址Y2之中。</p>
+<p>II型：110枚。钱径2.5-2.55、穿宽0.95-1、郭厚0.15厘米。“五”字交笔缓曲，上下两横较长。除II型3式中的1枚（⑤：T2:36）五铢之外，其余均出于便殿遗址Y2之中。分3式。</p>
+<p>1式：29枚。标本⑤：Y2:18C-5，重3.36克。穿上横郭（图二六，6；图版九</p>
+<p>三，6）。</p>
+<p>2式：30枚。标本⑤：Y2:18C-6，重3.62克。穿下半星（图二六，7；图版九三，7）。</p>
+<p>3式：51枚。标本⑤：Y2:18C-7，重3.19克（图二六，8；图版九三，8）。</p>
+<p>III型：56枚。均出于便殿遗址Y2。“五”字交笔弯曲，与上下横呈垂直状。“铢”字的“金”字较“朱”字头为低。钱径2.6-2.65，穿宽0.9-0.95，郭厚0.12-0.15厘米。重3.5克。其中有3枚穿上横郭。标本⑤：Y2:18C-8，钱径2.6，穿宽0.95，郭厚0.12厘米，重3.5克（图二六，9；图版二七，3）。</p>
+<p>IV型：14枚。均出于便殿遗址Y2。钱币边郭被磨，即俗名“磨郭五铢”，或称“窄郭五铢”，即钱郭尚保留很窄一部分。分4式。</p>
+<p>1式：3枚。标本⑤：Y2:18C-9，钱径2.45、穿宽1、郭厚0.12厘米。重2.83克。钱文同I或II型（图版九三，9）。</p>
+<p>2式：1枚（⑤：Y2:18C-10）。钱径2.35、穿宽0.9、郭厚0.1厘米。重3.4克。钱文与IV型1式同，但钱的正面有穿下半星（图二六，10；图版九三，10）。</p>
+<p>3式：6枚。标本⑤：Y2:18C-11，钱径2.4、穿宽0.95、郭厚0.1厘米。重2.6克。钱文同III型。</p>
+<p>4式：4枚。标本⑤：Y2:18C-12，钱径2.35、穿宽0.95、郭厚0.1厘米。重2.9克。钱文同III型，但钱的正面有穿上横郭（图二六，11；图版九三，11）。</p>
+<p>V型：11枚。均出于便殿Y2。钱币不净边郭，留有“毛边”，即俗名“毛边五铢”。分3式。</p>
+<p>1式：1枚（⑤：Y2：19A）。钱径2.65、穿宽0.95、郭厚0.2厘米。重4.4克。钱文同Ⅱ型，穿上横郭（图二六，12；图版九三，12）。</p>
+<p>2式：9枚。标本⑤：Y2:19B，钱径2.7、穿宽1、郭厚0.11厘米。重4.45克。钱文同Ⅲ型。</p>
+<p>3式：1枚（⑤：Y2:19C）。钱径2.6、穿宽1、郭厚0.1厘米。重4.2克。钱文亦同III型，钱背有弧形纹和曲尺纹各3条。</p>
+<p>鎏金五铢 1枚(⑤:Y2:18A)。钱径2.65、穿宽0.9、郭厚0.2厘米。重3.4克，通体鎏金。“五”字交笔弯曲，“金”字头呈等腰三角形，较“朱”字头略低，“朱”字头方折（图二六，2；图版九三，2）。西汉时有金币五铢<sup>1)</sup>，即所谓“上币”。大概它不是作为流通使用的货币，而是赏赐、馈赠之物。鎏金五铢的性质当与金币五铢相近。</p>
+<p>小五铢 1 枚 (⑤: Y3:2)。钱径 1.2、穿宽 0.5、肉厚 0.12 厘米。重 0.8 克。钱文清晰, 钱形整齐精美。“五”字交笔弯曲, “朱”字头方折, “金”字头呈三角状, “金”字略低于“朱”字。</p>
+<p>大泉五十 4枚。寝殿遗址出土1枚，便殿遗址出土3枚。分二型。</p>
+<p>1型：3枚。寝殿遗址出土1枚，便殿遗址出土2枚。标本①：T1:2，钱径2.8，穿宽0.8、郭厚0.28厘米。重7.2克（图二七，1；图版九三，17）。</p>
+<p>Ⅱ型：1枚（⑤：T7:3）。钱径2.5，穿宽1、郭厚0.1厘米。重2.7克（图二七，</p>
+<p>2；图版九三，18）。</p>
+<p>货泉8枚。轻殿遗址出土1枚（属III型），便殿遗址出土7枚。分四型。</p>
+<p>I型：2枚。标本⑤：T2:38，钱径2.65、厚0.4、穿宽0.9厘米。穿未透。重16.2克（图二七，3；图版九三，13）。标本⑤：T8:1，个体较大，钱径2.9厘米，重2.47克。I型货泉钱郭毛边。</p>
+<p>II型：1枚（⑤：T2:37）。钱径2.55、厚0.2，穿宽0.8厘米。重6.5克（图二七，4；图版九三，14）。</p>
+<p>III型：4枚。标木⑤：T14:1，钱径2.3、厚0.12、穿宽0.75厘米。重2.5克（图二七，8；图版九三，15）。</p>
+<p>IV型：1枚（⑤：T12:2）。钱径1.7、厚0.08、穿宽0.8厘米。重0.7克（图二七，5；图版九三，16）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二七 铜钱——货泉等</p>
+<p>图二八 铜压胜钱 (⑤:Y2:2)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 大泉五十I (①:T1:2) 2. 大泉五十II (⑤:T7:3) 3. 货泉I (⑤:T2:38) 4. 货泉II (⑤:T2:37) 5. 货泉IV (⑥:T12:2) 6. 契刀五百 (⑤:Y3:4) 7. 带柄币 (⑤:Y3:3) 8. 货泉III (①:T14:1)</p>
+<p>契刀 15 枚。均出土于便殿遗址 Y3 中。出土时，“圜钱”和“刀”分两处。标本⑤: Y3:4, “圜钱”径 2.9、郭宽 0.1、郭厚 0.25，穿宽 1.2 厘米；“刀”长 4.8、宽 1.45、厚 0.3 厘米；契刀（包括“圜钱”和“刀”）通长 7.7 厘米，重 18.84 克。“圜钱”文“契刀”，“刀”文“五百”（图二-七，6；图版九三，20）。</p>
+<p>带柄币 1 枚 (⑤: Y3:3)。“圜钱”下有一小柄, 柄残, 长 0.7、宽 1.1 厘米。柄与</p>
+<p>“圜钱”穿的一角相对。“圜钱”径2.8、郭厚0.25厘米；方穿，穿宽1.3厘米。无钱文（图二七，7；图版九三，19）。</p>
+<p>压胜钱 1 枚 (⑤: Y2:2)。由钱柄和钱身组成。钱柄由上、下两部分组成。上部长 3.4、宽 6.1 厘米；下部长 3.6、宽 3.1 厘米。上下两部分分别为透雕龙、马纹饰。钱身为长方形，长 10.9、宽 5.4、厚 0.4 厘米。钱身两面均铸粟粒纹（即乳丁纹），其上有透雕的纹饰。由于器残，纹饰无法辨清（图二八；图版九一，9）。</p>
+<h1 id="_29">第三章 孝宣王皇后陵</h1>
+<h1 id="_30">第一节 陵墓与陵园</h1>
+<h1 id="_31">一、陵墓</h1>
+<p>1983年对孝宣王皇后陵进行了勘察。孝宣王皇后陵墓距宣帝陵东南575米，位于今长安县大兆乡甘寨村。陵墓封土夯筑，形如覆斗。封土高24米。封土的顶与底部平面基本为方形，顶部边长45，底部边长148米（彩版三；图版九四）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图二九 王皇后陵陵园与寝园关系图</p>
+<h1 id="_32">二、陵园</h1>
+<p>孝宣王皇后陵陵墓四周筑墙围绕，形成陵园，陵园平面基本为方形。地面之上已无陵园墙迹，但地下还保留其墙基。东墙基长335、宽3.9米。墙基夯土距地表深度及厚度不一：北部深0.5、厚1.2米；南部深1.5、厚1.1米。西墙基长335、宽3.9米，墙基夯土距地表深约1米，北部厚0.5、南部厚0.8米。南墙基长334、宽3.9米，墙基夯土距地表深度及厚度不一：东部深0.3、厚2.7米；西部深1、厚0.7米。北墙基长334、宽3.9米，墙基夯土距地表深度及厚度东西略异：东部深0.6、厚1.2米；西部深0.5、厚0.8米。陵园东墙基北端（长35米）和北墙基东端（长30米）分别变宽为10与5米，这应为陵园东北角楼基址。陵园四面墙基夯土之下为生土。</p>
+<p>陵墓封土与陵园四面墙基距离相同，各为89米（均以封土边与墙基内侧距离为准）。陵园四面墙的中央各辟一门。根据钻探和发掘材料，陵园四门形制、大小基本相同（图二九）。陵墓之上未发现其它建筑遗迹。</p>
+<h1 id="_33">三、东门遗址（四号遗址）</h1>
+<p>孝宣王皇后陵园四个门址均经钻探、试掘，考虑到四个门址形制、大小基本相同，而东门遗址保存较好，所以对其进行了全面发掘。发掘面积为2280平方米。</p>
+<p>东门遗址中部位于王皇后陵墓（封土边）以东83米，距陵园东南角和东北角各120米。</p>
+<p>东门遗址地层堆积情况：门址中心建筑部分，耕土之下即建筑物的夯土基址。门址东西两侧，耕七层厚0.2-0.3米。其下为近代扰土层，厚0.2-0.3米，此层土质较硬，呈浅黄色，出土少量近代与汉代砖瓦碎块等遗物。近代扰土层之下为汉代文化层，属于东门建筑废弃后的堆积，土质较松散，呈浅褐色，厚0.5-0.6米，距地表深0.55-1.15米。汉代文化层中含有大量红烧土块和汉代砖、瓦、瓦当等。此层压在汉代地面之上（图三〇）；汉代地面厚0.2-0.25米。</p>
+<p>图三王皇后陵陵园东门遗址地层堆积剖面图<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 耕土 2. 浅黄色土 3. 浅褐色土 4. 灰褐色土 (4层以下未发掘)</p>
+<p>门址面阔67.8、进深19.3米。其形制与帝陵陵园门址基本相同，亦由隧、塾和配廊组成（图三一；图版九五，1、2）。</p>
+<p>隧居门址中央，宽10.5、长15.6米。隧中央的南、北各有一门墩与左、右塾相连。二门墩形制、大小相同，二者间距5.6米。门墩为长方形，夯筑，南北2.5、东西1.9、</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1-72. 柱洞<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图三一 王皇后陵陵园东门遗址平、剖面图</p>
+<p>现存高0.43米。门墩四角各有一转角柱，柱槽截面方形，边长0.25米。二门墩间有门槛槽，已被破坏，槽的宽度不详。</p>
+<p>二门墩将隧分为形制、大小相同的内、外两部分。内、外隧各有一对明柱，两对明柱与门墩各距4.7米。每对明柱二者相距各为5.8米。四个明柱柱槽形制、大小相同，柱槽截面为圆形，径0.6、深0.15米。柱槽内础石均被破坏，但还遗留有砌石碎块。</p>
+<p>随中央的通道宽5.6、长15.6米。通道之上未见铺砖遗迹。</p>
+<p>通道南、北(即左、右)两边门庭被二门墩分为内、外两部分，内、外门庭各自对称，形制、大小相同。左内门庭，南北2.5、东西6.85米。门庭地面亦未发现铺砖遗迹。</p>
+<p>隧内、外（西东）两端，南、北两侧均置卵石散水，四处散水形制、大小均相同。它们分别距内、外廊0.14米。隧内外口的左右散水南北间距5.6米。每处散水东西1.8、南北1.01米，卵石散水四周砌以立砖（图版九六，1、2）。</p>
+<p>二塾形制、大小相同，基址均为夯筑。以左塾（北塾）为例，夯土台基东西13.65、南北8.4、现存高0.4-0.5、夯土基址深2.6米。左塾的内外塾间有“墉”（即内外熟隔墙）的痕迹，长8.3、宽1.97米。墉的一头与门墩相连，另一头与配廊隔墙相接。在二塾的墉与二配廊隔墙相接的一端，各有一条与墉垂直相交的墙迹，二者对称分布于左、右塾上，形制、大小相同。如左塾的墙迹与墉相交处，距左塾北边1.05米，墙迹东西11.55、南北1.3米（图版九七，1、2）。</p>
+<p>塾的墙壁上贴砌板瓦片，绳纹均朝外。如右内塾南壁、左塾东壁等处均有发现，后者贴砌瓦片保存面积0.138平方米（图版九八，1-4）。</p>
+<p>二塾四壁置壁柱。每塾计有壁柱16个，前、后与左、右壁各4个（若包括前后壁两端的转角柱则为6个）。各壁壁柱间距稍异，以右塾为例，南壁壁柱间距2-2.2米，其余三壁壁柱间距2.4-2.5米。壁柱柱槽截面方形，边长0.3米。壁柱底部置砸石，但大多已无存。从左塾北壁和右塾南壁壁柱保存下来的砸石看，砸石为长方形，长0.46、宽0.41、高0.22米，砸石面加工平整，厚0.05，高于附近地面0.02米。砸石座四周有凹凸不平的修整痕迹。砸石系以青绿色砂岩制作。</p>
+<p>二塾前、后置廊，其形制、大小相同。后廊（即西廊）遗迹保存较好，长29、宽1.2米（门道处廊道宽1.25米）。廊道上为素面铺地砖，东西3排。靠近塾壁的一排为长方形，砖长0.36、宽0.2米；另外2排（门道处3排）均为方形，边长0.36米。廊道3排铺地砖由里向外呈斜坡状，里陡外缓，其坡度分别为5、2和 $1^{\circ}$ （图版九九、1）。</p>
+<p>左塾北廊和右塾南廊的形制、大小相同，对称分布于门两边。以右塾南廊为例，它被配廊及其隔墙分为东、西两部分，它们分别为右外塾与右内塾的南廊，二者形制、大小一样，对称分布于配廊隔墙两边。如右内塾南廊长6.2、宽0.84米，廊道铺素面砖3排，靠近塾壁（即最北面）的一排为长方形，砖长0.35、宽0.18米；其外2排为方形，砖边长约0.3米（图版九九，2、3）。左内塾北廊的铺地砖也是3排，靠近塾壁（即最南面）的一排为长方形砖，长0.34、宽0.085米。其外2排铺地砖为方形，砖边长0.35米。外面一排砖的坡度较大，由南向北（由里向外）坡 $4.5^{\circ}$ ，里面2排砖坡度甚微。</p>
+<p>廊道铺地砖的砖面之上，一般先涂一层白色底子，然后于其上再涂朱红色，其中尤以右内塾南廊东部铺地砖面上保留的红颜色最为鲜艳。</p>
+<h1 id="_34">第二节 寝园</h1>
+<h1 id="_35">一、寝园形制</h1>
+<p>经勘察，孝宣王皇后陵的寝园（详见“结语”）遗址位于王皇后陵园西南，范围东西129、南北86米（图二九）。</p>
+<p>寝园北墙利用了王皇后陵园南墙西段（即陵园南门以西），西自陵园西南角，东与陵园南门西配廊隔墙相连接，长129、宽3.7米。南墙与北墙长度相同。东、西墙各长86米，二墙的北端分别自北墙东、西两端向南。西墙与南墙相交后，西墙又向南延伸出5米。这段夯土墙宽4米，疑此为与寝园防卫有关的建筑遗迹。寝园东、西、南墙基宽均为4米。</p>
+<p>寝园东、西、南三面各辟一门。东门位于寝园东北角以南20米，门址辟于寝园东墙之上，门道宽5.5、进深4米。西门位于寝园西墙中央（南北居中），门址面阔10.8、进深7.2米。门道南北两侧为檐廊与卵石散水。</p>
+<p>寝园西南角以东29米，南墙先南折7米，又东折20米，再北折7米，后复东折。南墙向南折出部分，为一夯土基址，东西24、南北7米。在此基址东南角，有一南北8、东西4米的夯土。上述夯土基址北对寝殿南门，其间有南北砖路相连。寝园南墙之外凸出的夯土基址应为寝园南门遗址。</p>
+<p>寝园包括寝殿和便殿，它们分别编号为杜陵六、七号遗址（详见“结语”）。</p>
+<h1 id="_36">二、寝殿遗址（六号遗址）</h1>
+<p>寝殿遗址位于寝园西部，自成一组院落。其范围东西90、南北86米。寝殿院落西、南、北三面有墙。西墙即利用了寝园西墙，南、北二墙各利用了寝园南、北墙的西段。寝殿院落东面为廊，廊道宽4米，其西侧为檐廊，与寝殿院落西、南、北三墙之内的檐廊相通。檐廊宽1.2米，檐廊外散水宽0.8米。</p>
+<p>寝殿院落辟东、西、南三座门，西、南二门即寝园的西、南门。东门辟于寝殿院落东面的南北廊之上，其形制、大小与寝园西门相同，二者对称分布于寝殿院落东、西两边。</p>
+<p>寝殿遗址位于寝殿院落中央，距南、北墙各18米，与东、西门各距4米。寝殿遗址进行了发掘，发掘面积为2280平方米。</p>
+<p>地层堆积情况：寝殿遗址中部，表土层下即原来的夯土台基，台基周围堆积较厚。表土层厚0.2—0.4米。下为近代扰土层，土呈浅黄色，土质较硬，含有少量近代瓷片、陶片和汉代砖瓦碎块，厚0.15—0.5米。第三层为汉代文化层，即寝殿建筑废弃后的堆积，厚0.2—0.73米，距地表深0.54—1.4米，土质较松散，呈浅褐色，其中含有大量汉代砖瓦以及烧土等。第三层下为汉代地面。</p>
+<p>寝殿东西54、南北35.2米；中部殿堂台基东西39.6、南北27.16，现存高0.39—0.52米。台基夯筑，夯土厚2.2米（图三二；图版一〇二，1）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>寝殿台基四壁保存壁柱甚少，仅在东、西壁共发现7个。东壁有3个壁柱：台基东北角1个，柱槽截面方形，边长0.30米，柱槽底部有础石碎块；第2个在台基东北角以南10.22米，柱槽截面长方形，长0.28、宽0.27米，础石为暗础，础石面在其附近廊道地面以下0.115米；第3个在台基东南角以北10.1米，柱槽截面长方形，长0.3、宽0.25米。西壁有4个壁柱：第1个在台基西北角，其形制、大小与台基东北角壁柱一样；第2个在台基西北角以南10.4米，柱槽截面方形，边长0.3米；第3个在第2个壁柱以南6.6米，柱槽截面呈长方形，长0.3、宽0.25米；第4个在第3个壁柱以南3.43米，柱槽截面长方形，长0.27、宽0.26米，其下础石尚存。</p>
+<p>寝殿台基四壁抹草泥墙皮，从台基北壁保存的墙皮结构来看，台基的夯土墙壁上，先抹一层麦秸泥，厚约0.041米；然后再于其上抹一层麦糠泥，厚约0.014米。麦秸泥和麦糠泥均经火烧，呈桔红色。最后于麦糠泥表面施白垩；四壁呈白色（图版一〇三，1）。</p>
+<p>寝殿台基四周置回廊，东、西廊各长30.9，南、北廊各长43.6，四面廊道各宽2米，地面铺素面方砖6排。廊道里高外低，坡为 $4.5 - 9.8^{\circ}$ （图版一〇四、一〇五）。</p>
+<p>在北廊廊道最里边的一排铺地砖与台基墙皮均保存较好的地方，发现铺地砖与台基夯土相接，台基北壁0.05米厚的墙皮压在这排铺地砖上。由此可知，它们营建的过程是：夯土台基筑好，主体建筑基本完工，廊道铺砖（或部分铺砖）后，再在夯土台基四壁抹墙皮。</p>
+<p>寝殿四面回廊之外置卵石散水。东、西廊散水各长33，南、北廊散水各长45.6，四廊散水各宽1米。散水外边铺砌了一排与之平行的方砖，砖面为小方块纹或几何纹（图版一〇三，2）。南廊散水内高外低（北高南低），卵石面呈斜直状；东、西廊散水中间高突，卵石面弧度大；北廊散水的卵石面截面弧度介于上述二者之间。散水卵石面截面弧度最大的是寝殿东、西门檐廊散水。</p>
+<p>寝殿的廊道，散水及共外边铺地方砖间，均砌置立砖为界。</p>
+<p>寝殿四面辟门，东、西、南面各一门，北面有二门，称东、西阶。东、西门较南、北门规模大。东、西门对称分布于寝殿东、西两边，二者形制、大小相近。</p>
+<p>寝殿东门与寝殿院落东门相对，间距4米，其间以素而方砖铺地。砖道南北宽10.9米，砖面破碎甚烈，说明当时人们在此走动甚多。寝殿东门基本位于寝殿台基东壁中央，距台基东北角和东南角分别为10.22与10.1米。门址由门道，南北檐廊及其散水组成（图版一〇六）。</p>
+<p>东门面阔13.3、进深7.15米。门道宽6.8米。门道分为南、北二通道，通道里面为平道，外面为坡道；二通道各宽3.4米。南通道的平道长4.3、坡道长1.3米，坡 $25^{\circ}$ ，坡道之上铺小方块纹砖（图版一〇七，1）。北通道的平道长5.65、坡道长1.57米，坡 $12^{\circ}$ 。</p>
+<p>门道两边对称分布着檐廊。南檐廊长7.3、宽1米。北檐廊长7.15、宽1.05米。檐廊廊道铺素面方砖3排，在靠近廊壁有一排立砖。南、北檐廊的廊壁现存壁柱共5个，壁柱间距2.3-2.8米。其中南檐廊北壁有3个壁柱，由西向东第1个位于檐廊最西边，即寝殿夯土台基东壁北数第3个壁柱。第2个壁柱柱槽截面方形，边长0.25米，石尚存。第3个壁柱柱槽截面长方形，长0.3、宽0.25米，其下石尚存；已作解剖，</p>
+<p>石长0.5、宽0.39、高0.25米。础石面与础石座同大，厚0.05米。础石座表面有凹凸不平加工痕迹（图版一〇七，2）。北檐廊南壁壁柱保存2个。由西向东第1个位于檐廊最西端，即寝殿夯土台基东壁北数第2个壁柱。第2个壁柱柱槽截面呈方形，边长0.25米，础石尚存，已作解剖，础石为鼓状，高0.24、径0.44米，础石面亦加工成圆形，径0.44、厚0.05米。础石座表面有凹凸不平的加工痕迹（图版一〇七，4）。</p>
+<p>南北檐廊的外侧均置散水，对称分布，形制、大小基本相同。南檐廊散水长5.3，宽1.1米。散水东端以西0.3米处，有向南延伸出去的散水，南北1.2、东西1.1米。北檐廊散水长5.3、宽1.1米。散水东端以西0.3米处，有向北延伸出去的散水，南北1.1、东西1.1米。南北檐廊散水四周均砌立砖为界（图版一八）。</p>
+<p>寝殿西门与寝殿院落西门（即寝园西门）相对，二门间距4米。其间有三股道，中股道宽6.2米，正对二门门道；两边两股道对称分布于中股道南、北，二者形制、大小相同，其中北股道遗迹保存较好。现以北股道为例说明其形制：北股道宽2.4米，铺素面方砖7排，东西正对二门的北檐廊及其散水。三股道之间及南北股道的南、北边均砌立砖为界（图版一○二，2）。</p>
+<p>寝殿西门与东门形制基本相同，大小相近。西门距寝殿夯土台基西北角和西南角分别为10.4与9.8米。门址面阔13.3、进深7.15、门道宽6.7米。门道分南、北二通道。南通道宽3.3，其中平道长4.5、坡道长1.2米，坡 $25^{\circ}$ ；北通道宽3.35米，其中平道长5.65、坡道长1.6米，坡 $12^{\circ}$ 。二通道的坡道之上均曾发现大量炭灰，推测坡道之上原置木阶，若此，则由于木阶的焚毁或腐朽，其级数已难究明。</p>
+<p>南、北檐廊形制、大小相同，各长7.2、宽1米；廊道铺素面方砖。南、北檐廊现存5个壁柱，壁柱间距2.25-3米。其中南檐廊北壁现有3个壁柱，由东向西第1个位于廊壁东端，即寝殿夯土台基西壁北数第3个壁柱；第2个壁柱柱槽截面方形，边长0.3米，础石尚存；第3个壁柱柱槽截面长方形，长0.3、宽0.2米，础石尚存。础石面不平整（图版一〇七，3；图版一〇九）。北檐廊南壁现有2个壁柱，由东向西第1个位于廊壁最东端，即寝殿夯土台基西壁北数第2个壁柱；第2个壁柱柱槽截面方形，边长0.3米，础石尚存。</p>
+<p>南、北檐廊散水形制、大小相同，对称分布于西门两边。以南檐廊散水为例，长5.2、宽1米。散水西端向东0.3米处有向南延伸的散水（北檐廊散水西端向东0.3米处有向北延伸的散水），其南北1.1、东西1米。散水四周砌立砖为界。</p>
+<p>寝殿南门位于寝殿南面中央，距寝殿夯土台基东南角和西北角各为18.4米。门址面阔2.6、进深3.5米。南门置台阶四级，每级台阶长2.6米；第一级台阶南北（由北向南）宽2.4米，余三级各宽0.35米；第四级台阶高0.02米，余三级各高0.12米（图版一一○，1）。</p>
+<p>南门门道西壁贴几何纹方砖，纹饰朝外（图版一一O，2）。</p>
+<p>寝殿南门与寝园南门（即寝殿院落南门）相对，其间有东西并列的三股南北道相连。三股道均为素面方砖铺地。中股道正对寝殿南门，与其同宽。中股道两边各一股道，两道形制、大小相同，各宽1.5米，并置铺地砖4排。两道北至寝殿南廊散水外铺地砖。三股道之间及东、西股道的东、西边砌立砖为界（图版一一○，3）。</p>
+<p>寝殿北门有二，称东、西阶。东、西阶间距15.7米，二者距寝殿夯土台基东北角</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>和西北角分别为9.15米。二阶对称分布于寝殿北部，形制、大小相同。现以西阶为例说明如下(图三三；图版一一一)：面阔2.7、进深3.45米。门道由里向外（即由南向北）由平道和三级台阶组成。每级台阶长2.7、宽0.3、高0.2米，台阶之上置几何纹空心砖、由南向北第一级台阶低于平道0.23米。平道东西宽2.45、南北长2.55米。平道与门道台阶二者西壁在同一南北线上。平道东壁比台阶东壁向西移入0.34米，形成了一个与第一级台阶在同一平面的二层台。二层台南北2.55、东西0.34米。台阶东壁贴几何纹方砖（图版一一二,1）。西阶台阶以北有3排(东西向)铺地砖，南北1.2、东西4.62米；其西与西阶以西0.72米的北廊散水东端南北对直，向南至北廊，其间亦铺砖。东边在门道以东1.2米处，向南亦至北廊，地面铺砖。</p>
+<p>西阶门道北边铺地砖地面东侧，有一南北通道，通道北起寝殿北廊，东西宽1.1米，已发掘清理的南北长3.9米。根据钻探资料，此道继续向北延伸。通道之上铺素面方砖。</p>
+<p>西阶门道北边铺地砖地面西边，北廓散水以北，有一片铺地砖，其范围东西1.95、南北1.2米。</p>
+<p>北门东阶虽然与西阶形制、大小相同，但其布局的方位恰好相反：东阶门道平道的二层台在其西边，而不是像西阶门道平道的二层台在其东边；东阶门道前铺地砖的西边为南北通道，长方形的铺地砖区则在东阶门道东边，这些均与前述西阶的情况相反（图版一一二，2）。</p>
+<p>北门东、西二阶形制、大小相同，布局位置相反，但就寝殿北面东、西二阶之间的南北中轴线而言，它们对称分布于中轴线两边。</p>
+<p>从总的来看，寝殿中央高、四周低，东西两边低于中间，北边又低于南边。</p>
+<h1 id="_37">三、便殿遗址（七号遗址）</h1>
+<p>便殿遗址位于寝园东部，在寝殿院落以东，自成一组院落，其范围东西42、南北72.5米。便殿院落东墙即寝园东墙；便殿院落南、北墙即寝园南、北墙东段；便殿院落与寝殿院落的东西分界的南北廊，即是寝殿院落的东廊，又是便殿院落的西廊。</p>
+<p>便殿院落的西门即寝殿院落的东门。便殿院落东门利用了寝园东门。便殿南面可能原来曾辟一门。在便殿院落南墙之上，东距寝园东南角12米处，有一破坏坑，宽2.7米，其中汉代砖瓦甚多，可能此处即便殿南门遗址。</p>
+<p>便殿遗址未发掘，只进行钻探和试掘。从掌握的资料来看，便殿院落以内的建筑均为中、小房屋和小型庭院，以及连接上述建筑的廊道。廊道和庭院地面均铺素面方砖，由于当时人们在此活动频繁，铺地砖大多破碎。廊道和庭院的卵石散水保存较好。便殿遗址内的小房屋和庭院等建筑，主要分布在便殿东南部。</p>
+<h1 id="_38">四、出土遗物</h1>
+<p>孝宣王皇后陵寝园中，仅寝殿遗址进行了发掘，这里所述遗物均出土于寝殿遗址。现据其质地分述如下：</p>
+<h1 id="_39">（一）陶器</h1>
+<p>陶器中只有砖、瓦和瓦当等建筑材料，无容器及其它陶质器物。</p>
+<p>砖、瓦和瓦当的种类、形制与王皇后陵园东门遗址出土的基本相同。寝殿遗址出土完整瓦当22个，其中文字瓦当19个、云纹瓦当3个。文字瓦当中“长乐未央”瓦当11个，均为II型，其中3式8个、4式1个、9式2个；“长生无极”瓦当8个，其中II型7个、III型1个。3个云纹瓦当均为I型。</p>
+<h1 id="_40">（二）石器</h1>
+<p>石器均为礼制器物，有石圭和石璧各1件。</p>
+<p>圭1件（⑥：T1：4）。器残，残高5.2厘米（图三四，1）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>3 <br />
+图三四 石、铜、铁器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 石圭 (6:T1:4) 2. 石壁 (6:T6:2) 3. 铁敏 (6:T1:2) 4. 铜盖弓帽 (6:T3:1)</p>
+<p>壁1件（⑥：T6:2）。器残，壁径4.6、厚0.8、好径0.2厘米。壁为素面（图三四，2）。</p>
+<h1 id="_41">（三）铁器</h1>
+<p>计有钉、钩、镦3种。</p>
+<p>钉6件。分二型。</p>
+<p>I型：4件。圆帽铁钉，标本⑥：T1:3、通长17.1、帽径2.8、厚0.3厘米。此与杜陵寝殿遗址出土铁钉的（标本①：T4:4)形制、大小相近。</p>
+<p>H型：2件。直角铁钉，标本⑥:T6:5，钉身长12厘米，为锥体状；钉头拐作直角，长3.6厘米，截面圆形，径1.1厘米。</p>
+<p>钩1件（⑥：T2:1）。通长10，钩体截面圆形，径0.7厘米；系直角钩，长1.8厘米。钩首环形，外径1.8、内径0.6厘米。</p>
+<p>敏1件 $(⑥:T1:2)$ 。长筒形，高8、径3.6、壁厚0.5厘米，内有残存木秘（图三四，3）。</p>
+<h1 id="_42">（四）铜器</h1>
+<p>计有圆筒形器、镜、条形饰件、镶嵌、盖弓帽、车辖和货泉6种。</p>
+<p>圆筒形器 1件（⑥：T6:1）。口大、底小；通高5、口径0.9厘米。</p>
+<p>镜仅发现2块残片，出土于寝殿东门附近的汉代文化层中，系西汉铜镜残片。</p>
+<p>条形饰件 1 件 (⑧: T1:5)。用作建筑物上的装饰，残长 23、宽 0.8、厚 0.2 厘米，正面和两侧面鎏金。饰件的一端有钉孔，孔径 0.2 厘米，上附一鎏金铜钉，钉身长 5.8、钉帽径 0.95、厚 0.4 厘米。</p>
+<p>2件 $(6: T6: 4; 6: T6: 3)$ 。与杜陵寝园遗址中出土的II、III型镞相同。</p>
+<p>盖弓帽1件（⑥：T3:1）。短管形，前端微有收分，顶部平齐，管侧有一钩。通长6.6、顶端径0.8、后端径1厘米（图三四，4）。</p>
+<p>车辖 1 件 (⑥: T4:1)。方柱体，辖帽长 2.4、宽 2、高 1.8 厘米；辖身残长 6.6、截面长 2.4、宽 2 厘米。</p>
+<p>货泉 2 枚。与杜陵寝园遗址出土的 III 型货泉基本相同。钱径 2.3、厚 0.15、穿宽 0.7 厘米，重 2.6 克。</p>
+<h1 id="_43">第四章 杜陵的其它建筑遗址</h1>
+<h1 id="_44">第一节 八号遗址</h1>
+<p>八号遗址位于杜陵东北400米处，当地群众称此遗址所在地为“鳖盖”，言其地势高于周围地区。该遗址在农田基建中，作为被平整的土地，虽曾遭到严重破坏，但遗址仍高于附近地面1—3米。</p>
+<p>遗址中央为一夯土台基，台基西北角有一缺口，长3、宽2米。夯土台基范围东西73、南北70、深5米；夯土筑于生土之上。遗址中心，耕土之下即台基夯土。遗址四周，耕土层下为近代扰土层，再下为汉代文化层。汉代文化层中主要遗物是汉代砖、瓦等建筑材料，其种类、形制和大小与杜陵陵园、寝园遗址中出土的砖、瓦基本相同。比较特殊的是此遗址内出土了大量龙、凤纹空心砖残块，而这种图案的空心砖，在杜陵诸遗址中仅见于此（图版一一三，1-8）。</p>
+<p>八号遗址中央的夯土台基，由于平整土地时被炸掉和挖去1一2米高，建筑物的地面早已被破坏殆尽，仅存夯土基址，已无法了解原来建筑结构。</p>
+<p>在八号遗址夯土台基东西两边，各钻探出一条南北向古代道路。西者东距夯土台基8米，路土距地表深0.5—1.2、宽7、厚0.25米；东者西距夯土台基7米，路土距地表深0.9、宽6、厚0.25米。以上两条南北向道路均被压在汉代文化层之下；路土之下为生土，因此推断它们应为汉代道路。两条南北向道路的路土北至八号遗址，向南断断续续存在，通至杜陵陵园东边与孝宣王皇后陵园西边。</p>
+<p>从八号遗址的中央建筑形制、规模，遗址内出土的龙、凤纹空心砖和遗址位置来看，它可能属于宣帝杜陵的陵庙遗址（详见“结语”）。</p>
+<h1 id="_45">第二节 九号遗址</h1>
+<p>九号遗址位于杜陵北550米处。根据钻探资料，九号遗址的分土基址范围东西40、南北20，分土基址深2.9—4.7米。基址的地层堆积是：耕土之下即夯土，夯土筑于生土之上。基址四周地层堆积与八号遗址相同。九号遗址中出土的“长乐未央”文字瓦当个体小，属于杜陵陵园东门遗址的IV型“长乐未央”瓦当。</p>
+<p>九号遗址南边有三条平行排列的南北向带状夯土。西面一条夯土长180、宽2.5—3.5、厚3.5—4.65米。中间一条夯土长195、宽3.9—4.4、厚4.1—4.4米。东面一条夯土长195、宽4.45—4.65，厚4.6米。三条夯土一般均在地表以下1米；夯土筑于生土之上。三条夯土带东西间距各为18米。三条夯土带东西宽约47米，它们与九号遗址中心建筑的面阔（东西40米）相近（若将夯台基址的东、西廊和散水计算在内，其建筑物面阔约46米）。三条夯土带无疑与九号遗址的中心建筑有关。</p>
+<h1 id="_46">第三节 十号遗址</h1>
+<p>十号遗址位于帝陵寝园遗址以南7米处，其范围东西174、南北70米。十号遗址的东、西界基本与寝园东、西墙南北相对。根据钻探资料了解，遗址内多为中、小型房屋和庭院。遗址北部筑墙和廊，墙、廊形制与寝园南墙及檐廊相同。寝园遗址东南部有南北向通道，通至十号遗址。十号遗址内出土的砖、瓦等建筑材料，与杜陵陵园和寝园遗址中的汉代砖瓦相同。十号遗址大概属于“寺吏舍”一类的建筑。</p>
+<h1 id="_47">第五章 杜陵陪葬坑</h1>
+<p>根据钻探所知，杜陵的北和南两面分布着一些陪葬坑，主要是在陵园以北。我们对其中的两座陪葬坑（K1和K4）进行了发掘。</p>
+<h1 id="k1">第一节 一号陪葬坑(K1)</h1>
+<h1 id="_48">一、遗迹</h1>
+<p>一号陪葬坑位于杜陵以北520米处，1983年夏季对其进行了发掘（图三五）。</p>
+<h1 id="_49">（一）地层</h1>
+<h1 id="1_2">1. 坑室部分</h1>
+<p>表土厚0.38-0.42米，其下为夯土，现存夯土厚3.66-5.2米。这块地曾经在平整土地中被挖去2米厚的夯土。因此原来坑室夯土厚约7.2米。夯土压在坑室顶部木板之上。坑室底部木板之下为生土。坑室区发现盗洞12个，盗洞之间无打破关系。盗洞上口与坑口平，下口穿过主室顶板，进入主室之内。盗洞中出土了一些陪葬坑内的遗物，如陶俑、铜带钩、铜环和铁戟等。</p>
+<h1 id="2_1">2. 坑道部分</h1>
+<p>土地未经扰动。地层情况：第一层表土层，耕土，厚0.44米；第二层扰土层，土呈黄褐色，土质较松。厚0.62-1米；第三层夯土层，为五花土夯实，土质较硬，厚0.64-5.2米。夯土之下为生土。</p>
+<h1 id="_50">（二）形制</h1>
+<p>坑室为近似方形的竖穴，并分为主室和车室。在坑室一面附有斜坡坑道。坑室方向 $93^{\circ}$ （图版一一四）。</p>
+<h1 id="1_3">1. 坑道</h1>
+<p>坑道位于坑室东边，为斜坡状，坡 $63^{\circ}$ 。坡道长16.3、水平距离14.64米。坑道东、西端各宽0.68与2.4米。坑道由平面、台阶和斜面相间组成（图版一一五，1），以台阶为主，共有20级，每级台阶宽0.24—0.43、高0.1—0.45米。</p>
+<p>坑道西端设门，门西为主室。门高1.76、宽2.6米。门的横木即主室东壁顶端外沿的南北向平放木板，其长2.6、宽0.26、厚0.15米。横木西沿有凹槽，槽长2.44、宽0.07米。横木与主室顶部棚木高度相同。主室东壁外侧面有自南向北的立放木板9块，其顶端均镶入横木凹槽内。立板单宽0.1-0.32、总宽2.44、高1.72、厚0.04米。立板外侧面另有南北向横放侧砌木板7块，板长2.44、宽0.16-0.36、总高1.72米。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>最上面一块板亦镶入横木凹槽内。板外为坑道所填夯土。</p>
+<h1 id="2_2">2.坑室</h1>
+<p>坑宝东西12.04、南北10.4，坑口至坑底5.2米（原坑口至坑底约8米）。坑室上口东南角和西南角为直角。</p>
+<p>坑室南壁上半部，向南开出自东向西（自上向下）的5级台阶，其西端距坑室西南角3.36米。台阶长3.08，每阶宽0.6-0.7、高0.4-0.6米。台阶上自坑口，向下深至2.4米处消失（图版一一五，2）。</p>
+<p>坑室西壁上半部，向西开出自南向北（自上向下）的5级台阶，其南端距坑室西南角4.4米。台阶长1.6，每阶宽0.2—0.57、高0.4—0.48米。台阶上自坑口，向下深至1.95米处消失。</p>
+<p>坑室西壁南部有个台面，长6.4、宽0.1—0.16，距坑口与坑底各2.6米。</p>
+<p>坑室北壁自坑口向下深至1.48米处，有一台面，东西长4.8、最宽处0.36米。第一层台面之下1.12米处又有一层台面，长8.6、最宽处0.84，距坑底2.6米。</p>
+<p>坑室东壁在坑道南、北两侧各有台面，距坑口和坑底深各为2.6米。北侧台面长3.6、最宽处0.56米。南侧台面长3.36、宽0.48-0.6米。</p>
+<p>坑窖中包括有主室和车室。</p>
+<h1 id="1_4">(1) 主室</h1>
+<p>主室为方形，东西长8.56、南北宽8.28、高2.6米。主室上、下和四壁均为木板。底部用25块木板，作东西向平铺，每块木板长8.72、宽0.2—0.43、厚0.08米。底板下有南北向的4根枕木支承，枕木置于生土内挖好的凹槽中。4根枕木间距（自西向东）依次为1.2、4.44和1.34米。西数第1根枕木在西壁东0.4米处，第4根在东壁西0.24米处。枕木各长8.4、宽0.2、厚0.15米（图版一—六，1）。</p>
+<p>主室四壁木板通高各为2.56（其中插入底板0.04米）、厚0.05—0.06米。壁板顶端距坑口与主室底部分别为2.6米。四壁木板均为横放，上下9块，每块木板宽0.11—0.4米。</p>
+<p>南壁壁板长10.44米，东端至车室东壁。南壁木板侧砌于坑室内壁，在木板里侧中间贴砌立板9块，通宽2.44、东高1.48、西高1.44、厚0.05米。</p>
+<p>北壁壁板长8.28米，木板侧砌于夯土台南壁，最上边一块木板顶端与第二台面平。北壁壁板里侧中间贴砌立板8块，通宽2.4、东高1.48、西高1.44、厚0.05米；每块木板宽0.2-0.36米。</p>
+<p>东壁壁板长8.16米。北部侧砌于土台西侧面；南部砌置成壁，同时亦为车室西壁壁板；中部贴附于主室门板的西侧。东壁木板北端向南1.12米处，在壁板里侧贴砌立板1块，高1.56（包括镶入底板的0.04米）、宽0.22、厚0.05米。</p>
+<p>西壁壁板长8米。南部木板侧砌于夯土台东侧面；北部木板侧砌于坑室内壁。最上边一块木板顶端与土台台面平。西壁壁板里侧中间贴砌立板8块，通宽2.5、高1.36米（包括镶入底板0.04米）。每块木板宽0.3-0.4、厚0.05米。西壁板北端向南1.4米处，在壁板里侧贴砌立板1块，高1.36、宽0.26、厚0.05米。</p>
+<p>主室东北角、西北角、西南角和车室东南角各竖一木柱。木柱高2.56（包括插入底板的0.04米），截面方形，边长0.25米。主室的北壁、西壁壁板两端和南壁壁板西端、</p>
+<p>东壁壁板的北端，分别镶入主室东北、西北和西南角木柱内。主室南壁向东与车室南壁壁板相连，车室南壁壁板东端镶入车室东南角木柱内约0.05米。主室东壁壁板南端镶入南壁壁板内0.03米。壁板与木柱用榫卯连接。</p>
+<p>主室顶部为东西向棚木。木板上弧下平，棚木东高西低，距底板分别为1.52与1.32米。棚木25块，长8.44、通宽8.24米，每块木板宽0.1—0.37、厚0.12—0.15米；棚木两端各镶入东、西壁板内0.025米（图版一一七、1）。</p>
+<p>主室内又分为中厢和东、西、南、北四个边厢。五厢均以木板横放侧砌而成的木板壁分隔开。</p>
+<h1 id="1_5">$①$ 中厢</h1>
+<p>中厢东西5.7、南北5.52米。四壁均置壁板。横放的木板贯通室壁，上下5块木板，每块木板宽0.16-0.34、厚0.05-0.06米。四壁壁板中央（东、西壁者南北居中，南、北壁者东西居中）均立放木板贴砌于壁板内侧。立放木板与其贴砌的壁板同高，立放木板厚0.05-0.06米（图版一一七，2）。</p>
+<p>南壁壁板长5.24、东高1.52、西高1.4米。南壁板西端以东1.68米有立放木板8块，贴砌于壁板北侧面，通宽2.3米；每块木板宽0.26—0.35米（图版一一八，1）。</p>
+<p>北壁壁板长5.24、东高1.52、西高1.4米。北壁板东端以西2.04米处，有立放木板7块，贴砌于壁板南侧面，通高1.8米；每块木板宽0.14-0.34米。</p>
+<p>东壁壁板长5.12、高1.52米。东壁板南端以北1.82米处，有立放木板6块，贴砌于壁板西侧面，通宽1.80米；每块木板宽0.25-0.34米。</p>
+<p>西壁壁板长5.12、高1.4米。西壁板北端以南0.96米处，有立放木板10块，贴砌于壁板东侧面，通宽2.72米；每块木板宽0.16—0.35米（图版一一八，2）。</p>
+<p>中厢四隅均置木柱，用于连接四壁壁板（图版一一六，2）。四隅的4个木柱形制相同，高矮不同。西北和西南隅木柱高1.4米，东南和东北隅木柱高1.52米。木柱截面方形，边长0.3米。壁板与木柱间用榫卯连接，壁板两端各镶入木柱0.05—0.06米。</p>
+<p>为了加固中厢壁板及四隅木柱，中厢南、北壁两端木柱与主室南、北壁间各有枋木一根相连接。枋木下有与之平行横放侧砌的4块木板直至主室底部，成为南、北边厢与东、西边厢分隔的壁板。枋木形制、大小相同。每根枋木长1.32米，截面方形，边长0.2米。枋木两端分别镶入主室壁板和中厢四隅木柱之中，镶入深度分别为2与3厘米。</p>
+<h1 id="2_3">$②$ 边厢</h1>
+<p>中厢四边各有一厢，统称为边厢。边厢与中厢同高。</p>
+<p>南、北二边厢形制、大小相同，各长5.68、宽1.48米。南边厢南壁和北边厢北壁即主室南、北壁的一部分。南边厢北壁和北边厢南壁即中厢的南、北壁（图版一一九，1、2）。</p>
+<p>东、西二边厢形制、大小相同，各长8.28、宽1.48米。东边厢东壁和西边厢西壁即主室东、西壁。中厢的东、西壁即东边厢西壁和西边厢东壁的一部分（图版一一九，3、4）。</p>
+<h1 id="2_4">(2）车室</h1>
+<p>车室位于坑道两端南侧、主室的东南面，南北长3.12、东西宽2.2米。车室顶部比主室高约1米。</p>
+<p>车室底部南北铺置木板11块，通宽3.13米；每块木板长2.2、宽0.16—0.36、厚0.08米。车室底部木板置于两根东西排列的南北向枕木之上。西边枕木位于车室西壁以东0.24米处；东边枕木紧贴车室东壁。二枕木置于车室底部生土中挖成的凹槽内。每根枕木长3.08、宽0.2、厚0.15米。</p>
+<p>车室南壁壁板为主室南壁壁板向东延长的部分，长2.04米。北壁壁板横放侧砌，上下9块木板，通高2.56米；每块木板长2.12、宽0.26—0.33、厚0.15米。东壁壁板横放侧砌于车室东边土台西侧面，亦由上下9块木板组成，通高2.56米；每块木板长2.96、宽0.22—0.31、厚0.05—0.06米。西壁壁板为主室东壁壁板的南部，长3.08米。</p>
+<p>车室顶部棚木直接架在壁板顶端，上弧下平。南北12块木板，通宽3.13米；每块木板长2.2、宽0.16—0.33、厚0.12—0.15米。棚木距车室底板2.52米。</p>
+<p>从主室和车室的结构可以看出，顶板和底板为平行结合法拼接而成。其余部分均为两块木板边搭榫相接而形成一个完整的木构空间。</p>
+<h1 id="_51">（三）遗物分布</h1>
+<h1 id="1_6">1. 主室</h1>
+<p>主室中厢出土的彩绘陶俑，完整者少，多数已残。除个别站立者外，大部分已倒在底板上。每个陶俑身上均佩带铜带钩，推测陶俑身上原来着帛衣。在陶俑腰、腹部发现有一串小五铢。有的陶俑手执铁戟，戟秘已朽；有的陶俑周围有铁剑、矛等；个别陶俑旁边还有长方体石块排列。由于中厢盗洞甚多，破坏甚烈，致使陶俑的原来放置位置多被扰乱。</p>
+<p>主室的四个边厢内以放置漆器为主，也有少量陶俑。由于盗掘者的严重破坏，顶板塌陷，坑内潮湿，漆器均未能保存下来；仅发现部分漆器残存的漆皮。在一些漆皮附近，往往遗留有鎏金小铜环。在东边厢南部一件漆器遗迹旁，发现了4个金饼，上下码放在一起。推测，当时边厢漆器之内放置了贵重物品。</p>
+<p>经修复整理统计，主室内出土完整陶俑31个，残俑9个。</p>
+<h1 id="2_5">2. 车室</h1>
+<p>车室内放置了两辆木质髹漆彩绘明器车。由于车室顶板塌落，二车被砸坏，车身叠压在一起。木质车已朽。二车整体结构已不清楚，无法复原。</p>
+<p>一号车, 从残存漆皮来看, 车辕朝车室西北方向 (图三六)。车箱已被砸扁。在车箱右侧偏前一些剔剥出一个变形车轮。车轮外径 57、辐长 25、宽 1、厚 5 厘米。车辐两端紫色, 中部红色, 车钢紫色。车轮处发现车害 1 个。车轴黑色。根据轴两端铁饰物位置推测, 车轴长 63.6、径 3 厘米。车辕从车箱底中部伸出, 呈黑紫色, 残长 144、宽 4.2、厚 1 厘米。车辕压于车轴之上, 通至车底板末端 (图三七)。车衡红色, 残长 36、径 1 厘米。车轭只发现 1 个, 红色, 残高 14 厘米, 靴脚已无。车箱置于轴、辕之上。从保存的漆皮遗迹来看, 左右车椅间距 46、前后各长 44、板厚 3、高 22 厘米; 内呈黑紫色, 外为黑地红色云纹。车箱底板长 44、宽 49.4、厚 1 厘米。底板紫色, 中部饰斜方格纹, 四周有宽边素面。未见车轸痕迹, 轼、轨均叠压在车箱底板上。剔剥出的车轼宽 15、轨高 15、板厚 1.3 厘米。轼、轨外面均施红绿相间色彩。车箱右下方发现 22 个铜盖弓帽在一起, 内有藤质的</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图三六 杜陵一号陪葬坑一号车遗迹及遗物分布平面图<br />
+111.Ⅱ型铜带扣 112-114，116.Ⅱ型铜槽 115.铜车饰饰 117.铜车革 118、119.铜链 120、134.铁环<br />
+125. 铁斧 126. I型钢环 127、128、138. 铁箍 129. 环首铁杆 130—133. I型铜帽 137. 盏柄钢箍 139. 铜钩</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>盖弓伸出，盖弓黑色，径8厘米。</p>
+<p>二号车被压在一号车下面，推测二号车在一号车后面。二号车较一号车遗迹保存更差。从二号车残留漆皮遗迹看出，车辆长28、辆高3、车骑高17、厚4厘米；车箱底板长30、宽55、厚1.7厘米。底板中部饰方格纹。伞柄木质，径1.9厘米，表面涂紫色。车前发现22个盖弓帽。</p>
+<p>一、二号车中及附近还发现了铁剑、铜镞（二束，箭囊已无）、铁斧等明器。</p>
+<p>从清理的二车遗迹和遗物观察，车室中的两辆明器车均为单辕车，每车有一具伞盖。在一号车车箱底板中部有一把铁斧，此车或为“斧车”。关于斧车的形制，沂南汉画像石墓的画像石中的出行图有形象资料<sup>1)</sup>，“斧车”在车中直立有斧，并有矛、剑一类兵器同裁。一号车右侧亦有铁剑出土。杜陵一号陪葬坑一号车与沂南汉画像石上的斧车不同，主要在于前者有伞盖，后者无伞盖。</p>
+<h1 id="_52">二、出土遗物</h1>
+<p>陪葬坑中出土遗物1551件，就质料分有陶、石、铁、铜、金等遗物。遗物中绝大多数为明器。</p>
+<h1 id="_53">（一）陶器</h1>
+<p>有盘、罐、盆、茧形壶、俑，均为泥质灰陶。</p>
+<p>盘2件。均出土于主室西边厢。出土时2件上下摞在一起，形制、大小相同。敞口，平折沿，曲腹，平底下附假圈足。标本K1:37A，高3.6、口径14.4、圈足高0.3厘米（图三八，1；图版一二〇，3）。</p>
+<p>罐6件。出土于主室西厢和南厢，分三型。</p>
+<p>I型：1件（K1:141）。口微侈，尖唇，鼓腹，小平底。肩腹部布满细弦纹。高9.2、口径3.5、腹径10.6、底径4.4厘米（图三八，2；图版一二〇，1）。</p>
+<p>II型：1件（K1:140）。口微侈，卷圆唇，敛颈，弧腹，小平底。肩部施两道凸弦纹。高10、口径5、腹径I1、底径5.6厘米（图三八，3）。</p>
+<p>III型：4件。直口，平肩，斜弧腹，小平底。标本K1:164、高8.6、口径6.2、腹径11、底径5.6厘米（图三八，4；图版一：○，2）。</p>
+<p>盆6件。均出土于主室西边厢。敞口，平沿外折、平底。根据盆腹部的不同，又可分为二型。</p>
+<p>I型：3件。深腹。腹上部有两圈凹弦纹。标本K1:121，高7.5、口径16.8、底径8厘米（图三八，6；图版一二〇，5）。标本K1:23，腹部有折棱。高6.6、口径14.4、底径6.4厘米（图三八，7；图版一二〇，6）。</p>
+<p>II型：3件。出土时3件摞在一起。弧腹。标本K1:124A，高5.4、口径13.2、底径5.2厘米（图三八，8）。</p>
+<p>茧形壶 1件（K1:165）。出土于主室南厢。小口，尖唇，茧形腹，圜底，素面。壶高</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5 <br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6 <br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>图三八 陶器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 盘 (K1:37A) 2. I型罐 (K1:141) 3. II型罐 (K1:140) 4. III型罐 (K1:164) 5. 点形壶 (K1:165) 6. 7. I型盆 (K1:121, K1:23) 8. II型盆 (K1:124A)</p>
+<p>12.6，口径4.2，腹长径14.6、短径11厘米（图三八，5；图版一二O，4）。</p>
+<p>俑 完整者31件，均出土于主室，其形制相同，高矮微异。均为男俑，性别特征</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图三九 陶俑<br />
+左：K1:1 右：K1:8</p>
+<p>明显，身体修长（图三九；彩版四；图版一二一）。俑头部和躯干分两半制作，前后范合成。陶俑无双臂，但在双肩与臂相接处有规整的圆形平面，径约4厘米，平面中央有径0.8厘米的圆孔。此孔应为播放木臂所用；木臂现已无存。陶俑双腿瘦长，足亦窄长，脚趾清晰可辨。足底内侧均削出斜面，以表现拱形的足弓。足根正中均有一径0.2—0.3厘米的小圆孔。孔的上端多偏在胫内侧，有的侧偏在前侧，正与人体中胫骨的位置相仿。这种圆孔，烧制俑坯时便于通气，制成后使用时可安插竹木质蕊骨，便于其直立。</p>
+<p>陶俑为灰色陶质。俑体遍施白衣，然后其上再涂粉彩。头发和鬓角均用黑彩描出。俑头额部均绘红彩，象征红色头巾。陶俑双唇亦着红彩。陶俑自足踝向上施红彩高约10.4厘米；足上未见红彩。</p>
+<p>陶俑面部扁平，修口、小鼻，双唇微闭，下颌稍突出。头发梳于脑顶偏后，作一球状发髻，中有一孔，用以穿笄；均无冠。陶俑身高55—65厘米。标本K1:8号俑，通高56厘米；发髻顶部至下颌长9，肩宽7，躯于长23，腿长24，足长9，宽2厘米。</p>
+<p>每个陶俑腰部都出铜带钩一个。推测，陶俑原来身穿帛衣，帛衣现已朽烂。</p>
+<h1 id="_54">（二）石器</h1>
+<p>有方柱体石块和石片两种。</p>
+<p>方柱体石块 14 件，均出土于主室中厢东北部一陶俑北侧。石块皆南北竖放，东西排列成一行。其形制、大小相同，但颜色不一。自西向东第 1-6 块为青石，青灰色；第 7-14 块为砂石，红色。标本 K1:5A，长 7.1，宽、厚各 2.4 厘米（图版一二二，1、2）。</p>
+<p>石片 17 件。均出土于主室东边厢一陶俑北侧，散乱堆放，似经扰动。石片形制、大小相同，为青石制作。标本 K1:10A，长 4.8、宽 2.6、厚 0.2 厘米（图版一二二，3）。</p>
+<h1 id="_55">（三）铁器</h1>
+<p>计有三足鼎形器、锛、凿、剪、钉、剑、矛、戟、斧、环、扦、车软、带扣、方策、</p>
+<p>箍、凸形器、衔箍、“U”形饰、钩、刃器、弓形支架等21种。</p>
+<p>三足鼎形器 1件（K1:156）。出土于车室中部。敞口，口沿上两侧有长方形片状耳，已残破。矮圈足下附三柱形足，通高2.8、口径5.3、圈足高0.15、柱足高0.3厘米（图四○，1）。</p>
+<p>铸1件（K1:71）。出土于主室中厢。空首，双面刃。铸长3.5、刃宽2.2，空首长2、宽1.1厘米（图四○，2；图版一二三，1）。</p>
+<p>凿17件。均出土于主室，其中中厢1件，东边厢16件。后者出土时聚集于一处，形制、大小相同。直平双面刃，顶部有正 $j_{\mathrm{f}}$ 形鉴。标本K1:11A，长8、刃宽0.4、盔口边长0.5厘米（图四O，5；图版一二三，6）。</p>
+<p>图四铁器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.二足鼎形器（K1:156）2.（K1:71）3.（K1:125）4.（K1:155A）5.（K1:11A）<br />
+6.矛（K1:72A）7.环首扦（K1:129）8.剪（K1:18）9.载（K1:13）10.剑（K1:30)</p>
+<p>剪1件（K1:18）。出土于主室中厢。双股交叉，刃前端已残；残长5.7厘米（图四○，8；图版一二三，5）。</p>
+<p>“门”形铁钉2件。出土于主室中厢。标本K1:73，长3.4、高1.8厘米。</p>
+<p>剑5件。出土于主室中厢及车室中部。形制、大小相同。剑身细长、扁平，中脊稍高，剑首无存。铁剑格，断面为扁菱形。标本K1:30，通长33、剑身长27、宽1.2、格宽2厘米（图四○，10；图版一二三，8）。</p>
+<p>矛3件。均出土于主室中厢。形制、大小相同。矛身扁平似柳叶形，毂为实体圆柱形，落上小下大，截面呈圆形。标本K1:72A，通长7.9、刃部长4.7、嵌长1.5、箔长1.7、径0.9厘米。矛叶尖端附一铃状盖，盖顶有铜环状钮；盖下口呈椭圆形，长径1.1、短径0.6，盖通高1.4厘米。推测，铃状盖是在矛之木鞘上面的，木鞘已朽，铜盖犹存（图四○，6；图版一二三，4）。</p>
+<p>戟17件，其中完整者5件，残者12件。均出土于主室中厢，形制、大小相同。戟作“卜”字形。援内端有一铜箫以冒秘首。胡上、援上各一圆形穿，用于穿麻缚秘。秘藤质，已朽，仅在箭中遗存秘首的残体。标本K1:13，刺、胡通长14，援长6，铜箭长2.6，口径0.8厘米。戟秘下均有圆筒状铜镦（图四○，9；图版一二三，7）。</p>
+<p>斧1件（K1:125）。出土于车室一号车车箱底板上面。斧身稍长，两面刃，刃部弧曲。长方形穿装柄。器身长5.3、弧刃最宽处3.9、穿长1.1、宽0.5厘米（图四○，3；图版一二三，2）。</p>
+<p>环9件。均出土于车室。其环径大小不等：小径2、大径6、一般径2.1厘米。</p>
+<p>环首扦1件（KI:129)。出土于车室一号车车箱底板上面，环首近似圆形，扦身呈圆柱体，上粗下细，尖端微残。通长12.5、环首外径1.5、内径0.5厘米（图四 $\bigcirc ,7)$ 。</p>
+<p>车权4件。均出土于一号车前，形制、大小相同。器呈拱形，两脚外折，截面为圆形。标本K1:106，高2.5厘米（图四一，1；图版一二四，4）。</p>
+<p>带扣 3 件。分二型。</p>
+<p>I型：1件。出土于一号车箱前。器为上圆下方，状如戒指。标本K1:145，高、宽各3厘米（图四一，7）。</p>
+<p>II型：2件。均出土于二号车前，形制、大小相同。器为两环相接，中部成一梁，近似“8”字形。一孔近似圆形，一孔呈长方形。标本K1:150A，长2.2、宽1.2厘米（图四一，8）。</p>
+<p>方策3件。分二型。</p>
+<p>1型：1件（K1:65）。出土于车室东南部。器为圆角长方形，长2.7、宽2.4、钩高3.5，折边长2.7厘米（图四一，2；图版一二四，2右）。</p>
+<p>II型：2件。均出土于二号车前，二者形制、大小相同。器一端呈弧状，另一端平直。标本K1:162，长2.4、宽2.6、钩高3.2、折边长1.9厘米（图四一，4；图版一二四，2左）。</p>
+<p>箍6件。其中2件位于一号车车轴左、右两端，有1件（K1:143）还套在轴上，另外在一号车车箱底板上还发现2件。6件之中有5件大小相同。标本K1:60,径3.5、高1.5、壁厚0.2厘米；另1件个体较小（标本K1:127），径2.5、高1.1、壁厚0.2厘米（图四一，3）。</p>
+<p>图四一 铁车马器等<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 车较（K1:106）2. I型方策（K1:65）3. 箍（K1:60）4. II型方策（K1:162）5. II型街（K1:70）6. 钩（K1:160）7. I型带扣（K1:145）8. II型带扣（K1:150A）9. 弓形支架（K1:149）10. 凸形器（K1:135）</p>
+<p>凸形器 2件。出土于一号车车轴左右两端，其中1件（K1:135）出土时覆盖在铁箍（K1:143）上面。2件凸形器形制、大小相同，均呈“凸”字形。标本K1:135，长3、宽4，双肩各宽1.1厘米（图四一，10；图版一二四，1）。</p>
+<p>衔箍 2副。衔以小环相连接，两端为扁环贯箍。箍作直棍形。出于车室一号车前。分二型。</p>
+<p>I型：1副（K1:52）。已残破，不能复原，衔作3节式，茎为四方体。镶长7.8、衔长9厘米。</p>
+<p>II型：1副(K1:70)。属于铜衔铁箍，只存半副；衔作2节式。箍长7.9、衔长9.3厘米（图四一，5；图版一二四，3）。</p>
+<p>“U”形饰1件（K1:168）。出土于一号车车辕前部。出土时，“U”形中部保存部分红色漆皮。高9.7、内距10、外距15、底部直柄残长2.5厘米（图版一二四，6）。</p>
+<p>钩2件。出土于二号车前。形制、大小相同。呈鸭嘴形，具环形尾。标本K1:160，钩身通长2.2-2.5厘米（图四一，6）。</p>
+<p>刃器 2 件。均出土于车室二号车前，二者形制、大小相同。器为长方形，标本 K1：155A，高 5.6、刃宽 6.3、背宽 5.8、厚 0.4 厘米（图四○，4；图版一二三，3）。</p>
+<p>弓形支架1件（K1:149）。出土于二号车车箱前，截而为椭圆形；两端外折。长22、高6厘米（图四一，9；图版一二四，5）。</p>
+<h1 id="_56">（四）铜器和金饼</h1>
+<p>计有铜带钩、钥、量器、珠、环、镦、镦、弩机、承弓器、带扣、方策、衡端饰、车骑饰、车害、盖弓帽、盖柄箍、盖柄铜末端饰、铜帽、铜泡、钩、小五铢和金饼等。</p>
+<p>带钩 71 件。均出土于主室。形制、大小相同。呈鸭嘴形，体瘦长，鎏金。标本 K1:16A，长3.2、钮径0.7、通高0.8、腹宽0.55厘米（图四二，5；图版一二五，2）。</p>
+<p>铜4件。均出土于主室中厢。形制、大小相同。鎏金、敞口、窄沿、环底。标本K1:33A，径10.8、高4厘米。4件铜钮摞在一起，最上面的铜钮之内放置10个铜管，其形制、大小相同。铜管上粗下细，颇似现在的毛笔铜笔帽。铜管上端一侧有圆形缺口。标本K1:33Aa，长7、上端径1、下端径0.4厘米（图四二，1、7；图版一二五，1）。</p>
+<p>管状器 6 件。均出上于主室中厢。分二型。</p>
+<p>1型：1件（K1:35）。体粗短，径1.5厘米。出土时管内遗存有木灰，而且灰残迹延伸至管外，可知其原来插在木杆之上（图四二，8）。</p>
+<p>II型：5件。体瘦长，一端口径略小，呈斜面状。标本K1:17A，长5.7、大口径0.55、小口径0.4厘米（图四二，9）。</p>
+<p>量器 1 件 (K1:167)。出土于主室中厢。器呈矮桶状。口略大于底，口沿一侧连一直柄。器高 2、口径 3、底径 2.5，柄长 1.6、宽 0.7、厚 0.5 厘米。测得内径：口径 2.5、底径 2.2、深 1.85 厘米。使用求积公式 $V = \frac{1}{3} h\pi (R_1^2 + R_2^2 + R_1R_2)$ ，测得量器容积应为</p>
+<p>图四二 铜器<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 铭（K1:33A）2. 显器（K1:167）3. 珠（K1:74）4. 钰（b1:28）5. 带钩（K1:16A）6. 锋（K1:61A）7. 铜内铜管（K1:33Aa）8. I型管状器（K1:35）9. II型管状器（K1:17A）10. 等机（K1:48）11. 承弓器（K1:46A）</p>
+<p>8.035 毫升；用小米实测容积为 8 毫升。汉代容积 1 簌约合 10 毫升，该量具约合五分之四（图四二，2；图版一二五，4）。</p>
+<p>珠1件（K1:74）。出土于主室中厢。珠为圆球体，中有圆孔。珠径1.4、孔径0.6厘米（图四二，3）。</p>
+<p>环212件。出上于主室26件、车室11件、盗洞中175件。铜环断面为圆形，环径大小不尽相同：大者2.7、小者1.2、一般为2厘米。</p>
+<p>镦3件。均出土于主室中厢，形制、大小相同。镦作长筒形，口沿一侧下0.2厘米处有一圆形穿。标本K1:28，高2.5、径1、穿径0.1厘米。3件镦出土时均位于铁戟之木秘下端（图四二，4；图版一二五，3）。</p>
+<p>200件。50件为1束。均出土于车室内2车的两侧箭囊中；箭囊已朽。呈三棱形，短茎。圆柱形铁铤，上粗下细。标本K1:61A，身长1，底边长0.55厘米；茎长9.2、径0.5厘米；铁铤长2.4、径0.1-0.2厘米（图四二，6；图版一二五，5）。</p>
+<p>弩机4件。均出土于车室，形制、大小相同。标本K1:48，通高7、郭长5.3、前宽1.1、后宽1.5、厚1.7厘米(图四二，10；图版一二五，6)。机身之上均刻有文字。K1:62，机身右侧面前端下边刻有横书“□七十四”；机身后面右侧上部刻有“三”。K1:63，机身前面中部刻有竖行“丙十四”；机身后面右侧刻有竖行“百卅一”；左侧刻有“生”。K1:48，机身后面左侧刻有竖行“甲七十四”。K1:103，机身后面右侧上部刻有“乙三”；左侧刻有竖行“廿三子”（图四四，1-6）。</p>
+<p>承弓器 3 件。均出土于车室，形制、大小相同。蛇形头、蛇形身、方筒形尾；素面。头有眼、耳、鼻、嘴。K1:109 出土时，筒口内还有木灰遗存。标本 K1:46A，头尾相距 8 厘米；筒口长 1.5、宽 1、壁厚 0.15、筒内深 3.4 厘米（图四二，11；图版一二六，4）。</p>
+<p>带扣 3件。分二型。</p>
+<p>I型：1件。标本K1:45，高2.8，宽3.3厘米；形同I型铁带扣（图四三，1）。</p>
+<p>11型：2件。素面，长方形，横断面呈“S”形。标本K1:49，长6.8、宽4.4厘米，内侧刻“九”字。标本K1:111，内侧刻“五”字（图四三，3；四四，9、10）。</p>
+<p>方策2件。形制、大小相同。均为素面。标本K1:147A，长2、宽1.4、钩高1.5、折边长2厘米（图四三，10）。</p>
+<p>衡端饰 1 件 (K1:51)。圆筒形，在圆筒中腰饰凸弦纹一周。器长 1.6，径 1.9 厘米（图四三，4）。</p>
+<p>车骑饰2件。形制、大小相同。圆筒形，稍粗，上部作四道凸弦纹。标本K1:115，出土于一号车右车骑后端；高2.9、径1.4厘米（图四三，5）。</p>
+<p>车套1对。其中1件位一号车右侧轴末。善末端外折沿向外倾斜，沿一侧有一长条形折钩。善末端有一铁梁凸于善外。善身外表靠里端施宽凸弦纹一圈。车善之上附一铁辖，辖呈长条状，辖首已残。标本K1:59，长3.8，末端径7、外凸铁梁宽0.4，善里端径3.7厘米。铁辖残长3.5、宽0.75、厚0.3厘米（图四三，2；图版一二六，1）。</p>
+<p>盖弓帽 44 件。出土时每 22 件聚于一处，均在车前。其形制、大小相同。呈作短管形，前端微有收分。顶部平齐，管侧有一钩。大部分管腔中尚遗留有盖弓木爪。标本 K1:158A，通长 3.5、顶端径 0.7、后端径 0.8 厘米（图四三，7；图版一二六，2）。</p>
+<p>图四三 铜车马器等<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型带扣（K1:45）2. 车套（K1:59）3. II型带扣（K1:49）4. 衡端饰（K1:51）5. 车轮饰（K <br />
+1:115)6.I型铜帽(K1:113)7.盖弓帽（K1:158A）8.I型泡（K1:39）9.I型泡（K1:161) <br />
+10. 方策 (K1:147A) 11.2钩 (K1:50) 12. 盖柄箍 (K1:137) 13. 盖柄末端饰 (K1:57)</p>
+<p>盖柄箍2件。分别出土于一号车左侧和二号车的车箱之前。二者形制、大小相同。器为长管形，管身有一圈宽带凸弦纹，其中部又有一道突棱。上端一侧有一凹进的长方形，长0.6、宽0.4厘米。标本K1:137，长7.4、径2.1厘米，上口沿一侧下边竖刻“五十”（图四三，12；四四，8）。标本K1:148，上口沿一侧下边横刻“七百”（图四四，7；图版一二六，3）。</p>
+<p>盏柄铜末端饰2件。分别出土于一、二号车后方。二者形制、大小相同。圆筒形，筒身近中部有一圈宽带凸弦纹，其中部有一道突棱。筒下端有四圈凹弦纹带。下端径大于上端径。下端向上1.2厘米处有挡，内径变为1.3厘米。标本K1:57，通长7.8，上端径2.1、壁厚0.1；下端径2.4、壁厚0.2厘米（图四三，13；图版一二六，5）。</p>
+<p>铜帽 10件。器呈圆筒形。分二型。</p>
+<p>I 型：4 件。出土于一号车的底板四角。体较修长，一侧口沿下 0.2 厘米处有一圆形穿，与铜镦形制相同。其中 1 件（K1:132）较大，长 3、径 1 厘米；其余 3 件均长 2.5、径 1、穿径 0.1 厘米。<br />
+II型：6件。其中3件出土于一号车石车骑后端，1件出土于一号车底板左后部。形制、大小相同。器较粗短，一端开口，另一端口沿内平折，素面。标本K1:113，长1.2、径2厘米（图四三，6）。</p>
+<p>铜泡 3件。分二型。</p>
+<p>I型：2件。顶部呈椭圆形弧状，底部平，中部有长方形穿。标本K1:161，高1、底长0.8、穿长0.6、宽0.4厘米（图四三，9）。</p>
+<p>II型：1件（K1:39）。圆珠形，一面较平，一面弧形。中部有长方形穿，径1.5、穿长0.75、宽0.5厘米（图四三，8）。</p>
+<p>钩2件。同铁钩（图四三，11）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+8</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+9</p>
+<p>10 <br />
+图四四 铜器铭文拓本<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1-6. 等机 (1,2. K1:62; 3,4. K1:63; 5. K1:48; 6. K1:103) 7、8. 盖柄箍 (K1:148; K1:137)<br />
+9.10.Ⅱ型带扣（K1:111;K1:49）(7/10)</p>
+<p>小五铢 809 枚（盗洞出土 198 枚，其余 611 枚均出土于主室）。成串出土于陶俑腰、腹之旁，每串 70-90 枚不等（图四五，1-3；图版一二二，4、5）。小五铢“五”字交笔弯曲，上、下两横较长；“朱”字头方折；“金”字头为三角形，四点小而圆。钱径 1.2、穿宽 0.51、肉厚 0.12 厘米。铸造精致。其中穿上横郭 751 枚，每枚重 0.7 克；穿上横郭、穿下半星 27 枚，每枚重 0.706 克；穿上下横郭 6 枚，每枚重 0.73 克。</p>
+<p>洪遵《泉志》曾把这种小五铢定为晋沈郎钱，或谓“鸡目”、“鹅目”。显然此说不确，小五铢汉代已有。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3</p>
+<p>4 <br />
+图四五 小五铢和铜印印文（1/1）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1-3.小五铢（1，穿上横郭、穿下半星；2.穿上横郭；3.穿上、下横郭）4.铜印印文“大仓”(K4:8)</p>
+<p>饶登秩《钱说一得》认为小五铢为王莽时的新钱，杜陵一号陪葬坑出土的小五铢否定了上述说法。</p>
+<p>有人认为小五铢可能就是武帝时铸行的“赤仄五铢”1），目前看来还缺乏力证。我们认为，小五铢大量发现于西汉中晚期的蔡葬或陪葬坑中，它们可能是作为“冥钱”使用的2）。</p>
+<p>金饼4个。均出土于主室东边厢。形制、大小相同。圆饼形，正面中心内凹，表面不平。背面滴铸不规则的隆起面。赤金，色泽金黄。每个重83克。标本K1:166，直径5、边厚0.4、中厚1.5厘米（图版一二六，6）。</p>
+<h1 id="k4">第二节 四号陪葬坑 (K4)</h1>
+<h1 id="_57">一、遗迹</h1>
+<p>四号陪葬坑位于杜陵以北，东距一号陪葬坑130米。1985年夏，西安市雁塔区曲江乡三兆村砖厂取土时，发现了这座陪葬坑。接到砖厂报告后，我们进行了随工清理。</p>
+<h1 id="_58">（一）地层</h1>
+<p>坑室部分 从四号陪葬坑东部保留的未经扰动地层可以看出，表土层厚28—35厘米，之下即陪葬坑内的夯土。自坑口至坑室顶板，夯土厚3.48米。坑室内为淤土，坑室底板以下为生土。</p>
+<p>坑道部分 坑道呈斜坡状，第一层为表土，厚0.28—0.35米；第二层为扰土，呈浅黄色，土质稍硬，较纯净，深0.32—1.32、厚0.94—1米；第三层为夯土，坑道内全部用五花土夯实，土质坚硬，深1.32—5.70、厚0.04—4.40米。夯土下为生土。</p>
+<p>陪葬坑有7个盗洞，彼此无打破关系，其中6个盗洞分布于坑室内，1个在坑道西部。</p>
+<h1 id="_59">（二）形制</h1>
+<p>四号陪葬坑是一座附斜坡坑道的长方形竖穴陪葬坑，方向 $93^{\circ}$ （图四六；图版一二七，1）。</p>
+<p>坑道位于坑室东边，为斜坡状，坡 $50^{\circ}$ ；坡长5.86、水平距离3.9米。坑道东口平面呈长方形，东西2.5、南北1.4米。自东向西有10级台阶。自上而下第一—九级台阶每级台阶长1.38、宽0.3—0.37、高0.4米；第十级台阶长0.64、宽0.3、高0.4米；第九、十级台阶延伸至长方形竖穴东部。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图四六 杜陵四号陪葬坑平、剖面图</p>
+<p>坑室平面长方形，上口宽4.2米，南、北二壁长分别为8.16与8.7米，坑口至坑底深4.4米。竖穴南壁自上向下略有收分，坡 $75^{\circ}$ 。东、西、北三壁为直壁。自坑室顶板向下，竖穴四壁均为直壁。坑室底部南、北壁与坑室上口南、北壁长度相同，东、西壁各宽3.44米。</p>
+<p>坑室上、下和四壁砌置木板，板灰遗迹尚在。</p>
+<p>四号陪葬坑与一号陪葬坑的坑室木壁榫卯结构相同：顶板和底板以平行排列结合法拼接而成，四壁板用2块木板边搭榫相接。四壁壁板均分为内外两层。木构坑室内长6.6、宽2.78、高0.8米。木料均为松木。</p>
+<p>坑室底部平铺南北向木板，东西27块，通长7.22米；每块木板长3.14、宽0.13—0.33、厚0.06米。底板下南、北各置一根东西向枕木。二者大小相同，每根枕木长7.28、宽0.2、厚0.1米，枕木置于坑室底部生土中挖好的凹槽内。南边枕木的东、西端距坑室东、西壁分别为1.06与0.12米；北边枕木的东、西端距坑室东、西壁分别为1.32与0.12米；南、北二枕木距坑室南、北壁分别为0.2与0.16米（图版一二七，3）。</p>
+<p>坑室四壁壁板中，东壁与西壁、南壁与北壁的结构各自相同。壁板上端距坑口3.28、距坑底1.12米。现以东、南二壁为例加以说明。</p>
+<p>东壁内层壁板，南北向，上下横放侧砌，计4块，板长3.04米（包括壁板南北两端各镶入南、北壁外层壁板中的0.03米）。自上而下，4块板的板宽依次为0.26、0.27、0.28和0.3米；通高1.1米（包括第4块板下沿嵌入底板中的0.02米），每块板厚0.06米。东壁内、外层壁板间距0.16米，中间为五花土填实。外层壁板亦为南北向，上下横放侧砌木板4块，长3.04米（包括南、北两端各镶入南、北壁外层壁板中的0.03米）。4块木板的板宽自上而下依次为0.26、0.29、0.28和0.32米；通高1.1米（包括第4块木板下沿嵌入生土中的0.02米）。每块板厚0.06米。东、西壁内层壁板间距6.6米。</p>
+<p>南壁内层壁板由23块立放木板东西排列、贴砌于外层壁板内面而成。板高0.84（包括上部镶入顶板中的0.02和下部镶入底板中的0.02米；竖板在顶、底板间高为0.8米）、厚0.1、宽0.19—0.32米；东西总宽6.6米。东、西两端的立放木板分别与东、西壁南端的内层壁板呈“丁”字相交。外层壁板与内层壁板贴砌在一起，没有间隔。外层壁板东西向，由上下立放侧砌的4块木板构成，板长4米。4块木板的宽自上而下依次为0.26、0.3、0.28和0.26米；壁板通高1.1米（包括第4块木板下部嵌入坑室底板中的0.02米）。每块板厚0.06米。南、北壁内层壁板间距2.78米。</p>
+<p>南、北、西三壁外层壁板与坑壁间用五花土夯实。</p>
+<p>坑室顶板由南北向放置、东西向排列的24块木板构成，东西6.6、南北（即板长）3米；每块木板宽0.2—0.42、厚0.1米。顶板直接架于南、北壁内层壁板的上端；顶板南、北两端分别与南、北二壁外层壁板呈“丁”字相交。顶板东、西两端木板分别顶住东、西壁内层壁板。除坑室南、北壁的内层壁板之外，其余壁板均高于顶板0.2米（图版一二七，2）。</p>
+<h1 id="_60">二、出土遗物</h1>
+<p>四号陪葬坑因被盗严重，坑室中的遗物所存无几，仅清理出土丁较完整陶俑9个、铜带钩3件、铜环1件、铜镦2件和小五铢8枚，此外还有一些铁戟残块。上述遗物的</p>
+<p>形制、大小与一号陪葬坑出土的同类遗物相同。</p>
+<p>坑室内出土了半通铜印章1枚（K4:8），长方形，桥形钮。印章通高0.95、长0.9、宽0.55厘米；印文“大仓”，竖行，阴刻篆文（图四五，4）。大仓即“太仓”，因古文中“大”、“太”二字相通<sup>1)</sup>，如《史记·乎准书》载；“太仓之粟，陈陈相因。”《汉书·高帝纪(下)》则载：“肖何治未央宫，立东阙、北阙、前殿、武库、大仓”。印文“大仓”系官署名，为公用印章，犹如“弩府”、“治府”、“市府”等半通印文作用一样。西汉齐国故地山东省有传世的“齐大仓印”和“大仓”等西汉王国官印封泥<sup>2)</sup>。西汉时代的王国百官设置名称仿效中央政府<sup>3)</sup>。可见四号陪葬坑内所出“大仓”印确为官印，大仓（即太仓）为京城储粮的主要仓库。大仓令为大司农属官，主持收受郡国漕粮。“大仓”印的出土说明了大仓参与了杜陵的修筑；或者至少可以说，四号陪葬坑的修筑与大仓有关，据《汉书·陈汤传》记载，大司农承耿寿昌曾负责杜陵的修筑。作为大司农属官的大仓官印在杜陵四号陪葬坑的出土证实了上述文献记载。</p>
+<h1 id="_61">第三节 其它陪葬坑的勘察</h1>
+<p>除了发掘、清理的一、四号陪葬坑之外，还在杜陵附近勘查出3座陪葬坑，它们分别编号为杜陵二、三、五号陪葬坑（参见图二）。</p>
+<h1 id="_62">一、二号陪葬坑</h1>
+<p>二号陪葬坑位于杜陵以北500米。陪葬坑的平面为圆角长方形，东西20.5、南北6.7米；坑室底部距地表8米。陪葬坑东部有斜坡坑道。坑内地面用五花土夯实，坑室以木板砌造。坑的中部偏东被一晚期墓葬打破，该墓东西长2.2、南北宽1.3米。</p>
+<h1 id="_63">二、三号陪葬坑</h1>
+<p>三号陪葬坑位于杜陵以北290米。平面为长方形，南北20、东西4米，坑室底部距地表深约6米。坑道在坑室南部，呈斜坡状。坑道平面南北长4.5，南部宽1.4、北部宽2.3米。坑道底部南、北两端距地表深分别为1与4.5米。坑室和坑道地面均以五花土夯实。坑室中探出板灰、炭渣及白色粉末状物等。坑的中部偏东有一扰坑（或即盗洞），直径1米；南部有一晚期墓打破了三号陪葬坑。</p>
+<h1 id="_64">三、五号陪葬坑</h1>
+<p>五号陪葬坑位于杜陵陵园西南角以南60米。陪葬坑南北20、东西5米。地表以下0.6米见夯土，夯土厚7.2米。坑室距地表深7.8米。坑室的探孔中发现漆皮、铜泡、陶器残片等。坑室底部为生土，距地表深8.3米。</p>
+<h1 id="_65">第六章 杜陵陪葬墓</h1>
+<p>《长安志》卷十一记载：杜陵“东南数千步，陪葬数十冢，环拱森列、大小不等。其北里许，乱冢百余。自是以北，直至城南，东西延五，高原之上，耄耋皆是。”现在杜陵附近仍然保存着大量古代坟丘，其中主要应是汉代的杜陵陪葬墓。根据勘查资料，杜陵陪葬墓中现保存封土的有62座；封上已被平掉的有45座（参见图二）。</p>
+<p>杜陵陪葬墓基本分为两大区，即东南与东北陪葬墓区。</p>
+<p>东南陪葬墓区位于杜陵东南，北自杜陵东司马门道以南，西至王皇后陵以东。墓区范围东西1200、南北700米。其中陪葬墓现存封土者24座，已无封土者29座，共计53座。从目前有封土的陪葬墓来看，大型陪葬墓（仅就封土规模而言）主要分布在这一墓区，如15、18、21、26、27、28、29、30、31和33号墓等。从墓区中陪葬墓的分布来看，或几墓聚集一起，或数墓排列成行。可以分为6组，第一组在孝宣王皇后陵东南，这是杜陵陪葬墓中距帝、后陵墓最近的陪葬墓，该组陪葬墓以15、21号墓为主，包括16和20号墓，共计4座墓。13和21号墓是杜陵陪葬墓中规模最大的。第二组在第一组的东北，以26和27号墓为主，包括28、29、30、31、25和83号墓，共计8座墓。在杜陵陪葬墓中，就封土规模、与帝、后陵墓距离而言，第二组仅次于第一组陪葬墓。第三组在第一组南面，以18和79号墓为主，包括17、19、77和78号墓，共计6座墓。第四组在第一、三组东面；第二组在其北边，共5座墓；南边排列成一行，长230米。第五组在第四组东南，有15座墓，分成东西并列、南北向排列的两行；东者8座，西者7座。两行墓东西间距45米，南北长250米。第六组位于第二组东面，以33和34号墓为主，共计11座墓（图版一二八，1）。</p>
+<p>东北陪葬墓区位于杜陵东北，墓区南自杜陵东司马门道以北，西自穿过杜陵的南北线以东。该墓区中的大多数陪葬墓分布在东西1100、南北2100米的范围之内。墓区内共有陪葬墓54座，其中有封土者38座，封土不存者16座。此区南部的陪葬墓分布比较集中。东北区陪葬墓的规模一般较小，形成的陪葬墓群也不像东南区那么明显、突出（图版一二八，2）。</p>
+<p>杜陵陪葬墓中的成组墓群应属于以主墓为中心的“附葬”。所谓附葬就是子孙从其父祖所葬。《汉书·哀帝纪》载：“附葬之礼，自周兴焉”。汉代继承了这一制度，如周勃陪葬于高祖长陵，其子周亚夫则葬于周勃墓北<sup>1)</sup>。有的虽遭灭族之刑，仍以附葬制度陪葬于帝陵，如上官桀、上官安父子亦然<sup>2)</sup>。</p>
+<p>1.杜陵陪葬墓区中不但有不同分区，在每区中又有成组墓群，而且可发现许多成双结</p>
+<p>对排列的陪葬墓。汉代夫妻合葬同茎不同穴，这大概应属于当时的夫妻合葬墓。类似这种夫妻合葬或二墓东西并列的有15与21、26与27、28与29、30与31、33与34、77与78、105与36、45与44、43与42、108与107、53与52、54与113、48与112、117与116、71与72、65与64、75与76号等17对墓；属于二墓南北排列的有17与18、81与82、38与39、40与41、106与46、109与110、50与49、60与61、121与63、118与73号等10对墓。从整个杜陵陪葬墓区来看，成双结对的陪葬墓，东西并列者多于南北排列者。东西并列的茎域和封土规模一般比南北并列的规模大一些。东西并列者距帝陵较近；南北并列者距帝陵较远。成对的墓中，东西并列者西边的墓一般大于东边的墓；南北排列者南边的墓通常大于北边的墓。二墓的距离根据其规模大小而异，一般是封土规模越大者距离越远，反之则较近。如东西并列者中，15与21号墓间距为150米；75与76号墓则间距仅40米。南北排列者中，18与17号墓相距50米；38与39号墓则间距20米。</p>
+<p>杜陵陪葬墓没有进行过考古发掘，只进行了勘察。陪葬墓的封土一般为夯筑。封土外观形制可分为“覆斗”形和圆丘形两种。一般说前者规模较大，距帝陵较近，大多分布在东南陪葬区内。封土之下为墓室，其中多“积石积沙”。以38号墓为例，封土夯筑，夯层厚0.08-0.1米，现存封土高约5米，封土之下即墓室，亦夯筑，夯层厚0.14-0.17米。每层夯土中夹有数量多少不等的河卵石。卵石大小一般为长0.2-0.25、宽0.1-0.15、厚0.08-0.1米。在每层夹河卵石的夯土之间，又铺置一层小河卵石。这种夹河卵石的夯土厚约3米，其下则为“积石”。石头均为大河卵石，一般长0.8、宽0.5、厚0.5米。“积石”之下为“积沙”，系纯净的河沙。这种“积石积沙”墓的构筑，是为了防盗而设置的。</p>
+<p>杜陵陪葬墓多至107座，但见于文献记载的只有大司马车骑将军张安世、丞相丙吉、卫尉金安上和中山哀王刘竞等。《汉书·张安世传》载：张安世死后，“天子赠印绶，送以轻车介士，常日敬候。炀莹杜东，将作复土，起冢祠堂。”所指“杜东”应在宣帝杜陵所在的杜东原上，张安世墓应为杜陵陪葬墓。然而，《太平寰宁记》卷二五载：“张安世家在明德门南八里，俗呼为张车骑冢。”《咸宁县志》卷十四亦载：“富平侯张安世墓在城南长延堡西。”前者所载在今长安县下塔坡村附近，后者所记在今西安南郊杨家庄一带。二者虽均在秦汉杜县（即今西安南郊杜城镇）以东，但它们东距宣帝杜陵分别为8与7公里之多。根据西汉帝陵陪葬制度，天子肠莹均在帝陵附近，故《太平寰宇记》和《咸宁县志》所载张安世墓地望不确。</p>
+<p>丙吉是宣帝开创西汉中兴大业的鼎柱之臣，《太平寰宇记》卷二五载：丙吉墓“在三赵邺”。“三赵邺”即今“三兆村”，从三兆村出土的唐代经幡上的石刻文字称其地为“三赵邺”。《咸宁县志》卷十四载：“丙吉墓在大兆社新庄北二里。”大兆社与三兆社南北相邻，新庄村北适于三兆村南，即今孝宣王皇后陵南的甘寨村附近，此地恰于杜陵东南陪葬区。</p>
+<p>金安上因屡建功勋，宣帝亦场其垄地于杜陵附近<sup>1)</sup>。</p>
+<p>刘竟是孝宣戎徙行的儿子，建昭四年死于京师，陪葬杜陵<sup>2)</sup>。西汉时代诸侯王的坟</p>
+<p>墓一般高约20米<sup>1)</sup>, 而杜陵陪葬墓中, 今存封土高近20米的只有15号墓 (高19.4米), 此墓又是距帝陵最近的一座陪葬墓。宣帝杜陵陪葬者中, 根据文献所载, 属于诸侯王者只有中山哀王刘竟一人, 故疑此墓或为刘竞之墓。至于其他陪葬者在杜陵陪葬墓中的名位, 门前还无法究明。</p>
+<p>除了以上所述杜陵陪葬墓之外，还须提到的是孝宣许皇后陵墓。孝宣许皇后死于本始三年，葬于“杜南”，即当时的杜县以南。元康元年，汉宣帝在杜东原上修筑杜陵。孝宣许皇后陵在杜陵以南14里，从广义上讲，那里仍应属于杜陵莹域，因此史称其墓为“杜陵南园”。孝宣许皇后陵墓封土呈三层台，通高22米，底部东西134、南北139米。底台高7、台面宽8米；中台高7，南、北台面各宽10，东、西台面各宽12米；顶台高8，台面东西38、南北44米。这种封土外形或许是象征“崑崙”。《尔雅·释丘》云：“三成为崑崙丘”，注曰：“崑崙山三重，故以名山”<sup>3)</sup>。</p>
+<p>《汉书·外戚传（上）·孝宣许皇后传》记载：孝宣许皇后的父亲许广汉死后“葬南园旁，置邑三百家，长丞奉守如法。”但其墓封土现已无存。</p>
+<h1 id="_66">第七章 杜陵邑</h1>
+<p>《史记·高祖本纪》，《正义》引《括地志》载：“杜陵故城在雍州万年县东南一十五里。汉杜陵县，宣帝陵邑也，北去宣帝陵五里。”经勘察，杜陵邑遗址在今三兆村北、缪家寨南，西自曲江化工厂，东至杜陵北部陪葬区以西(参见图二)。据三兆村群众报告，过去在三兆村北的杜陵邑遗址内平整土地中曾发现过有“杜邑”陶文的汉砖。现在杜陵邑遗址上已见不到陵邑城墙遗迹；埋在地表之下的陵邑墙基大多已勘探出来了。陵邑北墙基在西安市雁塔区曲江乡缪家寨村南200米处，长2250米。陵邑西墙在三兆火葬场西270米处，现存长490米。陵邑东墙在穿过杜陵南北直线以西100米处，现存长500米。东、西墙的北端，分别与北墙东、西端相交。东、西墙南端均在东西向环卫公路北边；环卫公路以南未发现东、西墙遗迹。估计，在修筑环卫公路及公路以南农田基建中，东、西墙被破坏。陵邑南墙基绝大部分已不存在，仅在陵邑西南角发现不长的一段。在已勘探出来的陵邑西墙南端以南210米处，发现一条东西向夯土墙基，长130、宽3米，两端与陵邑西墙南北对直。墙基夯土距地表深1米，夯土厚0.8米。夯土筑于生之上。在该墙基南边，有一条与之并行的路土遗迹，长与墙基相同，路土宽约6，距地表深1、厚0.2米。上述东西向墙基可能为陵邑南墙基，若此，则陵邑东、西两墙各长约700米。陵邑墙基均为五花土分筑，距今地表深0.6-1、宽2.5-3米。一般墙基夯土厚0.4-0.8米，陵邑墙基拐角处夯土厚1.1-1.3米。</p>
+<p>从目前勘查获得的材料来看，在西汉诸陵邑中，杜陵邑的规模仅次于长陵邑<sup>1)</sup>。根据文献记载，杜陵邑当时相当繁华，人口众多，户数多达3一5万户<sup>2)</sup>。杜陵邑不但人口多，而且居民中达官显贵和豪富巨商为数相当可观。造成上述情况的原因有二：</p>
+<p>第一，杜陵邑是在秦汉杜县的基础上发展起来的。杜县的历史很久，而且它一直是作为周京沣镐、秦都咸阳、汉都长安的京畿重要城市，人烟稠密，经济发达。</p>
+<p>第二，西汉皇帝在陵墓旁边设置陵邑，结束于宣帝杜陵<sup>3)</sup>。西汉制度，官宦豪富随帝徙陵。例如，张汤在武帝时徙居茂陵，其子张安世作为宣帝大臣，又徙杜陵<sup>4)</sup>。宣帝以后的西汉皇帝再未设置陵邑，原来徙居杜陵的官室、豪富们也就“落叶生根”在那里，因此形成了杜陵邑的规模大、人口多的情况。</p>
+<h1 id="_67">结语</h1>
+<p>西汉一代11个皇帝的陵墓均在都城长安附近，其中9座帝陵在长安以北的咸阳原上；文帝霸陵和宣帝杜陵在长安城东南。</p>
+<p>今传宣帝杜陵在西安市东南郊三兆村<sup>1)</sup>，我们认为这就是汉宣帝的陵墓。现从以下几个方面作一说明。</p>
+<p>首先，从地望上看，今传杜陵即汉宣帝陵墓。《汉书·宣帝纪》载：“元康元年春，以杜东原上为初陵。”此即说明，宣帝杜陵在杜东原上。“杜东原”是因“原”处在“杜”以东而得名，或称之为“东原”<sup>2)</sup>。“杜”即秦汉时代的杜县，位于今西安雁塔区山门口乡杜城村，那里曾出土过秦“杜虎符”<sup>3)</sup>和戳印有秦汉时代“杜市”、“杜亭”陶文的陶器<sup>4)</sup>。杜城村以东有少陵原，古代亦称“鸿固原”，该地即应为秦汉时代的“杜东原”，今传杜陵适于此原之上。据古代文献记载，杜陵在汉长安城南五十里<sup>5)</sup>（约合今17公里）。今传杜陵在汉长安城东南16.5公里，这与文献记载基本相符。</p>
+<p>其次，从陵墓和陵园形制上看，今传杜陵为西汉帝陵。西汉诸陵，除文帝霸陵“因山为藏，不复起坟”以外，其它帝陵均筑有高大封上。汉代帝陵封土又称“方上”，其形制是封土底与顶部平面一般为方形，亦即俗称“覆斗形”。关于西汉帝陵的封土规模，《后汉书·礼仪志（下）》刘昭注引《汉旧仪》曰：西汉诸帝陵一般“坟高十二丈，武帝坟高二十丈。”《长安志》卷十四引《关中记》亦曰：西汉帝陵封土“皆高十二丈，方一百二十步。”“十二丈”折今约27.6米；“一百二十步”折今约165.6米。渭北咸阳原上西汉诸帝陵的封土，经实测一般高25—30米，封土底边长170米左右。它们与文献记载数据基本一致。</p>
+<p>咸阳原上西汉诸陵中，一般均筑有陵园。陵园平面方形，边长410一430米。陵园四面中央各辟一门。今传杜陵的封土和陵园规模、形制及陵园司马门数量、方位均与上述文献记载和咸阳原上其它帝陵情况基本相同。</p>
+<p>《后汉书·礼仪志（下）》刘昭注引《汉旧仪》曰：西汉帝陵“设四通羨门。”又引《皇览》</p>
+<p>曰：西汉帝陵“开四门，四通。”在今传宣帝陵，经勘探也发现设置四条墓道。</p>
+<p>第三，从今传杜陵陵区出土遗物时代来看，它们与其历史时代是一致的。宣帝杜陵始筑于元康元年，西汉晚期杜陵陵区活动还是相当多的。东汉王朝建都洛阳以后，长安西汉诸陵活动大为减少，宣帝杜陵也不例外。我们对今传杜陵陵区的汉代建筑遗址和陪葬坑进行了大面积发掘，其中出土的绝大多数遗物，其制造时代均属西汉中晚期，特别是瓦当、钱币等表现尤为明显。</p>
+<p>从今传杜陵各遗址中，共发掘出土103件瓦当(以完整者计)，可分成两类：文字瓦当和云纹瓦当。文字瓦当382件；云纹瓦当21件。文字瓦当中只有“长乐未央”和“长生无极”两种，前者337件，后者45件。这些瓦当的背面没有绳割及棱角痕迹。“长乐未央”和“长生无极”文字瓦当是武帝茂陵以后，西汉帝陵建筑中最流行的瓦当。瓦当背面的绳割及棱角痕迹是汉武帝以前圆瓦当中十分常见的现象；而这些痕迹的消失，又恰是汉武帝以后的瓦当特征之一。</p>
+<p>已发掘的今传杜陵各遗址内出土了不少汉代货币，它们有：四铢半两1枚、五铢230枚、小五铢810枚、大泉五十4枚、货泉10枚和契刀15枚。除四铢半两之外，其余货币均为西汉中晚期所流行；未发现东汉货币。此处出土的五铢钱，“朱”字头均方折；除IV型磨郭五铢外，其余五铢的重量都在3.4克左右。这些五铢钱与“朱”字头圆折、每枚重约3克的东汉五铢的区别十分明显。杜陵一、四号陪葬坑和五号址出土的“小五铢”属于西汉中晚期遗物。</p>
+<p>从今传杜陵的建筑遗址和陪葬坑出土的上述遗物，可以看出其时代相当于宣帝时期。</p>
+<p>综上所述，今传杜陵地望与文献记载是一致的，其形制规模也与西汉帝陵基本相同。今传杜陵陵区建筑遗址和陪葬坑出土遗物的年代与宣帝陵营筑的时间也是一致的。因此，我们认为今传杜陵即汉宣帝的陵墓。</p>
+<p>关于孝宣王皇后陵的地望：《史记·外戚世家》，《集解》引《关中记》曰：“汉帝后同莹，则为合葬，不合陵也。诸陵皆如此。”所谓“同莹”即指二陵在同一垄域。西汉初期的帝陵，如长陵，高祖与吕后二陵不但同莹，还在同一陵园之内。从文帝霸陵开始，西汉的帝、后二陵各筑一座陵园；二者的分布位置，一般是帝陵居西、后陵在东，相距多为600米左右。皇后陵的陵园平面亦为方形，一般边长约330米。皇后陵小于帝陵封土规模，但又大于帝陵陵区内的其它陪葬墓。西汉孝景王皇后、孝武李夫人（以皇后礼仪安葬1）和孝昭上官皇后陵的封土一般高约25，底边长150米左右。帝、后陵墓的封土和陵园形制基本相同2）。</p>
+<p>今传孝宜王皇后陵位于宣帝陵东南575米。据文献记载，孝宜王皇后与宣帝合葬，其陵墓亦在宣帝陵东。今传孝宜王皇后陵是杜陵陵区内距帝陵最近的一座墓。其封土规模仅次于宣帝陵。封土为“覆斗形”，高24、底边长148米。封上四周筑墙，围成陵园。陵园平面呈方形，边长330米，四面中央各辟一门。今传孝宜王皇后陵的地望与文献记载一</p>
+<p>致，与西汉中期的皇后陵（与皇帝合葬的）封土、陵园形制、规模基本相符。因此，我们认为该墓即孝宣王皇后陵。</p>
+<h1 id="_68">二</h1>
+<p>我们发掘的一、五号遗址，应为杜陵寝园遗址。</p>
+<p>“寝园”之名始于西汉，它由秦代的寝殿发展而来，因此说汉代寝园“承泰所为”，“汉诸陵皆有园寝”<sup>1)</sup>。有人曾提出西汉时代的“陵园就称为‘寝园’”<sup>2)</sup>，这是不妥的。</p>
+<p>关于西汉帝陵寝园的位置，我们在讨论之前，有必要研究一下秦代陵墓的寝殿分布。考古工作者在秦始皇陵的内城中心，南距帝陵封土150米，发现了一处建筑遗址3)。西汉时期，帝陵的寝殿位置可能沿袭秦代制度。高祖陵和吕后陵北各有一处大型建筑遗址，二者在同一东西线上4)。汉太上皇陵北亦发现大面积建筑遗址5)。秦始皇陵、汉高祖长陵和汉太上皇陵等秦汉帝陵，一般为坐西朝东，陵的南、北两边均属其“侧”。《后汉书·礼仪志》记载：“秦始出寝，起于墓侧，汉因而弗改。”由此看来，上述帝陵北部的大型建筑遗址应属共寝殿遗址。秦始皇陵和汉高祖长陵的寝殿均筑于陵园之中。因此，汉武帝建元六年四月，高祖长陵寝殿所属的便殿发生火灾后，董仲舒说：“高园殿不当居陵旁。”6)可见，按照西汉时期的制度，寝殿（或寝园）应筑于陵园之外。寝殿在陵区中位置的变化，大概始于汉景帝阳陵。根据对景帝以后西汉诸帝陵的调查，陵园东南往往有大片建筑遗址，如景帝阳陵、武帝茂陵和宣帝杜陵等就是这样。如前所述，帝陵寝殿（或寝园）设于“墓侧”，陵之南、北为其“侧”，故上述西汉帝陵陵园东南的建筑遗址应为寝园故地。西汉寝园制度，对东汉影响颇大。东汉帝陵之中的明帝显节陵、章帝敬陵、和帝慎陵及顺帝宪陵的寝殿均在帝陵之东7)。</p>
+<p>西汉帝陵寝园之中包括寝殿和便殿。寝殿不仅是寝园中的主体建筑，还是帝陵的“正殿”，并且仿造天子的大朝之殿而筑。作为“陵上正殿”，寝殿应是距帝陵最近、在陵区中规模最大的殿堂。从形制上说，秦汉时代的天子大朝之殿的建筑物平面为长方形，如：“前殿阿房，东西五百步，南北五十丈”；“长乐宫前殿东西四十九丈七尺、两圩中三十五丈、深十二丈”；“未央宫前殿东西五十丈、南北十五丈”。从规模上看，“天于之堂广九雉”<sup>12)</sup>，一雉三丈（周代一丈折今1.991米），九雉当为53.76米。杜陵一</p>
+<p>号遗址平面形制为长方形，殿堂台基规模（不包括东、西门）广55.15米，可见从形制和规模两方面看，杜陵一号遗址与天子大朝之殿都是相近的。又考虑到杜陵一号遗址是杜陵陵区中，距帝陵最近、规模最大的殿堂建筑遗址，因此我们认为它应该就是杜陵寝殿遗址。</p>
+<p>便殿相对寝殿而言，它是寝园（或寝殿）中的别殿<sup>1)</sup>。这种“别殿”与所谓“陵上正殿”的寝殿功能不同。便殿功能主要有三点：</p>
+<p>第一，便殿是“休息闲晏之处”2）；</p>
+<p>第二，便殿中保存着皇帝生前的用器衣物3）；</p>
+<p>第三，便殿中要进行一些祭祀活动<sup>4)</sup>。</p>
+<p>便殿的功能决定了它的建筑布局结构，它应是由小型殿堂（与寝殿殿堂比较而言）、储藏室、居室和庭院等多种建筑物组成的建筑群。</p>
+<p>据文献记载，便殿应位于“寝侧”5。寝殿犹如天子大朝正殿，东、西两边为“侧”。汉代尚右，因寝殿为“陵上正殿”，故便殿应在寝殿之左，即寝殿东“侧”。我们发掘的杜陵五号遗址，位于一号遗址（即寝殿）东边。从五号遗址的平面布局结构来看，它既有殿堂，又有众多房屋和庭院，还有用于储藏的小房子及窖穴。这些建筑物所反映出来的用途和便殿使用功能是一致的。从五号遗址的布局结构和位置来看，它应是杜陵便殿遗址。</p>
+<p>杜陵寝殿（一号遗址）和便殿遗址（五号遗址）周围的墙垣，即“寝园”。</p>
+<p>西汉帝陵中，不但皇帝陵有一套包括寝殿和便殿的寝园建筑物，而且与皇帝合葬的皇后陵墓也有一套这样的建筑物。例如，汉成帝延陵有“西园神寝”，自然这是相对其“东园神寝”而言的<sup>8</sup>。与汉成帝合葬的后妃陵墓，在成帝陵东，故“西园神寝”应为成帝陵寝园，而“东园神寝”则应为与成帝合葬的后妃陵之寝园。西汉时代，不仅与皇帝陵合葬的皇后陵有寝园，有些未与帝陵合葬的后妃墓，如昭灵后、武哀后、昭哀后、薄太后、赵婕妤、卫思后和戾后等墓之旁也都有寝园<sup>7</sup>。根据我们的勘察和试掘，位于孝宣王皇后陵园西南（在陵园之外）的六号、七号遗址应为后陵的寝殿、便殿遗址；二遗址之外的围墙即寝园墙垣。已发掘的六号遗址（即孝宣王皇后陵寝殿遗址）是距孝宣王皇后陵最近、皇后陵附近规模最大的殿址。孝宣王皇后陵寝园及其中寝殿、便殿位置，形制亦与宣帝陵寝园及其寝殿、便殿相仿。这反映了皇后陵与帝陵寝园及其寝殿、便殿的功能是相似的。</p>
+<h1 id="_69">一</h1>
+<p>《汉书·韦贤传》载：“京师自高祖下至宣帝，与太上皇、悼皇考各自居陵旁立庙。”</p>
+<p>西汉帝陵与其陵庙的距离一般不远，有的就在一处，如《长安志》卷十三、咸阳县条载：长陵与吕后庙均在县东北三十五里，阳陵与景帝庙均在县东北四十五里（原书载均在县东北十五里，此应为“四十五里”之讹）。</p>
+<p>文帝的陵庙，过去人们认为是汉文帝四年所修的顾成庙<sup>1)</sup>。《长安志》卷十记载，顾成庙在唐长安城休祥坊内，即今西安市西郊玉祥门西边，北距汉长安城仅2.8公里，而东南至文帝霸陵15.5公里。因此，不能说顾成庙为汉文帝陵旁所立之庙。文帝霸陵的陵庙是景帝元年（公元前156年）建立的<sup>2)</sup>，根据文献记载，它位于霸陵之旁<sup>3)</sup>。</p>
+<p>武帝庙和昭帝庙虽距各自帝陵略远一些，但均在其陵区之内。《水经注·渭水》载：成国故渠“东迳茂陵县敘城南，……故渠又东迳龙泉北，今人谓之温泉，非也。渠北故坂，此即龙渊庙。……放渠又东迳姜泉北，渠北有汉昭帝陵。”龙渊庙即武帝庙<sup>4)</sup>。关于武帝庙的具体地望，《长安志》卷十四、兴平县条载：“龙渊庙在县东北二十四里”；“汉武帝茂陵在县东北十七里。”也就是说，武帝庙与茂陵相距约3.5公里。据文献记载，昭帝陵庙在平陵以东、延陵以西<sup>5)</sup>，亦处平陵陵区范围之内。</p>
+<p>晚于宣帝庙的元帝庙也在帝陵附近。《汉书·元后传》载：“及莽改号太后为新室父母，绝之于汉，不令得体元帝。堕坏孝元庙，更为文母太后起庙，独置孝元庙故殿以为文母篡食堂，既成，名曰长寿宫。以太后在，故未谓之庙。”“元帝庙号长寿”大概是因孝元庙故址之上营筑了“长寿宫”。孝元王皇后陵园称为“长寿园”7）应与“长寿宫”之名有关。长寿宫当在长寿园旁，也就是说孝元庙应在渭陵之旁。</p>
+<p>根据西汉“陵旁立庙”制度，宣帝庙亦应在杜陵之“旁”。宣帝陵“陵旁”的大型建筑遗址有东南部的一号、五号遗址和东北部的八号遗址。如前所述，一号、五号遗址为杜陵寝园中的寝殿、便殿遗址，那么八号遗址有可能为宣帝陵庙遗址。庙的形制和规模也可作为杜陵八号遗址为宣帝庙故址的佐证之一。西汉帝陵陵庙是从城中或城郊宗庙发展而来的，其形制、规模或近似。据汉长安城南郊宗庙遗址发掘资料，庙的平面为方形，边长55米<sup>8)</sup>。杜陵八号遗址基址平面形制和规模也与此相符。</p>
+<h1 id="excavations-in-the-duling-mausoleum-precinct-of-the-han-dynsty">EXCAVATIONS IN THE DULING MAUSOLEUM PRECINCT OF THE HAN DYNSTY</h1>
+<p>(abstract)</p>
+<p>The Duling mausoleum where Emperor Xuandi Liu Xun of the Han Dynasty lies buried is located in the south-eastern outskirts of modern Xi'an City, Shaanxi Province. The architectural remains in the mausoleum precinct are among the well- preserved Western Han royal cemeteries and have been included in the state-protected monuments of P.R.C.From the autumn of 1982 to the summer of 1985, the Duling Archaeological Team from the Institute of Archaeology, CASS explored the whole site and excavated part of it. The following is a brief description of the results of the work.</p>
+<p>The Duling mausoleum precinct measures $4\mathrm{km}$ from north to south and $3\mathrm{km}$ from west to east. Most of the accompanying tombs are found in its south-east and north-east, of which 62 still have barrows on the ground. In fact, Duling is one of the two Western Han mausoleums that have so many accompanying tombs. In addition, 5 burial pits of funeral objects have been discovered mostly to the north of the mausoleum garden. To the north-west of the precinct once stood Duling Town specially built for the mausoleum.</p>
+<p>Being a square in plan, the mausoleum garden measures $430\mathrm{m}$ each side and is surrounded by rammed-carth walls with the mausoleum in the centre. Each wall has a gate opened in the middle. The gates were built roughly in the same form and size. Excavation revealed the remains of the eastern and northern gates, both located at a distance of $120\mathrm{m}$ from the mausoleum barrow. Beyond the garden, to the south-east is Empress Wang's tomb, which resembles the emperor's both in the construction of garden and in the form of gate, though smaller than the latter in size. The empress's tomb garden measures $330\mathrm{m}$ each side, and the remains of the eastern gate was excavated too.</p>
+<p>Immediately to the southeast of the Duling garden is the sacrificial place for Duling, a walled rectangle having 3 gates on its southern side and one gate on either of the eastern and western sides. Within the walls were excavated a sacrificial hall and a complex of subordinate buildings. As the major building here, the sacrificial hall was constructed in the west of the place on a rectangular rammedearth platform. It has a western and an eastern gate and three northern and three southern ones. A brick-paved corridor runs around the hall and is itself skirted by pebble aprons. The subordinate complex is located to the east of the sacrificial hall. Consisting of a hall, courtyards and sets of rooms, it served various func</p>
+<p>tions. The hall is in the south-west of the complex and has two courtyards. Three courtyards are in the north of the complex while the sets of rooms are in the southeast and diverse in layout, size and the number of rooms.</p>
+<p>The sacrificial place for Empress Wang's tomb lies to the south-west of her tomb garden. It can be seen as a scaled-down version of the emperor's. The sacrificial hall has been excavated, which has two northern gates and one gate on each of the other three sides.</p>
+<p>The construction system of the royal cemetery in ancient China was an imitation of that of the capital and palace on the basis of the related rites and regulations. The Duling mausoleum precinct as a survival from the Qin-Han period when this system came into being is of great importance to the study of the ancient Chinese royal burial rites. The exploration and excavation throw much light on the open, fascinating questions concerning the layout of the Qin-Han royal cemetery and the shape of its gate, sacrificial hall and accessory building. In addition, large numbers of unearthed objects, among which articles of the middle and late Western Han Dynasty have been identified, also contribute to establishing the sequences and typology of the Han objects.</p>
+  </div>
+</div>
+
+<div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)"><a href="./陕县东周汉墓1994FB-261-59.html" style="color:var(--muted);text-decoration:none">← 陕县东周汉墓</a><a href="./敖汉赵宝沟-新石器时代聚落.html" style="color:var(--muted);text-decoration:none">敖汉赵宝沟：新石器时代聚落 →</a></div>
+</div>
+
+<div class="toc-float" id="tocPanel">
+  <h4>目录</h4>
+  <div id="tocContent">正在生成...</div>
+</div>
+</div>
+<footer class="site-footer">
+<div class="footer-inner">
+  <p>中国考古学专刊·丁种 实体标注知识库 &copy; 2026</p>
+  <p class="footer-links">
+    <a href="https://github.com/CrossTheOcean/archaeology-report-kb" target="_blank">GitHub</a> ·
+    <a href="../about.html">关于本站</a>
+  </p>
+</div>
+</footer>
+<script>
+
+// Generate TOC from headings
+setTimeout(function() {
+  const body = document.getElementById('reportBody');
+  const headings = body.querySelectorAll('h1, h2, h3');
+  const toc = document.getElementById('tocContent');
+  if (headings.length === 0) {
+    toc.innerHTML = '<span style="color:var(--muted)">无标题</span>';
+    return;
+  }
+  toc.innerHTML = '';
+  headings.forEach((h, i) => {
+    h.id = 'heading-' + i;
+    const a = document.createElement('a');
+    a.href = '#heading-' + i;
+    a.textContent = h.textContent;
+    a.style.paddingLeft = (h.tagName === 'H3' ? '12px' : '0');
+    toc.appendChild(a);
+  });
+}, 500);
+
+</script>
+</body>
+</html>

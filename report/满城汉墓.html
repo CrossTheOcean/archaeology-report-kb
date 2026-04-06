@@ -1,0 +1,2795 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>满城汉墓 — 中国考古学专刊·丁种 — 实体标注知识库</title>
+<meta name="description" content="基于70份考古学专刊·丁种发掘报告的实体标注与结构化知识库">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏺</text></svg>">
+<style>
+:root {
+  --bg: #0f1117;
+  --card: #1a1d27;
+  --border: #2a2d3a;
+  --text: #e4e4e7;
+  --muted: #8b8fa3;
+  --accent: #f59e0b;
+  --accent2: #ec4899;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* Navigation */
+.topnav {
+  background: rgba(15, 17, 23, 0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+.logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  transition: all 0.2s;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.nav-links a.active { color: var(--accent); background: rgba(245,158,11,0.08); }
+
+/* Layout */
+.container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+.hero {
+  text-align: center;
+  padding: 48px 20px 32px;
+}
+.hero h1 {
+  font-size: 2.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+}
+.hero .subtitle { color: var(--muted); font-size: 1.05rem; }
+
+/* Stats */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin: 28px 0 36px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 28px;
+  text-align: center;
+  min-width: 150px;
+  flex: 1;
+  max-width: 200px;
+}
+.stat-card .num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.stat-card .label { color: var(--muted); font-size: 0.88rem; margin-top: 4px; }
+
+/* Grid */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px;
+}
+.card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  background: var(--card);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.82rem;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+thead th:hover { color: var(--text); }
+tbody td { padding: 10px 14px; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+tbody tr { transition: background 0.15s; }
+tbody tr:hover { background: rgba(245, 158, 11, 0.04); }
+
+/* Tags */
+.era-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.ebar {
+  display: inline-block;
+  height: 6px;
+  border-radius: 3px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Report detail page */
+.report-header {
+  margin-bottom: 28px;
+}
+.report-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.report-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.report-meta span {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+.report-body h2 { font-size: 1.3rem; margin: 32px 0 16px; color: var(--accent); }
+.report-body h3 { font-size: 1.1rem; margin: 24px 0 12px; }
+.report-body p { margin-bottom: 12px; }
+.report-body ul, .report-body ol { margin: 12px 0 12px 24px; }
+.report-body li { margin-bottom: 4px; }
+.report-body table { margin: 16px 0; }
+.report-body table th { background: var(--card); }
+.report-body table td, .report-body table th {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+}
+.report-body pre {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.report-body code {
+  background: rgba(245,158,11,0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+
+/* Image placeholder */
+.img-placeholder {
+  display: inline-block;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+/* Entity chips */
+.entity-section { margin: 20px 0; }
+.entity-section h4 { color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; }
+.echip {
+  display: inline-block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  margin: 2px 3px;
+}
+
+/* Report card (for list page) */
+.report-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.report-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.report-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.report-card .rc-meta { color: var(--muted); font-size: 0.84rem; }
+.report-card .rc-entities { color: var(--accent); font-weight: 600; font-size: 0.92rem; margin-top: 6px; }
+
+/* Search & filter */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+.search-input {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  width: 260px;
+  outline: none;
+}
+.search-input:focus { border-color: var(--accent); }
+.filter-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(245,158,11,0.08);
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  margin-top: 60px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.footer-inner { text-align: center; max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.footer-links { margin-top: 8px; }
+.footer-links a { color: var(--accent); text-decoration: none; }
+.footer-links a:hover { text-decoration: underline; }
+
+/* About page */
+.about-section { margin: 28px 0; }
+.about-section h2 { font-size: 1.3rem; margin-bottom: 12px; color: var(--accent); }
+.about-section p { margin-bottom: 12px; color: var(--muted); }
+.about-section ul { margin: 8px 0 8px 20px; color: var(--muted); }
+
+/* Download page */
+.dl-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.dl-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.dl-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; }
+.dl-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #000;
+  padding: 8px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+.dl-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.dl-btn.secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.dl-btn.secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Map page */
+.map-container {
+  text-align: center;
+  margin: 24px 0;
+}
+.map-container img {
+  max-width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.6rem; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .stats-row { gap: 10px; }
+  .stat-card { min-width: 120px; padding: 14px 16px; }
+  .stat-card .num { font-size: 1.5rem; }
+  .nav-links a { padding: 6px 10px; font-size: 0.82rem; }
+  .search-input { width: 100%; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+}
+@media (max-width: 480px) {
+  .nav-links { gap: 0; }
+  .nav-links a { padding: 6px 8px; font-size: 0.78rem; }
+  .container { padding: 16px; }
+}
+
+
+.toc-float {
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.8rem;
+  max-width: 220px;
+  z-index: 50;
+}
+.toc-float h4 { color: var(--muted); margin-bottom: 8px; }
+.toc-float a { color: var(--muted); text-decoration: none; display: block; padding: 2px 0; }
+.toc-float a:hover { color: var(--accent); }
+@media (max-width: 1024px) { .toc-float { display: none; } }
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<nav class="topnav">
+<div class="nav-inner">
+  <a href="../index.html" class="logo">🏺 考古知识库</a>
+  <div class="nav-links">
+<a href="../index.html">总览</a>
+<a href="../reports.html" class="active">报告列表</a>
+<a href="../map.html">遗址地图</a>
+<a href="../download.html">数据下载</a>
+<a href="../about.html">关于</a>
+  </div>
+</div>
+</nav>
+<div class="container" style="display:flex;gap:24px">
+<div style="flex:1;min-width:0">
+<div class="report-header">
+  <a href="../reports.html" style="color:var(--muted);font-size:0.88rem;text-decoration:none">← 返回报告列表</a>
+  <h1 style="margin-top:8px">满城汉墓</h1>
+  <div class="report-meta">
+    <span class="era-tag" style="background:#ef444422;color:#ef4444">秦汉</span>
+    <span>314 页</span>
+    <span>27.1 MB</span>
+    <span>30 个实体</span>
+    <span>密度 0.1</span>
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:24px">
+  <h3>🏷️ 实体标注</h3>
+  <div class="entity-section"><h4>遗迹编号 (10)</h4><div><span class="echip">IX</span><span class="echip">XV</span><span class="echip">II</span><span class="echip">IV</span><span class="echip">XI</span><span class="echip">LI</span><span class="echip">LV</span><span class="echip">CV</span><span class="echip">CX</span><span class="echip">M1</span></div></div>
+<div class="entity-section"><h4>陶器 (5)</h4><div><span class="echip">陶壶</span><span class="echip">陶罐</span><span class="echip">陶盆</span><span class="echip">陶鼎</span><span class="echip">陶盘</span></div></div>
+<div class="entity-section"><h4>铜器 (5)</h4><div><span class="echip">铜灯</span><span class="echip">铜炉</span><span class="echip">铜镜</span><span class="echip">铜剑</span><span class="echip">铜戈</span></div></div>
+<div class="entity-section"><h4>玉器 (5)</h4><div><span class="echip">玉衣</span><span class="echip">玉圭</span><span class="echip">玉环</span><span class="echip">玉璜</span><span class="echip">玉塞</span></div></div>
+<div class="entity-section"><h4>地层 (2)</h4><div><span class="echip">五层</span><span class="echip">十一层</span></div></div>
+<div class="entity-section"><h4>发掘信息 (2)</h4><div><span class="echip">中国社会科学院考古研究所</span><span class="echip">文物出版社</span></div></div>
+<div class="entity-section"><h4>材质 (1)</h4><div><span class="echip">铁器</span></div></div>
+
+</div>
+
+<div class="card">
+  <h3>📖 报告全文</h3>
+  <div class="report-body" id="reportBody">
+    <h1 id="_1">满城汉墓发掘报告</h1>
+<p>中国社会科学院考古研究所</p>
+<p>河北省文物管理处</p>
+<p>下</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>中国社会科学院考古研究所编辑</p>
+<p>文 物 出 版 社 出 版</p>
+<h1 id="_2">中国田野考古报告集</h1>
+<p>考古学专刊</p>
+<p>丁种第二十号</p>
+<h1 id="_3">满城汉墓发掘报告</h1>
+<p>中国社会科学院考古研究所</p>
+<p>河北省文物管理处</p>
+<p>F</p>
+<p>中国社会科学院考古研究所编辑</p>
+<p>文 物 出 版 社 出 版</p>
+<p>1980年北京</p>
+<h1 id="_4">满城汉墓发掘报告</h1>
+<p>（上、下册）</p>
+<p>中国社会科学院考古研究所</p>
+<p>河北省文物管理处</p>
+<p>文物出版社出版</p>
+<p>北京五四大街2号</p>
+<p>外文印刷厂印刷</p>
+<p>文物出版社</p>
+<p>新华书店发行</p>
+<p>1930年10月第一版第一次印刷</p>
+<p>$787\times 1092$ 1/16开 张：49 捕图：10</p>
+<p>统一书号：11068·700 定价：50元</p>
+<h1 id="_5">彩版目录</h1>
+<p>一、二 修复后的一号墓“金缕玉衣”<br />
+三 型铜铺首和棺璧铜铺首<br />
+四 乳丁纹铜壶<br />
+五 蟠龙纹铜壶<br />
+六鸟篆文铜壶<br />
+七乌篆文铜壶<br />
+八 椭圆形铜杯 <br />
+九 铜错金博山炉<br />
+一〇 铜羊尊灯<br />
+一一 铜枕<br />
+一二 铜戈和铜锷<br />
+一三 铁匕首和铁长刀<br />
+一四 金医针<br />
+一五 I型玉璧<br />
+一六 玉印、玉人和玉带钩<br />
+一七 铜辕饰和车夷<br />
+一八 铜承弓器和锯齿形器<br />
+一九、二〇 修复后的二号墓“金缕玉衣”<br />
+二一 蟠荑蕉叶纹提梁铜壶<br />
+二二 I型铜薰炉<br />
+二三 “长信宫”铜灯<br />
+二四 铜朱雀灯<br />
+二五 铜朱雀衔环杯<br />
+二六 铜豹<br />
+二七 错金铁尺<br />
+二八 彩绘陶盆<br />
+二九 彩绘陶盆<br />
+三O I型1式铜当卢</p>
+<h1 id="_6">图版目录</h1>
+<p>满城陵山全景</p>
+<p>号荔中室<br />
+四陵山上的附葬墓及其他<br />
+五号墓南耳室<br />
+六 一号葛北耳室<br />
+七 号墓北耳室陶器及甬道渗井<br />
+八 一号墓墓道内口及中室的排水沟、壁上凹槽<br />
+九 号墓后室石门及石门打开后<br />
+号墓主室北壁及室顶结构<br />
+一一号墓主室南壁及器物分布情况<br />
+一：号墓棺床上“金缕玉衣”及出土器物<br />
+一：修复后的一号落“金缕玉衣”<br />
+…四 号墓侧室出土器物及“玉衣”内的玉璧 <br />
+一五 号墓棺、椁上的铜、银铺首<br />
+一六 一号墓棺、载框车上的金属零件及铜顶门器<br />
+一七 乳丁纹铜壶<br />
+一八 蟠龙纹铜壶<br />
+一九 鸟篆文铜壶<br />
+鸟篆文铜壶 <br />
+二一 铜锤和铜链子壶<br />
+二二 铜和铜<br />
+二型钢鼎<br />
+二四 I型铜鼎和铜<br />
+二五 铜釜<br />
+二六 铜镀和铜铝<br />
+二L 铜盆<br />
+二八 椭圆形铜杯及其纹饰<br />
+.九 铜套钵、铜勺和铜匕 <br />
+三· 铜错金博山炉<br />
+三型铜薰炉</p>
+<p>三二 Ⅱ型铜薦炉</p>
+<p>三Ⅲ N型铜薰炉</p>
+<p>三四 铜羊尊灯</p>
+<p>三五Ⅱ型、Ⅲ型铜灯</p>
+<p>三六 $\pmb{\mathbb{N}}$ 型、V型铜灯</p>
+<p>三七 型、型铜灯</p>
+<p>三八 型铜灯</p>
+<p>三九 铜漏壶、铜盒和铜勺形器</p>
+<p>四 $\bigcirc$ 铜器</p>
+<p>四一 花形悬猿铜钩及其它</p>
+<p>四二 铜枕</p>
+<p>四三 铜镜和铜带钩</p>
+<p>四四 铜剑和铜匕首</p>
+<p>四五 铜剑之玉饰</p>
+<p>四六 铜戈和铜、鏽</p>
+<p>四七 铜弩机和铜</p>
+<p>四八 铜鸡首仪仗饰、铜鸠杖首和铜刀</p>
+<p>四九 铜杵形器及其它</p>
+<p>五○ 仪仗顶铜饰</p>
+<p>五器具铜构</p>
+<p>五二 器具铜构</p>
+<p>五三 器具铜构和铜合页</p>
+<p>五四 铜器足</p>
+<p>五五 虎形铜器座和铜鹿形饰</p>
+<p>五六 对兽形铜饰</p>
+<p>五七 铜饰</p>
+<p>五八 铜饰</p>
+<p>五九 铜零件</p>
+<p>六○ 铜人</p>
+<p>六一 铜人和铜祖</p>
+<p>六二 I型铁暖炉</p>
+<p>六三 I型、Ⅱ型铁暖炉</p>
+<p>六四 I型铁剑及其玉饰</p>
+<p>六五 铁剑和杖式铁剑</p>
+<p>六六 铁匕首</p>
+<p>六七 铁长刀</p>
+<p>六八 铁刀（削）</p>
+<p>六九 铁戟、钦矛和铁鏃</p>
+<p>七（） 铁马和铁</p>
+<p>七 出土时的铁铠甲</p>
+<p>七二 铁工具</p>
+<p>七 铁凿</p>
+<p>七四 铁零件</p>
+<p>七丘 金医针、金饰和银盒</p>
+<p>七六 银器和金器</p>
+<p>七七 陶壶</p>
+<p>七八 陶壶和陶鈇</p>
+<p>七九 小陶壶和陶缸</p>
+<p>八 陶罐</p>
+<p>八一 陶罐和陶瓷</p>
+<p>八二 陶盆、陶交形器和陶瓶</p>
+<p>八三 陶瓶和陶釜</p>
+<p>八四 彩绘陶钵和彩绘陶匮</p>
+<p>八五 陶鼎</p>
+<p>八六 彩绘陶盒</p>
+<p>八七 陶盘</p>
+<p>八八 彩绘陶盘的纹饰</p>
+<p>八九 彩绘陶盘的纹饰</p>
+<p>九（） 彩绘陶盘的纹饰</p>
+<p>九一 彩绘陶盘的纹饰</p>
+<p>九二 彩绘陶盘的纹饰</p>
+<p>九：陶</p>
+<p>九四 陶耳杯和陶灯</p>
+<p>九j 型玉璧</p>
+<p>九六 I型玉璧</p>
+<p>九七 I型玉璧</p>
+<p>九八 型玉璧</p>
+<p>九九 玉璧和玉环</p>
+<p>一O0 玉圭</p>
+<p>一玉带钩、玉笋和玉饰</p>
+<p>一（）二 玉璜和玉饰</p>
+<ul>
+<li>玛瑙珠串饰和玉佩</li>
+</ul>
+<p>（四 王人和玉印</p>
+<ul>
+<li>$\odot f_{\mathrm{i}}$ 玉九窍塞和璜形玉器</li>
+</ul>
+<p>六 石磨、搓石和砸石</p>
+<p>…○七 I型漆案铜饰件</p>
+<p>$\text{一} \bigcirc$ 八 漆器铜饰件</p>
+<p>一〇九 漆器铜饰件</p>
+<p>漆器</p>
+<p>-漆器银、铜铺首</p>
+<p>一 二 一号葛纺织品标本</p>
+<p>一铜帐构</p>
+<p>一一四 铜帐构</p>
+<p>·五 铜帐构</p>
+<p>一六 铜帐构</p>
+<p>-七 铜帐构</p>
+<p>·八 铜帐构</p>
+<p>·九 铜帐构</p>
+<p>铜帐构</p>
+<p>二一2、3号车马遗物出上情况</p>
+<p>一 铜车普</p>
+<p>·二三 铁、铁、铜及其它</p>
+<p>一四 铜辅饰</p>
+<p>一五 弓形铁支架和铜</p>
+<p>一二六 铜轨饰</p>
+<p>一七 长筒形铜车饰和铜</p>
+<p>一二八 衡未轭首铜饰和铜目</p>
+<p>一二九 铜盖弓帽</p>
+<p>一三〇 铜钩、盖柄铜箍及其它</p>
+<p>三一 长方形铜冒、铜车门轴及其它</p>
+<p>一三二 铜拉手和兽面形铜车饰</p>
+<p>一三长方形活轴铁车器和铜环</p>
+<p>一三四 铜铺首、铜环及其它</p>
+<p>一三五 铜承弓器</p>
+<p>一三六 铜承弓器</p>
+<p>一三七 铜锯齿形器</p>
+<p>一三八银、铜当卢</p>
+<p>一三九 洞当卢</p>
+<p>-40银、铜当卢<br />
+一四一 铜衔<br />
+一四二 铜、铁衔镶<br />
+一四三 铜泡、银泡和银马服饰<br />
+--四四 铜管络饰、铜节约、铜泡及其它<br />
+一四 $\pmb{J}$ 铜带扣、铜轮轴形器和铁链<br />
+一四六 石俑和陶俑<br />
+一四七 石俑<br />
+一四八 石俑<br />
+四九 金饼<br />
+一五〇 中、后室铜钱出土情况<br />
+-1i…半两钱和五铢钱 <br />
+一五二 料盆和料耳杯<br />
+一五三 封泥、牙雕及其它<br />
+--五四 二号墓封门结构<br />
+一五五二号墓墓门上部铸口和北耳室全景<br />
+一五六 二号墓中室<br />
+一五七二号墓后室石门打开前、后情景<br />
+一五八二号墓上室结构和后室顶门器<br />
+一五九 二号墓南耳室全景<br />
+一六二号墓南耳室砖隔间内陶器放置情况 <br />
+一六一二二号墓南耳宝东部和砖隔间内陶器放置情况<br />
+一六二 二号墓中室南区器物出土情况<br />
+一六三二号墓中室南区器物台上出土器物和后室“长信宫”灯出土情况<br />
+一六四 二号幕后室器物出土情况<br />
+一六五二号墓镶玉漆棺上玉版玉璧出土和玉版编号情况<br />
+二六六二号幕“金缕玉衣”出上情况和窦缩残齿<br />
+一六七 修复后的二号墓“金缕玉衣”<br />
+一六八 蟠螭焦叶纹提梁铜壶<br />
+一六九 铜壶<br />
+一七○ 铜、铜釜、铜鼎和铜<br />
+一七一 铜钥<br />
+一七二 铜盆、铜钵和铜盘<br />
+七三 铜炉、铜匝和铜耳杯<br />
+一七四 铜勺<br />
+一七五 I型铜薰炉</p>
+<p>一[六 铜薬炉</p>
+<p>一七七 “长信宫”铜灯</p>
+<p>一七八 铜朱雀灯</p>
+<p>一七九 铜灯</p>
+<p>一八） 铜枕和铜镜</p>
+<p>一八· 铜镜</p>
+<p>一八：铜朱雀衔环杯</p>
+<p>一八：铜豹</p>
+<p>…八四 铜剑、铜镞和铜镦</p>
+<p>一八五 铜仪仗顶饰、铜镦及其它</p>
+<p>一八六 铜骰和铜“宫中行乐钱”</p>
+<p>一一八七 铜印</p>
+<p>一八八 小铜人、小铜牛及其它</p>
+<p>一八九 错金铁尺</p>
+<p>一九（ 错金附件</p>
+<p>一九·铁权、铁灯和错金铁饰件</p>
+<p>一一九二 铁刀</p>
+<p>九三 铁刀</p>
+<p>一九四 铁刀</p>
+<p>一九五 铁器</p>
+<p>一九六 铁犁铧、铁铲和铁二齿耙</p>
+<p>一一九七 铁和铁内范</p>
+<p>一九八 铁范</p>
+<p>一一九九 铁器和铁铸件</p>
+<p>二〇〇 陶壶、陶罐和陶钫</p>
+<p>二（一 陶罐、陶盆和陶缸</p>
+<p>二〇二 彩绘陶盆</p>
+<p>二O三 彩绘陶盆</p>
+<p>二四 彩绘陶盆</p>
+<p>二 $\odot$ 五 陶鼎、陶瓶和陶钵</p>
+<p>二○六 彩绘陶盒和陶耳杯</p>
+<p>二O七 陶匹</p>
+<p>二○八 陶后、陶碗和陶灯</p>
+<p>二〇九 I型玉璧</p>
+<p>二一O I型玉璧</p>
+<p>一 型玉璧</p>
+<p>二一二 玉印、玉佩及其它<br />
+二三 玉九窍塞和璜形玉器<br />
+二一四 玉舞人玛瑙水晶珠串饰<br />
+二一五 漆案铜饰件<br />
+二六 漆匠铜饰带<br />
+二一七 漆尊和漆龛盖顶铜饰<br />
+二一八 漆耳杯和漆奁内小盒的盖顶铜饰<br />
+二一九 二号墓纺织品标本<br />
+二二〇 1号车马遗物出土情况<br />
+二二一 2、3号车马遗物出土情况<br />
+二二二 铁、铜车喜和弓形铁支架<br />
+二二三 铜和铜构饰<br />
+二二四 衡末轭首铜饰、铜冒、盖柄铜箍和铜盖弓帽<br />
+二. 五 铜车门轴及门臼、铜拉手<br />
+二二六 兽面形铜车饰和铲形铁器<br />
+二二七 长方形活轴铁车器及其它<br />
+二二八 兽首形铜饰、铜环及其它<br />
+二九 铜锯齿形器、铜衔象牙和铜当卢<br />
+二三铜当卢<br />
+二三一 铜当卢<br />
+二一铜当卢<br />
+二 铜管络饰、铜节约和铜、铁带扣<br />
+三四 金饼、象牙勺和封泥<br />
+三五刘胜“玉衣”头部出土情况<br />
+二三六 刘胜“玉衣”上衣展平后形状<br />
+二三七 刘胜“玉衣”上衣整形锁边后形状<br />
+二三八 刘胜“玉衣”袖筒、手套和裤筒修复后形状<br />
+二三九 刘胜“玉衣”袖筒展平后形状<br />
+二四 $\bigcirc$ 刘胜“玉衣”裤筒展平后形状<br />
+二四一窦绢“玉衣”上衣玉片上粘贴的织物痕迹和裤筒开口接缝处铁条锁边痕迹<br />
+二四二 刘胜“玉衣”裤筒开口接缝处铁条锁边痕迹<br />
+二四：刘胜“玉衣”上衣前片内侧的玉片编号和窦绾“玉衣”左鞋玉片上的锯缝及管钻痕迹<br />
+二四四 编缀“玉衣”的金丝和“玉衣”表、里金丝编结方法<br />
+二四五 修复前的铁铠甲<br />
+二四六 铁铠甲右袖打开过程</p>
+<p>二四七 铁铠甲复原模型<br />
+二四八 铁铠甲的局部<br />
+二四九 铁铠甲的局部<br />
+二五 $\bigcirc$ 铁铠甲的局部<br />
+二五一 铁铠甲的局部<br />
+二五二 铁犁铧、铁铲和铁锄的金相组织<br />
+二五三 铁、铁、铁炉、铁车和铁范的金相组织<br />
+二五四 铁铠甲片及铁镶嵌和铁铠甲片的金相组织<br />
+二十五 钢剑和钢剑的金相组织<br />
+二五六 错金书刀X射线透视照片及刘胜佩剑和错金书刀的金相组织<br />
+二五七 刘胜佩剑和钢戟的金相组织<br />
+二五八 钢戟、银、铜和银柄铁刃环首刀的金相组织<br />
+二五九 错金书刀的金相组织<br />
+二六钢剑的金相组织<br />
+二六一 铁、铁和铁刀等的金相组织<br />
+二六二 漆盒上金片、铁刀环首上缠金片和“玉衣”金丝的金相组织<br />
+二六三 铁刀环首缠金片、“玉衣”金丝和对照样品的X射线德拜相<br />
+二六四 号“玉衣”的玉片和白玉饰片的显微照片<br />
+二六五 二号墓“玉衣”的玉片显微照片<br />
+二六六 号墓“玉衣”的玉片和二号墓“玉衣”的玉片显微照片<br />
+二六七 二号墓“玉衣”的玉片和棺壁上玉璧、玉版片的显微照片<br />
+二六八 一号墓“玉衣”的玉片及二号墓“玉衣”的玉片和棺壁上玉版片的显微照片<br />
+二六九 榆木、青楓和朴树的显微照片<br />
+二七〇 榆树、油松、朴树子及花椒果实的显微照片</p>
+<h1 id="_7">彩 版</h1>
+<p>彩版一（I）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+修复后的一号墓“金缕玉衣”</p>
+<h1 id="iii">彩版三（III）</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+I型铜铺首（1：5167，左）、棺壁铜铺首（1：5148，右）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+乳丁纹铜壶（1：5019）</p>
+<p>彩版五（V）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+蟠龙纹铜壶（1：5014）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+鸟篆文铜壶（1：5015）</p>
+<p>彩版七（VII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+乌篆文铜壶（1：5018）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>椭圆形铜杯（1：4284、1：4286）</p>
+<p>彩版九（IX）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+铜错金博山炉（1：5182）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>铜羊尊灯（1：5181）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+铜枕（1：5188）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜戈（1：4220）<br />
+2.铁矛的铜（I：5073）</p>
+<p>彩版一三（XIII') <br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铁匕首（1：5196）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 铁长刀（1：5104）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>金医针（1：4447、1：4446、1：4390、1：4354）</p>
+<h1 id="xv">彩版一五（XV）</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+I型玉璧（1：5048）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1.玉印（1：5170、1：5171）、玉人（1：5172）</p>
+<p>2.玉带钩（1：5049、1：5200、1：5050）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+铜辕饰（1：1068）、I型铜车告（1：2239、1：2242）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+铜承弓器（1：2248）、铜锯齿形器（1：2251）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+修复后的二号墓“金缕玉衣”</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>彩版二一（XXI）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+T型铜煮炉（2：3004）</p>
+<h1 id="xxiii">彩版二三（XXIII）</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+“长信宫”铜灯（2：4035）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>铜朱雀灯（2：3102）</p>
+<h1 id="xxv">彩版二五（XXV）</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+铜朱雀衔环杯（2：3032）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+铜豹（2：3056、2：3057）</p>
+<p>彩版二七（XXVII）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>错金铁尺（2：3065）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>彩绘陶盆（2：2480）</p>
+<h1 id="xxix">彩版二九（XXIX'）</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+彩绘陶盆（2：2485）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+IX型1式铜当卢（2：1171）</p>
+<p>图版一（I）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+满城陵山全景</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二（II）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一号墓中室</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版四（IV）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 一号墓墓口南侧凿山修路遗迹<br />
+2.陵山上的附葬墓</p>
+<p>3.一号墓墓道封门外石块堆积</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+一号鼻南耳室</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span>  </p>
+<h1 id="_8"></h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1.一号慕北耳室北段陶器堆积</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.一号墓甬道渗井上铺石</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.一号基甬道渗井</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.一号墓中室壁上凹槽</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 一号墓中室南侧排水沟</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.一号墓墓道内口</p>
+<p>图版九（IX）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.一号墓后室石门</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.一号墓后室石门打开后</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 一号墓主室北壁和室顶</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.一号墓主室室顶结构</p>
+<p>图版一一（XI）</p>
+<p>1.一号墓主室南壁</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.一号墓主室器物分布情况（向南视）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>3.一号墓主室器物分布情况（向北视）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.一号墓主室棺床上“金缕玉衣”及出土器物</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.一号墓“金缕玉衣”出土情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一三（XIII）<br />
+“王翁等”章台一朝当翼</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. “金缕玉衣”内玉璧分布情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.一号墓侧室东部出土器物</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.一号墓侧室西部出土器物</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1.一号墓棺上铜铺首</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.一号墓椁上银铺首</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一六(XVI)<br />
+1.一号墓后室铜顶门器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 一号基棺上大、小铜棺环</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.一号基载框车上钢轮</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.一号基载柜车上铁架铜滑轮</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一七(XVII)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一八(XVIII)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一九（IX）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图版二一（XXI）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜钟（1：4108）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 铜链子壶（1：4109）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜叠（1：5178）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 铜钎（1：4326）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二三（XXIII）<br />
+1. I型铜鼎（1:4102）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. I型铜鼎（1：4101）</p>
+<p>1.Ⅱ型铜鼎（1：5064）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二四（XXIV）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.铜瓶（1：4104）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二五（XXV）<br />
+1.铜釜（1：5020）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铜釜（1：4103）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铜釜（1：4330）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.铜釜（1：5079）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 铜锤（1：4110）之铺首</p>
+<p>1.铜镜（1：4110）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铜销（1：4328）</p>
+<p>图版二七（XXVII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ型铜盆（1：5176）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅲ型铜盆（1：4093）<br />
+3. I型铜盆（1：4013）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1.椭圆形铜杯（1：4282—1：4286）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.饰第一种图案花纹的椭圆形铜杯（1：4286）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>3.饰第二种图案花纹的椭圆形铜杯（1：4284）</p>
+<p>图版二九（XXIX）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜套体（1：4180、1：4275—1：4279）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.铜匕（1：4349）</p>
+<p>2.1型铜勺（1：4364）<br />
+3.Ⅱ型铜勺（1：5065）<br />
+4.Ⅲ型铜勺（1：4096）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图版三一（XXXI）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ型铜熏炉（1：4097）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型铜熏炉（1：4097）之足部</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+Ⅲ型铜熏炉（1：5090）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版三三（XXXIII）<br />
+1. IV型铜熏炉和提笼（1：5003）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. IV型铜露炉（1：5003）</p>
+<p>1.铜羊尊灯（1：5181）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版三四（XXXIV）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图版三五（XXXV）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1.Ⅱ型铜灯（1：5177）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.Ⅲ型铜灯（1：5084）</p>
+<p>图版三六(XXV)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.V型铜灯（1：4274）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. IV型铜灯（1：4112）</p>
+<p>图版三七(XXVII)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.VI型铜灯（1：5086、1：5087）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 塔型铜灯（1：4117）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅶ型1式铜灯（1：4115）</p>
+<p>2.V型2式铜灯（1：4120）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版三九(XXIX)<br />
+1.铜漏壶（1：4325）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铜盒（1：4273）</p>
+<p>3.铜勺形器（1：5128）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型铜盏（1：4377）</p>
+<ol>
+<li>I型铜盏（1：4263）</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.钢提梁权（1：4017）<br />
+和瓶形器（1：4016）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.铜合金（1：5081）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版四一(XLI)</p>
+<p>1.花形悬猿铜钩（1：4292）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.铜杯形器（1：4295）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>铜铃（1：1152）</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜枕（1：5188）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 钢枕（1：5188）局部</p>
+<p>图版四三（XLIII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜镜（1：5224）<br />
+2.铜带钩（1：5040）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版四四(XLIV)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅱ型铜剑（1：5024）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.铜匕首（1：5109）</p>
+<ol>
+<li>I 型钢剑（1：5051）  </li>
+<li>I型钢剑（1：5046）</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版四五(XLV)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜剑（1：5051）之玉珔的正背两面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.钢剑（1：5046）之玉璋</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.铜剑（1：5051）之玉壺<br />
+3.铜剑（1：5046）之玉鼎</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜戈（1：4220）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型2式铜缴（1：5062）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铜（1：5032）<br />
+4.Ⅱ型I式铜缴（1：5054）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. I 型钢（1：5219）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版四七(XLVII)<br />
+1.铜琴机（1：2256）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 铜琴机（1：4089）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.1型铜（1：5082）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.Ⅱ型铜镁 <br />
+（1：3507）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.Ⅲ型铜铁 <br />
+（1：4345）</p>
+<p>2.铜鸠杖首 <br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（1：5194）</p>
+<p>1.铜鸡首仪仗饰<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（1：5060）</p>
+<p>3.Ⅱ型铜刀 <br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（1：4403<br />
+1:4406）<br />
+4. I 型铜刀<br />
+（1：5097、<br />
+1:4347）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图版四九（XLIX）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜杆形器（1：4385）<br />
+2. 铜尖状器<br />
+（1：4411）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 铜管形器<br />
+（1：4346）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版五 $\bigcirc$ (L)<br />
+1.Ⅱ型仪仗顶铜饰（1：4090）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅲ型仪仗顶铜饰（1：4091）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>IV型仪仗</li>
+</ol>
+<p>顶铜饰</p>
+<p>（1：4430）</p>
+<p>4.V型仪仪</p>
+<p>顶铜饰</p>
+<p>（1：4092）</p>
+<p>5.1型仪仗顶铜饰</p>
+<p>（1：4086）</p>
+<ol>
+<li>I 型仪仗顶铜饰</li>
+</ol>
+<p>（1：4012）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版五一（LI）</p>
+<p>器具铜构（1：5183）</p>
+<p>1.推滑构件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.长方形三段连件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版五二（LII）<br />
+1.折叠构件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 门轴和承插构件<br />
+器具铜构（1：5183）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版五三（LII）<br />
+1.器具铜构（1：5183）的合页构件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铜合页（1：4428、1：4429、1：4427、1：4296）（自左至右）</p>
+<ol>
+<li>I 型铜器足（1：4146、1：4223）</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型铜器足（1：4173）</p>
+<p>3.Ⅲ型铜器足（1：4335）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图版五五(LV)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.虎形铜器座（1：4164、1：4166）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铜鹿形饰（1：4170、1：4171）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型对兽形铜饰（1：5034）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型对兽形铜饰（1：4125）</p>
+<p>图版五七(LVII)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.镶翡翠铜饰（1：4085）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 龙首形铜饰（1：4088、1：4145）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.透雕镶玉钢饰（1：4083）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版五八(LVIII)<br />
+1.兽首形铜饰（1：4262）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.钩形铜饰（1：4350）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铜牌饰（1：4144）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 龙形铜饰（1：2121）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版五九(LIX)<br />
+1.铜直角形弯头（1：4437）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 铜箍和铜方管（1:4441、1:4438、1:4439）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.插接铜管和铜小长</p>
+<p>管（1：4142，</p>
+<p>1：4395）</p>
+<p>4.铜套饰（1：4431）</p>
+<p>5.铜小管和小长冒</p>
+<p>（1：4413、1：4435）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.长条形铜饰</p>
+<p>（1：4294）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 铜人（1:4168、1:4169）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 铜人（1:4168，<br />
+（1：4169）之背面</p>
+<h1 id="lxi">图版六一(LXI)</h1>
+<p>1.铜人（1：5089）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.铜祖（1：4018）及其小石卵（1：4019）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+I型铁暖炉（1：5092）</p>
+<p>图版六三(LXIII)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型铁暖炉（1：3505）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型铁暖炉（1：3027）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型铁剑（1:5042）剑身和茎上之附着物</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铁剑（1：5042）之玉碑正面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.铁剑（1：5042）之玉牌背面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 剑剑（1：5042）之玉剑首</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.铁剑（1：5042）<br />
+5.铁剑（1：5042）之玉墙</p>
+<p>图版六五(LXV) <br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型铁剑（1：5105、1：5106）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+杖式铁剑（1：5110）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.Ⅲ型铁剑（1：4246）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1.铁匕首（1：5196）</p>
+<p>之正面</p>
+<p>2.铁匕首（1：5196）</p>
+<p>之背面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版六七(LXVII)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 铁长刀（1：5104）柄部之丝猴</p>
+<p>1.铁长刀（1：5104）之正面<br />
+2.铁长刀（1：5104）之背面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型铁刀（削）（1：5108）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅱ型铁刀（削）（1：5236）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>I型铣刀（削）（1：5197）</li>
+</ol>
+<p>4.Ⅲ型铁刀（削）（1：5198）<br />
+5. IV型铁刀（削）（1：4383）</p>
+<p>图版六九(LXIX)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铁戟铜（1：5077）</p>
+<p>2.铁矛铜（1：5073）<br />
+3.铁锭铜（1：5012）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铁弓散（1：5199）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 铁（1：5067、1：5222、1：4382、1：4344）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+出土时的铁铠甲（1：5117）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铁（1：4397、1：4442、1：4443）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 铁铸（1：4225）和铁斧（1：4399）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铁锤（1：5125）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.铁锯条（1：4425、1：4445、1：4444）</p>
+<p>图版七三（LXXIII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+铁凿（1：4418、1：4422、1：4417、1：4226、1：4419、1：4416）、铁锤（1：4432）（自左至右）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.U形铁器（1：4322）、拱形铁条（1：4268）、铁把手（1：4424）、马鞍形铁器（1：4250）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.方形铁器（1：5238、1：4305）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铁轴（1：4209，去锈后），（1：5080）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.铁合页（1：5195）</p>
+<p>图版七五（LXXV）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.金医针（1：4447、1：4446、<br />
+1：4390、1：4354）（自左至右）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.轮形金饰（1：4392、1：4353）（上）、<br />
+金叶（1：4393，1：4362）（下）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.银盒（1：4280）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.银箸形器（1：4363）（左）、银医针（1：4366、<br />
+1：4391）（中）、银脂饰（1：5120）（右）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.银瓢斗形器（1：4369）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.银（1：4265）</p>
+<p>3.金带特（1：5220，上）</p>
+<p>银带特（1：4356，下）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版七七(LXXVII)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型陶壶（1：3062）<br />
+3.Ⅱ型陶壶（1：3464）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅲ型陶壶（1：3475）<br />
+4. IV型陶壶（1：3467）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版七八（LXXVIII）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1.V型陶壶（1：3459）<br />
+3.V型陶壶（1：3465）</p>
+<p>2.Ⅲ型小陶壶（1：3204）<br />
+4. I型陶（1：3104）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版七九(LXXIX)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型小陶壶（1：3201）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型小陶壶（1:3083）<br />
+3. I型陶缸（1：3050）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I 型陶罐（1:4331）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型陶罐（1：3126）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅲ型陶（1：3070）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. IV型陶罐（1：3063）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.V型陶（1：3212）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.V型向（1：3210）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版八一（LXXXI）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅶ型陶罐（1：3211）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 塔型陶罐（1：3157）<br />
+3.Ⅱ型陶罐（1：3220）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4、5.陶（1：3502）及内的动物骨骼</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版八二（LXXXII）<br />
+1. I型陶盆（1：3442）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型陶盆（1：3020）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅲ型陶盆（1：4065）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 陶瓷形器（1：3290）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.Ⅱ型陶瓶（1：3292）</p>
+<p>图版八三（LXXXIII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型陶瓶与釜（1:3031、1:3014）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型陶瓶与釜（1：3495、1：3397）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.1型陶瓶与釜（1：3031、1：3014）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型彩绘陶匮（1：3134）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型彩绘陶体（1：3121）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. I 型彩绘陶体（1:3121）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型彩绘陶鼎（1：3088）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型陶鼎（1：3394）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型彩绘陶盒（1:3176）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型彩绘陶盒（1：3165）</p>
+<p>图版八七(LXXXVII)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I 型彩绘陶盘（1:3184）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型彩绘陶盘（1：3234）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅱ型素面陶盘（1：3237）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I 型彩绘陶盘花纹（1：3184）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. I型彩绘陶盘花纹（1：3254）</p>
+<p>图版八九(LXXXIX)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ型彩绘陶盘花纹（1：3234）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型彩绘陶盘花纹（1：3256）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ型彩绘陶盘花纹（1：3225）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型彩绘陶盘花纹（1：3271）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版九一（XCI）</p>
+<p>1.Ⅱ型彩绘陶盘花纹（1：3183）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型彩绘陶盘花纹（1：3198）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ型彩绘陶盘花纹（1：3242）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型彩绘陶盘花纹（1：3245）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版九三(XCIII)<br />
+1.Ⅱ型彩绘陶厄（1：3401）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型彩绘陶厄（1：3398）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. I型陶厄（1：3411）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.Ⅲ型陶厄（1：3422）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I 型彩绘陶耳杯（1:3346）<br />
+2.1型陶耳杯（1：3310）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. I型陶灯（1：4022）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.Ⅲ型陶灯（1：4035）<br />
+4.Ⅱ型陶灯（1：4011）</p>
+<p>图版九五（XCV）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+I型玉璧（1：5048）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+Ⅱ型玉璧（1：5094）</p>
+<p>图版九七(XCVII)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ型玉璧（1：5215）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型玉璧（1：5225）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅲ型玉璧（1：5209，1：5213）<br />
+2.Ⅲ型玉（1：5217）</p>
+<p>图版九九（XCIX）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅲ型玉璧（1：5098）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.玉环（1：5099）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. IV型玉璧（1：5107）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.玉圭（I：5096）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.玉圭（1：5226）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.玉圭（1：5095）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1.玉带钩（1：5049、1：5200、1：5050）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1.玉饰上，透雕兽形玉饰（1：4008）</p>
+<p>左中，透雕凤鸟形玉饰（1：4140），</p>
+<p>左下，桃形玉饰（1：4001），</p>
+<p>右：菱形五饰（1：4006，1：4007）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.玉璜（1：4133）</p>
+<p>2.圆管形玉饰（1：5223）</p>
+<p>1.玛瑙珠串饰（1：5130）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一O三（CIII）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.玉（1：5100）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.玉人座底铭文（1：5172）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.玉人（1：5172）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.玉印（1：5191）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.玉印（1：5192）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>5.玉印（1：5171）<br />
+6.玉印（1：5170）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一〇五(CV)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.玉七窍寒（1：5227—1：5230）</p>
+<p>1.玉罩盒（1：5232）<br />
+2.玉塞（1：5231）</p>
+<p>4.璜形玉器（1：5240、1：5241）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 搓石（1:5184）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.石磨及铜漏斗形器（1：3001、1：3002）<br />
+3.石磨及铜漏斗形器（俯视）</p>
+<ol>
+<li>砻石（1：4387）</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一〇七(CVII)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 案栏铜饰</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 案足 <br />
+I型漆案（1：5017）铜饰件<br />
+3. 案栏铜饰</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型漆案（1：5027）案栏铜饰</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型铜器足（1：4358）</p>
+<p>1.Ⅱ型漆案（1：4176）</p>
+<p>铜案足和案栏铜饰</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.Ⅲ型漆案（1：4178）</p>
+<p>铜案足和案栏铜饰</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>I型铜器足（1：4323）</li>
+</ol>
+<p>4.鸟形铜饰（1：4208）</p>
+<p>图版一一O（CX）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 滚盘（1：5088）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.漆耳杯（1：5005）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.膝耳杯（1：5031）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一一一（CXI）<br />
+1. I 型铜铺首（1：5167）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>IV型铜铺首（1：4348）<br />
+3.Ⅲ型铜铺首（1：4174）</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.Ⅱ型铜铺首（1：4379）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.V型铜铺首（1：5221）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.银铺首（1：4451）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一一二（CXII）<br />
+1.F-1,细绢（×32）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.F-9，（×25）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. F-11, 纹罗（×25）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.F-13,起圆菱纹锦（×5）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. M1 玉鞋上组带痕迹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一一三（CXIII）<br />
+1. 底座构件和柱端构件的组合</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 顶角构件和柱端构件的组合</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.顶角构件和柱端构件的分解</p>
+<p>钢帐构（1：4181）</p>
+<ol>
+<li>底座构件和柱端构件的分解</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一一四（CXIV）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.立柱中段承插构件</p>
+<p>铜帐构（1：4181）</p>
+<p>3.地根中段折叠式构件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.枋木中段折叠式构件和圆筒形搭接构件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一一五(CXV)</p>
+<p>铜帐构（1：4181）</p>
+<p>1.脊端构件和垂柱上端构件的组合</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.骨端构件和垂柱上端构件的分解</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.垂臂中段折叠式构件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一一六（CXVI）<br />
+1.垂柱柱头构件的组合（仰视）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+铜帐构（1：4181）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.垂柱柱头构件的分解<br />
+3.垂柱柱头构件的组合（俯视）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一一七(CXVII)<br />
+1.橡木上墙构件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.垂脊前端和橡头构件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.人字形斜撑顶部构件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+铜帐构（1：4181）<br />
+4.斜撑两端构件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一一八(CXVIII)<br />
+1. 底座构件和立柱柱端构件的组合</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 底座构件和立柱柱端构件的分解</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.顶角构件和立柱柱端构件的组合</p>
+<p>铜帐构（1：4320）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>4.顶角构件和立柱柱端构件的分解</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一一九(CXIX)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.垂骨中段承插构件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.立柱中段承插构件</p>
+<p>铜帐构（1：4320）</p>
+<p>3.仿木和地秋中段折叠式构件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 撑头构件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.垂脊前端构件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 落销构件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+铜帐构（1：4320）<br />
+4.橡木上端构件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一二一（CXXI）<br />
+1.2号车马遗物出土情况（向东视）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.3号车马遗物出土情况（向南视）</p>
+<ol>
+<li>I型铜车音（1：2239、1：2242）</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型铜车告（1：1091，1：1094）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>3.Ⅱ型钢车音（1：1028）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一二三（CXXIII）<br />
+1. 铁钢（1：2045）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>钢铝（1：1092）（左）<br />
+铜杠（1：1096）（右）<br />
+3.铜轴箍（1：2077）</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>4.圆筒形带孔铜器（1：2284）</p>
+<p>图版一二四（CXXIV）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜装饰（1：1068）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 钢镀饰（1：1069）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 铜装饰（1：2106）</p>
+<p>图版一二五（CXXV）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.弓形铁支架（1：2007）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. I型铜较（1：2028）<br />
+3.Ⅱ型铜较（1：2189、1：2190）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型铜钩饰（1：2035）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅲ型铜钩饰（1：2226）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型铜钩饰（1：2082）</p>
+<p>4.V型钢钩饰（1：1147）（左），Ⅳ型钢钩饰（1：1039）（右）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一二七（CXXVII）<br />
+1.长筒形铜车饰（1：2195）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.V型铜（1：2192）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. I型铜胃（1：2286）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.V型铜冒（1：2192）所示错金银工艺（放大）</p>
+<p>图版一二八（CXXVIII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 衡末轭首铜饰（1：2081）（左）、铜冒（1：1022、1：2257、1：1109、1：2327）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型铜管和筒腔中的 遗木麻缕</p>
+<p>1.铜盖弓帽Ⅲ型（1：1053）</p>
+<p>IV型（1：2298）、V型</p>
+<p>（1：4084、1：4378）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一二九（CXXIX）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.铜盖弓帽I型1式（1：2100）</p>
+<p>Ⅱ型1式（1：2313）</p>
+<p>3.铜盖弓帽Ⅱ型2式（1：2209）</p>
+<p>I型2式（1：1119）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1.铜钩（1：2072）</p>
+<p>铜柱形饰（1：2119）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铜椅饰（1：2238）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.盖柄钢箍（1：2231）</p>
+<p>图版一三一（CXXXI）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.长方形铜管（1：2292）、铜环形钉（1：2289）、铜带环管（1：2193）、铜蹄足形器（1：4449）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铜车门轴及门白（1：2156）<br />
+3.铜包角（1：2322）</p>
+<p>1.铜拉手（1：2320）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一三二（CXXXII）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.兽面形铜车饰I型（1：1128、1：2246）、Ⅱ型（1：1026）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一三三（CXXXIII）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.长方形活轴铁车器（1：2345）<br />
+2. IV型铜环（1：2010）</p>
+<p>3.铜环I型</p>
+<p>（1：2042）</p>
+<p>（左）、</p>
+<p>（1：2237）</p>
+<p>（右）、V型</p>
+<p>（1：2194）</p>
+<p>（中）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜铺首（1：2293）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. I型钢环（1：2016）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.丁字形铁器（1：2346）、钩形铁器（1：1140）</p>
+<p>图版一三五（CXXXV）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+铜承弓器（1：2248、1：2249）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+铜承弓器（1：1103、1：1104）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一三七（CXXXVII）</p>
+<p>1.铜锯齿形器（1：2251）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>铜锯齿形器（1：1083）</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型银当卢（1：2260）</p>
+<p>2.Ⅱ型钢当卢（1：2064）</p>
+<p>图版一三九（CXXXIX）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.V型铜当卢（1：2027）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.V型铜当卢（1：1003）</p>
+<p>图版一四O（CXL）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.锥型铜当卢（1：4299）<br />
+2.V型铜当卢（1：1144）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.银当卢Ⅲ型（1：2325）（左）、Ⅳ型（1：2278）（中）、V型（1：2258）（右）</p>
+<p>图版一四一(CXLI)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I型钢衔（1:2228）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. IV型铜衔（1:4440）<br />
+2.Ⅲ型铁衔铜（1：1074）</p>
+<p>1.Ⅱ型铜衔（1：2187）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. IV型铜衔（1:4450）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. I型铜衔（1：1073）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>4.V型铁街（1：4381）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一四三(CXLIII)</p>
+<p>1.Ⅱ型铜泡（1：2110）<br />
+2.V型铜泡（1：1017、</p>
+<p>1:2295、1:2155)</p>
+<p>3.Ⅲ型铜泡（1：2128）<br />
+4. IV型铜泡（1：2037）</p>
+<p>5.银马服饰（1：2269）<br />
+6. I型银泡（1：2274）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>IV型铜管络饰（1:2129） 2. V型铜管络饰（1:1041） 3. I型铜管络饰（1:1127） <br />
+4.铜节约（1：2039、1：2056、1：2136） 5.Ⅲ型铜管络饰（1：2130） 6.VI型铜泡</li>
+</ol>
+<p>（1：2338）7.Ⅱ型铜管络饰（1：2316） 8.Ⅶ型铜泡（1：2123） 9.Ⅷ型铜泡</p>
+<p>（1：1149） 10.铜管钉（1：2343） 11.铜贝（1：2342）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一四五(CXLV)</p>
+<p>1.Ⅱ型铜带扣（1：2344，左）</p>
+<p>I型铜带扣（1：2117，右）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铁链（1：1102，1：1097）</p>
+<p>2.铜轮轴形器（1：2118、1：2135）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.石俑（1：5001）</p>
+<p>2.陶俑（1：4061）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一四七（CXLVII）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1.石俑（1：4324）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.石俑（1：5175）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.石俑（1：5010）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.石俑（1：5016）</p>
+<p>图版一四九（CXLIX）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+金饼（1：5189）</p>
+<p>1.中家铜钱出土情况 <br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.后室铜钱出土情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一五一（CLI）<br />
+1. 半两钱</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>I型五铢钱 <br />
+3.Ⅱ型五铢钱 <br />
+4.Ⅲ型五铢钱</li>
+</ol>
+<p>图版一五二（CLII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.料盘（1：5124）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.料耳杯（1：5122）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一五三（CLII）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.虎纹牙雕（1：4047）<br />
+2.虎纹牙雌（1：4047）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. “中山御丞”封泥（1：5180）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.骨质假马牙（1：4297）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 蛋器（1：3508）<br />
+5.珍珠（1：5193）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+二号墓封门结构</p>
+<p>图版一五五（CLV）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.二号墓墓门上部铸口及铁流</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.二号鼻北耳室全景</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.二号基中室清理前情景<br />
+2.二号基中室建筑瓦片堆积（局部）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.二号墓中室砖结构（局部）</p>
+<p>图版一五七（CLVII）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.二号墓后室石门打开前情景</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.二号墓后室石门打开后情景</p>
+<hr />
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一五八（CLVIII）</p>
+<p>1.二号墓十室西壁及顶部结构</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.二号墓主室小侧室石门打开前情景</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.二号墓后室顶门器</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+二号墓南耳室全景</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.二号基南耳室第二砖隔间内陶器放置情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.二号基南耳室第五砖隔间内陶器放置情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.二号塞南耳室第六砖隔间内陶器放置情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.二号基南耳室东部陶器放置情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.二号基中室南区东部器物出土情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.二号基中室南区中部器物出土情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.二号墓中室南区器物台上出土器物情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.二号墓后室“长信宫”灯出土情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.二号基后室铁刀、套出土情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.二号墓后室“肖形印”出土情况 <br />
+2.二号基主室的侧室内器物出土情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.二号嘉德玉漆棺的玉版、玉璧出土情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.二号基镶玉漆棺内壁镶嵌玉版编号情况 <br />
+① “左第一甲七”</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+② “甲三”</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+③ “右第二”</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1.二号基“金绿玉衣”出土情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>3.“玉衣”内窦结残齿</p>
+<p>2.二号墓“玉衣”内前胸放置玉璧的情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一六七（CLXVII）<br />
+“王新等”章台二明当耳</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一六九（CLXIX）</p>
+<p>1.Ⅱ型铜壶（2：4029）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>I型铜壶（2：3042）</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 铜坊（2：3029）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.V型铜釜（2：3112）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅲ型铜鼎（2：3054） 4.I型铜瓶（2：3048）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. I 型铜瓶 (2:3038)</p>
+<p>图版一七一（CLXXI）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜铜（2：4106）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铜（2：4034）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.V型铜盆（2：3123）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1.Ⅱ型铜盆（2：3122）<br />
+2. 铜体（2：3002）<br />
+3.铜盘（2：3036）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. IV型铜盆（2：4092）</p>
+<p>图版一七三（CLXXIII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜耳杯（2：3028）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铜（2：3060）<br />
+3.铜炉（2：3031）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一七四（CLXXIV）<br />
+1. I型铜勺（2：3041）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅲ型铜勺（2：4088）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅱ型铜勺（2：3049）</p>
+<p>图版一七五（CLXXV）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+I型铜熏炉（2：3004）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.V型铜蒸炉（2：3109）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.VI型铜薰炉（2：3044）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一七七(CLXXVII)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>铜朱雀灯（2：3102）</p>
+<p>图版一七九（CLXXIX）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅶ型2式铜灯（2：4097）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.锥型铜灯（2：3101）</p>
+<p>图版一八O（CLXXX）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 铜枕（2：4003）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 连弧纹铜镜（2：4010）</p>
+<p>图版一八一（CLXXI）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 蜘婿纹规矩铜镜（2：4114）</p>
+<p>1.四乳兽纹铜镜（2：4129）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+铜朱雀衔环杯（2：3032）</p>
+<p>图版一八三（CLXXXIII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+铜豹（2：3056、2：3057）</p>
+<p>1.Ⅱ型铜剑（2：4031）<br />
+2.Ⅲ型铜剑（2：4030）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一八四（CLXXXIV）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. IV型铜（2：1316）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.铜缴与铜（2：4128、2：4061）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一八五（CLXXXV）<br />
+1. I型铜合页（2：4062）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铜冒钉（2：4057）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.VI型铜仪仗顶饰（2：3010）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.铜藤菇顶筒形器（2：3087）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.Ⅱ型3式铜缴（2：4089）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.Ⅶ型铜仪仗顶饰（2：4081）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜“宫中行乐哉”（2：3023）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 铜骰（2：3064）</p>
+<p>图版一八七（CLXXXVII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. I 型铜印（2：4058） 2. II 型铜印（2：4017）</p>
+<p>3.Ⅲ型1式铜印（2：4130。</p>
+<p>2:4131、2:4132）（上面一排）</p>
+<p>Ⅲ型2式铜印（2：4136。</p>
+<p>2:4138、2:4139.<br />
+2:4142、2:4141、<br />
+2:4140、2:4137、<br />
+2:4133、2:4135、<br />
+2：4134）（下面三排）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>4.Ⅲ型1式铜印（2：4130、2：4131）（左）Ⅲ型2式铜印（2：4136、2：4138）（右）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 铜小扁壶（2：3019）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.小铜人（2：3067）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>3.小骑马铜人</p>
+<p>（2：3025、2：3047）</p>
+<p>4.小铜牛（2：3046）</p>
+<p>图版一八九（CLXXIX）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 尺上包裹丝织品及粘附席子残迹（局部放大）</p>
+<p>错金铁尺（2：3065）</p>
+<p>2.修复前情形<br />
+3.修复后情形<br />
+4.X光透视照片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 错金附件修复前情形（2：3125、2：3066）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 错金附件X光透视照片（2：3125、2：3066）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一九一（CXCI）</p>
+<p>1.铁权（2：04）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 错金铁饰件（2：4116）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 铁灯（2：4098）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.VI型铁刀（2：4117）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.VI型铁刀（2：4144）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.V型铁刀（2：4143）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.VI型铁刀（2：4145）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一九三（CXCIII）<br />
+1.刀鞘正面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.刀鞘背面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3X光透视照片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 刀鞘正面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 刀鞘背面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.两刀分开后X光透视照片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一九五（CXCV）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铁帽上、“夹背锯”（2：3033）<br />
+下、“小齿帽”（2：3111）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铁蟹（2：3097）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.铁（2：4054）<br />
+3.铁锤（2：009）</p>
+<p>5.铁三齿靶 <br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+（2：3099）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一九六（CXCVI）<br />
+1.铁犁伸（2：01）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铁二齿耙（2：3116）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铁铲（2：001）</p>
+<p>图版一九七（CXCVII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 铁振（2：008）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. I型1式铁帽内范（2：4069）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铁内范（2：4074）<br />
+4. I型3式铁螺内范（2：4068）</p>
+<p>图版一九八（CXCVIII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铁内范（2：0011）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1型2式铁帽内范（2：3117）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.铁外危残件（2：0010）<br />
+3.Ⅱ型铁颗内范（2：4073）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版一九九（CXCIX）<br />
+1. I型铁铸件（2：02）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. I型铁件（2：03）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.铁支架（2：3082）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铁砧（2：06）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.Ⅱ型铁铸件（2：05）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.铁匕形器（2：3074）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.VI型陶壶（2：4091）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. X型陶（2：4105）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅰ型陶（2：2143）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.Ⅱ型陶坊（2：2151）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二O一（CCI）<br />
+1.X型陶罐（2：2144）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. IV型陶盆（2：2047）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.筒形陶（2：2355）<br />
+3.Ⅱ型陶缸（2：2026）</p>
+<p>1.彩绘陶盆（2：2487）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.彩绘陶盆（2：2480）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二O三（CCIII）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1.彩绘陶盆（2：2481）</p>
+<ol>
+<li>
+<p>彩绘陶盆（2：2482）</p>
+</li>
+<li>
+<p>彩绘陶盆（2：2541）</p>
+</li>
+</ol>
+<p>4.彩绘陶盆（2：2485）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1.彩绘陶盆（2：2486）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图版二〇五（CCV）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ型陶钵（2：2382）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅲ型陶釜、（2：2158、2：2475）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅲ型陶（2：1125）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.Ⅲ型陶鼎（2：2142）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅲ型彩绘陶盒（2：2458）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. IV型彩绘陶盒（2：2173）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅲ型陶耳杯（2：2386）</p>
+<p>图版二〇七（CCVII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ型陶（2：2200）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅲ型陶（2：2193）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. IV型陶（2：2478）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅲ型陶厄（2：2471）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. IV型陶厄（2：2570）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.陶碗（2：3120）<br />
+3.Ⅲ型陶灯（2：2226）</p>
+<p>图版二〇九（CCIX）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+II型玉璧（2：4158）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ型玉璧（2：4157）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型玉璧（2：4163）</p>
+<p>图版二一（CCX1）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅲ型玉（2：4159）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅲ型玉（2：4160）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二一二（CCXII）<br />
+1.玉（2：4154）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.玉环（2：4013）<br />
+3. 水晶印（2：4016）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 研石（2：4156）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.玉带钩（2：4014）（上）（2：4056）（下）<br />
+6.玉印（2：4015）（上）（2：4155）（下）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二一三（CCXIII）<br />
+1.玉塞（2：4009）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.玉七窍塞（2：4004—2：4007）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.圭形玉器（2：4008）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 磨形玉器（2：4011）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+玉舞人玛瑙水晶珠串饰（想像复原）</p>
+<p>图版二一五（CCXV）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ型漆案（2：4079）铜饰件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅲ型漆案（2：3107）铜饰件</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 铜饰带</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 铜饰带X射线透视照片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铜饰带</p>
+<p>漆交（2：4024）铜饰带</p>
+<p>4.铜饰带X射线透视照片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二一七（CCXVII）</p>
+<p>1.漆交（2：4024）盖顶铜饰</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.漆尊（2：4040）铜饰</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.漆在（2：4024）内小盒的盖顶铜饰</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 滤耳杯（2：4049）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二一九（CCXIX）</p>
+<p>1.F—12两色织锦 约×10</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>铜枕（2：4003）上残存的绣花枕套</li>
+</ol>
+<p>3.F-14绣绢残片</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 1号车马遗物出土情况（向北视）<br />
+2.1号车的马骨架出土情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二二一（CCXXI）<br />
+1.2号车马遗物出土情况（向南视）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.3号车马遗物出土情况（向北视）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二二二（CCXXI）<br />
+1.铁铜（2：1383）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>I型铜车弯（2：1084）<br />
+3.Ⅱ型钢车否（2：1388）</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>4.弓形铁支架</p>
+<p>（2：1250）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二二三（CCXXIII）</p>
+<p>1.Ⅱ型铜纹（2：1419）（左），</p>
+<p>I型铜纹（2：1014）（右）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>形铜车饰（2：1337）</li>
+</ol>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>3.Ⅵ型铜饰（2：1186）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 衡末轭首铜饰<br />
+（2：1131）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. IV型铜冒（2：1211）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>3.盖柄铜（2：1397）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.铜盖弓帽（2：1167、2：1162、<br />
+2:1213、2：1116）</p>
+<p>图版二二五（CCXXV）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铜车门轴及门白（2：1105、2：1103）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 铜车门轴及门白（2：1214、2：1217）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铜拉手（2：1122）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二二六（CCXXVI）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.兽面形铜车饰（2：1382、2：1387）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.护形铁器（2：1087）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铲形铁器（2：1074）</p>
+<p>图版二二七（CCXXVII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.长方形活轴铁车器（2：1380、2：1412）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.圆筒形带孔铁器（2：1458）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.钩形铁器（2：1457）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二二八（CCXXVIII）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. IV型铜环（2：1168）</p>
+<p>1.兽首形铜饰（2：1399）（上）、</p>
+<p>铜铺首（2：1340）（下）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铁环钉（2：1355、2：1197）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.钢跨足形器（2：1408）</p>
+<p>1.Ⅱ型铜锯齿形器（2：1411）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铜衔象牙（2：1032）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.Ⅰ型2式铜当卢（2：1302）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+IX型1式铜当卢（2：1021）</p>
+<p>图版二三一（CCXXI）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+IX型1式铜当卢（2：1171）</p>
+<p>图版二三二（CCXXII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅱ型1式铜当卢（2：1039）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型1式铜当卢（2：1041）</p>
+<p>图版二三三（CCXXIII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.Ⅲ型铁带扣（2：1062）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.Ⅱ型铜带扣（2：1051）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.VI型铜管络饰（2：1454）<br />
+4.Ⅲ型钢管络饰（2：1198、2：1428）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.Ⅲ型铜节约（2：1356、2：1346）</p>
+<p>1.金饼（2：3015）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.象牙勺（2：4071）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>3.“中山柯祀”封泥（2：3018）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<ol>
+<li>“中山祠祀”封泥（2：3018）</li>
+</ol>
+<p>图版二三五（CCXXV）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.刘胜“玉衣”头部出土情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.刘胜“玉衣”脸盖</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.刘胜“玉衣”头罩</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.刘胜“玉衣”上衣后片服平后形状</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.刘胜“玉衣”上衣前片展平后形状</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+孕当孕增孕与孕于孕王，<br />
+孕当在增强于孕王，翻依*1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.刘胜“玉衣”牌肉修复后形状</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+孕 <br />
+冷多当去首月</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+非当去前</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+须当土消异孕孕王，理仪*1</p>
+<p>图版二四一(CCXLI)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.窦绾“玉衣”上衣玉片上粘贴的织物痕迹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.窦缩“玉衣”上衣玉片上粘贴的织物痕迹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.窦缩“玉衣”上衣玉片上粘贴的织物痕迹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.窦馆“玉衣”裤敞开口接缝处（内侧）铁条锁边痕迹</p>
+<p>刘胜“玉衣”裤筒开口接缝处（外侧）铁条锁边痕迹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>图版二四三(CCXLIII)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 刘胜“玉衣”上衣前片内侧的玉片编号“三”</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 刘胜“玉衣”上衣前片内侧的玉片编号“五”</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 宴馆“玉衣”左鞋玉片上的锯缝（右上角）和管钻（左下角）痕迹</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 编缀“玉衣”的各种金丝</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.“玉衣”表面金丝打结情况</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. “玉衣”里面金丝编结方法之一</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二四五（CCXLV）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+修复前的铁铠甲</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二四六（CCXLVI）<br />
+1、2、3. 第一、三、五层</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4、5、6.第七、九、十一层</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+7、8、9，第十三、十四、十五层铁铠甲右袖打开过程</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二四七（CCXLVII）<br />
+1.正面</p>
+<p>4.卷曲状 <br />
+铁铠甲复原模型<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.侧面<br />
+3.背面</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>铁铠甲的局部</p>
+<p>1.右肩正面（左）、 右肩背面（右）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.右胸正面（左）右胸背面（右）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二四九(CCXLIX) <br />
+1. 左肩正面（左）。左肩背面（右）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>3.左半身连垂缘正面（左）、左半身连垂缘背面（右）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.后背当中正面（上）、后背当中背面（下）</p>
+<p>铁铠甲的局部</p>
+<p>铁铠甲的局部</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>1.后领正面（上）、后领背面（下）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.右身连垂缘正面（左）、右身连垂缘背面（右）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二五一（CCLI）</p>
+<p>铁铠甲的局部</p>
+<p>1.右肋接袖部位正面（上）、 右肋接袖部位背面（下）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 左轴</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二五二（CCLII）<br />
+1.铁犁铧（2：01）之灰口铁组织 ×200</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铁掣（2：01）之麻口铁组织 ×200</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铁犁铧（2：01）尖部之麻口铁组织 ×200</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 铁铲（2：003）为铁素体—珠光体可锻铸铁 $\times 250$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.铁（1：4397）为铁素体—珠光体可锻铸铁×200</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.铁（1：4333）具有白口铁和灰口铁混合组织即麻口铁 $\times 180$</p>
+<p>图版二五三（CCLII）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铁（1：4306）为原奥氏体枝晶和莱氏体<br />
+共晶组成的亚共晶白口铁 ×160</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铁内范（2：3118）之灰口铁组织 ×250</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.铁器（2：3097）刃部的显微组织铁素体加<br />
+珠光体，铁素体被伸长 ×400</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铁外范残件（2：0010）之亚共晶白口铁组<br />
+织 ×250</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 铁车钢（1：2046）之灰口铁组织 ×250</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 铁炉（I：3504）的显微组织，粗大的铁素体<br />
+体品粒 ×200</p>
+<p>图版二五四（CCLIV）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 铁脑（1：4382）a，之显微组织，铁素体加珠光体 ×200</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铁（1：4344）a，鞋身表层显微组织，铁素体晶界有浮雕 $\times 250$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.铁铠甲片（1：5117）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 铁（1：4382）b，由铁素体及夹杂物组成 ×200</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.铁（1：4344）b，身深部沿铁长度方向抛光面之显微组织，等轴铁素体晶粒×250</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 铁铠甲片（1：5117）的显微组织，等轴铁素体晶粒，某些晶界上有游离渗碳体 ×200</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二五五（CCLV）<br />
+1.钢剑（1：4249）残段实物（1/3）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 钢剑（1:4249）外层的显微组织，索氏体、铁素体和无碳贝氏体 ×200</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.钢剑（1：4249）断面的分层组织，非金属夹杂物比较集中在高碳层 $\times 180$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.钢剑（1：4249）a，的电子显微组织，铁素体和索氏体以及三角形和四方形的夹杂物×5200</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.钢剑（1：4249）b，的电子显微组织，索氏体和铁素体以及四方形夹杂物×9500</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 错金书刀（1：5197）断面上的高碳和低碳分层组织，夹杂物在高碳层 $\times 100$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 错金书刀（1：5197）刃部的淬火组织，片状是马氏体。深色块状是屈氏体，深色条状是非金属夹杂物 ×700</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 错金书刀（1：5197）<br />
+X射线透视照片，可看到错金花纹图案。<br />
+4.刘胜佩剑（1：5105）断面的高碳和低碳分层组织，有长条状共晶夹杂物分布在高碳层 $\times 100$</p>
+<h1 id="cclvii">图版二五七(CCLVII)</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 刘胜佩剑（1：5105）表层渗碳并经过热处理的组织，索氏体加少量无碳贝氏体 ×400</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.刘胜佩剑（1：5105）刃部的淬火组织，马氏体加压氏体×630</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 刘胜佩剑（1：5105）刃部淬火过渡区的上贝氏体、马氏体和屈氏体组织，上贝氏体呈羽毛状由晶界向晶内排列成簇 $\times 630$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.钢（1：5023）刃部渗碳层的显微组织，屈氏体和少量铁素体及无碳贝氏体 ×250</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.钢收（1：5023）刀部的电子显微组织，屈氏体和少量铁素体 ×5200</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.钢戟（1：5023）从刃部到心部过渡区的显微组织，圆氏体、铁素体和少量无碳贝氏体。无碳贝氏体呈片状 $\times 250$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二五八（CCLVIII）<br />
+1. 钢戟（I：5023）过渡区的电子显微组织，屈氏体和铁素体 ×5200</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 钢戟（1：5023）心部的电子显微组织，索氏体和铁素体 ×5200</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.银（1：4265）的显微组织，银基固熔体和铜基固熔体共晶组织 $\times 250$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.铜（1：5082）的显微组织×400</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 银柄铣刃环首刀（2：4147）银柄部分的显微组织，银铜合金的共晶组织 ×500</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6. 银柄铁刃环首刀（2：4147）之银柄和铁刃焊缝附近的显微组织，铁刃部已锈蚀，中间是焊缝 $\times 250$</p>
+<p>图版二五九(CCLIX)<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 错金书刀（1：5197）中的大块共晶型非金<br />
+属夹杂物 ×180</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 错金书刀（1：5197）夹杂物的电子反射相 ×250</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 错金书刀（1：5197）夹杂物电子探针硅分布相<br />
+4. 错金书刀（1：5197）夹杂物电子探针钙分布相</p>
+<p>1.钢剑（1：4249）低碳层夹杂物电子反射相 $\times 250$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>2.钢剑（1：4249）低碳层夹杂物电子探针硅分布相</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>3.钢剑（1：4249）低碳层夹杂物电子探针钙分布相</p>
+<p>图版二六一（CCLXI）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.铁颗（2：0012）显微组织：初生渗碳体和共晶体（莱氏体） $\times 400$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铁铜内苑（2：3077）显微组织，初生渗碳体和共晶体（莱氏体） $\times 400$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.铁徽（1：4344）显微组织：铁素体 ×400</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 铁刀（1：5108）显微组织：铁素体加珠光体 ×1280</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.铁戟（1：5023）显微组织：铁素体加珠光体（部分珠光体为粒状） ×1280</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.铁青（1：4422）显微组织：铁素体加珠光体（部分珠光体为粒状） ×1280</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 榜套（1：5113）上金片金相组织 ×600</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.铁刀（1：5242）环首上金片金相组织×440</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. “玉衣”（1：5173）金丝金相组织及外形轮廓 ×440</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二六三（CCLXIII）<br />
+1.铁刀（1：5242）环首缠金片的X射线德拜相</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. “玉衣”（1：5173）金丝的X射线德拜相</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.对照样品（冷轧退火金片）的X射线德拜相</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 一号基“玉衣”的玉片（编号：1衣）在玉化微片基底上出现一束玉化尽的透闪石，从边缘到核心，消光位不一致，在同一位置上，核心消光时，边缘尚明亮。×270</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.1衣·一透闪石玉化成麻布状长片，其中产生虫眼，充填极细微片，把此麻布穿通成麻纱状体。 $\times 86$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.1衣·一透闪石玉化成一团云朵状体，原结晶的轮廓尚在，跟外方极细微片群，界限显明。×66</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.1衣·透闪石玉化后，常在结晶里或在结晶的间隙中产生一些绒毛体，或成扇状或成球形。×49</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5. 一号墓白玉饰片（编号：1白）·从图中央到左方为一透闪石的玉化体，跟周围的微片群界限分明，绘出原结晶的轮廓，很似从透闪石交代出的绢石状假象。×37</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.1白·图中央的黑块，由极细微片所组成干涉色很低，跟周围的成毛体界限分明，故也似绢石状体。 $\times 110$</p>
+<p>图版二六五（CCLXV）<br />
+🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.二号墓“玉衣”的玉片（编号：2E）·图中央为一未玉化尽的透闪石，内部裂开，充填细绒毛片，边缘，特别是两端，绒毛化跟外方全绒毛化的长大片体还有界限。×86</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.2E·透闪石深玉化，形成麻布状大片，复由虫眼扩大（黑色细长圆体），把它穿通，形成小菱形群，平行排列成许多行，但都同时平行消光，故跟周围的玉化物还有界限。×37</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.2E·透闪石深玉化，把原结晶全摧毁掉，形成一大群绒毛扇和绒毛球，其中还出现一些平行排列的细丝，似为麻布体的残迹。×66</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.2E·透闪石玉化最深时，在原结晶里和间隙里产生绒毛扇和绒毛球群，故看不出原矿物的痕迹。×86</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.二号富“玉衣”的玉片（编号2）·在深玉化的基底上，出现未玉化尽的透闪石，其中的一粒裂开，充填极细微片，跟基底里的联成一片。×143</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.2]·深玉化的透闪石，形成麻布状大片，复被充填极细微片的细网，隔开成一群小菱形体，其中全分布平行排列和同时平行消光的细丝。×143</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.2 J·图中央偏左为一黑块, 为一系平行排列的细丝所组成, 呈正光性的现象, 似正光性蛇纹石质细石的垂直乙轴的切面。 ×110</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.一号“玉衣”的玉片（编号：1F）·透闪石玉化成麻纱状大片，其中尚遗留未玉化尽的透闪石残迹。×270</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.1F·尚具一定界的探玉化的透闪石，形成绒毛体群，其中又出现两组互交成菱形的解理状微裂，充填极细微片。×110</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 一号基玉衣的玉片（编号：1E）在深玉化的基底上，出现旋涡状绒毛球，由弧状微片层层包裹起来的，指示在玉化时热液作旋转状活动。×86</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.二号基“玉衣”的玉片（编号：2B）·在微片基底上，出现一透闪石，一端保存很好，一端玉化成纤维环，在其外方还出现一条蛭石状矿物带（含白点的黑带）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.2B·局部玉化很深，产生绒毛体群（扇状和球形集体）。 $\times 86$</p>
+<h1 id="cclxvii">图版二六七(CCLXVII)</h1>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1.2B·在受热液作用的透闪石的横切面上，出现一透镜体，充填白云母状和蛭石状矿物。×66</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.二号墓棺壁上的玉璧（编号：土）·在玉化成绒毛片的群体中，出现一些柱状透闪石，内部保存很好，边部和尖端交代成纤维环。×66</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.二号墓棺壁上的玉璧（编号：No.1）+在玉化的微片基底上，常有一群透闪石细柱，联结成芭蕉叶状，柱的内部都保存很好，而边部和尖端常交代为纤维环。×66</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.土·全玉化的透闪石，形成破烂的麻丝体，原结晶的轮廓尚很清楚，又平行麻丝裂开，充填蛭石状的细小晶体。 ×110</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.土·一粒全玉化的透闪石，未遗留一点原矿物的痕迹，但仍保存原结晶的轮廓；在它里面产生两组互相平行而又间隔开的条带，都充填平行排列，并都平行消光的线状微片，而此两组微片又几互相正交。在它们里面还产生虫眼，充填极细微片。 $\times 110$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.二号塞棺内壁上的玉版残片（编号：123），由较粗的细柱状透闪石组成的条带，保存很好，只夹少量极细的玉化物。×110</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二六八(CCLXVIII)<br />
+1.123·由较细的细柱状透闪石组成的条带，夹杂相当分量极细的玉化物。×110</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.123·在半玉化的细柱状透闪石的基底上，出现辉石的“砂钟构造”，在四个象限里，各分布一组平行排列的针状透闪石，紧外缘，由极细微粒玉化物组成一道环（黑块是磨通的孔洞）。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3.二号塞棺内壁上的玉版砚片（编号：155）针状透闪石分布在粒状辉石（？）里，作类似嵌斑构造。×66</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4.1衣·在极细玉化物基底上，出现柱状β一帘石，边缘熔蚀成齿状和缺口，充填极细微片，并在紧外缘产生白云母状细片。</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+5.21·在玉化的微片基底上，出现一群细柱状 $\beta$ 一帘石，联结成扇状。×143</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+6.21·在玉化的微片基底上，出现一长圆体，其中由线状磁铁矿交织成网状体，包裹一些白云母状细片；在此合晶体中，侵入玉化物，故似跟玉化物同时产生的。×143</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二六九(CCLXIX)</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 榆木 横切面 $25 \times$ 弦切面 $80 \times$ 径切面 $200 \times$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2. 青檀 横切面 $25 \times$ 弦切面 $80 \times$ 纬切面 $200 \times$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 朴树 横切面 $25 \times$ 弦切面 $80 \times$ 径切面 $200 \times$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+图版二七O（CCLXX）</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+1. 榨树 横切面 $25 \times$ 弦切面 $80 \times$ 径切面 $200 \times$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span></p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+2.油松 横切面 $25\times$ 弦切面 $80\times$ 径切面 $200\times$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+3. 朴树子果核 $\times  2$</p>
+<p>🖼️  <span class="img-placeholder">[本地图片]</span><br />
+4. 花椒果实 $\times  5$</p>
+<p>[General Information]</p>
+<p>书名 = 满城汉墓发掘报告 (下册)</p>
+<p>作者 =</p>
+<p>页数 $= 301$</p>
+<p>S S号=0</p>
+<p>出版日期 $=$</p>
+  </div>
+</div>
+
+<div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)"><a href="./前蜀王建墓.html" style="color:var(--muted);text-decoration:none">← 前蜀王建墓</a><a href="./塔里木盆地考古记.html" style="color:var(--muted);text-decoration:none">塔里木盆地考古记 →</a></div>
+</div>
+
+<div class="toc-float" id="tocPanel">
+  <h4>目录</h4>
+  <div id="tocContent">正在生成...</div>
+</div>
+</div>
+<footer class="site-footer">
+<div class="footer-inner">
+  <p>中国考古学专刊·丁种 实体标注知识库 &copy; 2026</p>
+  <p class="footer-links">
+    <a href="https://github.com/CrossTheOcean/archaeology-report-kb" target="_blank">GitHub</a> ·
+    <a href="../about.html">关于本站</a>
+  </p>
+</div>
+</footer>
+<script>
+
+// Generate TOC from headings
+setTimeout(function() {
+  const body = document.getElementById('reportBody');
+  const headings = body.querySelectorAll('h1, h2, h3');
+  const toc = document.getElementById('tocContent');
+  if (headings.length === 0) {
+    toc.innerHTML = '<span style="color:var(--muted)">无标题</span>';
+    return;
+  }
+  toc.innerHTML = '';
+  headings.forEach((h, i) => {
+    h.id = 'heading-' + i;
+    const a = document.createElement('a');
+    a.href = '#heading-' + i;
+    a.textContent = h.textContent;
+    a.style.paddingLeft = (h.tagName === 'H3' ? '12px' : '0');
+    toc.appendChild(a);
+  });
+}, 500);
+
+</script>
+</body>
+</html>
