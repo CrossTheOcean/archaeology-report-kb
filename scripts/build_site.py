@@ -18,7 +18,8 @@ MAP_IMAGE = BASE / 'visualization' / '遗址分布地图.png'
 SITE_TITLE = '中国考古学专刊·丁种 — 实体标注知识库'
 SITE_DESC = '基于70份考古学专刊·丁种发掘报告的实体标注与结构化知识库'
 SITE_REPO = 'https://github.com/CrossTheOcean/archaeology-report-kb'
-SITE_BASE = '/archaeology-report-kb'  # GitHub Pages base path
+# 本地使用空字符串，GitHub Pages使用 '/archaeology-report-kb'
+SITE_BASE = ''  # 本地版本使用相对路径
 
 # ====== 时代分类体系 ======
 ERA_MAP = {
@@ -144,13 +145,16 @@ def page_head(title, extra_css='', extra_js=''):
 {COMMON_CSS}
 {extra_css}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"><\/script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
+<body>
 '''
 
 
-def nav_bar(active='index'):
-    """生成导航栏"""
+def nav_bar(active='index', is_report_page=False):
+    """生成导航栏
+    is_report_page: 是否为报告详情页（需要返回上级目录）
+    """
     items = [
         ('index', '总览'),
         ('reports', '报告列表'),
@@ -158,14 +162,20 @@ def nav_bar(active='index'):
         ('download', '数据下载'),
         ('about', '关于'),
     ]
+    # 本地版本使用相对路径
+    prefix = '../' if is_report_page else './'
     links = ''
     for key, label in items:
         cls = ' class="active"' if key == active else ''
-        href = f'{SITE_BASE}/' if key == 'index' else f'{SITE_BASE}/{key}.html'
+        if key == 'index':
+            href = f'{prefix}index.html'
+        else:
+            href = f'{prefix}{key}.html'
         links += f'<a href="{href}"{cls}>{label}</a>\n'
+    logo_href = f'{prefix}index.html'
     return f'''<nav class="topnav">
 <div class="nav-inner">
-  <a href="{SITE_BASE}/" class="logo">🏺 考古知识库</a>
+  <a href="{logo_href}" class="logo">🏺 考古知识库</a>
   <div class="nav-links">
 {links}  </div>
 </div>
@@ -173,14 +183,15 @@ def nav_bar(active='index'):
 '''
 
 
-def page_end(extra_js=''):
+def page_end(extra_js='', is_report_page=False):
     """页面尾部"""
+    prefix = '../' if is_report_page else './'
     return f'''<footer class="site-footer">
 <div class="footer-inner">
   <p>中国考古学专刊·丁种 实体标注知识库 &copy; 2026</p>
   <p class="footer-links">
     <a href="{SITE_REPO}" target="_blank">GitHub</a> ·
-    <a href="{SITE_BASE}/about.html">关于本站</a>
+    <a href="{prefix}about.html">关于本站</a>
   </p>
 </div>
 </footer>
@@ -581,6 +592,7 @@ def build_index(reports):
     era_order_js = json.dumps(ERA_ORDER, ensure_ascii=False)
     super_colors_js = json.dumps(SUPER_COLORS, ensure_ascii=False)
     super_order_js = json.dumps(SUPER_ORDER, ensure_ascii=False)
+    super_counts_js = json.dumps(dict(super_counts), ensure_ascii=False)
 
     html = page_head(SITE_TITLE)
     html += nav_bar('index')
@@ -687,7 +699,7 @@ function renderTable() {{
   const tbody = document.getElementById('reportBody');
   tbody.innerHTML = filtered.map(r => {{
     const color = EC[r.era_group] || '#666';
-    const slug = '{SITE_BASE}/report/' + r.slug + '.html';
+    const slug = './report/' + r.slug + '.html';
     return '<tr><td><a href="' + slug + '" style="color:var(--text);text-decoration:none">' + r.display_name + '</a></td>' +
       '<td><span class="era-tag" style="background:' + color + '22;color:' + color + '">' + r.era_group + '</span></td>' +
       '<td>' + r.pdf_pages + '</td>' +
@@ -719,7 +731,8 @@ new Chart(document.getElementById('eraChart'), {{
 
 const SO = {super_order_js};
 const SC = {super_colors_js};
-const catVals = SO.map(function(s) {{ return super_counts.get(s, 0); }});
+const SCO = {super_counts_js};
+const catVals = SO.map(function(s) {{ return SCO[s] || 0; }});
 new Chart(document.getElementById('catChart'), {{
   type: 'bar',
   data: {{
@@ -800,7 +813,7 @@ function renderCards(search) {{
   }});
   grid.innerHTML = filtered.map(r => {{
     const c = EC[r.era] || '#666';
-    return '<a href="{SITE_BASE}/report/' + r.slug + '.html" class="report-card">' +
+    return '<a href="./report/' + r.slug + '.html" class="report-card">' +
       '<h3>' + r.name + '</h3>' +
       '<div class="rc-meta"><span class="era-tag" style="background:' + c + '22;color:' + c + '">' + r.era + '</span> · ' + r.pages + '页</div>' +
       '<div class="rc-entities">' + r.entities.toLocaleString() + ' 个实体</div>' +
@@ -842,11 +855,11 @@ def build_report_detail(report, md_html, all_reports):
 
     nav_html = '<div style="display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)">'
     if prev_r:
-        nav_html += f'<a href="{SITE_BASE}/report/{prev_r["slug"]}.html" style="color:var(--muted);text-decoration:none">← {prev_r["display_name"]}</a>'
+        nav_html += f'<a href="./{prev_r["slug"]}.html" style="color:var(--muted);text-decoration:none">← {prev_r["display_name"]}</a>'
     else:
         nav_html += '<span></span>'
     if next_r:
-        nav_html += f'<a href="{SITE_BASE}/report/{next_r["slug"]}.html" style="color:var(--muted);text-decoration:none">{next_r["display_name"]} →</a>'
+        nav_html += f'<a href="./{next_r["slug"]}.html" style="color:var(--muted);text-decoration:none">{next_r["display_name"]} →</a>'
     else:
         nav_html += '<span></span>'
     nav_html += '</div>'
@@ -871,11 +884,11 @@ def build_report_detail(report, md_html, all_reports):
 .toc-float a:hover { color: var(--accent); }
 @media (max-width: 1024px) { .toc-float { display: none; } }
 ''')
-    html += nav_bar('reports')
+    html += nav_bar('reports', is_report_page=True)
     html += f'''<div class="container" style="display:flex;gap:24px">
 <div style="flex:1;min-width:0">
 <div class="report-header">
-  <a href="{SITE_BASE}/reports.html" style="color:var(--muted);font-size:0.88rem;text-decoration:none">← 返回报告列表</a>
+  <a href="../reports.html" style="color:var(--muted);font-size:0.88rem;text-decoration:none">← 返回报告列表</a>
   <h1 style="margin-top:8px">{name}</h1>
   <div class="report-meta">
     <span class="era-tag" style="background:{color}22;color:{color}">{report['era_group']}</span>
@@ -928,7 +941,7 @@ setTimeout(function() {
     toc.appendChild(a);
   });
 }, 500);
-''')
+''', is_report_page=True)
 
     return html
 
@@ -942,7 +955,7 @@ def build_map_page():
 
 <div class="card">
   <div class="map-container">
-    <img src="{SITE_BASE}/assets/遗址分布地图.png" alt="遗址分布地图" loading="lazy">
+    <img src="./assets/遗址分布地图.png" alt="遗址分布地图" loading="lazy">
   </div>
   <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center">
 '''
@@ -1055,7 +1068,7 @@ def build_download_page():
     <li><b>实体数据</b>：每份报告的 entities.json 包含26类实体（遗迹编号、器物编号、陶器、铜器、石器、骨器、玉器、蚌器、纹饰、材质、年代、地层、地理位置、建筑结构、遗存类型、保存状况、葬具葬式、制作工艺、发掘信息、测年方法、层位关系、测量数据、方向角度、土样特征、探方编号、发掘区）</li>
     <li><b>Markdown全文</b>：使用 MinerU API 从PDF提取，保留标题层级和表格结构</li>
     <li><b>图片</b>：原始PDF提取的图片（约63,170张，4.6GB）因体积限制不在下载包中，需自行从PDF提取</li>
-    <li><b>原始PDF</b>：考古学专刊·丁种的原始PDF可从 Internet Archive 等渠道获取，详见本站 <a href="{SITE_BASE}/about.html" style="color:var(--accent)">关于页</a></li>
+    <li><b>原始PDF</b>：考古学专刊·丁种的原始PDF可从 Internet Archive 等渠道获取，详见本站 <a href="./about.html" style="color:var(--accent)">关于页</a></li>
   </ul>
 </div>
 </div>
@@ -1116,7 +1129,7 @@ def build_about_page():
   <h2>🔗 相关资源</h2>
   <ul style="margin:12px 0 0 20px;color:var(--muted);line-height:2">
     <li><a href="{SITE_REPO}" target="_blank" style="color:var(--accent)">GitHub 仓库</a>：源代码与数据</li>
-    <li><a href="{SITE_BASE}/download.html" style="color:var(--accent)">数据下载</a>：获取结构化数据</li>
+    <li><a href="./download.html" style="color:var(--accent)">数据下载</a>：获取结构化数据</li>
   </ul>
 </div>
 
